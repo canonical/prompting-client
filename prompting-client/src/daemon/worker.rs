@@ -126,9 +126,10 @@ where
     }
 
     async fn pull_updates(&mut self) {
-        // If there are currently no prompts pending in the channel we block until one arrives
-        // rather than busy looping with try_recv below.
-        if self.rx_prompts.is_empty() {
+        // If there are currently no prompts pending in the channel and nothing in our internal
+        // pending_prompts buffer then we block until at least one prompt arrives rather than busy
+        // looping with try_recv below.
+        if self.rx_prompts.is_empty() && self.pending_prompts.is_empty() {
             match self.rx_prompts.recv().await {
                 Some(update) => self.process_update(update),
                 None => {
@@ -139,7 +140,8 @@ where
         }
 
         // Eagerly drain the channel of all prompts that are currently available rather than
-        // pulling in lockstep with serving the prompts to the UI.
+        // pulling in lockstep with serving the prompts to the UI. This is to allow for updates
+        // that drop pending prompts that we would have otherwise presented the UI for.
         loop {
             match self.rx_prompts.try_recv() {
                 Ok(update) => self.process_update(update),
@@ -306,6 +308,36 @@ mod tests {
 
     fn drop_id(id: &str) -> PromptUpdate {
         PromptUpdate::Drop(PromptId(id.to_string()))
+    }
+
+    #[tokio::test]
+    async fn pull_updates_with_pending_prompts_doesnt_block() {
+        // We need to keep the sender sides of these channels from dropping so that the channels
+        // remain open. Without this the call to self.rx_prompts.recv() immediately returns None.
+        let (_tx_prompts, rx_prompts) = unbounded_channel();
+        let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt: Arc::new(Mutex::new(None)),
+            pending_prompts: [ep("1")].into_iter().collect(),
+            prompts_to_drop: Vec::new(),
+            dead_prompts: Vec::new(),
+            recv_timeout: Duration::from_millis(100),
+            ui: FlutterUi {
+                cmd: "".to_string(),
+            },
+            running: true,
+        };
+
+        let res = timeout(Duration::from_millis(1000), w.pull_updates()).await;
+
+        assert!(w.running, "worker no longer runnning");
+        assert!(
+            res.is_ok(),
+            "we blocked waiting for an update from the poll loop"
+        );
     }
 
     #[test_case(add("1"), &[], &[], &["1"], &[]; "add new prompt")]
