@@ -10,11 +10,11 @@ mod recording;
 mod socket_client;
 mod util;
 
-pub(crate) const SNAP_NAME: &str = "apparmor-prompting";
+pub(crate) const SNAP_NAME: &str = "prompting-client";
 
 // FIXME: having to hard code these is a problem.
 // We need snapd to provide structured errors we can work with programatically.
-pub(crate) const PROMPT_NOT_FOUND: &str = "no prompt with the given ID found for the given user";
+pub(crate) const PROMPT_NOT_FOUND: &str = "cannot find prompt with the given ID for the given user";
 pub(crate) const NO_PROMPTS_FOR_USER: &str = "no prompts found for the given user";
 
 #[derive(Debug, thiserror::Error)]

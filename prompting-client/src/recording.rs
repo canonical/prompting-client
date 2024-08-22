@@ -159,7 +159,7 @@ mod tests {
     const SELF_WRITE_PROMPT: &str = r#"{
         "id": "C7PLOQW54HGFM===",
         "timestamp": "2024-07-03T13:33:25.52039535Z",
-        "snap": "apparmor-prompting",
+        "snap": "prompting-client",
         "interface": "home",
         "constraints": {
           "path": "/home/ubuntu/test.json",
