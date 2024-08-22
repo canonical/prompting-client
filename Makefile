@@ -100,7 +100,7 @@ ensure-client-in-vm:
 	fi
 
 .PHONY: update-client-in-vm
-update-client-in-vm: clean-client-in-vm ensure-client-in-vm
+update-client-in-vm: clean-client-in-vm ensure-client-in-vm disable-prompting enable-prompting
 
 .PHONY: clean-test-snap
 clean-test-snap:
