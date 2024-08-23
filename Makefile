@@ -84,15 +84,15 @@ clean-client-in-vm:
 .PHONY: ensure-client-in-vm
 ensure-client-in-vm:
 	@echo ":: Checking for $(SNAP_NAME) in $(VM_NAME)..."
-	@if ! lxc exec $(VM_NAME) -- snap info $(SNAP_NAME) > /dev/null ; then \
+	@if ! lxc exec $(VM_NAME) -- snap list | grep $(SNAP_NAME) > /dev/null ; then \
 		echo ":: Building $(SNAP_NAME) via snapcraft..." ; \
 		rm -rf flutter_packages/prompting_client_ui/build ; \
 		OLD=$(wildcard $(SNAP_NAME)_*) ; \
-		rm $$OLD ; \
+		[ -n "$$OLD" ] && rm $$OLD ; \
 		snapcraft ; \
 		FILE_NAME=$$(ls | grep -E '$(SNAP_NAME)_' | head -n1) ; \
 		echo ":: Installing $(SNAP_NAME) in $(VM_NAME)..." ; \
-		lxc exec $(VM_NAME) -- rm /home/ubuntu/$$OLD ; \
+		[ -n "$$OLD" ] && lxc exec $(VM_NAME) -- rm /home/ubuntu/$$OLD ; \
 		lxc file push $$FILE_NAME $(VM_NAME)/home/ubuntu/ ; \
 		lxc exec $(VM_NAME) -- snap set system experimental.user-daemons=true ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$$FILE_NAME ; \
@@ -100,7 +100,7 @@ ensure-client-in-vm:
 	fi
 
 .PHONY: update-client-in-vm
-update-client-in-vm: clean-client-in-vm ensure-client-in-vm
+update-client-in-vm: clean-client-in-vm ensure-client-in-vm disable-prompting enable-prompting
 
 .PHONY: clean-test-snap
 clean-test-snap:
@@ -109,7 +109,7 @@ clean-test-snap:
 .PHONY: ensure-test-snap
 ensure-test-snap:
 	@echo ":: Checking for $(TEST_SNAP_NAME) in $(VM_NAME)..."
-	@if ! lxc exec $(VM_NAME) -- snap info $(TEST_SNAP_NAME) > /dev/null ; then \
+	@if ! lxc exec $(VM_NAME) -- snap list | grep $(TEST_SNAP_NAME) > /dev/null ; then \
 		echo ":: Building $(TEST_SNAP_NAME) via snapcraft..." ; \
 		cd testing-snap ; \
 		snapcraft ; \
