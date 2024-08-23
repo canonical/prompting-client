@@ -146,6 +146,8 @@ extension PromptReplyResponseConversion on PromptReplyResponse {
       switch (response.promptReplyType) {
         pb.PromptReplyResponse_PromptReplyType.SUCCESS =>
           PromptReplyResponse.success(),
+        pb.PromptReplyResponse_PromptReplyType.PROMPT_NOT_FOUND =>
+          PromptReplyResponse.promptNotFound(message: response.message),
         pb.PromptReplyResponse_PromptReplyType.UNKNOWN =>
           PromptReplyResponse.unknown(message: response.message),
         _ => throw ArgumentError('Unknown prompt reply type: $response'),
