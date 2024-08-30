@@ -59,6 +59,7 @@ static void my_application_activate(GApplication* application) {
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
 
+  gtk_window_present(window);
   gtk_widget_grab_focus(GTK_WIDGET(view));
 }
 
