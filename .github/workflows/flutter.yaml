@@ -8,44 +8,65 @@ on:
   workflow_dispatch:
 
 jobs:
-  analyze:
+  setup:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - uses: asdf-vm/actions/install@v2
+      - uses: Atsumi3/actions-setup-fvm@0.0.3
       - uses: bluefireteam/melos-action@v2
       - run: melos generate
+      - run: melos gen-l10n
       - uses: actions/cache@v3
         with:
-          path: |
-            flutter_packages/**/*.freezed.dart
-            flutter_packages/**/*.g.dart
-            flutter_packages/**/*.mocks.dart
-          key: melos-generate-${{ github.sha }}
+          path: .
+          key: ${{ runner.os }}-repo-${{ github.sha }}-generated
+
+  analyze:
+    runs-on: ubuntu-22.04
+    needs: setup
+    steps:
+      - uses: actions/checkout@v3
+      - name: Restore repository cache
+        uses: actions/cache@v3
+        with:
+          path: .
+          key: ${{ runner.os }}-repo-${{ github.sha }}-generated
+          restore-keys: |
+            ${{ runner.os }}-repo-
+      - uses: Atsumi3/actions-setup-fvm@0.0.3
+      - uses: bluefireteam/melos-action@v2
       - run: melos analyze --fatal-infos
 
   format:
     runs-on: ubuntu-22.04
+    needs: setup
     steps:
       - uses: actions/checkout@v4
-      - uses: asdf-vm/actions/install@v2
+      - name: Restore repository cache
+        uses: actions/cache@v3
+        with:
+          path: .
+          key: ${{ runner.os }}-repo-${{ github.sha }}-generated
+          restore-keys: |
+            ${{ runner.os }}-repo-
+      - uses: Atsumi3/actions-setup-fvm@0.0.3
       - uses: bluefireteam/melos-action@v2
       - run: melos format:exclude
 
   test:
-    needs: analyze
     runs-on: ubuntu-22.04
+    needs: setup
     steps:
       - uses: actions/checkout@v4
-      - uses: asdf-vm/actions/install@v2
-      - uses: bluefireteam/melos-action@v2
-      - uses: actions/cache@v3
+      - name: Restore repository cache
+        uses: actions/cache@v3
         with:
-          path: |
-            flutter_packages/**/*.freezed.dart
-            flutter_packages/**/*.g.dart
-            flutter_packages/**/*.mocks.dart
-          key: melos-generate-${{ github.sha }}
+          path: .
+          key: ${{ runner.os }}-repo-${{ github.sha }}-generated
+          restore-keys: |
+            ${{ runner.os }}-repo-
+      - uses: Atsumi3/actions-setup-fvm@0.0.3
+      - uses: bluefireteam/melos-action@v2
       - run: sudo apt update && sudo apt install -y lcov
       - run: melos coverage
       - uses: codecov/codecov-action@v3
@@ -53,21 +74,21 @@ jobs:
           token: ${{secrets.CODECOV_TOKEN}}
 
   prompting-client-ui:
-    needs: analyze
     runs-on: ubuntu-22.04
+    needs: setup
     steps:
       - uses: actions/checkout@v4
-      - uses: asdf-vm/actions/install@v2
-      - uses: bluefireteam/melos-action@v2
-      - uses: actions/cache@v3
+      - name: Restore repository cache
+        uses: actions/cache@v3
         with:
-          path: |
-            flutter_packages/**/*.freezed.dart
-            flutter_packages/**/*.g.dart
-            flutter_packages/**/*.mocks.dart
-          key: melos-generate-${{ github.sha }}
-      - run: |
-          sudo apt update
-          sudo apt install -y clang cmake libglib2.0-dev libgtk-3-dev liblzma-dev ninja-build pkg-config xvfb
-          cd flutter_packages/prompting_client_ui
-          xvfb-run -a -s '-screen 0 1024x768x24 +extension GLX' flutter test integration_test
+          path: .
+          key: ${{ runner.os }}-repo-${{ github.sha }}-generated
+          restore-keys: |
+            ${{ runner.os }}-repo-
+      - uses: Atsumi3/actions-setup-fvm@0.0.3
+      - uses: bluefireteam/melos-action@v2
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y clang cmake libglib2.0-dev libgtk-3-dev liblzma-dev ninja-build pkg-config xvfb
+      - name: Run integration tests
+        working-directory: flutter_packages/prompting_client_ui
+        run: xvfb-run -a -s '-screen 0 1024x768x24 +extension GLX' flutter test integration_test
