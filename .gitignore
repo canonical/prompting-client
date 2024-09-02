@@ -19,3 +19,6 @@ pubspec_overrides.yaml
 # IntelliJ related
 *.iml
 *.idea
+
+# FVM Version Cache
+.fvm/
