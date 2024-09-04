@@ -16,7 +16,7 @@ jobs:
       - uses: bluefireteam/melos-action@v2
       - run: melos generate
       - run: melos gen-l10n
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: .
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Restore repository cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Restore repository cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Restore repository cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Restore repository cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
