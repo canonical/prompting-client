@@ -60,6 +60,8 @@ extension HomePatternTypeConversion on HomePatternType {
         pb.HomePatternType.HOME_DIRECTORY => HomePatternType.homeDirectory,
         pb.HomePatternType.MATCHING_FILE_EXTENSION =>
           HomePatternType.matchingFileExtension,
+        pb.HomePatternType.REQUESTED_DIRECTORY_CONTENTS =>
+          HomePatternType.requestedDirectoryContents,
         _ => throw ArgumentError('Unknown home pattern type: $homePatternType'),
       };
 }
@@ -122,8 +124,8 @@ extension PrompteDetailsConversion on PromptDetails {
                 .toSet(),
             initialPatternOption: response.homePrompt.initialPatternOption,
           ),
-        _ =>
-          throw ArgumentError('Unknown prompt type: ${response.whichPrompt()}'),
+        pb.GetCurrentPromptResponse_Prompt.notSet =>
+          throw ArgumentError('Prompt type not set'),
       };
 }
 

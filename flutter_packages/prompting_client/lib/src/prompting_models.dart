@@ -13,6 +13,7 @@ enum HomePatternType {
   containingDirectory,
   homeDirectory,
   matchingFileExtension,
+  requestedDirectoryContents,
 }
 
 // Technically there is also a 'timespan' variant of this enum (on the

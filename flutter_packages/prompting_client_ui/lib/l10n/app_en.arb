@@ -59,6 +59,8 @@
             }
         }
     },
+    "homePatternTypeRequestedDirectoryContents": "Everything in the directory",
+    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Everything in the directory",
     "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Everything in the Home directory",

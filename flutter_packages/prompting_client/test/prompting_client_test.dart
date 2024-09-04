@@ -209,6 +209,28 @@ void main() {
       });
     }
   });
+
+  group('home pattern type conversion is exhaustive', () {
+    for (final variant in pb.HomePatternType.values) {
+      test(variant.toString(), () {
+        // Just checking that we don't throw for any of the protobuf variants
+        HomePatternTypeConversion.fromProto(variant);
+      });
+    }
+  });
+
+  group('prompt reply response conversion is exhaustive', () {
+    for (final variant in pb.PromptReplyResponse_PromptReplyType.values) {
+      test(variant.toString(), () {
+        final response = pb.PromptReplyResponse(
+          promptReplyType: variant,
+          message: 'message',
+        );
+        // Just checking that we don't throw for any of the protobuf variants
+        PromptReplyResponseConversion.fromProto(response);
+      });
+    }
+  });
 }
 
 @GenerateMocks([pb.AppArmorPromptingClient])
