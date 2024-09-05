@@ -248,7 +248,8 @@ fn map_pattern_option(
         PatternType => HomePatternType;
         [
             RequestedDirectory, RequestedFile, TopLevelDirectory,
-            HomeDirectory, MatchingFileExtension, ContainingDirectory
+            HomeDirectory, MatchingFileExtension, ContainingDirectory,
+            RequestedDirectoryContents
         ];
         pattern_type;
     );

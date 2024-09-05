@@ -78,7 +78,7 @@ impl PatternOptions {
             format!("{home_dir}/**"),
         )];
 
-        if !(cpath.is_home_dir() || cpath.is_top_level()) {
+        if !cpath.is_home_dir_or_top_level_file() {
             options.push(cpath.top_level_dir_pattern());
         }
 
@@ -86,9 +86,11 @@ impl PatternOptions {
             options.push(cpath.containing_dir_pattern());
         }
 
-        if !cpath.is_home_dir() {
-            options.push(cpath.requested_path_pattern());
+        if cpath.is_sub_dir() {
+            options.push(cpath.dir_contents_pattern());
         }
+
+        options.push(cpath.requested_path_pattern());
 
         if !cpath.is_dir {
             if let Some(opt) = cpath.matching_extension_pattern(home_dir) {
@@ -356,16 +358,18 @@ impl<'a> CategorisedPath<'a> {
         }
     }
 
-    fn is_home_dir(&self) -> bool {
-        self.path.iter().count() == 3
-    }
+    fn is_home_dir_or_top_level_file(&self) -> bool {
+        let n_segments = self.path.iter().count();
 
-    fn is_top_level(&self) -> bool {
-        self.path.iter().count() == 4
+        n_segments == 3 || (n_segments == 4 && !self.is_dir)
     }
 
     fn is_nested_file(&self) -> bool {
         self.path.iter().count() > 5 && !self.is_dir
+    }
+
+    fn is_sub_dir(&self) -> bool {
+        self.path.iter().count() > 4 && self.is_dir
     }
 
     fn requested_path_pattern(&self) -> TypedPathPattern {
@@ -375,11 +379,13 @@ impl<'a> CategorisedPath<'a> {
             PatternType::RequestedFile
         };
 
-        TypedPathPattern::initial(pattern_type, self.raw_path)
+        let show_initially = !self.is_home_dir_or_top_level_file();
+
+        TypedPathPattern::new(pattern_type, self.raw_path, show_initially)
     }
 
     fn top_level_dir_pattern(&self) -> TypedPathPattern {
-        debug_assert!(!(self.is_home_dir() || self.is_top_level()));
+        debug_assert!(!self.is_home_dir_or_top_level_file());
         let top_level: PathBuf = self.path.iter().take(4).collect();
 
         TypedPathPattern::initial(
@@ -397,6 +403,15 @@ impl<'a> CategorisedPath<'a> {
         TypedPathPattern::initial(
             PatternType::ContainingDirectory,
             format!("{}/**", pb.to_string_lossy()),
+        )
+    }
+
+    fn dir_contents_pattern(&self) -> TypedPathPattern {
+        debug_assert!(self.is_sub_dir());
+
+        TypedPathPattern::initial(
+            PatternType::RequestedDirectoryContents,
+            format!("{}**", self.raw_path),
         )
     }
 
@@ -423,6 +438,7 @@ pub enum PatternType {
     ContainingDirectory,
     HomeDirectory,
     MatchingFileExtension,
+    RequestedDirectoryContents,
 }
 
 #[cfg(test)]
@@ -478,116 +494,156 @@ mod tests {
         }
     }
 
-    #[test_case("/home/user/", false; "home dir")]
-    #[test_case("/home/user/foo.txt", true; "top level file")]
-    #[test_case("/home/user/Documents", true; "top level dir")]
-    #[test_case("/home/user/Documents/foo.txt", false; "nested file")]
-    #[test_case("/home/user/Documents/banking", false; "nested dir")]
-    #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
     #[test]
-    fn is_top_level(path: &str, is_top_level: bool) {
-        let cpath = CategorisedPath::from_path(path);
-        assert_eq!(cpath.is_top_level(), is_top_level);
+    fn dir_contents_pattern_works() {
+        let cpath = CategorisedPath::from_path("/home/user/Documents/banking/");
+        let patt = cpath.dir_contents_pattern();
+        assert_eq!(patt.path_pattern, "/home/user/Documents/banking/**");
     }
 
     #[test_case("/home/user/", false; "home dir")]
     #[test_case("/home/user/foo.txt", false; "top level file")]
-    #[test_case("/home/user/Documents", false; "top level dir")]
+    #[test_case("/home/user/Documents/", false; "top level dir")]
     #[test_case("/home/user/Documents/foo/bar.txt", true; "nested file")]
-    #[test_case("/home/user/Documents/banking", false; "nested dir")]
+    #[test_case("/home/user/Documents/banking/", false; "nested dir")]
     #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
     #[test]
-    fn is_nested_file(path: &str, is_nested_file: bool) {
+    fn is_nested_file(path: &str, expected: bool) {
         let cpath = CategorisedPath::from_path(path);
-        assert_eq!(cpath.is_nested_file(), is_nested_file);
+        assert_eq!(cpath.is_nested_file(), expected);
+    }
+
+    #[test_case("/home/user/", false; "home dir")]
+    #[test_case("/home/user/foo.txt", false; "top level file")]
+    #[test_case("/home/user/Documents/", false; "top level dir")]
+    #[test_case("/home/user/Documents/foo/bar.txt", false; "nested file")]
+    #[test_case("/home/user/Documents/banking/", true; "nested dir")]
+    #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
+    #[test]
+    fn is_sub_dir(path: &str, expected: bool) {
+        let cpath = CategorisedPath::from_path(path);
+        assert_eq!(cpath.is_sub_dir(), expected);
+    }
+
+    #[test_case("/home/user/", true; "home dir")]
+    #[test_case("/home/user/foo.txt", true; "top level file")]
+    #[test_case("/home/user/Documents/", false; "top level dir")]
+    #[test_case("/home/user/Documents/foo.txt", false; "nested file")]
+    #[test_case("/home/user/Documents/banking/", false; "nested dir")]
+    #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
+    #[test]
+    fn is_home_dir_or_top_level_file(path: &str, expected: bool) {
+        let cpath = CategorisedPath::from_path(path);
+        assert_eq!(cpath.is_home_dir_or_top_level_file(), expected);
     }
 
     #[test_case(
-        "/home/user/bar.zip",
-        &[
-            PatternType::HomeDirectory,
-            PatternType::RequestedFile,
-            PatternType::MatchingFileExtension,
-        ];
-        "file in home folder"
-    )]
-    #[test_case(
-        "/home/user/bar",
-        &[
-            PatternType::HomeDirectory,
-            PatternType::RequestedFile,
-        ];
-        "file in home folder without extension"
-    )]
-    #[test_case(
         "/home/user/Pictures/nested/foo.jpeg",
+        1,
         &[
-            PatternType::HomeDirectory,
-            PatternType::TopLevelDirectory,
-            PatternType::ContainingDirectory,
-            PatternType::RequestedFile,
-            PatternType::MatchingFileExtension,
+            (PatternType::HomeDirectory, false),
+            (PatternType::TopLevelDirectory, true),
+            (PatternType::ContainingDirectory, true),
+            (PatternType::RequestedFile, true),
+            (PatternType::MatchingFileExtension, false)
         ];
         "file in sub-folder"
     )]
     #[test_case(
         "/home/user/Pictures/nested/foo",
+        1,
         &[
-            PatternType::HomeDirectory,
-            PatternType::TopLevelDirectory,
-            PatternType::ContainingDirectory,
-            PatternType::RequestedFile,
+            (PatternType::HomeDirectory, false),
+            (PatternType::TopLevelDirectory, true),
+            (PatternType::ContainingDirectory, true),
+            (PatternType::RequestedFile, true),
         ];
         "file in sub-folder without extension"
     )]
     #[test_case(
         "/home/user/Downloads/foo.jpeg",
+        1,
         &[
-            PatternType::HomeDirectory,
-            PatternType::TopLevelDirectory,
-            PatternType::RequestedFile,
-            PatternType::MatchingFileExtension,
+            (PatternType::HomeDirectory, false),
+            (PatternType::TopLevelDirectory, true),
+            (PatternType::RequestedFile, true),
+            (PatternType::MatchingFileExtension, false)
         ];
         "file in top level folder"
     )]
     #[test_case(
         "/home/user/Downloads/foo",
+        1,
         &[
-            PatternType::HomeDirectory,
-            PatternType::TopLevelDirectory,
-            PatternType::RequestedFile,
+            (PatternType::HomeDirectory, false),
+            (PatternType::TopLevelDirectory, true),
+            (PatternType::RequestedFile, true),
         ];
         "file in top level folder without extension"
     )]
     #[test_case(
-        "/home/user/Downloads/stuff/",
+        "/home/user/bar.zip",
+        1,
         &[
-            PatternType::HomeDirectory,
-            PatternType::TopLevelDirectory,
-            PatternType::RequestedDirectory,
+            (PatternType::HomeDirectory, false),
+            (PatternType::RequestedFile, false),
+            (PatternType::MatchingFileExtension, false)
         ];
-        "sub-folder"
+        "file in home folder"
+    )]
+    #[test_case(
+        "/home/user/bar",
+        1,
+        &[
+            (PatternType::HomeDirectory, false),
+            (PatternType::RequestedFile, false),
+        ];
+        "file in home folder without extension"
+    )]
+    #[test_case(
+        "/home/user/Downloads/stuff/",
+        1,
+        &[
+            (PatternType::HomeDirectory, false),
+            (PatternType::TopLevelDirectory, true),
+            (PatternType::RequestedDirectoryContents, true),
+            (PatternType::RequestedDirectory, true),
+        ];
+        "sub folder"
     )]
     #[test_case(
         "/home/user/Downloads/",
+        1,
         &[
-            PatternType::HomeDirectory,
-            PatternType::RequestedDirectory,
+            (PatternType::HomeDirectory, false),
+            (PatternType::TopLevelDirectory, true),
+            (PatternType::RequestedDirectory, true),
         ];
         "top level folder"
     )]
     #[test_case(
         "/home/user/",
+        1,
         &[
-            PatternType::HomeDirectory,
+            (PatternType::HomeDirectory, false),
+            (PatternType::RequestedDirectory, false),
         ];
         "home folder"
     )]
     #[test]
-    fn building_options_works(path: &str, expected: &[PatternType]) {
+    fn building_options_works(
+        path: &str,
+        initial_pattern_option: usize,
+        expected: &[(PatternType, bool)],
+    ) {
         let p = PatternOptions::new(path, "/home/user");
-        let descriptions: Vec<PatternType> =
-            p.pattern_options.iter().map(|pd| pd.pattern_type).collect();
+        assert_eq!(p.initial_pattern_option, initial_pattern_option);
+
+        let descriptions: Vec<(PatternType, bool)> = p
+            .pattern_options
+            .iter()
+            .map(|pd| (pd.pattern_type, pd.show_initially))
+            .collect();
 
         assert_eq!(descriptions, expected);
     }
