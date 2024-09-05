@@ -47,11 +47,11 @@
     "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Custom path pattern",
     "@homePatternTypeCustomPath": {},
-    "homePatternTypeRequestedDirectory": "The requested directory only",
+    "homePatternTypeRequestedDirectory": "The requested folder only",
     "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "The requested file only",
     "@homePatternTypeRequestedFile": {},
-    "homePatternTypeTopLevelDirectory": "Everything in the {topLevelDir} directory",
+    "homePatternTypeTopLevelDirectory": "Everything in the {topLevelDir} folder",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
             "topLevelDir": {
@@ -59,9 +59,11 @@
             }
         }
     },
-    "homePatternTypeContainingDirectory": "Everything in the directory",
+    "homePatternTypeRequestedDirectoryContents": "Everything in the folder",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "Everything in the folder",
     "@homePatternTypeContainingDirectory": {},
-    "homePatternTypeHomeDirectory": "Everything in the Home directory",
+    "homePatternTypeHomeDirectory": "Everything in the Home folder",
     "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Matching file extension",
     "@homePatternTypeMatchingFileExtension": {},

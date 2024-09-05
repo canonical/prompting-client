@@ -52,6 +52,7 @@ class HomePatternType extends $pb.ProtobufEnum {
   static const HomePatternType CONTAINING_DIRECTORY = HomePatternType._(3, _omitEnumNames ? '' : 'CONTAINING_DIRECTORY');
   static const HomePatternType HOME_DIRECTORY = HomePatternType._(4, _omitEnumNames ? '' : 'HOME_DIRECTORY');
   static const HomePatternType MATCHING_FILE_EXTENSION = HomePatternType._(5, _omitEnumNames ? '' : 'MATCHING_FILE_EXTENSION');
+  static const HomePatternType REQUESTED_DIRECTORY_CONTENTS = HomePatternType._(6, _omitEnumNames ? '' : 'REQUESTED_DIRECTORY_CONTENTS');
 
   static const $core.List<HomePatternType> values = <HomePatternType> [
     REQUESTED_DIRECTORY,
@@ -60,6 +61,7 @@ class HomePatternType extends $pb.ProtobufEnum {
     CONTAINING_DIRECTORY,
     HOME_DIRECTORY,
     MATCHING_FILE_EXTENSION,
+    REQUESTED_DIRECTORY_CONTENTS,
   ];
 
   static final $core.Map<$core.int, HomePatternType> _byValue = $pb.ProtobufEnum.initByValue(values);

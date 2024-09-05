@@ -29,6 +29,8 @@ extension HomePatternTypeL10n on HomePatternType {
         HomePatternType.homeDirectory => l10n.homePatternTypeHomeDirectory,
         HomePatternType.matchingFileExtension =>
           l10n.homePatternTypeMatchingFileExtension,
+        HomePatternType.requestedDirectoryContents =>
+          l10n.homePatternTypeRequestedDirectoryContents,
       };
 }
 

@@ -75,6 +75,7 @@ enum HomePatternType {
     CONTAINING_DIRECTORY = 3;
     HOME_DIRECTORY = 4;
     MATCHING_FILE_EXTENSION = 5;
+    REQUESTED_DIRECTORY_CONTENTS = 6;
 }
 
 message MetaData {

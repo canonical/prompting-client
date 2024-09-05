@@ -50,6 +50,7 @@ const HomePatternType$json = {
     {'1': 'CONTAINING_DIRECTORY', '2': 3},
     {'1': 'HOME_DIRECTORY', '2': 4},
     {'1': 'MATCHING_FILE_EXTENSION', '2': 5},
+    {'1': 'REQUESTED_DIRECTORY_CONTENTS', '2': 6},
   ],
 };
 
@@ -57,7 +58,8 @@ const HomePatternType$json = {
 final $typed_data.Uint8List homePatternTypeDescriptor = $convert.base64Decode(
     'Cg9Ib21lUGF0dGVyblR5cGUSFwoTUkVRVUVTVEVEX0RJUkVDVE9SWRAAEhIKDlJFUVVFU1RFRF'
     '9GSUxFEAESFwoTVE9QX0xFVkVMX0RJUkVDVE9SWRACEhgKFENPTlRBSU5JTkdfRElSRUNUT1JZ'
-    'EAMSEgoOSE9NRV9ESVJFQ1RPUlkQBBIbChdNQVRDSElOR19GSUxFX0VYVEVOU0lPThAF');
+    'EAMSEgoOSE9NRV9ESVJFQ1RPUlkQBBIbChdNQVRDSElOR19GSUxFX0VYVEVOU0lPThAFEiAKHF'
+    'JFUVVFU1RFRF9ESVJFQ1RPUllfQ09OVEVOVFMQBg==');
 
 @$core.Deprecated('Use promptReplyDescriptor instead')
 const PromptReply$json = {

@@ -210,6 +210,7 @@ pub enum HomePatternType {
     ContainingDirectory = 3,
     HomeDirectory = 4,
     MatchingFileExtension = 5,
+    RequestedDirectoryContents = 6,
 }
 impl HomePatternType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -224,6 +225,7 @@ impl HomePatternType {
             HomePatternType::ContainingDirectory => "CONTAINING_DIRECTORY",
             HomePatternType::HomeDirectory => "HOME_DIRECTORY",
             HomePatternType::MatchingFileExtension => "MATCHING_FILE_EXTENSION",
+            HomePatternType::RequestedDirectoryContents => "REQUESTED_DIRECTORY_CONTENTS",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -235,6 +237,7 @@ impl HomePatternType {
             "CONTAINING_DIRECTORY" => Some(Self::ContainingDirectory),
             "HOME_DIRECTORY" => Some(Self::HomeDirectory),
             "MATCHING_FILE_EXTENSION" => Some(Self::MatchingFileExtension),
+            "REQUESTED_DIRECTORY_CONTENTS" => Some(Self::RequestedDirectoryContents),
             _ => None,
         }
     }
