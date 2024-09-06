@@ -282,7 +282,8 @@ class PatternOptions extends ConsumerWidget {
               errorText: model.errorMessage,
             ),
           ),
-          Text(l10n.homePatternInfo),
+          // TODO: re-enable when we have a link available for this to point to
+          // Text(l10n.homePatternInfo),
         ],
       ],
     );
