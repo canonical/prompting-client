@@ -67,6 +67,21 @@ void main() {
       find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
       findsOneWidget,
     );
+
+    expect(
+      find.text(HomePatternType.customPath.localize(tester.l10n, 'Downloads')),
+      findsNothing,
+    );
+
+    await tester.tap(
+      find.text(tester.l10n.homePromptMoreOptionsLabel),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.text(HomePatternType.customPath.localize(tester.l10n, 'Downloads')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('display prompt details without meta', (tester) async {
@@ -141,6 +156,11 @@ void main() {
         );
 
         await tester.tap(
+          find.text(tester.l10n.homePromptMoreOptionsLabel),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(
           find.text(
             HomePatternType.customPath.localize(tester.l10n, 'Downloads'),
           ),
@@ -148,7 +168,7 @@ void main() {
 
         final windowClosed = YaruTestWindow.waitForClosed();
 
-        await tester.tap(find.text(tester.l10n.promptActionOptionDenyOnce));
+        await tester.tap(find.text(tester.l10n.promptActionOptionDeny));
         await tester.pumpAndSettle();
 
         verify(
@@ -156,7 +176,7 @@ void main() {
             PromptReply.home(
               promptId: 'promptId',
               action: Action.deny,
-              lifespan: Lifespan.single,
+              lifespan: Lifespan.forever,
               pathPattern: '/home/ubuntu/Downloads/file.txt',
               permissions: {Permission.read},
             ),
@@ -185,11 +205,17 @@ void main() {
     );
 
     await tester.tap(
+      find.text(tester.l10n.homePromptMoreOptionsLabel),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(
       find.text(HomePatternType.customPath.localize(tester.l10n, 'Downloads')),
     );
     await tester.pumpAndSettle();
+
     await tester.enterText(find.byType(TextFormField), 'invalid path');
-    await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));
+    await tester.tap(find.text(tester.l10n.promptActionOptionAllow));
     await tester.pumpAndSettle();
 
     expect(find.text('error message'), findsOneWidget);
