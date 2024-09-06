@@ -1,4 +1,5 @@
 name: apparmor_prompting
+sdkPath: .fvm/flutter_sdk
 
 packages:
   - flutter_packages/**
