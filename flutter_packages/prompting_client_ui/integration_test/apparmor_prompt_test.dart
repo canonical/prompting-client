@@ -43,6 +43,10 @@ void main() {
       findsOneWidget,
     );
 
+    // Show more options
+    await tester.tap(find.text(tester.l10n.homePromptMoreOptionsLabel));
+    await tester.pumpAndSettle();
+
     // Select 'custom prompt' to reveal text field
     await tester.tap(
       find.text(HomePatternType.customPath.localize(tester.l10n, 'Documents')),
@@ -51,10 +55,6 @@ void main() {
 
     // Enter custom path
     await tester.enterText(find.byType(TextField), '/home/ubuntu/**/');
-
-    // Show more options
-    await tester.tap(find.text(tester.l10n.homePromptMoreOptionsLabel));
-    await tester.pumpAndSettle();
 
     // Select lifespan
     await tester.tap(find.text(Lifespan.forever.localize(tester.l10n)));
