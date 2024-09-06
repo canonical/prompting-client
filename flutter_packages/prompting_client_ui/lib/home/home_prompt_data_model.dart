@@ -28,6 +28,11 @@ class HomePromptData with _$HomePromptData {
 
   bool get isValid => permissions.isNotEmpty;
 
+  bool get hasMeta =>
+      (details.metaData.publisher?.isNotEmpty ?? false) &&
+      (details.metaData.storeUrl?.isNotEmpty ?? false) &&
+      details.metaData.updatedAt != null;
+
   String get topLevelDir {
     return details.requestedPath
         .replaceFirst(details.homeDir, '')

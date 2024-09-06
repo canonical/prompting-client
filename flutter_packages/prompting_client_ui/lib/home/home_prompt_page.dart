@@ -19,11 +19,15 @@ class HomePromptPage extends ConsumerWidget {
     final showMoreOptions = ref.watch(
       homePromptDataModelProvider.select((m) => m.showMoreOptions),
     );
+    final hasMeta = ref.watch(
+      homePromptDataModelProvider.select((m) => m.hasMeta),
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Header(),
-        const Divider(),
+        if (hasMeta) const Divider(),
         const PatternOptions(),
         const Permissions(),
         if (showMoreOptions) const LifespanToggle(),
@@ -38,8 +42,12 @@ class Header extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final details =
-        ref.watch(homePromptDataModelProvider.select((m) => m.details));
+    final details = ref.watch(
+      homePromptDataModelProvider.select((m) => m.details),
+    );
+    final hasMeta = ref.watch(
+      homePromptDataModelProvider.select((m) => m.hasMeta),
+    );
     final l10n = AppLocalizations.of(context);
 
     return Column(
@@ -55,7 +63,7 @@ class Header extends ConsumerWidget {
             details.requestedPath.bold(),
           ),
         ),
-        const MetaDataDropdown(),
+        if (hasMeta) const MetaDataDropdown(),
       ],
     );
   }

@@ -7,7 +7,7 @@ use hyper::Uri;
 use prompt::RawPrompt;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
-use tracing::debug;
+use tracing::{debug, error};
 
 pub mod interfaces;
 mod prompt;
@@ -232,7 +232,10 @@ where
                 publisher: publisher.display_name,
             }),
 
-            Err(_) => None,
+            Err(e) => {
+                error!("unable to pull snap metadata for {name}: {e}");
+                None
+            }
         };
 
         // Serde structs

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/material.dart' hide Action, MetaData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -15,6 +15,7 @@ void main() {
     snapName: 'firefox',
     publisher: 'Mozilla',
     updatedAt: DateTime(2024),
+    storeUrl: 'snap://firefox',
     requestedPath: '/home/ubuntu/Downloads/file.txt',
     homeDir: '/home/ubuntu',
     requestedPermissions: {Permission.read},
@@ -65,6 +66,48 @@ void main() {
     expect(
       find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
       findsOneWidget,
+    );
+  });
+
+  testWidgets('display prompt details without meta', (tester) async {
+    final container = createContainer();
+    final testDetailsWithoutMeta = testDetails.copyWith(
+      metaData: MetaData(
+        promptId: 'promptId',
+        snapName: 'firefox',
+        publisher: '',
+        storeUrl: '',
+      ),
+    );
+    registerMockPromptDetails(
+      promptDetails: testDetailsWithoutMeta,
+    );
+    await tester.pumpApp(
+      (_) => UncontrolledProviderScope(
+        container: container,
+        child: const PromptPage(),
+      ),
+    );
+
+    expect(
+      find.text(
+        tester.l10n.homePromptBody(
+          'firefox',
+          Permission.read.localize(tester.l10n).toLowerCase(),
+          '/home/ubuntu/Downloads/file.txt',
+        ),
+      ),
+      findsOneWidget,
+    );
+
+    expect(
+      find.text(tester.l10n.homePatternTypeTopLevelDirectory('Downloads')),
+      findsOneWidget,
+    );
+
+    expect(
+      find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
+      findsNothing,
     );
   });
 
