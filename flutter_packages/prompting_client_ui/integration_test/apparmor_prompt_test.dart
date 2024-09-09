@@ -44,7 +44,9 @@ void main() {
     );
 
     // Show more options
-    await tester.tap(find.text(tester.l10n.homePromptMoreOptionsLabel));
+    final moreOptionsButton = find.text(tester.l10n.homePromptMoreOptionsLabel);
+    await tester.ensureVisible(moreOptionsButton);
+    await tester.tap(moreOptionsButton);
     await tester.pumpAndSettle();
 
     // Select 'custom prompt' to reveal text field
