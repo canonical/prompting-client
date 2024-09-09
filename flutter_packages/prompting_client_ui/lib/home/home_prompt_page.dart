@@ -269,22 +269,49 @@ class PatternOptions extends ConsumerWidget {
             l10n,
             model.topLevelDir,
           ),
-          optionSubtitle: (option) => option.pathPattern,
+          optionSubtitle: (option) => switch (option) {
+            PatternOption(homePatternType: HomePatternType.customPath) =>
+              model.patternOption.homePatternType == HomePatternType.customPath
+                  ? const _CustomPathTextField()
+                  : const SizedBox.shrink(),
+            _ => Text(
+                option.pathPattern,
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: Theme.of(context).hintColor,
+                    ),
+              ),
+          },
           groupValue: model.patternOption,
           onChanged: notifier.setPatternOption,
         ),
-        if (model.patternOption.homePatternType ==
-            HomePatternType.customPath) ...[
-          TextFormField(
-            initialValue: model.customPath,
-            onChanged: notifier.setCustomPath,
-            decoration: InputDecoration(
-              errorText: model.errorMessage,
-            ),
+      ],
+    );
+  }
+}
+
+class _CustomPathTextField extends ConsumerWidget {
+  const _CustomPathTextField();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final customPath =
+        ref.watch(homePromptDataModelProvider.select((m) => m.customPath));
+    final errorMessage =
+        ref.watch(homePromptDataModelProvider.select((m) => m.errorMessage));
+    final notifier = ref.read(homePromptDataModelProvider.notifier);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextFormField(
+          initialValue: customPath,
+          onChanged: notifier.setCustomPath,
+          decoration: InputDecoration(
+            errorText: errorMessage,
           ),
-          // TODO: re-enable when we have a link available for this to point to
-          // Text(l10n.homePatternInfo),
-        ],
+        ),
+        // Text(l10n.homePatternInfo),
+        // TODO: re-enable when we have a link available for this to point to
       ],
     );
   }
