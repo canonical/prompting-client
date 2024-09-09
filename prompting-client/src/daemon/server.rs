@@ -1,6 +1,6 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
-    daemon::{worker::ReadOnlyActivePrompt, ActionedPrompt},
+    daemon::{worker::ReadOnlyActivePrompt, ActionedPrompt, ReplyToPrompt},
     protos::{
         apparmor_prompting::{
             self, get_current_prompt_response::Prompt, home_prompt::PatternOption,
@@ -15,8 +15,8 @@ use crate::{
         interfaces::home::{
             HomeInterface, HomeReplyConstraints, HomeUiInputData, PatternType, TypedPathPattern,
         },
-        PromptId, PromptReply as SnapPromptReply, SnapMeta, SnapdSocketClient, TypedPromptReply,
-        TypedUiInput, UiInput,
+        PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPromptReply, TypedUiInput,
+        UiInput,
     },
     Error, NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND,
 };
@@ -42,18 +42,6 @@ macro_rules! map_enum {
     };
 }
 
-#[async_trait]
-pub trait ReplyToPrompt: Send + Sync + 'static {
-    async fn reply(&self, id: &PromptId, reply: TypedPromptReply) -> crate::Result<Vec<PromptId>>;
-}
-
-#[async_trait]
-impl ReplyToPrompt for SnapdSocketClient {
-    async fn reply(&self, id: &PromptId, reply: TypedPromptReply) -> crate::Result<Vec<PromptId>> {
-        self.reply_to_prompt(id, reply).await
-    }
-}
-
 pub fn new_server_and_listener<T: ReplyToPrompt + Clone>(
     client: T,
     active_prompt: ReadOnlyActivePrompt,
@@ -66,15 +54,21 @@ pub fn new_server_and_listener<T: ReplyToPrompt + Clone>(
     (AppArmorPromptingServer::new(service), listener)
 }
 
-pub struct Service<T: ReplyToPrompt> {
-    client: T,
+pub struct Service<R>
+where
+    R: ReplyToPrompt,
+{
+    client: R,
     active_prompt: ReadOnlyActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
-impl<T: ReplyToPrompt> Service<T> {
+impl<R> Service<R>
+where
+    R: ReplyToPrompt,
+{
     pub fn new(
-        client: T,
+        client: R,
         active_prompt: ReadOnlyActivePrompt,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
@@ -93,7 +87,10 @@ impl<T: ReplyToPrompt> Service<T> {
 }
 
 #[async_trait]
-impl<T: ReplyToPrompt> AppArmorPrompting for Service<T> {
+impl<R> AppArmorPrompting for Service<R>
+where
+    R: ReplyToPrompt,
+{
     async fn get_current_prompt(
         &self,
         _request: Request<()>,
