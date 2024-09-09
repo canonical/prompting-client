@@ -1,1 +1,113 @@
-{}
+{
+  "promptAccessMoreOptionsTitle": "Поставите приступ за {snap} на:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Дајте {snap} приступ {permission} на:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionDeny": "Одбиј",
+  "@promptActionOptionDeny": {},
+  "promptLifespanOptionForever": "Увек",
+  "@promptLifespanOptionForever": {},
+  "securityCenterInfo": "Увек можете променити ова овлашћења у <Security Center>",
+  "@securityCenterInfo": {},
+  "promptActionTitle": "Акција",
+  "@promptActionTitle": {},
+  "homePatternInfo": "<Сазнајте више о обрасцима путања>",
+  "@homePatternInfo": {},
+  "promptActionOptionAllow": "Дозволи",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Увек дозволи",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDenyOnce": "Одбиј једном",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionSession": "До одјаве",
+  "@promptLifespanOptionSession": {},
+  "homePatternTypeRequestedDirectory": "Само тражени фолдер",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Само тражени фајл",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeRequestedDirectoryContents": "Све у фолдеру",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "promptLifespanOptionSingle": "Једном",
+  "@promptLifespanOptionSingle": {},
+  "promptSaveAndContinue": "Сачувај и настави",
+  "@promptSaveAndContinue": {},
+  "homePatternTypeContainingDirectory": "Све у фолдеру",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptMetaDataLastUpdated": "Последњи пут ажурирано {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "promptLifespanTitle": "Трајање",
+  "@promptLifespanTitle": {},
+  "promptTitle": "Безбедносно обавештење",
+  "@promptTitle": {},
+  "homePatternTypeCustomPath": "Прилагођени образац путање",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeTopLevelDirectory": "Све у {topLevelDir} фолдеру",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeHomeDirectory": "Све у Home фолдеру",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptBody": "Дозволити {snap} да има приступ {permissions} на {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeMatchingFileExtension": "Одговарајући наставак фајла",
+  "@homePatternTypeMatchingFileExtension": {},
+  "homePromptMetaDataTitle": "О овој апликацији",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMoreOptionsLabel": "Више опција...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "Посетите страницу App Center-а",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsRead": "Читање",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Писање",
+  "@homePromptPermissionsWrite": {},
+  "homePromptMetaDataPublishedBy": "Објавио {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Овлашћења",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsExecute": "Извршавање",
+  "@homePromptPermissionsExecute": {}
+}
