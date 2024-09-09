@@ -2,15 +2,19 @@
 name = "prompting-client"
 version = "0.1.0"
 edition = "2021"
-default-run = "prompting-client-cli"
+default-run = "prompting-client-echo"
 
 [profile.release]
 strip = true
 lto = true
 
 [[bin]]
-name = "prompting-client-cli"
-path = "src/bin/cli.rs"
+name = "prompting-client-scripted"
+path = "src/bin/scripted.rs"
+
+[[bin]]
+name = "prompting-client-echo"
+path = "src/bin/echo.rs"
 
 [[bin]]
 name = "prompting-client-daemon"
