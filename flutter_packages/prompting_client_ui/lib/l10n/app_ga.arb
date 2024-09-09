@@ -1,1 +1,113 @@
-{}
+{
+  "promptLifespanOptionForever": "I gcónaí",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Go dtí logáil amach",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Uair amháin",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Fad",
+  "@promptLifespanTitle": {},
+  "homePatternTypeRequestedFile": "An comhad iarrtha amháin",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeRequestedDirectoryContents": "Gach rud san fhillteán",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeHomeDirectory": "Gach rud san fhillteán Baile",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptMetaDataTitle": "Maidir leis an aip seo",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Arna fhoilsiú ag {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Tuilleadh roghanna...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "Tabhair cuairt ar leathanach App Centre",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsRead": "Léigh",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Scríobh",
+  "@homePromptPermissionsWrite": {},
+  "securityCenterInfo": "Is féidir leat na ceadanna seo a athrú i gcónaí sa <Lárionad Slándála>",
+  "@securityCenterInfo": {},
+  "promptActionOptionAllow": "Ceadaigh",
+  "@promptActionOptionAllow": {},
+  "promptAccessMoreOptionsTitle": "Socraigh rochtain le haghaidh {snap} chuig:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowAlways": "Ceadaigh i gcónaí",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Diúltaigh",
+  "@promptActionOptionDeny": {},
+  "promptAccessTitle": "Tabhair rochtain do {snap} {permission} ar:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionDenyOnce": "Séanadh uair amháin",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Gníomh",
+  "@promptActionTitle": {},
+  "homePatternTypeCustomPath": "Patrún cosán saincheaptha",
+  "@homePatternTypeCustomPath": {},
+  "promptSaveAndContinue": "Sábháil agus lean ar aghaidh",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Fógra slándála",
+  "@promptTitle": {},
+  "homePatternInfo": "<Foghlaim faoi phatrúin cosán>",
+  "@homePatternInfo": {},
+  "homePatternTypeMatchingFileExtension": "Síneadh comhad a mheaitseáil",
+  "@homePatternTypeMatchingFileExtension": {},
+  "homePatternTypeRequestedDirectory": "An fillteán iarrtha amháin",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeTopLevelDirectory": "Gach rud san fhillteán {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeContainingDirectory": "Gach rud san fhillteán",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptBody": "An bhfuil cead ag {snap} {permissions} a bheith aige ar {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Nuashonraithe ar {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Ceadanna",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsExecute": "Rith",
+  "@homePromptPermissionsExecute": {}
+}
