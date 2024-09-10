@@ -1,17 +1,29 @@
 use crate::{
     daemon::{poll::poll_for_prompts, server::new_server_and_listener, worker::Worker},
-    snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt},
+    snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt, TypedPromptReply},
     Result,
 };
 use std::{env, fs};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio_stream::wrappers::UnixListenerStream;
-use tonic::transport::Server;
+use tonic::{async_trait, transport::Server};
 use tracing::{error, info};
 
 mod poll;
 mod server;
 mod worker;
+
+#[async_trait]
+pub trait ReplyToPrompt: Send + Sync + 'static {
+    async fn reply(&self, id: &PromptId, reply: TypedPromptReply) -> crate::Result<Vec<PromptId>>;
+}
+
+#[async_trait]
+impl ReplyToPrompt for SnapdSocketClient {
+    async fn reply(&self, id: &PromptId, reply: TypedPromptReply) -> crate::Result<Vec<PromptId>> {
+        self.reply_to_prompt(id, reply).await
+    }
+}
 
 // Poll loop -> worker
 #[derive(Debug, Clone)]
@@ -40,7 +52,7 @@ pub async fn run_daemon(c: SnapdSocketClient) -> Result<()> {
     let (tx_prompts, rx_prompts) = unbounded_channel();
     let (tx_actioned, rx_actioned) = unbounded_channel();
 
-    let mut worker = Worker::new(rx_prompts, rx_actioned);
+    let mut worker = Worker::new(rx_prompts, rx_actioned, c.clone());
     let active_prompt = worker.read_only_active_prompt();
 
     let path =

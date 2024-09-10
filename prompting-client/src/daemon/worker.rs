@@ -1,7 +1,7 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
 use crate::{
-    daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate},
-    snapd_client::{PromptId, TypedUiInput},
+    daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
+    snapd_client::{PromptId, SnapdSocketClient, TypedUiInput},
     Result,
 };
 use std::{
@@ -68,9 +68,10 @@ impl SpawnUi for FlutterUi {
 }
 
 #[derive(Debug)]
-pub struct Worker<S>
+pub struct Worker<S, R>
 where
     S: SpawnUi,
+    R: ReplyToPrompt,
 {
     rx_prompts: UnboundedReceiver<PromptUpdate>,
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
@@ -80,13 +81,15 @@ where
     dead_prompts: Vec<PromptId>,
     recv_timeout: Duration,
     ui: S,
+    client: R,
     running: bool,
 }
 
-impl Worker<FlutterUi> {
+impl Worker<FlutterUi, SnapdSocketClient> {
     pub fn new(
         rx_prompts: UnboundedReceiver<PromptUpdate>,
         rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
+        client: SnapdSocketClient,
     ) -> Self {
         let snap = env::var("SNAP").expect("SNAP env var to be set");
         let cmd = format!("{snap}/bin/prompting_client_ui");
@@ -100,14 +103,16 @@ impl Worker<FlutterUi> {
             dead_prompts: Vec::new(),
             recv_timeout: RECV_TIMEOUT,
             ui: FlutterUi { cmd },
+            client,
             running: false,
         }
     }
 }
 
-impl<S> Worker<S>
+impl<S, R> Worker<S, R>
 where
     S: SpawnUi,
+    R: ReplyToPrompt,
 {
     pub fn read_only_active_prompt(&self) -> ReadOnlyActivePrompt {
         ReadOnlyActivePrompt {
@@ -193,6 +198,8 @@ where
         debug!("got prompt: {ep:?}");
 
         let expected_id = ep.prompt.id().clone();
+        let prompt = ep.prompt.clone();
+
         debug!("updating active prompt");
         self.update_active_prompt(ep);
 
@@ -202,8 +209,13 @@ where
 
         loop {
             match self.wait_for_expected_prompt(&expected_id).await {
-                Recv::Success | Recv::Timeout | Recv::Gone => break,
                 Recv::DeadPrompt | Recv::Unexpected => continue,
+                Recv::Success | Recv::Gone => break,
+                Recv::Timeout => {
+                    let reply = prompt.into_deny_once();
+                    self.client.reply(&expected_id, reply).await?;
+                    break;
+                }
                 Recv::ChannelClosed => {
                     self.running = false;
                     return Ok(());
@@ -281,13 +293,33 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::snapd_client::{interfaces::home::HomeConstraints, Prompt, TypedPrompt};
+    use crate::snapd_client::{
+        interfaces::home::{HomeConstraints, HomeReplyConstraints},
+        Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
+    };
     use simple_test_case::test_case;
-    use std::env;
+    use std::{
+        env,
+        sync::{Arc, Mutex},
+    };
     use tokio::{
         sync::mpsc::{unbounded_channel, UnboundedSender},
         time::sleep,
     };
+    use tonic::async_trait;
+
+    struct StubClient;
+
+    #[async_trait]
+    impl ReplyToPrompt for StubClient {
+        async fn reply(
+            &self,
+            _id: &PromptId,
+            _reply: TypedPromptReply,
+        ) -> crate::Result<Vec<PromptId>> {
+            panic!("stub client called")
+        }
+    }
 
     fn ep(id: &str) -> EnrichedPrompt {
         EnrichedPrompt {
@@ -328,6 +360,7 @@ mod tests {
             ui: FlutterUi {
                 cmd: "".to_string(),
             },
+            client: StubClient,
             running: true,
         };
 
@@ -371,6 +404,7 @@ mod tests {
             ui: FlutterUi {
                 cmd: "".to_string(),
             },
+            client: StubClient,
             running: true,
         };
 
@@ -414,6 +448,7 @@ mod tests {
             ui: FlutterUi {
                 cmd: "".to_string(),
             },
+            client: StubClient,
             running: true,
         };
 
@@ -473,6 +508,7 @@ mod tests {
             ui: FlutterUi {
                 cmd: "".to_string(),
             },
+            client: StubClient,
             running: false,
         };
 
@@ -511,6 +547,7 @@ mod tests {
             ui: FlutterUi {
                 cmd: "".to_string(),
             },
+            client: StubClient,
             running: false,
         };
 
@@ -619,6 +656,7 @@ mod tests {
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui,
+            client: StubClient,
             running: true,
         };
 
@@ -633,5 +671,77 @@ mod tests {
         drop(tx_prompts);
         w.step().await.unwrap();
         assert!(!w.running, "drop(tx_prompts) should shut down the worker");
+    }
+
+    struct StubUi;
+
+    impl SpawnUi for StubUi {
+        async fn spawn(&mut self) -> Result<()> {
+            Ok(())
+        }
+    }
+
+    #[derive(Default)]
+    struct AckClient {
+        seen: Arc<Mutex<Vec<(PromptId, TypedPromptReply)>>>,
+    }
+
+    #[async_trait]
+    impl ReplyToPrompt for AckClient {
+        async fn reply(
+            &self,
+            id: &PromptId,
+            reply: TypedPromptReply,
+        ) -> crate::Result<Vec<PromptId>> {
+            self.seen.lock().unwrap().push((id.clone(), reply));
+
+            Ok(Vec::new())
+        }
+    }
+
+    #[tokio::test]
+    async fn timeout_waiting_for_reply_denies_once() {
+        // We need to keep the sender sides of these channels from dropping so that the channels
+        // remain open. Without this calls to recv() immediately returns None.
+        let (_tx_prompts, rx_prompts) = unbounded_channel();
+        let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        let active_prompt = Arc::new(Mutex::new(None));
+
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt,
+            pending_prompts: [ep("1")].into_iter().collect(),
+            prompts_to_drop: Vec::new(),
+            dead_prompts: vec![],
+            recv_timeout: Duration::from_millis(100),
+            ui: StubUi,
+            client: AckClient::default(),
+            running: true,
+        };
+
+        // We need this env var set to be able to generate the appropriate UI options
+        // for the home interface
+        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        w.step().await.unwrap();
+
+        // Strip off the surrounding Arc and Mutex
+        let replies_seen = Arc::into_inner(w.client.seen)
+            .unwrap()
+            .into_inner()
+            .unwrap();
+
+        assert_eq!(
+            replies_seen,
+            vec![(
+                PromptId("1".to_string()),
+                TypedPromptReply::Home(PromptReply {
+                    action: Action::Deny,
+                    lifespan: Lifespan::Single,
+                    duration: None,
+                    constraints: HomeReplyConstraints::default(),
+                })
+            )]
+        );
     }
 }
