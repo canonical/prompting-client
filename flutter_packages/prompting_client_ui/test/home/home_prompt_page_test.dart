@@ -69,7 +69,7 @@ void main() {
     );
 
     expect(
-      find.text(HomePatternType.customPath.localize(tester.l10n, 'Downloads')),
+      find.text(tester.l10n.homePatternTypeCustomPath),
       findsNothing,
     );
 
@@ -79,7 +79,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.text(HomePatternType.customPath.localize(tester.l10n, 'Downloads')),
+      find.text(tester.l10n.homePatternTypeCustomPath),
       findsOneWidget,
     );
   });
@@ -162,7 +162,7 @@ void main() {
 
         await tester.tap(
           find.text(
-            HomePatternType.customPath.localize(tester.l10n, 'Downloads'),
+            tester.l10n.homePatternTypeCustomPath,
           ),
         );
 
@@ -210,7 +210,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.tap(
-      find.text(HomePatternType.customPath.localize(tester.l10n, 'Downloads')),
+      find.text(tester.l10n.homePatternTypeCustomPath),
     );
     await tester.pumpAndSettle();
 

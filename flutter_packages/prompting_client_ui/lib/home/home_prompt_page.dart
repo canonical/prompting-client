@@ -265,10 +265,7 @@ class PatternOptions extends ConsumerWidget {
                 pathPattern: '',
               ),
           ],
-          optionTitle: (option) => option.homePatternType.localize(
-            l10n,
-            model.topLevelDir,
-          ),
+          optionTitle: (option) => option.localize(l10n),
           optionSubtitle: (option) => switch (option) {
             PatternOption(homePatternType: HomePatternType.customPath) =>
               model.patternOption.homePatternType == HomePatternType.customPath
