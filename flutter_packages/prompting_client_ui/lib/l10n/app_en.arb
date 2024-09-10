@@ -65,8 +65,14 @@
     "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Everything in the Home folder",
     "@homePatternTypeHomeDirectory": {},
-    "homePatternTypeMatchingFileExtension": "Matching file extension",
-    "@homePatternTypeMatchingFileExtension": {},
+    "homePatternTypeMatchingFileExtension": "All {fileExtension} files",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
     "homePromptBody": "Allow {snap} to have {permissions} access to {path}?",
     "@homePromptBody": {
         "placeholders": {

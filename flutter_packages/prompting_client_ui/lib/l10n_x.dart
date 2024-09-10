@@ -16,19 +16,23 @@ extension LifespanL10n on Lifespan {
       };
 }
 
-extension HomePatternTypeL10n on HomePatternType {
-  String localize(AppLocalizations l10n, String topLevelDir) => switch (this) {
+extension PatternOptionL10n on PatternOption {
+  String localize(AppLocalizations l10n) => switch (homePatternType) {
         HomePatternType.customPath => l10n.homePatternTypeCustomPath,
         HomePatternType.requestedDirectory =>
           l10n.homePatternTypeRequestedDirectory,
         HomePatternType.requestedFile => l10n.homePatternTypeRequestedFile,
         HomePatternType.topLevelDirectory =>
-          l10n.homePatternTypeTopLevelDirectory(topLevelDir),
+          l10n.homePatternTypeTopLevelDirectory(
+            pathPattern.split('/**').first.split('/').last,
+          ),
         HomePatternType.containingDirectory =>
           l10n.homePatternTypeContainingDirectory,
         HomePatternType.homeDirectory => l10n.homePatternTypeHomeDirectory,
         HomePatternType.matchingFileExtension =>
-          l10n.homePatternTypeMatchingFileExtension,
+          l10n.homePatternTypeMatchingFileExtension(
+            pathPattern.split('.').last.toUpperCase(),
+          ),
         HomePatternType.requestedDirectoryContents =>
           l10n.homePatternTypeRequestedDirectoryContents,
       };

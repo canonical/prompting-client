@@ -32,12 +32,6 @@ class HomePromptData with _$HomePromptData {
       (details.metaData.publisher?.isNotEmpty ?? false) &&
       (details.metaData.storeUrl?.isNotEmpty ?? false) &&
       details.metaData.updatedAt != null;
-
-  String get topLevelDir {
-    return details.requestedPath
-        .replaceFirst(details.homeDir, '')
-        .split('/')[1];
-  }
 }
 
 @riverpod

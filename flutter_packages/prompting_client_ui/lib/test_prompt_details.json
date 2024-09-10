@@ -27,6 +27,10 @@
             "pathPattern": "/home/user/**/*"
         },
         {
+            "homePatternType": "matchingFileExtension",
+            "pathPattern": "/home/user/**/*.jpeg"
+        },
+        {
             "homePatternType": "topLevelDirectory",
             "pathPattern": "/home/user/Downloads/**/*",
             "showInitially": true

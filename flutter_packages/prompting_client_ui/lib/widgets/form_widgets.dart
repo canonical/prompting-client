@@ -18,7 +18,7 @@ class RadioButtonList<T> extends StatelessWidget {
   final String title;
   final Iterable<T> options;
   final String Function(T option) optionTitle;
-  final String Function(T option)? optionSubtitle;
+  final Widget Function(T option)? optionSubtitle;
   final T? groupValue;
   final void Function(T?)? onChanged;
   final Axis direction;
@@ -40,14 +40,7 @@ class RadioButtonList<T> extends StatelessWidget {
                 groupValue: groupValue,
                 onChanged: onChanged,
                 title: Text(optionTitle(option)),
-                subtitle: optionSubtitle != null
-                    ? Text(
-                        optionSubtitle!(option),
-                        style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                              color: Theme.of(context).hintColor,
-                            ),
-                      )
-                    : null,
+                subtitle: optionSubtitle?.call(option),
               ),
           ].withSpacing(direction == Axis.horizontal ? 16 : 0),
         ),
