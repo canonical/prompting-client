@@ -45,7 +45,7 @@
   "@homePatternTypeContainingDirectory": {},
   "homePatternTypeHomeDirectory": "Všetko v priečinku Domov",
   "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Zodpovedajúca prípona súboru",
+  "homePatternTypeMatchingFileExtension": "Všetky {fileExtension} súbory",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptMetaDataTitle": "O tejto aplikácii",
   "@homePromptMetaDataTitle": {},
