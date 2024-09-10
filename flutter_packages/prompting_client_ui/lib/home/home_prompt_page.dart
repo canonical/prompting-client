@@ -19,16 +19,16 @@ class HomePromptPage extends ConsumerWidget {
     final showMoreOptions = ref.watch(
       homePromptDataModelProvider.select((m) => m.showMoreOptions),
     );
-    final hasMeta = ref.watch(
-      homePromptDataModelProvider.select((m) => m.hasMeta),
+    final hasVisibleOptions = ref.watch(
+      homePromptDataModelProvider
+          .select((m) => m.visiblePatternOptions.isNotEmpty),
     );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Header(),
-        if (hasMeta) const Divider(),
-        const PatternOptions(),
+        if (hasVisibleOptions) ...[const Divider(), const PatternOptions()],
         const Permissions(),
         if (showMoreOptions) const LifespanToggle(),
         const ActionButtonRow(),
@@ -241,47 +241,38 @@ class PatternOptions extends ConsumerWidget {
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    final patternOptions = model.showMoreOptions
-        ? model.details.patternOptions
-        : model.details.patternOptions.where((option) => option.showInitially);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RadioButtonList<PatternOption>(
-          title: model.showMoreOptions
-              ? l10n
-                  .promptAccessMoreOptionsTitle(model.details.metaData.snapName)
-              : l10n.promptAccessTitle(
-                  model.details.metaData.snapName,
-                  model.details.requestedPermissions
-                      .map((p) => p.localize(l10n).toLowerCase())
-                      .join(', '),
-                ),
-          options: [
-            ...patternOptions,
-            if (model.showMoreOptions)
-              PatternOption(
-                homePatternType: HomePatternType.customPath,
-                pathPattern: '',
-              ),
-          ],
-          optionTitle: (option) => option.localize(l10n),
-          optionSubtitle: (option) => switch (option) {
-            PatternOption(homePatternType: HomePatternType.customPath) =>
-              model.patternOption.homePatternType == HomePatternType.customPath
-                  ? const _CustomPathTextField()
-                  : const SizedBox.shrink(),
-            _ => Text(
-                option.pathPattern,
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: Theme.of(context).hintColor,
-                    ),
-              ),
-          },
-          groupValue: model.patternOption,
-          onChanged: notifier.setPatternOption,
-        ),
+    return RadioButtonList<PatternOption>(
+      title: model.showMoreOptions
+          ? l10n.promptAccessMoreOptionsTitle(model.details.metaData.snapName)
+          : l10n.promptAccessTitle(
+              model.details.metaData.snapName,
+              model.details.requestedPermissions
+                  .map((p) => p.localize(l10n).toLowerCase())
+                  .join(', '),
+            ),
+      options: [
+        ...model.visiblePatternOptions,
+        if (model.showMoreOptions)
+          PatternOption(
+            homePatternType: HomePatternType.customPath,
+            pathPattern: '',
+          ),
       ],
+      optionTitle: (option) => option.localize(l10n),
+      optionSubtitle: (option) => switch (option) {
+        PatternOption(homePatternType: HomePatternType.customPath) =>
+          model.patternOption.homePatternType == HomePatternType.customPath
+              ? const _CustomPathTextField()
+              : const SizedBox.shrink(),
+        _ => Text(
+            option.pathPattern,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  color: Theme.of(context).hintColor,
+                ),
+          ),
+      },
+      groupValue: model.patternOption,
+      onChanged: notifier.setPatternOption,
     );
   }
 }
