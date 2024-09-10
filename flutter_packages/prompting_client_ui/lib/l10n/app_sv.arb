@@ -52,7 +52,7 @@
   "@homePatternTypeContainingDirectory": {},
   "homePatternTypeHomeDirectory": "Allt i hemkatalogen",
   "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Matchande filändelse",
+  "homePatternTypeMatchingFileExtension": "Alla {fileExtension} filer",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptMetaDataTitle": "Om detta program",
   "@homePromptMetaDataTitle": {},
