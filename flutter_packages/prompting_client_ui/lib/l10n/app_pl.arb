@@ -58,7 +58,7 @@
       }
     }
   },
-  "homePatternTypeMatchingFileExtension": "Dopasowanie rozszerzenia pliku",
+  "homePatternTypeMatchingFileExtension": "Wszystkie pliki {fileExtension}",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptBody": "Czy zezwolić {snap} na dostęp do {path} na poziomie {permissions}?",
   "@homePromptBody": {
