@@ -1,1 +1,113 @@
-{}
+{
+  "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Povoliť",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionDeny": "Odmietnuť",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Raz odmietnuť",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Akcia",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Vždy",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Do odhlásenia",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Raz",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Trvanie",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Uložiť a pokračovať",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Bezpečnostné upozornenie",
+  "@promptTitle": {},
+  "homePatternTypeCustomPath": "Vlastný vzor cesty",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Iba požadovaný priečinok",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeTopLevelDirectory": "Všetko v priečinku {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "Všetko v priečinku",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Všetko v priečinku",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Všetko v priečinku Domov",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeMatchingFileExtension": "Zodpovedajúca prípona súboru",
+  "@homePatternTypeMatchingFileExtension": {},
+  "homePromptMetaDataTitle": "O tejto aplikácii",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Zverejnil {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Posledná aktualizácia {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataAppCenterLink": "Navštívte stránku Centra aplikácií",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "Oprávnenia",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "Čítanie",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Zapisovanie",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Spúšťanie",
+  "@homePromptPermissionsExecute": {},
+  "securityCenterInfo": "Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
+  "@securityCenterInfo": {},
+  "promptActionOptionAllowAlways": "Vždy povoliť",
+  "@promptActionOptionAllowAlways": {},
+  "promptAccessTitle": "Poskytnúť {snap} {permission} prístup k:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternInfo": "<Ďalšie informácie o vzoroch ciest>",
+  "@homePatternInfo": {},
+  "homePatternTypeRequestedFile": "Iba požadovaný súbor",
+  "@homePatternTypeRequestedFile": {},
+  "homePromptBody": "Povoliť aplikácii {snap} mať {permissions} prístup k {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Viac možností...",
+  "@homePromptMoreOptionsLabel": {}
+}
