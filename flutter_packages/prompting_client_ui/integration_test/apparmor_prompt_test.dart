@@ -70,7 +70,8 @@ void main() {
     await tester
         .ensureVisibleAndTap(find.text(Permission.read.localize(tester.l10n)));
     await tester.ensureVisibleAndTap(
-        find.text(Permission.execute.localize(tester.l10n)));
+      find.text(Permission.execute.localize(tester.l10n)),
+    );
 
     // Deny the request
     await tester
