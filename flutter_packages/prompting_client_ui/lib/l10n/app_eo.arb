@@ -34,7 +34,7 @@
   "@homePatternInfo": {},
   "homePatternTypeCustomPath": "Propra dosierloka ŝablono",
   "@homePatternTypeCustomPath": {},
-  "homePatternTypeMatchingFileExtension": "Kongrua dosiersufikso",
+  "homePatternTypeMatchingFileExtension": "Ĉiuj {fileExtension}-dosieroj",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptBody": "Ĉu permesi al {snap} {permissions} {path}?",
   "@homePromptBody": {
