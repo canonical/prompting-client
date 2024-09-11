@@ -36,11 +36,11 @@
   "@homePatternInfo": {},
   "homePatternTypeCustomPath": "Benutzerdefiniertes Pfadmuster",
   "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "Nur das angeforderte Verzeichnis",
+  "homePatternTypeRequestedDirectory": "Nur der angeforderte Ordner",
   "@homePatternTypeRequestedDirectory": {},
   "homePatternTypeRequestedFile": "Nur die angeforderte Datei",
   "@homePatternTypeRequestedFile": {},
-  "homePatternTypeMatchingFileExtension": "Übereinstimmende Dateierweiterung",
+  "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-Dateien",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptBody": "{snap} den {permissions}-Zugriff auf {path} erlauben?",
   "@homePromptBody": {
@@ -66,7 +66,7 @@
       }
     }
   },
-  "homePatternTypeHomeDirectory": "Alles im Benutzerverzeichnis",
+  "homePatternTypeHomeDirectory": "Alles im Benutzerordner",
   "@homePatternTypeHomeDirectory": {},
   "homePromptMetaDataLastUpdated": "Zuletzt aktualisiert am {date}",
   "@homePromptMetaDataLastUpdated": {
@@ -98,7 +98,7 @@
   "@promptTitle": {},
   "promptLifespanTitle": "Dauer",
   "@promptLifespanTitle": {},
-  "homePatternTypeTopLevelDirectory": "Alles im Verzeichnis {topLevelDir}",
+  "homePatternTypeTopLevelDirectory": "Alles im Ordner {topLevelDir}",
   "@homePatternTypeTopLevelDirectory": {
     "placeholders": {
       "topLevelDir": {
@@ -106,6 +106,8 @@
       }
     }
   },
-  "homePatternTypeContainingDirectory": "Alles im Verzeichnis",
-  "@homePatternTypeContainingDirectory": {}
+  "homePatternTypeContainingDirectory": "Alles im Ordner",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
+  "@homePatternTypeRequestedDirectoryContents": {}
 }
