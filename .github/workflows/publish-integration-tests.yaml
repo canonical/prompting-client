@@ -11,8 +11,9 @@ jobs:
   publish:
     runs-on: ubuntu-22.04
     steps:
-      - name: Publish integration tests
       - uses: actions/checkout@v4
+
+      - name: compile
         working-directory: ./prompting-client
         run: |
           cargo test --no-run
@@ -22,6 +23,7 @@ jobs:
               head -n1
           )
           cp $FNAME integration-tests
+
       - uses: actions/upload-artifact@v4
         with:
           name: integration-tests
