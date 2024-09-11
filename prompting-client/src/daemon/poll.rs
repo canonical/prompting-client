@@ -105,7 +105,6 @@ impl PollLoop {
     }
 
     async fn process_prompt(&mut self, prompt: TypedPrompt) {
-        println!("PROMPT: {prompt:?}");
         let meta = get_snap_meta(&self.client, prompt.snap()).await;
         self.send_update(PromptUpdate::Add(EnrichedPrompt { prompt, meta }));
     }
