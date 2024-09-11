@@ -32,6 +32,10 @@ class HomePromptData with _$HomePromptData {
       (details.metaData.publisher?.isNotEmpty ?? false) &&
       (details.metaData.storeUrl?.isNotEmpty ?? false) &&
       details.metaData.updatedAt != null;
+
+  Iterable<PatternOption> get visiblePatternOptions => showMoreOptions
+      ? details.patternOptions
+      : details.patternOptions.where((option) => option.showInitially);
 }
 
 @riverpod
