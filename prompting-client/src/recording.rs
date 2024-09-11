@@ -1,17 +1,18 @@
 use crate::{
+    daemon::PromptUpdate,
     prompt_sequence::PromptFilter,
     snapd_client::{
         interfaces::{
             home::{HomeConstraintsFilter, HomeInterface},
             SnapInterface,
         },
-        Action, Prompt, PromptId, SnapdSocketClient, TypedPrompt, TypedPromptReply,
+        Action, Prompt, SnapdSocketClient, TypedPrompt, TypedPromptReply,
     },
     Error, Result, SNAP_NAME,
 };
 use serde::{Deserialize, Serialize};
 use std::{fs, process::exit};
-use tokio::{select, signal::ctrl_c};
+use tokio::{select, signal::ctrl_c, sync::mpsc::UnboundedReceiver};
 use tracing::info;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -104,12 +105,12 @@ impl PromptRecording {
         }
     }
 
-    pub async fn await_pending_handling_ctrl_c(
+    pub async fn await_update_handling_ctrl_c(
         &self,
-        c: &mut SnapdSocketClient,
-    ) -> Result<Vec<PromptId>> {
+        rx_prompts: &mut UnboundedReceiver<PromptUpdate>,
+    ) -> Option<PromptUpdate> {
         select! {
-            res = c.pending_prompt_ids() => res,
+            res = rx_prompts.recv() => res,
             _ = ctrl_c() => {
                 info!("got ctrl-c");
                 if self.is_recording() && !self.is_empty() {
@@ -122,7 +123,7 @@ impl PromptRecording {
                         exit(0);
                     });
 
-                    Ok(Vec::new())
+                    None
                 } else {
                     exit(0);
                 }

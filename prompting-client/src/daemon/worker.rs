@@ -15,7 +15,7 @@ use tokio::{
     sync::mpsc::{error::TryRecvError, UnboundedReceiver},
     time::timeout,
 };
-use tracing::{debug, error, info, span, warn, Level};
+use tracing::{debug, error, info, warn};
 
 const RECV_TIMEOUT: Duration = Duration::from_millis(200);
 
@@ -191,9 +191,6 @@ where
             Some(ep) if self.running => ep,
             _ => return Ok(()),
         };
-
-        let span = span!(target: "worker", Level::INFO, "Prompt", id=%ep.prompt.id().0);
-        let _enter = span.enter();
 
         debug!("got prompt: {ep:?}");
 

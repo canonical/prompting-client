@@ -1,32 +1,41 @@
 use crate::{
+    daemon::{PollLoop, PromptUpdate},
     recording::PromptRecording,
-    snapd_client::{SnapdSocketClient, TypedPrompt},
+    snapd_client::{PromptId, SnapdSocketClient, TypedPrompt},
     Result,
 };
-use tracing::{debug, info, warn};
+use tokio::sync::mpsc::unbounded_channel;
+use tracing::info;
 
-pub async fn run_echo_loop(c: &mut SnapdSocketClient, path: Option<String>) -> Result<()> {
+/// A simple echo loop that prints out the prompts seen when polling for notices
+pub async fn run_echo_loop(
+    snapd_client: &mut SnapdSocketClient,
+    path: Option<String>,
+) -> Result<()> {
+    let (tx_prompts, mut rx_prompts) = unbounded_channel();
     let mut rec = PromptRecording::new(path);
 
+    info!("starting poll loop");
+    let mut poll_loop = PollLoop::new(snapd_client.clone(), tx_prompts);
+    poll_loop.skip_outstanding_prompts();
+    tokio::spawn(async move { poll_loop.run().await });
+
     loop {
-        debug!("waiting for notices");
-        let pending = rec.await_pending_handling_ctrl_c(c).await?;
-
-        info!(?pending, "processing notices");
-        for id in pending {
-            debug!(?id, "pulling prompt details from snapd");
-            match c.prompt_details(&id).await {
-                Ok(TypedPrompt::Home(p)) if rec.is_prompt_for_writing_output(&p) => {
-                    return rec.allow_write(p, c).await;
+        match rec.await_update_handling_ctrl_c(&mut rx_prompts).await {
+            Some(PromptUpdate::Add(ep)) => match &ep.prompt {
+                TypedPrompt::Home(p) if rec.is_prompt_for_writing_output(p) => {
+                    return rec.allow_write(p.clone(), snapd_client).await;
                 }
 
-                Ok(p) => {
-                    println!("{}", serde_json::to_string(&p)?);
-                    rec.push_prompt(&p);
+                p => {
+                    println!("PROMPT: {}", serde_json::to_string(&ep)?);
+                    rec.push_prompt(p);
                 }
+            },
 
-                Err(e) => warn!(%e, "unable to pull prompt"),
-            }
+            Some(PromptUpdate::Drop(PromptId(id))) => println!("PROMPT ACTIONED: {id}"),
+
+            None => return Ok(()),
         }
     }
 }

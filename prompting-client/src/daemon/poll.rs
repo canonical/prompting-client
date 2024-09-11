@@ -7,7 +7,7 @@
 use crate::{
     daemon::{EnrichedPrompt, PromptUpdate},
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt},
-    Error, Result, NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND,
+    Error, NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND,
 };
 use cached::proc_macro::cached;
 use tokio::sync::mpsc::UnboundedSender;
@@ -25,18 +25,52 @@ async fn get_snap_meta(client: &SnapdSocketClient, snap: &str) -> Option<SnapMet
 }
 
 #[derive(Debug, Clone)]
-struct PollLoopState {
+pub struct PollLoop {
     client: SnapdSocketClient,
     tx: UnboundedSender<PromptUpdate>,
     running: bool,
+    skip_outstanding_prompts: bool,
 }
 
-impl PollLoopState {
-    fn new(client: SnapdSocketClient, tx: UnboundedSender<PromptUpdate>) -> Self {
+impl PollLoop {
+    pub fn new(client: SnapdSocketClient, tx: UnboundedSender<PromptUpdate>) -> Self {
         Self {
             client,
             tx,
             running: true,
+            skip_outstanding_prompts: false,
+        }
+    }
+
+    pub fn skip_outstanding_prompts(&mut self) {
+        self.skip_outstanding_prompts = true;
+    }
+
+    /// Run our poll loop for prompting notices from snapd (runs as a top level task).
+    ///
+    /// This first checks for any outstanding (unactioned) prompts on the system for the user
+    /// we are running under and processes them before dropping into long-polling for notices.
+    /// This task is responsible for pulling prompt details and snap meta-data from snapd but
+    /// does not directly process the prompts themselves.
+    pub async fn run(mut self) {
+        if !self.skip_outstanding_prompts {
+            self.handle_outstanding_prompts().await;
+        }
+
+        while self.running {
+            info!("polling for notices");
+            let pending = match self.client.pending_prompt_ids().await {
+                Ok(pending) => pending,
+                Err(error) => {
+                    error!(%error, "unable to pull prompt ids. retrying");
+                    continue;
+                }
+            };
+
+            debug!(?pending, "processing notices");
+            for id in pending {
+                self.pull_and_process_prompt(id).await;
+            }
         }
     }
 
@@ -76,7 +110,7 @@ impl PollLoopState {
     }
 
     /// Catch up on all pending prompts before dropping into polling the notices API
-    async fn handle_initial_prompts(&mut self) {
+    async fn handle_outstanding_prompts(&mut self) {
         info!("checking for pending prompts");
         let pending = match self.client.all_pending_prompt_details().await {
             Err(error) => {
@@ -116,36 +150,4 @@ impl PollLoopState {
             }
         }
     }
-}
-
-/// Run our poll loop for prompting notices from snapd (runs as a top level task).
-///
-/// This first checks for any outstanding (unactioned) prompts on the system for the user
-/// we are running under and processes them before dropping into long-polling for notices.
-/// This task is responsible for pulling prompt details and snap meta-data from snapd but
-/// does not directly process the prompts themselves.
-pub async fn poll_for_prompts(
-    client: SnapdSocketClient,
-    tx: UnboundedSender<PromptUpdate>,
-) -> Result<()> {
-    let mut state = PollLoopState::new(client, tx);
-    state.handle_initial_prompts().await;
-
-    while state.running {
-        info!("polling for notices");
-        let pending = match state.client.pending_prompt_ids().await {
-            Ok(pending) => pending,
-            Err(error) => {
-                error!(%error, "unable to pull prompt ids. retrying");
-                continue;
-            }
-        };
-
-        debug!(?pending, "processing notices");
-        for id in pending {
-            state.pull_and_process_prompt(id).await;
-        }
-    }
-
-    Ok(())
 }

@@ -11,14 +11,20 @@ grade: stable
 confinement: strict
 
 apps:
-  prompting-client:
-    command: bin/prompting-client-cli
+  scripted:
+    command: bin/prompting-client-scripted
     extensions: [gnome]
     environment: &env
       PROMPTING_CLIENT_SOCKET: "${XDG_RUNTIME_DIR}/prompting.sock"
     plugs: &plugs
       - home
       - snap-interfaces-requests-control
+
+  echo:
+    command: bin/prompting-client-echo
+    extensions: [gnome]
+    environment: *env
+    plugs: *plugs
 
   daemon:
     command: bin/prompting-client-daemon
