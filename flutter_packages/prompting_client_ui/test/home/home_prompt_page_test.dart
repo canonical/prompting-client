@@ -35,53 +35,253 @@ void main() {
   );
   setUpAll(YaruTestWindow.ensureInitialized);
 
-  testWidgets('display prompt details', (tester) async {
-    final container = createContainer();
-    registerMockPromptDetails(
-      promptDetails: testDetails,
-    );
-    await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
-        container: container,
-        child: const PromptPage(),
+  group('display prompt details', () {
+    for (final testCase in <({
+      String name,
+      String requestedPath,
+      Set<PatternOption> options,
+    })>[
+      (
+        name: 'file in subfolder',
+        requestedPath: '/home/user/Pictures/nested/foo.jpeg',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.topLevelDirectory,
+            pathPattern: '/home/user/Pictures/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.containingDirectory,
+            pathPattern: '/home/user/Pictures/nested/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedFile,
+            pathPattern: '/home/user/Pictures/nested/foo.jpeg',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.matchingFileExtension,
+            pathPattern: '/home/user/Pictures/nested/*.jpeg',
+          ),
+        },
       ),
-    );
-
-    expect(
-      find.text(
-        tester.l10n.homePromptBody(
-          'firefox',
-          Permission.read.localize(tester.l10n).toLowerCase(),
-          '/home/ubuntu/Downloads/file.txt',
-        ),
+      (
+        name: 'file in subfolder without extension',
+        requestedPath: '/home/user/Pictures/nested/foo',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.topLevelDirectory,
+            pathPattern: '/home/user/Pictures/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.containingDirectory,
+            pathPattern: '/home/user/Pictures/nested/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedFile,
+            pathPattern: '/home/user/Pictures/nested/foo',
+            showInitially: true,
+          ),
+        },
       ),
-      findsOneWidget,
-    );
+      (
+        name: 'file in top level folder',
+        requestedPath: '/home/user/Downloads/foo.jpeg',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.topLevelDirectory,
+            pathPattern: '/home/user/Downloads/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedFile,
+            pathPattern: '/home/user/Downloads/foo.jpeg',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.matchingFileExtension,
+            pathPattern: '/home/user/Downloads/*.jpeg',
+          ),
+        },
+      ),
+      (
+        name: 'file in top level folder without extension',
+        requestedPath: '/home/user/Downloads/foo',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.topLevelDirectory,
+            pathPattern: '/home/user/Downloads/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedFile,
+            pathPattern: '/home/user/Downloads/foo',
+            showInitially: true,
+          ),
+        },
+      ),
+      (
+        name: 'file in home folder',
+        requestedPath: '/home/user/foo.jpeg',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedFile,
+            pathPattern: '/home/user/foo.jpeg',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.matchingFileExtension,
+            pathPattern: '/home/user/*.jpeg',
+          ),
+        },
+      ),
+      (
+        name: 'file in home folder without extension',
+        requestedPath: '/home/user/foo',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedFile,
+            pathPattern: '/home/user/foo',
+            showInitially: true,
+          ),
+        },
+      ),
+      (
+        name: 'sub folder',
+        requestedPath: '/home/user/Downloads/stuff/',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.topLevelDirectory,
+            pathPattern: '/home/user/Downloads/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedDirectoryContents,
+            pathPattern: '/home/user/Downloads/stuff/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedDirectory,
+            pathPattern: '/home/user/Downloads/stuff/',
+            showInitially: true,
+          ),
+        },
+      ),
+      (
+        name: 'top level folder',
+        requestedPath: '/home/user/Downloads/',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.topLevelDirectory,
+            pathPattern: '/home/user/Downloads/**',
+            showInitially: true,
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedDirectory,
+            pathPattern: '/home/user/Downloads/',
+            showInitially: true,
+          ),
+        },
+      ),
+      (
+        name: 'top level folder',
+        requestedPath: '/home/user/',
+        options: {
+          PatternOption(
+            homePatternType: HomePatternType.homeDirectory,
+            pathPattern: '/home/user/**',
+          ),
+          PatternOption(
+            homePatternType: HomePatternType.requestedDirectory,
+            pathPattern: '/home/user/',
+          ),
+        },
+      ),
+    ]) {
+      testWidgets(testCase.name, (tester) async {
+        final container = createContainer();
+        registerMockPromptDetails(
+          promptDetails: testDetails.copyWith(
+            requestedPath: testCase.requestedPath,
+            patternOptions: testCase.options,
+          ),
+        );
+        await tester.pumpApp(
+          (_) => UncontrolledProviderScope(
+            container: container,
+            child: const PromptPage(),
+          ),
+        );
 
-    expect(
-      find.text(tester.l10n.homePatternTypeTopLevelDirectory('Downloads')),
-      findsOneWidget,
-    );
+        expect(
+          find.text(
+            tester.l10n.homePromptBody(
+              'firefox',
+              Permission.read.localize(tester.l10n).toLowerCase(),
+              testCase.requestedPath,
+            ),
+          ),
+          findsOneWidget,
+        );
 
-    expect(
-      find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
-      findsOneWidget,
-    );
+        expect(
+          find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
+          findsOneWidget,
+        );
 
-    expect(
-      find.text(tester.l10n.homePatternTypeCustomPath),
-      findsNothing,
-    );
+        for (final option in testCase.options.where((o) => o.showInitially)) {
+          expect(find.text(option.localize(tester.l10n)), findsOneWidget);
+          expect(find.text(option.pathPattern), findsOneWidget);
+        }
+        for (final option in testCase.options.where((o) => !o.showInitially)) {
+          expect(find.text(option.localize(tester.l10n)), findsNothing);
+          expect(find.text(option.pathPattern), findsNothing);
+        }
 
-    await tester.tap(
-      find.text(tester.l10n.homePromptMoreOptionsLabel),
-    );
-    await tester.pumpAndSettle();
+        await tester.tap(
+          find.text(tester.l10n.homePromptMoreOptionsLabel),
+        );
+        await tester.pumpAndSettle();
 
-    expect(
-      find.text(tester.l10n.homePatternTypeCustomPath),
-      findsOneWidget,
-    );
+        for (final option in testCase.options) {
+          expect(find.text(option.localize(tester.l10n)), findsOneWidget);
+          expect(find.text(option.pathPattern), findsOneWidget);
+        }
+      });
+    }
   });
 
   testWidgets('display prompt details without meta', (tester) async {
