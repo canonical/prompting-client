@@ -1,8 +1,8 @@
 use crate::{
-    daemon::{poll::poll_for_prompts, server::new_server_and_listener, worker::Worker},
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt, TypedPromptReply},
     Result,
 };
+use serde::{Deserialize, Serialize};
 use std::{env, fs};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio_stream::wrappers::UnixListenerStream;
@@ -12,6 +12,10 @@ use tracing::{error, info};
 mod poll;
 mod server;
 mod worker;
+
+pub use poll::poll_for_prompts;
+use server::new_server_and_listener;
+use worker::Worker;
 
 #[async_trait]
 pub trait ReplyToPrompt: Send + Sync + 'static {
@@ -26,14 +30,14 @@ impl ReplyToPrompt for SnapdSocketClient {
 }
 
 // Poll loop -> worker
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EnrichedPrompt {
-    prompt: TypedPrompt,
+    pub(crate) prompt: TypedPrompt,
     meta: Option<SnapMeta>,
 }
 
 #[allow(clippy::large_enum_variant)]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum PromptUpdate {
     Add(EnrichedPrompt),
     Drop(PromptId),
