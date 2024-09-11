@@ -1,5 +1,5 @@
 use crate::{
-    daemon::{poll_for_prompts, EnrichedPrompt, PromptUpdate},
+    daemon::{EnrichedPrompt, PollLoop, PromptUpdate},
     prompt_sequence::{MatchError, PromptFilter, PromptSequence},
     snapd_client::{
         interfaces::{
@@ -26,7 +26,9 @@ pub async fn run_scripted_client_loop(
     let (tx_prompts, mut rx_prompts) = unbounded_channel();
 
     info!("starting poll loop");
-    tokio::spawn(poll_for_prompts(snapd_client.clone(), tx_prompts));
+    let mut poll_loop = PollLoop::new(snapd_client.clone(), tx_prompts);
+    poll_loop.skip_outstanding_prompts();
+    tokio::spawn(async move { poll_loop.run().await });
 
     info!(
         script=%scripted_client.path,

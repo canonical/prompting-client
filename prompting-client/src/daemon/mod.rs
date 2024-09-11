@@ -13,7 +13,7 @@ mod poll;
 mod server;
 mod worker;
 
-pub use poll::poll_for_prompts;
+pub use poll::PollLoop;
 use server::new_server_and_listener;
 use worker::Worker;
 
@@ -67,7 +67,8 @@ pub async fn run_daemon(c: SnapdSocketClient) -> Result<()> {
     let (server, listener) = new_server_and_listener(c.clone(), active_prompt, tx_actioned, path);
 
     info!("spawning poll loop");
-    tokio::spawn(poll_for_prompts(c, tx_prompts));
+    let poll_loop = PollLoop::new(c, tx_prompts);
+    tokio::spawn(async move { poll_loop.run().await });
 
     info!("spawning worker thread");
     tokio::spawn(async move { worker.run().await });

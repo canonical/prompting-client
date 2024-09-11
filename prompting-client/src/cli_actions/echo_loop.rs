@@ -1,5 +1,5 @@
 use crate::{
-    daemon::{poll_for_prompts, PromptUpdate},
+    daemon::{PollLoop, PromptUpdate},
     recording::PromptRecording,
     snapd_client::{PromptId, SnapdSocketClient, TypedPrompt},
     Result,
@@ -16,7 +16,9 @@ pub async fn run_echo_loop(
     let mut rec = PromptRecording::new(path);
 
     info!("starting poll loop");
-    tokio::spawn(poll_for_prompts(snapd_client.clone(), tx_prompts));
+    let mut poll_loop = PollLoop::new(snapd_client.clone(), tx_prompts);
+    poll_loop.skip_outstanding_prompts();
+    tokio::spawn(async move { poll_loop.run().await });
 
     loop {
         match rec.await_update_handling_ctrl_c(&mut rx_prompts).await {
