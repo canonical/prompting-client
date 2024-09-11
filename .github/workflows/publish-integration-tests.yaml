@@ -1,0 +1,29 @@
+name: Publish integration tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Publish integration tests
+      - uses: actions/checkout@v4
+        working-directory: ./prompting-client
+        run: |
+          cargo test --no-run
+          FNAME=$(
+            ls -ht target/debug/deps/integration* |
+              grep -Ev '\.d' |
+              head -n1
+          )
+          cp $FNAME integration-tests
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integration-tests
+          path: prompting-client/integration-tests
+          compression-level: 0 # no compression
