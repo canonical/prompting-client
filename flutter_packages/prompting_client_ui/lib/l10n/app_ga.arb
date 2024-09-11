@@ -70,7 +70,7 @@
   "@promptTitle": {},
   "homePatternInfo": "<Foghlaim faoi phatrúin cosán>",
   "@homePatternInfo": {},
-  "homePatternTypeMatchingFileExtension": "Síneadh comhad a mheaitseáil",
+  "homePatternTypeMatchingFileExtension": "Gach comhad {fileExtension}",
   "@homePatternTypeMatchingFileExtension": {},
   "homePatternTypeRequestedDirectory": "An fillteán iarrtha amháin",
   "@homePatternTypeRequestedDirectory": {},
