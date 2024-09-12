@@ -31,7 +31,7 @@ class HomePromptPage extends ConsumerWidget {
         if (hasVisibleOptions) ...[const Divider(), const PatternOptions()],
         const Permissions(),
         if (showMoreOptions) const LifespanToggle(),
-        const ActionButtonRow(),
+        const ActionButtons(),
       ].withSpacing(20),
     );
   }
@@ -129,8 +129,8 @@ class MetaDataDropdown extends ConsumerWidget {
   }
 }
 
-class ActionButtonRow extends ConsumerWidget {
-  const ActionButtonRow({super.key});
+class ActionButtons extends ConsumerWidget {
+  const ActionButtons({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -144,10 +144,16 @@ class ActionButtonRow extends ConsumerWidget {
           ]
         : const [
             ActionButton(action: Action.allow, lifespan: Lifespan.forever),
+            ActionButton(action: Action.allow, lifespan: Lifespan.single),
             ActionButton(action: Action.deny, lifespan: Lifespan.single),
-            MoreOptionsButton(),
           ];
-    return Row(children: buttons.withSpacing(16));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(children: buttons.withSpacing(16)),
+        if (!showMoreOptions) const MoreOptionsButton(),
+      ].withSpacing(16),
+    );
   }
 }
 
@@ -186,6 +192,7 @@ class ActionButton extends ConsumerWidget {
           (final action, null) => action.localize(l10n),
           (Action.allow, Lifespan.forever) =>
             l10n.promptActionOptionAllowAlways,
+          (Action.allow, Lifespan.single) => l10n.promptActionOptionAllowOnce,
           (Action.deny, Lifespan.single) => l10n.promptActionOptionDenyOnce,
           (final action, final Lifespan lifespan) =>
             '${action.localize(l10n)} (${lifespan.name})',
@@ -200,10 +207,19 @@ class MoreOptionsButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return OutlinedButton(
-      onPressed:
-          ref.read(homePromptDataModelProvider.notifier).toggleMoreOptions,
-      child: Text(AppLocalizations.of(context).homePromptMoreOptionsLabel),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: ref.read(homePromptDataModelProvider.notifier).toggleMoreOptions,
+        child: Text(
+          AppLocalizations.of(context).homePromptMoreOptionsLabel,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            decoration: TextDecoration.underline,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }
