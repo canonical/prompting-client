@@ -25,6 +25,8 @@
     "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Allow always",
     "@promptActionOptionAllowAlways": {},
+    "promptActionOptionAllowOnce": "Allow once",
+    "@promptActionOptionAllowOnce": {},
     "promptActionOptionDeny": "Deny",
     "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Deny once",

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
+import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
 import 'package:prompting_client_ui/prompt_page.dart';
 import 'package:yaru_test/yaru_test.dart';
@@ -384,6 +385,70 @@ void main() {
         ).called(1);
 
         await expectLater(windowClosed, completes);
+      });
+    }
+  });
+
+  group('action buttons', () {
+    final replyTemplate = PromptReply.home(
+      promptId: 'promptId',
+      action: Action.deny,
+      lifespan: Lifespan.forever,
+      pathPattern: '/home/ubuntu/Downloads/**',
+      permissions: {Permission.read},
+    );
+    for (final testCase in <({
+      String name,
+      String Function(AppLocalizations l10) label,
+      PromptReply expectedReply,
+    })>[
+      (
+        name: 'allow always',
+        label: (l10) => l10.promptActionOptionAllowAlways,
+        expectedReply: replyTemplate.copyWith(
+          action: Action.allow,
+          lifespan: Lifespan.forever,
+        ),
+      ),
+      (
+        name: 'allow once',
+        label: (l10) => l10.promptActionOptionAllowOnce,
+        expectedReply: replyTemplate.copyWith(
+          action: Action.allow,
+          lifespan: Lifespan.single,
+        ),
+      ),
+      (
+        name: 'deny once',
+        label: (l10) => l10.promptActionOptionDenyOnce,
+        expectedReply: replyTemplate.copyWith(
+          action: Action.deny,
+          lifespan: Lifespan.single,
+        ),
+      ),
+    ]) {
+      testWidgets(testCase.name, (tester) async {
+        final container = createContainer();
+        registerMockPromptDetails(
+          promptDetails: testDetails,
+        );
+        final client = registerMockAppArmorPromptingClient(
+          promptDetails: testDetails,
+          replyResponse: PromptReplyResponse.success(),
+        );
+        await tester.pumpApp(
+          (_) => UncontrolledProviderScope(
+            container: container,
+            child: const PromptPage(),
+          ),
+        );
+        await tester.pumpAndSettle();
+        await tester.tap(find.text(testCase.label(tester.l10n)));
+        await tester.pumpAndSettle();
+
+        verify(
+          client.replyToPrompt(testCase.expectedReply),
+        ).called(1);
       });
     }
   });
