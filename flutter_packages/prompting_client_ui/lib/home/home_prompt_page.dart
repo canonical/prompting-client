@@ -150,7 +150,7 @@ class ActionButtons extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(children: buttons.withSpacing(16)),
+        Wrap(runSpacing: 16, spacing: 16, children: buttons),
         if (!showMoreOptions) const MoreOptionsButton(),
       ].withSpacing(16),
     );
