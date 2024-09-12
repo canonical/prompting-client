@@ -30,3 +30,15 @@ jobs:
           name: integration-tests
           path: prompting-client/integration-tests
           compression-level: 0 # no compression
+
+      - name: Build testing snap
+        id: snapcraft-testing
+        uses: snapcore/action-build@v1
+        with:
+          path: testing-snap
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aa-prompting-test
+          path: ${{ steps.snapcraft-testing.outputs.snap }}
+          compression-level: 0 # no compression
