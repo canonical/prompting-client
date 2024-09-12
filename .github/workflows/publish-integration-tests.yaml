@@ -1,0 +1,44 @@
+name: Publish integration tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: compile
+        working-directory: ./prompting-client
+        run: |
+          sudo apt-get install protobuf-compiler
+          cargo test --no-run
+          FNAME=$(
+            ls -ht target/debug/deps/integration* |
+              grep -Ev '\.d' |
+              head -n1
+          )
+          cp $FNAME integration-tests
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integration-tests
+          path: prompting-client/integration-tests
+          compression-level: 0 # no compression
+
+      - name: Build testing snap
+        id: snapcraft-testing
+        uses: snapcore/action-build@v1
+        with:
+          path: testing-snap
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aa-prompting-test
+          path: ${{ steps.snapcraft-testing.outputs.snap }}
+          compression-level: 0 # no compression
