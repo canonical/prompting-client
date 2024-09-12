@@ -28,6 +28,7 @@ apps:
 
   daemon:
     command: bin/prompting-client-daemon
+    desktop: usr/share/applications/prompting-client-daemon.desktop
     extensions: [gnome]
     environment: *env
     plugs: *plugs
@@ -89,3 +90,9 @@ parts:
       fvm flutter build linux --release -v
       mkdir -p $CRAFT_PART_INSTALL/bin/
       cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
+
+  desktop-files:
+    plugin: dump
+    source: .
+    organize:
+      snap/gui/prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
