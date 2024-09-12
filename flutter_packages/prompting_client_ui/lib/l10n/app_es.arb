@@ -78,7 +78,7 @@
   "@homePromptMetaDataAppCenterLink": {},
   "securityCenterInfo": "Siempre puedes cambiar estos permisos en el <Centro de seguridad>",
   "@securityCenterInfo": {},
-  "homePatternTypeMatchingFileExtension": "Coincidir con la extensión del archivo",
+  "homePatternTypeMatchingFileExtension": "Todos los archivos {fileExtension}",
   "@homePatternTypeMatchingFileExtension": {},
   "promptSaveAndContinue": "Guardar y continuar",
   "@promptSaveAndContinue": {},
