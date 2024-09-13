@@ -148,7 +148,7 @@ pub struct ResolveHomePatternTypeResponse {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SetLoggingLevelResponse {
+pub struct SetLoggingFilterResponse {
     #[prost(string, tag = "1")]
     pub current: ::prost::alloc::string::String,
 }
@@ -423,11 +423,11 @@ pub mod app_armor_prompting_client {
                 );
             self.inner.unary(req, path, codec).await
         }
-        pub async fn set_logging_level(
+        pub async fn set_logging_filter(
             &mut self,
             request: impl tonic::IntoRequest<::prost::alloc::string::String>,
         ) -> std::result::Result<
-            tonic::Response<super::SetLoggingLevelResponse>,
+            tonic::Response<super::SetLoggingFilterResponse>,
             tonic::Status,
         > {
             self.inner
@@ -441,14 +441,14 @@ pub mod app_armor_prompting_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/apparmor_prompting.AppArmorPrompting/SetLoggingLevel",
+                "/apparmor_prompting.AppArmorPrompting/SetLoggingFilter",
             );
             let mut req = request.into_request();
             req.extensions_mut()
                 .insert(
                     GrpcMethod::new(
                         "apparmor_prompting.AppArmorPrompting",
-                        "SetLoggingLevel",
+                        "SetLoggingFilter",
                     ),
                 );
             self.inner.unary(req, path, codec).await
@@ -483,11 +483,11 @@ pub mod app_armor_prompting_server {
             tonic::Response<super::ResolveHomePatternTypeResponse>,
             tonic::Status,
         >;
-        async fn set_logging_level(
+        async fn set_logging_filter(
             &self,
             request: tonic::Request<::prost::alloc::string::String>,
         ) -> std::result::Result<
-            tonic::Response<super::SetLoggingLevelResponse>,
+            tonic::Response<super::SetLoggingFilterResponse>,
             tonic::Status,
         >;
     }
@@ -706,14 +706,14 @@ pub mod app_armor_prompting_server {
                     };
                     Box::pin(fut)
                 }
-                "/apparmor_prompting.AppArmorPrompting/SetLoggingLevel" => {
+                "/apparmor_prompting.AppArmorPrompting/SetLoggingFilter" => {
                     #[allow(non_camel_case_types)]
-                    struct SetLoggingLevelSvc<T: AppArmorPrompting>(pub Arc<T>);
+                    struct SetLoggingFilterSvc<T: AppArmorPrompting>(pub Arc<T>);
                     impl<
                         T: AppArmorPrompting,
                     > tonic::server::UnaryService<::prost::alloc::string::String>
-                    for SetLoggingLevelSvc<T> {
-                        type Response = super::SetLoggingLevelResponse;
+                    for SetLoggingFilterSvc<T> {
+                        type Response = super::SetLoggingFilterResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,
@@ -724,7 +724,10 @@ pub mod app_armor_prompting_server {
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
-                                <T as AppArmorPrompting>::set_logging_level(&inner, request)
+                                <T as AppArmorPrompting>::set_logging_filter(
+                                        &inner,
+                                        request,
+                                    )
                                     .await
                             };
                             Box::pin(fut)
@@ -736,7 +739,7 @@ pub mod app_armor_prompting_server {
                     let max_encoding_message_size = self.max_encoding_message_size;
                     let inner = self.inner.clone();
                     let fut = async move {
-                        let method = SetLoggingLevelSvc(inner);
+                        let method = SetLoggingFilterSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

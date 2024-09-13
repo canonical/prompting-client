@@ -9,12 +9,12 @@ use tokio::net::UnixStream;
 use tonic::transport::{Channel, Endpoint, Uri};
 use tower::service_fn;
 
-pub async fn set_log_level(level: String) -> Result<String> {
+pub async fn set_logging_filter(filter: String) -> Result<String> {
     let mut client = client_from_env().await;
 
-    match client.set_logging_level(level).await {
+    match client.set_logging_filter(filter).await {
         Ok(resp) => Ok(resp.into_inner().current),
-        Err(e) => Err(Error::UnableToUpdateLogLevel {
+        Err(e) => Err(Error::UnableToUpdateLogFilter {
             reason: e.to_string(),
         }),
     }

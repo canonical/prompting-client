@@ -6,7 +6,7 @@ use crate::{
         apparmor_prompting::{
             self, get_current_prompt_response::Prompt, home_prompt::PatternOption,
             prompt_reply::PromptReply::HomePromptReply, prompt_reply_response::PromptReplyType,
-            HomePatternType, MetaData, PromptReply, SetLoggingLevelResponse,
+            HomePatternType, MetaData, PromptReply, SetLoggingFilterResponse,
         },
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, HomePrompt,
         PromptReplyResponse, ResolveHomePatternTypeResponse,
@@ -54,7 +54,7 @@ pub fn new_server_and_listener<R, S>(
 ) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
 where
     R: ReplyToPrompt + Clone,
-    S: SetLogLevel,
+    S: SetLogFilter,
 {
     let service = Service::new(
         client.clone(),
@@ -67,11 +67,11 @@ where
     (AppArmorPromptingServer::new(service), listener)
 }
 
-pub trait SetLogLevel: Send + Sync + 'static {
-    fn set_filter(&self, level: &str) -> crate::Result<()>;
+pub trait SetLogFilter: Send + Sync + 'static {
+    fn set_filter(&self, filter: &str) -> crate::Result<()>;
 }
 
-impl<L, S> SetLogLevel for Arc<Handle<L, S>>
+impl<L, S> SetLogFilter for Arc<Handle<L, S>>
 where
     L: From<EnvFilter> + Send + Sync + 'static,
     S: 'static,
@@ -80,11 +80,11 @@ where
         info!(?filter, "attempting to update logging filter");
         let f = filter
             .parse::<EnvFilter>()
-            .map_err(|_| Error::UnableToUpdateLogLevel {
+            .map_err(|_| Error::UnableToUpdateLogFilter {
                 reason: format!("{filter:?} is not a valid logging filter"),
             })?;
 
-        self.reload(f).map_err(|e| Error::UnableToUpdateLogLevel {
+        self.reload(f).map_err(|e| Error::UnableToUpdateLogFilter {
             reason: format!("failed to set logging filter: {e}"),
         })?;
 
@@ -95,7 +95,7 @@ where
 pub struct Service<R, S>
 where
     R: ReplyToPrompt,
-    S: SetLogLevel,
+    S: SetLogFilter,
 {
     client: R,
     reload_handle: S,
@@ -106,7 +106,7 @@ where
 impl<R, S> Service<R, S>
 where
     R: ReplyToPrompt,
-    S: SetLogLevel,
+    S: SetLogFilter,
 {
     pub fn new(
         client: R,
@@ -133,7 +133,7 @@ where
 impl<R, S> AppArmorPrompting for Service<R, S>
 where
     R: ReplyToPrompt,
-    S: SetLogLevel,
+    S: SetLogFilter,
 {
     async fn get_current_prompt(
         &self,
@@ -210,14 +210,14 @@ where
         ))
     }
 
-    async fn set_logging_level(
+    async fn set_logging_filter(
         &self,
-        level: Request<String>,
-    ) -> Result<Response<SetLoggingLevelResponse>, Status> {
-        let current = log_filter(&level.into_inner());
+        filter: Request<String>,
+    ) -> Result<Response<SetLoggingFilterResponse>, Status> {
+        let current = log_filter(&filter.into_inner());
 
         match self.reload_handle.set_filter(&current) {
-            Ok(_) => Ok(Response::new(SetLoggingLevelResponse { current })),
+            Ok(_) => Ok(Response::new(SetLoggingFilterResponse { current })),
             Err(e) => Err(Status::new(
                 Code::InvalidArgument,
                 format!("unable to set logging level: {e}"),
@@ -406,7 +406,7 @@ mod tests {
     }
 
     struct MockReloadHandle;
-    impl SetLogLevel for MockReloadHandle {
+    impl SetLogFilter for MockReloadHandle {
         fn set_filter(&self, level: &str) -> crate::Result<()> {
             panic!("attempt to set log level to {level}");
         }

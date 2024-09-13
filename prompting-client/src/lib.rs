@@ -81,8 +81,8 @@ pub enum Error {
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },
 
-    #[error("unable to update log level: {reason}")]
-    UnableToUpdateLogLevel { reason: String },
+    #[error("unable to update log filter: {reason}")]
+    UnableToUpdateLogFilter { reason: String },
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
