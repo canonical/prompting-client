@@ -1,5 +1,5 @@
 {
-  "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
+  "promptAccessMoreOptionsTitle": "Nastavte prístup pre {snap} na:",
   "@promptAccessMoreOptionsTitle": {
     "placeholders": {
       "snap": {
@@ -27,7 +27,7 @@
   "@promptSaveAndContinue": {},
   "promptTitle": "Bezpečnostné upozornenie",
   "@promptTitle": {},
-  "homePatternTypeCustomPath": "Vlastný vzor cesty",
+  "homePatternTypeCustomPath": "Vlastný formát cesty",
   "@homePatternTypeCustomPath": {},
   "homePatternTypeRequestedDirectory": "Iba požadovaný priečinok",
   "@homePatternTypeRequestedDirectory": {},
@@ -49,7 +49,7 @@
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptMetaDataTitle": "O tejto aplikácii",
   "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "Zverejnil {publisher}",
+  "homePromptMetaDataPublishedBy": "Vydal {publisher}",
   "@homePromptMetaDataPublishedBy": {
     "placeholders": {
       "publisher": {
@@ -65,7 +65,7 @@
       }
     }
   },
-  "homePromptMetaDataAppCenterLink": "Navštívte stránku Centra aplikácií",
+  "homePromptMetaDataAppCenterLink": "Navštíviť stránku Centra aplikácií",
   "@homePromptMetaDataAppCenterLink": {},
   "homePromptPermissionsTitle": "Oprávnenia",
   "@homePromptPermissionsTitle": {},
@@ -90,7 +90,7 @@
       }
     }
   },
-  "homePatternInfo": "<Ďalšie informácie o vzoroch ciest>",
+  "homePatternInfo": "<Ďalšie informácie o fomátoch ciest>",
   "@homePatternInfo": {},
   "homePatternTypeRequestedFile": "Iba požadovaný súbor",
   "@homePatternTypeRequestedFile": {},
