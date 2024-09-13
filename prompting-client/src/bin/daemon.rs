@@ -12,8 +12,7 @@ async fn main() -> Result<()> {
         .with_writer(stdout)
         .with_filter_reloading();
 
-    // TODO: (sminez) support modifying the logging level at runtime via dbus
-    // let reload_handle = builder.reload_handle();
+    let reload_handle = builder.reload_handle();
     let journald_layer = tracing_journald::layer().expect("unable to open journald socket");
     let subscriber = builder.finish().with(journald_layer);
 
@@ -37,5 +36,5 @@ async fn main() -> Result<()> {
         return Ok(());
     }
 
-    run_daemon(c).await
+    run_daemon(c, reload_handle).await
 }

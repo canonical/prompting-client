@@ -9,6 +9,7 @@ service AppArmorPrompting {
     rpc GetCurrentPrompt (google.protobuf.Empty) returns (GetCurrentPromptResponse);
     rpc ReplyToPrompt (PromptReply) returns (PromptReplyResponse);
     rpc ResolveHomePatternType (google.protobuf.StringValue) returns (ResolveHomePatternTypeResponse);
+    rpc SetLoggingLevel (google.protobuf.StringValue) returns (SetLoggingLevelResponse);
 }
 
 message PromptReply {
@@ -88,4 +89,8 @@ message MetaData {
 
 message ResolveHomePatternTypeResponse {
    HomePatternType home_pattern_type = 1; 
+}
+
+message SetLoggingLevelResponse {
+    string current = 1;
 }

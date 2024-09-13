@@ -3,11 +3,12 @@ use crate::{
     Result,
 };
 use serde::{Deserialize, Serialize};
-use std::{env, fs};
+use std::{env, fs, sync::Arc};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio_stream::wrappers::UnixListenerStream;
 use tonic::{async_trait, transport::Server};
 use tracing::{error, info};
+use tracing_subscriber::{reload::Handle, EnvFilter};
 
 mod poll;
 mod server;
@@ -52,7 +53,11 @@ pub enum ActionedPrompt {
 
 /// Start our backgroud polling and processing loops before dropping into running the tonic GRPC
 /// server for handling incoming requestes from the Flutter UI client.
-pub async fn run_daemon(c: SnapdSocketClient) -> Result<()> {
+pub async fn run_daemon<L, S>(c: SnapdSocketClient, reload_handle: Handle<L, S>) -> Result<()>
+where
+    L: From<EnvFilter> + Send + Sync + 'static,
+    S: 'static,
+{
     let (tx_prompts, rx_prompts) = unbounded_channel();
     let (tx_actioned, rx_actioned) = unbounded_channel();
 
@@ -64,7 +69,13 @@ pub async fn run_daemon(c: SnapdSocketClient) -> Result<()> {
     if let Err(e) = fs::remove_file(&path) {
         error!("Failed to remove old socket file: {}. Error: {}", path, e);
     }
-    let (server, listener) = new_server_and_listener(c.clone(), active_prompt, tx_actioned, path);
+    let (server, listener) = new_server_and_listener(
+        c.clone(),
+        Arc::new(reload_handle),
+        active_prompt,
+        tx_actioned,
+        path,
+    );
 
     info!("spawning poll loop");
     let poll_loop = PollLoop::new(c, tx_prompts);

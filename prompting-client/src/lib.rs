@@ -1,3 +1,14 @@
+#![warn(
+    clippy::complexity,
+    clippy::correctness,
+    clippy::style,
+    future_incompatible,
+    missing_debug_implementations,
+    rust_2018_idioms,
+    rustdoc::all,
+    clippy::undocumented_unsafe_blocks
+)]
+
 use prompt_sequence::MatchError;
 
 pub mod cli_actions;
@@ -63,6 +74,9 @@ pub enum Error {
 
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },
+
+    #[error("unable to update log level: {reason}")]
+    UnableToUpdateLogLevel { reason: String },
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

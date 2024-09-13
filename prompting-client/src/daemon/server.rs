@@ -5,7 +5,7 @@ use crate::{
         apparmor_prompting::{
             self, get_current_prompt_response::Prompt, home_prompt::PatternOption,
             prompt_reply::PromptReply::HomePromptReply, prompt_reply_response::PromptReplyType,
-            HomePatternType, MetaData, PromptReply,
+            HomePatternType, MetaData, PromptReply, SetLoggingLevelResponse,
         },
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, HomePrompt,
         PromptReplyResponse, ResolveHomePatternTypeResponse,
@@ -20,9 +20,11 @@ use crate::{
     },
     Error, NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND,
 };
+use std::sync::Arc;
 use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
 use tonic::{async_trait, Code, Request, Response, Status};
 use tracing::{info, warn};
+use tracing_subscriber::{reload::Handle, EnvFilter};
 
 macro_rules! map_enum {
     ($from:ident => $to:ident; [$($variant:ident),+]; $val:expr;) => {
@@ -42,38 +44,78 @@ macro_rules! map_enum {
     };
 }
 
-pub fn new_server_and_listener<T: ReplyToPrompt + Clone>(
-    client: T,
+pub fn new_server_and_listener<R, S>(
+    client: R,
+    reload_handle: S,
     active_prompt: ReadOnlyActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     socket_path: String,
-) -> (AppArmorPromptingServer<Service<T>>, UnixListener) {
-    let service = Service::new(client.clone(), active_prompt, tx_actioned_prompts);
+) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
+where
+    R: ReplyToPrompt + Clone,
+    S: SetLogLevel,
+{
+    let service = Service::new(
+        client.clone(),
+        reload_handle,
+        active_prompt,
+        tx_actioned_prompts,
+    );
     let listener = UnixListener::bind(&socket_path).expect("to be able to bind to our socket");
 
     (AppArmorPromptingServer::new(service), listener)
 }
 
-pub struct Service<R>
+pub trait SetLogLevel: Send + Sync + 'static {
+    fn set_level(&self, level: &str) -> crate::Result<()>;
+}
+
+impl<L, S> SetLogLevel for Arc<Handle<L, S>>
+where
+    L: From<EnvFilter> + Send + Sync + 'static,
+    S: 'static,
+{
+    fn set_level(&self, level: &str) -> crate::Result<()> {
+        info!(?level, "attempting to update log level");
+        let f = level
+            .parse::<EnvFilter>()
+            .map_err(|_| Error::UnableToUpdateLogLevel {
+                reason: format!("{level:?} is not a valid logging filter"),
+            })?;
+
+        self.reload(f).map_err(|e| Error::UnableToUpdateLogLevel {
+            reason: format!("failed to set logging level: {e}"),
+        })?;
+
+        Ok(())
+    }
+}
+
+pub struct Service<R, S>
 where
     R: ReplyToPrompt,
+    S: SetLogLevel,
 {
     client: R,
+    reload_handle: S,
     active_prompt: ReadOnlyActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
-impl<R> Service<R>
+impl<R, S> Service<R, S>
 where
     R: ReplyToPrompt,
+    S: SetLogLevel,
 {
     pub fn new(
         client: R,
+        reload_handle: S,
         active_prompt: ReadOnlyActivePrompt,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
         Self {
             client,
+            reload_handle,
             active_prompt,
             tx_actioned_prompts,
         }
@@ -87,9 +129,10 @@ where
 }
 
 #[async_trait]
-impl<R> AppArmorPrompting for Service<R>
+impl<R, S> AppArmorPrompting for Service<R, S>
 where
     R: ReplyToPrompt,
+    S: SetLogLevel,
 {
     async fn get_current_prompt(
         &self,
@@ -164,6 +207,20 @@ where
             Code::Unimplemented,
             "this endpoint is not yet implemented",
         ))
+    }
+
+    async fn set_logging_level(
+        &self,
+        level: Request<String>,
+    ) -> Result<Response<SetLoggingLevelResponse>, Status> {
+        let current = level.into_inner();
+        match self.reload_handle.set_level(&current) {
+            Ok(_) => Ok(Response::new(SetLoggingLevelResponse { current })),
+            Err(e) => Err(Status::new(
+                Code::InvalidArgument,
+                format!("unable to set logging level: {e}"),
+            )),
+        }
     }
 }
 
@@ -346,6 +403,13 @@ mod tests {
         }
     }
 
+    struct MockReloadHandle;
+    impl SetLogLevel for MockReloadHandle {
+        fn set_level(&self, level: &str) -> crate::Result<()> {
+            panic!("attempt to set log level to {level}");
+        }
+    }
+
     async fn setup_server_and_client(
         mock_client: MockClient,
         active_prompt: ReadOnlyActivePrompt,
@@ -357,6 +421,7 @@ mod tests {
 
         let (server, listener) = new_server_and_listener(
             mock_client,
+            MockReloadHandle,
             active_prompt,
             tx_actioned_prompts,
             socket_path.clone(),
