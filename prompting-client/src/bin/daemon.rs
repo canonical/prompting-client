@@ -1,11 +1,9 @@
 //! The daemon prompting client for apparmor prompting
 use prompting_client::{
-    daemon::run_daemon, log_filter, snapd_client::SnapdSocketClient, Error, Result,
-    DEFAULT_LOG_LEVEL,
+    daemon::run_daemon, log_filter, snapd_client::SnapdSocketClient, Result, DEFAULT_LOG_LEVEL,
 };
 use std::{env, io::stdout};
 use tracing::subscriber::set_global_default;
-use tracing::warn;
 use tracing_subscriber::{layer::SubscriberExt, FmtSubscriber};
 
 #[tokio::main]
@@ -22,13 +20,7 @@ async fn main() -> Result<()> {
     set_global_default(subscriber).expect("unable to set a global tracing subscriber");
 
     let c = SnapdSocketClient::default();
-
-    // If prompting is not currently enabled then we exit non-0 to ensure that systemd does not
-    // restart us. Instead, snapd will ensure that we are started when the flag is enabled.
-    if !c.is_prompting_enabled().await? {
-        warn!("the prompting feature is not enabled: exiting");
-        return Err(Error::NotEnabled);
-    }
+    c.exit_if_prompting_not_enabled().await?;
 
     // If we can't see a valid X11 or Wayland display then we need to exit 0 and wait for systemd
     // to restart us again until it is there. We are deliberately not logging anything here so that
