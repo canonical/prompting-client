@@ -38,6 +38,12 @@ apps:
     restart-condition: on-success
     restart-delay: 2s
 
+  # Doesn't need access to home or snapd
+  logging-level:
+    command: bin/prompting-client-set-log-level
+    extensions: [gnome]
+    environment: *env
+
 plugs:
   snap-interfaces-requests-control:
     handler-service: daemon

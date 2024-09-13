@@ -1,3 +1,14 @@
+#![warn(
+    clippy::complexity,
+    clippy::correctness,
+    clippy::style,
+    future_incompatible,
+    missing_debug_implementations,
+    rust_2018_idioms,
+    rustdoc::all,
+    clippy::undocumented_unsafe_blocks
+)]
+
 use prompt_sequence::MatchError;
 
 pub mod cli_actions;
@@ -11,6 +22,12 @@ mod socket_client;
 mod util;
 
 pub(crate) const SNAP_NAME: &str = "prompting-client";
+pub const SOCKET_ENV_VAR: &str = "PROMPTING_CLIENT_SOCKET";
+pub const DEFAULT_LOG_LEVEL: &str = "info";
+
+pub fn log_filter(filter: &str) -> String {
+    format!("{filter},hyper=error,h2=error")
+}
 
 // FIXME: having to hard code these is a problem.
 // We need snapd to provide structured errors we can work with programatically.
@@ -63,6 +80,9 @@ pub enum Error {
 
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },
+
+    #[error("unable to update log filter: {reason}")]
+    UnableToUpdateLogFilter { reason: String },
 }
 
 pub type Result<T> = std::result::Result<T, Error>;
