@@ -109,5 +109,7 @@
   "homePromptPermissionsWrite": "Zapis",
   "@homePromptPermissionsWrite": {},
   "homePromptPermissionsExecute": "Wykonywanie",
-  "@homePromptPermissionsExecute": {}
+  "@homePromptPermissionsExecute": {},
+  "promptActionOptionAllowOnce": "Zezwól raz",
+  "@promptActionOptionAllowOnce": {}
 }
