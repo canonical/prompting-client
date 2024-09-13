@@ -1,6 +1,7 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
     daemon::{worker::ReadOnlyActivePrompt, ActionedPrompt, ReplyToPrompt},
+    log_filter,
     protos::{
         apparmor_prompting::{
             self, get_current_prompt_response::Prompt, home_prompt::PatternOption,
@@ -67,7 +68,7 @@ where
 }
 
 pub trait SetLogLevel: Send + Sync + 'static {
-    fn set_level(&self, level: &str) -> crate::Result<()>;
+    fn set_filter(&self, level: &str) -> crate::Result<()>;
 }
 
 impl<L, S> SetLogLevel for Arc<Handle<L, S>>
@@ -75,16 +76,16 @@ where
     L: From<EnvFilter> + Send + Sync + 'static,
     S: 'static,
 {
-    fn set_level(&self, level: &str) -> crate::Result<()> {
-        info!(?level, "attempting to update log level");
-        let f = level
+    fn set_filter(&self, filter: &str) -> crate::Result<()> {
+        info!(?filter, "attempting to update logging filter");
+        let f = filter
             .parse::<EnvFilter>()
             .map_err(|_| Error::UnableToUpdateLogLevel {
-                reason: format!("{level:?} is not a valid logging filter"),
+                reason: format!("{filter:?} is not a valid logging filter"),
             })?;
 
         self.reload(f).map_err(|e| Error::UnableToUpdateLogLevel {
-            reason: format!("failed to set logging level: {e}"),
+            reason: format!("failed to set logging filter: {e}"),
         })?;
 
         Ok(())
@@ -213,8 +214,9 @@ where
         &self,
         level: Request<String>,
     ) -> Result<Response<SetLoggingLevelResponse>, Status> {
-        let current = level.into_inner();
-        match self.reload_handle.set_level(&current) {
+        let current = log_filter(&level.into_inner());
+
+        match self.reload_handle.set_filter(&current) {
             Ok(_) => Ok(Response::new(SetLoggingLevelResponse { current })),
             Err(e) => Err(Status::new(
                 Code::InvalidArgument,
@@ -405,7 +407,7 @@ mod tests {
 
     struct MockReloadHandle;
     impl SetLogLevel for MockReloadHandle {
-        fn set_level(&self, level: &str) -> crate::Result<()> {
+        fn set_filter(&self, level: &str) -> crate::Result<()> {
             panic!("attempt to set log level to {level}");
         }
     }
@@ -436,7 +438,7 @@ mod tests {
         });
 
         let path = socket_path.clone();
-        // No choice but to do this https://github.com/hyperium/tonic/blob/master/examples/src/uds/client.rs
+        // See https://github.com/hyperium/tonic/blob/master/examples/src/uds/client.rs
         let channel = Endpoint::from_static("https://not-used.com")
             .connect_with_connector(service_fn(move |_: Uri| {
                 let path = path.clone();

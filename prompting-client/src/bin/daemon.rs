@@ -1,5 +1,8 @@
 //! The daemon prompting client for apparmor prompting
-use prompting_client::{daemon::run_daemon, snapd_client::SnapdSocketClient, Error, Result};
+use prompting_client::{
+    daemon::run_daemon, log_filter, snapd_client::SnapdSocketClient, Error, Result,
+    DEFAULT_LOG_LEVEL,
+};
 use std::{env, io::stdout};
 use tracing::subscriber::set_global_default;
 use tracing::warn;
@@ -8,7 +11,7 @@ use tracing_subscriber::{layer::SubscriberExt, FmtSubscriber};
 #[tokio::main]
 async fn main() -> Result<()> {
     let builder = FmtSubscriber::builder()
-        .with_env_filter("debug,hyper=error,h2=error")
+        .with_env_filter(log_filter(DEFAULT_LOG_LEVEL))
         .with_writer(stdout)
         .with_filter_reloading();
 

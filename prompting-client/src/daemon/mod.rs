@@ -1,6 +1,6 @@
 use crate::{
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt, TypedPromptReply},
-    Result,
+    Result, SOCKET_ENV_VAR,
 };
 use serde::{Deserialize, Serialize};
 use std::{env, fs, sync::Arc};
@@ -64,8 +64,7 @@ where
     let mut worker = Worker::new(rx_prompts, rx_actioned, c.clone());
     let active_prompt = worker.read_only_active_prompt();
 
-    let path =
-        env::var("PROMPTING_CLIENT_SOCKET").expect("PROMPTING_CLIENT_SOCKET env var to be set");
+    let path = env::var(SOCKET_ENV_VAR).expect("socket env var not set");
     if let Err(e) = fs::remove_file(&path) {
         error!("Failed to remove old socket file: {}. Error: {}", path, e);
     }
