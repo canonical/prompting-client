@@ -266,8 +266,8 @@ async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
     Ok(())
 }
 
-#[test_case("not a valid custom path!", "cannot decode request body into prompt reply: cannot parse path pattern"; "malformed path")]
-#[test_case("/home/bob/*", "constraints in reply do not match original request"; "invalid path")]
+#[test_case("not a valid custom path!", "cannot decode request body into prompt reply: invalid path pattern: pattern must start with"; "malformed path")]
+#[test_case("/home/bob/*", "path pattern in reply constraints does not match originally requested path"; "invalid path")]
 #[tokio::test]
 #[serial]
 async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -> Result<()> {
@@ -313,7 +313,7 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
 
     match c.reply_to_prompt(&id, reply).await {
         Err(Error::SnapdError { message }) => assert!(
-            message.starts_with(expected_prefix),
+            message.starts_with(&format!("invalid duration: {expected_prefix}")),
             "message format not as expected: {message}"
         ),
         Err(e) => panic!("expected a snapd error, got: {e}"),
@@ -457,7 +457,9 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
             error: MatchError::UnexpectedError { error },
         }) => {
             assert!(
-                error.starts_with("constraints in reply do not match original request"),
+                error.starts_with(
+                    "path pattern in reply constraints does not match originally requested path"
+                ),
                 "{error}"
             );
         }
