@@ -17,7 +17,7 @@
   "@promptActionTitle": {},
   "promptLifespanOptionForever": "Vždy",
   "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Do odhlásenia",
+  "promptLifespanOptionSession": "Do ukončenia",
   "@promptLifespanOptionSession": {},
   "promptLifespanOptionSingle": "Raz",
   "@promptLifespanOptionSingle": {},
@@ -109,5 +109,7 @@
     }
   },
   "homePromptMoreOptionsLabel": "Viac možností...",
-  "@homePromptMoreOptionsLabel": {}
+  "@homePromptMoreOptionsLabel": {},
+  "promptActionOptionAllowOnce": "Raz povoliť",
+  "@promptActionOptionAllowOnce": {}
 }
