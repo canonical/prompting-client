@@ -109,5 +109,7 @@
   "homePatternTypeContainingDirectory": "Alles im Ordner",
   "@homePatternTypeContainingDirectory": {},
   "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
-  "@homePatternTypeRequestedDirectoryContents": {}
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "promptActionOptionAllowOnce": "Einmal zulassen",
+  "@promptActionOptionAllowOnce": {}
 }
