@@ -1,1 +1,121 @@
-{}
+{
+  "promptActionOptionAllow": "Разрешить",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Разрешать всегда",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Отказать",
+  "@promptActionOptionDeny": {},
+  "promptTitle": "Оповещение о безопасности",
+  "@promptTitle": {},
+  "homePatternInfo": "<Узнать о шаблонах пути>",
+  "@homePatternInfo": {},
+  "promptSaveAndContinue": "Сохранить и продолжить",
+  "@promptSaveAndContinue": {},
+  "homePromptMetaDataTitle": "Об этом приложении",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Опубликовано {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Последнее обновление от {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Больше опций…",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptBody": "Разрешить {snap} доступ на {permissions} по пути {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedFile": "Только запрашиваемый файл",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "Всё содержимое в папке {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "Всё содержимое в папке",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Всё содержимое в папке",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Всё содержимое Домашней папки",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptMetaDataAppCenterLink": "Открыть страницу в Центре приложений",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "Разрешения",
+  "@homePromptPermissionsTitle": {},
+  "homePatternTypeMatchingFileExtension": "Все файлы {fileExtension}",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowOnce": "Разрешить один раз",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDenyOnce": "Отказать один раз",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Действие",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Всегда",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "До выхода из системы",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Один раз",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Срок",
+  "@promptLifespanTitle": {},
+  "homePatternTypeCustomPath": "Пользовательский шаблон пути",
+  "@homePatternTypeCustomPath": {},
+  "homePromptPermissionsRead": "Чтение",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Запись",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Выполнение",
+  "@homePromptPermissionsExecute": {},
+  "securityCenterInfo": "Вы всегда можете изменить эти разрешения в приложении <Центр безопасности>",
+  "@securityCenterInfo": {},
+  "promptAccessTitle": "Предоставить {snap} {permission} доступ к:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectory": "Только запрашиваемая папка",
+  "@homePatternTypeRequestedDirectory": {},
+  "promptAccessMoreOptionsTitle": "Доступ для {snap}:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  }
+}
