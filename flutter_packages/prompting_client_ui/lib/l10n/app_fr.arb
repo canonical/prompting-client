@@ -102,5 +102,7 @@
     }
   },
   "homePatternTypeRequestedFile": "Le fichier demandé seulement",
-  "@homePatternTypeRequestedFile": {}
+  "@homePatternTypeRequestedFile": {},
+  "promptActionOptionAllowOnce": "Autoriser une fois",
+  "@promptActionOptionAllowOnce": {}
 }
