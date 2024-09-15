@@ -1,5 +1,5 @@
 {
-  "promptAccessMoreOptionsTitle": "Nastavte prístup pre {snap} na:",
+  "promptAccessMoreOptionsTitle": "Nastaviť prístup pre aplikáciu {snap} na:",
   "@promptAccessMoreOptionsTitle": {
     "placeholders": {
       "snap": {
@@ -21,7 +21,7 @@
   "@promptLifespanOptionSession": {},
   "promptLifespanOptionSingle": "Raz",
   "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "Trvanie",
+  "promptLifespanTitle": "Doba trvania",
   "@promptLifespanTitle": {},
   "promptSaveAndContinue": "Uložiť a pokračovať",
   "@promptSaveAndContinue": {},
@@ -45,7 +45,7 @@
   "@homePatternTypeContainingDirectory": {},
   "homePatternTypeHomeDirectory": "Všetko v priečinku Domov",
   "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Všetky {fileExtension} súbory",
+  "homePatternTypeMatchingFileExtension": "Všetky súbory {fileExtension}",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptMetaDataTitle": "O tejto aplikácii",
   "@homePromptMetaDataTitle": {},
@@ -79,7 +79,7 @@
   "@securityCenterInfo": {},
   "promptActionOptionAllowAlways": "Vždy povoliť",
   "@promptActionOptionAllowAlways": {},
-  "promptAccessTitle": "Poskytnúť {snap} {permission} prístup k:",
+  "promptAccessTitle": "Poskytnúť aplikácii {snap} oprávnenie {permission} prístupu k:",
   "@promptAccessTitle": {
     "placeholders": {
       "snap": {
@@ -94,7 +94,7 @@
   "@homePatternInfo": {},
   "homePatternTypeRequestedFile": "Iba požadovaný súbor",
   "@homePatternTypeRequestedFile": {},
-  "homePromptBody": "Povoliť aplikácii {snap} mať {permissions} prístup k {path}?",
+  "homePromptBody": "Povoliť aplikácii {snap} mať oprávnenia {permissions} prístupu k {path}?",
   "@homePromptBody": {
     "placeholders": {
       "snap": {
