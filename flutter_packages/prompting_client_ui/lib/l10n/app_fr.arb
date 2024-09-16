@@ -104,5 +104,18 @@
   "homePatternTypeRequestedFile": "Le fichier demandé seulement",
   "@homePatternTypeRequestedFile": {},
   "promptActionOptionAllowOnce": "Autoriser une fois",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "promptAccessTitle": "Donner à {snap} l’accès {permission} à :",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeHomeDirectory": "Tout dans le dossier personnel",
+  "@homePatternTypeHomeDirectory": {}
 }
