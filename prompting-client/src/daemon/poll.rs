@@ -7,11 +7,16 @@
 use crate::{
     daemon::{EnrichedPrompt, PromptUpdate},
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt},
-    Error, NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND,
+    Error,
 };
 use cached::proc_macro::cached;
-use tokio::sync::mpsc::UnboundedSender;
+use hyper::StatusCode;
+use std::{process::exit, time::Duration};
+use tokio::{sync::mpsc::UnboundedSender, time::sleep};
 use tracing::{debug, error, info, warn};
+
+const MAX_POLL_RETRIES: usize = 3;
+const RETRY_SLEEP_DURATION: Duration = Duration::from_millis(200);
 
 #[cached(
     time = 3600,  // seconds
@@ -57,16 +62,38 @@ impl PollLoop {
             self.handle_outstanding_prompts().await;
         }
 
+        let mut retries = 0;
+
         while self.running {
             info!("polling for notices");
             let pending = match self.client.pending_prompt_ids().await {
                 Ok(pending) => pending,
-                Err(error) => {
-                    error!(%error, "unable to pull prompt ids. retrying");
+
+                Err(Error::SnapdError {
+                    status: StatusCode::FORBIDDEN,
+                    ..
+                }) => {
+                    // If we're now getting permission denied after initially starting cleanly
+                    // then we trigger a restart with snapd so that our startup checks can run
+                    // again and we avoid spinning if snapd is now reporting that prompting is not
+                    // enabled / supported.
+                    exit(0);
+                }
+
+                Err(error) if retries < MAX_POLL_RETRIES => {
+                    error!(%error, "unable to pull prompt ids: retrying");
+                    sleep(RETRY_SLEEP_DURATION).await;
+                    retries += 1;
                     continue;
+                }
+
+                Err(error) => {
+                    error!(%error, "retries exceeded trying to establish notices long poll: exiting");
+                    exit(0);
                 }
             };
 
+            retries = 0;
             debug!(?pending, "processing notices");
             for id in pending {
                 self.pull_and_process_prompt(id).await;
@@ -86,9 +113,7 @@ impl PollLoop {
         let prompt = match self.client.prompt_details(&id).await {
             Ok(p) => p,
 
-            Err(Error::SnapdError { message })
-                if message == PROMPT_NOT_FOUND || message == NO_PROMPTS_FOR_USER =>
-            {
+            Err(Error::SnapdError { status, .. }) if status == StatusCode::NOT_FOUND => {
                 self.send_update(PromptUpdate::Drop(id));
                 return;
             }

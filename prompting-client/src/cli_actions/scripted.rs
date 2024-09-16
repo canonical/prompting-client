@@ -8,8 +8,9 @@ use crate::{
         },
         Action, PromptId, SnapdSocketClient, TypedPrompt, TypedPromptReply,
     },
-    Error, Result, PROMPT_NOT_FOUND, SNAP_NAME,
+    Error, Result, SNAP_NAME,
 };
+use hyper::StatusCode;
 use std::time::Duration;
 use tokio::{select, sync::mpsc::unbounded_channel};
 use tracing::{debug, error, info, warn};
@@ -184,12 +185,12 @@ impl ScriptedClient {
 
         while let Err(e) = snapd_client.reply_to_prompt(&id, reply).await {
             let prev_error = match e {
-                Error::SnapdError { message } if message == PROMPT_NOT_FOUND => {
+                Error::SnapdError { status, .. } if status == StatusCode::NOT_FOUND => {
                     warn!(?id, "prompt has already been actioned");
                     return Ok(());
                 }
 
-                Error::SnapdError { message } => message,
+                Error::SnapdError { message, .. } => message,
 
                 _ => {
                     error!(%e, "unexpected error in replying to prompt");

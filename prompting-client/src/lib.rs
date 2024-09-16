@@ -9,6 +9,7 @@
     clippy::undocumented_unsafe_blocks
 )]
 
+use hyper::StatusCode;
 use prompt_sequence::MatchError;
 
 pub mod cli_actions;
@@ -28,11 +29,6 @@ pub const DEFAULT_LOG_LEVEL: &str = "info";
 pub fn log_filter(filter: &str) -> String {
     format!("{filter},hyper=error,h2=error")
 }
-
-// FIXME: having to hard code these is a problem.
-// We need snapd to provide structured errors we can work with programatically.
-pub(crate) const PROMPT_NOT_FOUND: &str = "cannot find prompt with the given ID for the given user";
-pub(crate) const NO_PROMPTS_FOR_USER: &str = "no prompts found for the given user";
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -76,7 +72,7 @@ pub enum Error {
     NotSupported { reason: String },
 
     #[error("error message returned from snapd: {message}")]
-    SnapdError { message: String },
+    SnapdError { status: StatusCode, message: String },
 
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },

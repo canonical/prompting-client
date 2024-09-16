@@ -256,7 +256,7 @@ async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
         .await;
 
     match res {
-        Err(Error::SnapdError { message }) => {
+        Err(Error::SnapdError { message, .. }) => {
             assert_eq!(message, PROMPT_NOT_FOUND, "unexpected message")
         }
         Err(e) => panic!("expected a snapd error, got: {e}"),
@@ -281,7 +281,7 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
         .into();
 
     match c.reply_to_prompt(&id, reply).await {
-        Err(Error::SnapdError { message }) => assert!(
+        Err(Error::SnapdError { message, .. }) => assert!(
             message.starts_with(expected_prefix),
             "message format not as expected: {message:?}"
         ),
@@ -312,7 +312,7 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
         .into();
 
     match c.reply_to_prompt(&id, reply).await {
-        Err(Error::SnapdError { message }) => assert!(
+        Err(Error::SnapdError { message, .. }) => assert!(
             message.starts_with(&format!("invalid duration: {expected_prefix}")),
             "message format not as expected: {message}"
         ),
@@ -364,7 +364,7 @@ async fn replying_multiple_times_errors(
         .await;
 
     match res {
-        Err(Error::SnapdError { message }) => {
+        Err(Error::SnapdError { message, .. }) => {
             assert_eq!(message, PROMPT_NOT_FOUND, "unexpected message")
         }
         Err(e) => panic!("expected a snapd error, got: {e}"),

@@ -19,8 +19,9 @@ use crate::{
         PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPromptReply, TypedUiInput,
         UiInput,
     },
-    Error, NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND,
+    Error,
 };
+use hyper::StatusCode;
 use std::sync::Arc;
 use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
 use tonic::{async_trait, Code, Request, Response, Status};
@@ -175,9 +176,7 @@ where
                 }
             }
 
-            Err(Error::SnapdError { message })
-                if [NO_PROMPTS_FOR_USER, PROMPT_NOT_FOUND].contains(&message.as_ref()) =>
-            {
+            Err(Error::SnapdError { status, .. }) if status == StatusCode::NOT_FOUND => {
                 warn!(id=%id.0, "prompt not found (id={})", id.0);
                 self.update_worker(ActionedPrompt::NotFound { id }).await;
 

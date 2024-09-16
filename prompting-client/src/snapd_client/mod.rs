@@ -3,11 +3,11 @@ use crate::{
     Error, Result,
 };
 use chrono::{DateTime, SecondsFormat, Utc};
-use hyper::Uri;
+use hyper::{body::Incoming, Response, Uri};
 use prompt::RawPrompt;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
-use tracing::{debug, error};
+use tracing::{debug, error, warn};
 
 pub mod interfaces;
 mod prompt;
@@ -44,6 +44,19 @@ enum ResOrErr<T> {
     Res(T),
 }
 
+async fn parse_response<T>(res: Response<Incoming>) -> Result<T>
+where
+    T: DeserializeOwned,
+{
+    let status = res.status();
+
+    let resp: SnapdResponse<T> = body_json(res).await?;
+    match resp.result {
+        ResOrErr::Res(t) => Ok(t),
+        ResOrErr::Err { message } => Err(Error::SnapdError { status, message }),
+    }
+}
+
 /// Abstraction layer to make swapping out the underlying client possible for
 /// testing.
 #[allow(async_fn_in_trait)]
@@ -71,11 +84,7 @@ impl Client for UnixSocketClient {
 
         let res = self.get(uri).await?;
 
-        let resp: SnapdResponse<T> = body_json(res).await?;
-        match resp.result {
-            ResOrErr::Res(t) => Ok(t),
-            ResOrErr::Err { message } => Err(Error::SnapdError { message }),
-        }
+        parse_response(res).await
     }
 
     async fn post_json<T, U>(&self, path: &str, body: U) -> Result<T>
@@ -93,11 +102,7 @@ impl Client for UnixSocketClient {
             .post(uri, "application/json", serde_json::to_vec(&body)?)
             .await?;
 
-        let resp: SnapdResponse<T> = body_json(res).await?;
-        match resp.result {
-            ResOrErr::Res(t) => Ok(t),
-            ResOrErr::Err { message } => Err(Error::SnapdError { message }),
-        }
+        parse_response(res).await
     }
 }
 
@@ -146,6 +151,17 @@ where
         let info: SysInfo = self.client.get_json("system-info").await?;
 
         info.prompting_enabled()
+    }
+
+    /// If prompting is not currently enabled then we exit non-0 to ensure that systemd does not
+    /// restart us. Instead, snapd will ensure that we are started when the flag is enabled.
+    pub async fn exit_if_prompting_not_enabled(&self) -> Result<()> {
+        if !self.is_prompting_enabled().await? {
+            warn!("the prompting feature is not enabled: exiting");
+            return Err(Error::NotEnabled);
+        }
+
+        Ok(())
     }
 
     /// HTTP long poll on the /v2/notices API from snapd to await prompt requests for the user we

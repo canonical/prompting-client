@@ -42,10 +42,7 @@ async fn main() -> Result<()> {
     }
 
     let mut c = SnapdSocketClient::default();
-    if !c.is_prompting_enabled().await? {
-        println!("error: prompting is not enabled");
-        return Ok(());
-    }
+    c.exit_if_prompting_not_enabled().await?;
 
     run_scripted_client_loop(&mut c, script, grace_period).await
 }
