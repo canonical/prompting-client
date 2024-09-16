@@ -1,12 +1,19 @@
 {
   "version": 1,
+  "prompt-filter": {
+    "snap": "aa-prompting-test",
+    "interface": "home",
+    "constraints": {
+      "path": "$BASE_PATH/*"
+    }
+  },
   "prompts": [
     {
       "prompt-filter": {
         "snap": "aa-prompting-test",
         "interface": "home",
         "constraints": {
-          "path": "/home/[a-zA-Z0-9]+/test/.+/test-1.txt",
+          "path": ".*/test-1.txt",
           "requested-permissions": [ "write" ],
           "available-permissions": [ "read", "write", "execute" ]
         }
@@ -24,7 +31,7 @@
         "snap": "aa-prompting-test",
         "interface": "home",
         "constraints": {
-          "path": "/home/[a-zA-Z0-9]+/test/.+/test-2.txt",
+          "path": ".*/test-2.txt",
           "requested-permissions": [ "write" ],
           "available-permissions": [ "read", "write", "execute" ]
         }

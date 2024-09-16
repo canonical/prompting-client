@@ -59,6 +59,9 @@ pub enum Error {
     #[error("{version} is not supported recording version.")]
     InvalidRecordingVersion { version: u8 },
 
+    #[error("invalid script variable. Expected 'key:value' but saw {raw:?}")]
+    InvalidScriptVariable { raw: String },
+
     #[error("{uri} is not valid: {reason}")]
     InvalidUri { reason: &'static str, uri: String },
 

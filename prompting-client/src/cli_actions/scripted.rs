@@ -20,10 +20,11 @@ use tracing::{debug, error, info, warn};
 pub async fn run_scripted_client_loop(
     snapd_client: &mut SnapdSocketClient,
     path: String,
+    vars: &[(&str, &str)],
     grace_period: Option<u64>,
 ) -> Result<()> {
     let mut scripted_client =
-        ScriptedClient::try_new_allowing_script_read(path, snapd_client.clone())?;
+        ScriptedClient::try_new_allowing_script_read(path, vars, snapd_client.clone())?;
     let (tx_prompts, mut rx_prompts) = unbounded_channel();
 
     info!("starting poll loop");
@@ -39,14 +40,11 @@ pub async fn run_scripted_client_loop(
 
     while scripted_client.is_running() {
         match rx_prompts.recv().await {
-            Some(PromptUpdate::Add(ep)) => {
-                scripted_client
-                    .reply_retrying_errors(ep, snapd_client)
-                    .await?
+            Some(PromptUpdate::Add(ep)) if scripted_client.should_handle(&ep) => {
+                scripted_client.reply(ep, snapd_client).await?
             }
-
+            Some(PromptUpdate::Add(_)) => continue,
             Some(PromptUpdate::Drop(PromptId(id))) => warn!(%id, "drop for prompt id"),
-
             None => break,
         }
     }
@@ -103,6 +101,7 @@ struct ScriptedClient {
 impl ScriptedClient {
     fn try_new_allowing_script_read(
         path: String,
+        vars: &[(&str, &str)],
         mut snapd_client: SnapdSocketClient,
     ) -> Result<Self> {
         // We need to spawn a task to wait for the read prompt we generate when reading in our
@@ -138,9 +137,13 @@ impl ScriptedClient {
             }
         });
 
-        let seq = PromptSequence::try_new_from_file(&path)?;
+        let seq = PromptSequence::try_new_from_file(&path, vars)?;
 
         Ok(Self { seq, path })
+    }
+
+    fn should_handle(&self, ep: &EnrichedPrompt) -> bool {
+        self.seq.should_handle(&ep.prompt)
     }
 
     async fn reply_for_prompt(
@@ -173,7 +176,7 @@ impl ScriptedClient {
         !self.seq.is_empty()
     }
 
-    async fn reply_retrying_errors(
+    async fn reply(
         &mut self,
         EnrichedPrompt { prompt, .. }: EnrichedPrompt,
         snapd_client: &mut SnapdSocketClient,

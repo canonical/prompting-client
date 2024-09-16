@@ -1,7 +1,7 @@
 //! A simple command line prompting client
 use clap::Parser;
 use prompting_client::{
-    cli_actions::run_scripted_client_loop, snapd_client::SnapdSocketClient, Result,
+    cli_actions::run_scripted_client_loop, snapd_client::SnapdSocketClient, Error, Result,
 };
 use std::io::stderr;
 use tracing::subscriber::set_global_default;
@@ -18,6 +18,9 @@ struct Args {
     #[clap(short, long, value_name = "FILE")]
     script: String,
 
+    #[clap(long, action = clap::ArgAction::Append)]
+    var: Vec<String>,
+
     /// The number of seconds to wait following completion of the script to check for any
     /// unexpected additional prompts.
     #[clap(short, long, value_name = "SECONDS")]
@@ -29,6 +32,7 @@ async fn main() -> Result<()> {
     let Args {
         verbose,
         script,
+        var,
         grace_period,
     } = Args::parse();
 
@@ -44,5 +48,43 @@ async fn main() -> Result<()> {
     let mut c = SnapdSocketClient::default();
     c.exit_if_prompting_not_enabled().await?;
 
-    run_scripted_client_loop(&mut c, script, grace_period).await
+    let vars = parse_vars(&var)?;
+
+    run_scripted_client_loop(&mut c, script, &vars, grace_period).await
+}
+
+fn parse_vars(raw: &[String]) -> Result<Vec<(&str, &str)>> {
+    let mut vars: Vec<(&str, &str)> = Vec::with_capacity(raw.len());
+
+    for s in raw.iter() {
+        match s.split_once(':') {
+            Some((k, v)) => vars.push((k.trim(), v.trim())),
+            None => return Err(Error::InvalidScriptVariable { raw: s.clone() }),
+        }
+    }
+
+    Ok(vars)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_vars_works() {
+        let raw_vars = vec![
+            "foo:bar".into(),
+            "a: b".to_string(),
+            "x :y".to_string(),
+            "1 : 2".to_string(),
+        ];
+
+        match parse_vars(&raw_vars) {
+            Err(e) => panic!("ERROR: {e}"),
+            Ok(vars) => assert_eq!(
+                vars,
+                vec![("foo", "bar"), ("a", "b"), ("x", "y"), ("1", "2")]
+            ),
+        }
+    }
 }

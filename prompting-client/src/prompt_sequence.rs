@@ -12,20 +12,32 @@ use std::{collections::VecDeque, fs};
 #[serde(rename_all = "kebab-case")]
 pub struct PromptSequence {
     version: u8,
+    filter: Option<TypedPromptFilter>,
     prompts: VecDeque<TypedPromptCase>,
     #[serde(skip, default)]
     index: usize,
 }
 
 impl PromptSequence {
-    pub fn try_new_from_file(path: &str) -> crate::Result<Self> {
-        Self::try_new_from_string(&fs::read_to_string(path)?)
+    pub fn try_new_from_file(path: &str, vars: &[(&str, &str)]) -> crate::Result<Self> {
+        Self::try_new_from_string(fs::read_to_string(path)?, vars)
     }
 
-    pub fn try_new_from_string(content: &str) -> crate::Result<Self> {
-        let seq = serde_json::from_str(content)?;
+    pub fn try_new_from_string(
+        content: impl Into<String>,
+        vars: &[(&str, &str)],
+    ) -> crate::Result<Self> {
+        let content = apply_vars(content.into(), vars);
+        let seq = serde_json::from_str(&content)?;
 
         Ok(seq)
+    }
+
+    pub fn should_handle(&self, p: &TypedPrompt) -> bool {
+        match &self.filter {
+            Some(f) => f.matches(p),
+            None => true,
+        }
     }
 
     pub fn try_match_next(&mut self, p: TypedPrompt) -> Result<TypedPromptReply, MatchError> {
@@ -54,10 +66,33 @@ impl PromptSequence {
     }
 }
 
+fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
+    for (k, v) in vars {
+        content = content.replace(&format!("${k}"), v);
+        content = content.replace(&format!("${{{k}}}"), v);
+    }
+
+    content
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
 enum TypedPromptCase {
     Home(PromptCase<HomeInterface>),
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(untagged)]
+enum TypedPromptFilter {
+    Home(PromptFilter<HomeInterface>),
+}
+
+impl TypedPromptFilter {
+    pub fn matches(&self, prompt: &TypedPrompt) -> bool {
+        match (self, prompt) {
+            (Self::Home(f), TypedPrompt::Home(p)) => f.matches(p).is_success(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -319,10 +354,24 @@ mod tests {
         assert_eq!(filter.matches(&p), expected);
     }
 
+    #[test]
+    fn apply_vars_works() {
+        let raw = include_str!(
+            "../resources/prompt-sequence-tests/sequence_with_top_level_filter_and_vars.json"
+        );
+        assert!(raw.contains("$BASE_PATH"));
+        assert!(raw.contains("${BASE_PATH}"));
+
+        let s = apply_vars(raw.to_string(), &[("BASE_PATH", "/home/foo")]);
+
+        assert!(!s.contains("$BASE_PATH"));
+        assert!(!s.contains("${BASE_PATH}"));
+    }
+
     #[dir_cases("resources/prompt-sequence-tests")]
     #[test]
     fn deserialize_prompt_sequence_works(path: &str, data: &str) {
-        let res = PromptSequence::try_new_from_string(data);
+        let res = PromptSequence::try_new_from_string(data, &[("BASE_PATH", "/home/foo")]);
 
         assert!(res.is_ok(), "error parsing {path}: {:?}", res);
     }
