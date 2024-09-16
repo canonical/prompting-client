@@ -20,6 +20,7 @@ use simple_test_case::test_case;
 use std::{
     env, fs,
     io::{self, ErrorKind},
+    os::unix::fs::PermissionsExt,
     sync::mpsc::{channel, Receiver},
     time::Duration,
 };
@@ -561,4 +562,39 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
         Ok(()) => Ok(()),
         Err(e) => panic!("unexpected error: {e}"),
     }
+}
+
+#[tokio::test]
+#[serial]
+async fn scripted_client_test_allow() -> Result<()> {
+    let script = include_str!("../resources/scripted-tests/happy-path-read/test.sh");
+    let seq = include_str!("../resources/scripted-tests/happy-path-read/prompt-sequence.json");
+
+    let (prefix, dir_path) = setup_test_dir(
+        None,
+        &[
+            ("test.txt", "testing testing 1 2 3"),
+            ("test.sh", script),
+            ("prompt-sequence.json", seq),
+        ],
+    )?;
+
+    let script_path = format!("{dir_path}/test.sh");
+    let file = fs::File::open(&script_path)?;
+    let mut perms = file.metadata()?.permissions();
+    perms.set_mode(perms.mode() | 0o111); // Set executable bit for all users (chmod +x)
+    file.set_permissions(perms)?;
+
+    let res = Command::new(script_path)
+        .args([prefix])
+        .spawn()
+        .expect("script to start")
+        .wait()
+        .await;
+
+    if let Err(e) = res {
+        panic!("test failed: {e}");
+    }
+
+    Ok(())
 }

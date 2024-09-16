@@ -23,6 +23,7 @@ pub async fn run_scripted_client_loop(
     vars: &[(&str, &str)],
     grace_period: Option<u64>,
 ) -> Result<()> {
+    eprintln!("creating client");
     let mut scripted_client =
         ScriptedClient::try_new_allowing_script_read(path, vars, snapd_client.clone())?;
     let (tx_prompts, mut rx_prompts) = unbounded_channel();
@@ -43,7 +44,7 @@ pub async fn run_scripted_client_loop(
             Some(PromptUpdate::Add(ep)) if scripted_client.should_handle(&ep) => {
                 scripted_client.reply(ep, snapd_client).await?
             }
-            Some(PromptUpdate::Add(_)) => continue,
+            Some(PromptUpdate::Add(ep)) => eprintln!("dropping prompt: {ep:?}"),
             Some(PromptUpdate::Drop(PromptId(id))) => warn!(%id, "drop for prompt id"),
             None => break,
         }
@@ -110,12 +111,14 @@ impl ScriptedClient {
         let mut filter = PromptFilter::default();
         let mut constraints = HomeConstraintsFilter::default();
         constraints
-            .try_with_path(format!(".*/{path}"))
+            .try_with_path(format!(".*{path}"))
             .expect("valid regex");
         filter
             .with_snap(SNAP_NAME)
             .with_interface("home")
             .with_constraints(constraints);
+
+        eprintln!("script path: {path}");
 
         tokio::task::spawn(async move {
             loop {

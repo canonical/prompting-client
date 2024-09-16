@@ -3,11 +3,15 @@ use clap::Parser;
 use prompting_client::{
     cli_actions::run_scripted_client_loop, snapd_client::SnapdSocketClient, Error, Result,
 };
-use std::io::stderr;
+use std::{io::stderr, process::exit};
 use tracing::subscriber::set_global_default;
 use tracing_subscriber::FmtSubscriber;
 
-/// Run a scripted client expecting a given sequence of prompts
+/// Run a scripted client expecting a given sequence of prompts.
+///
+/// If the provided prompt sequence completes cleanly the client will print "success" on standard
+/// out. If there are any errors then the first error will be printed as "error: $errorMessage" on
+/// standard out and the client will exit with a non-zero exit code.
 #[derive(Debug, Parser)]
 #[clap(about, long_about = None)]
 struct Args {
@@ -50,7 +54,15 @@ async fn main() -> Result<()> {
 
     let vars = parse_vars(&var)?;
 
-    run_scripted_client_loop(&mut c, script, &vars, grace_period).await
+    match run_scripted_client_loop(&mut c, script, &vars, grace_period).await {
+        Ok(_) => println!("success"),
+        Err(e) => {
+            println!("error: {e}");
+            exit(1);
+        }
+    }
+
+    Ok(())
 }
 
 fn parse_vars(raw: &[String]) -> Result<Vec<(&str, &str)>> {
