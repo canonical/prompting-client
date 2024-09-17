@@ -1,7 +1,7 @@
 //! A simple command line prompting client
 use clap::Parser;
 use prompting_client::{
-    cli_actions::run_scripted_client_loop, snapd_client::SnapdSocketClient, Error, Result,
+    cli_actions::ScriptedClient, snapd_client::SnapdSocketClient, Error, Result,
 };
 use std::{io::stderr, process::exit};
 use tracing::subscriber::set_global_default;
@@ -54,10 +54,12 @@ async fn main() -> Result<()> {
 
     let vars = parse_vars(&var)?;
 
-    match run_scripted_client_loop(&mut c, script, &vars, grace_period).await {
+    eprintln!("creating client");
+    let mut scripted_client = ScriptedClient::try_new(script, &vars, c.clone())?;
+    match scripted_client.run(&mut c, grace_period).await {
         Ok(_) => println!("success"),
         Err(e) => {
-            println!("error: {e}");
+            println!("{e}\n\nscript: {}", scripted_client.raw_seq());
             exit(1);
         }
     }

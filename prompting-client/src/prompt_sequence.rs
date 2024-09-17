@@ -19,18 +19,18 @@ pub struct PromptSequence {
 }
 
 impl PromptSequence {
-    pub fn try_new_from_file(path: &str, vars: &[(&str, &str)]) -> crate::Result<Self> {
+    pub fn try_new_from_file(path: &str, vars: &[(&str, &str)]) -> crate::Result<(Self, String)> {
         Self::try_new_from_string(fs::read_to_string(path)?, vars)
     }
 
     pub fn try_new_from_string(
         content: impl Into<String>,
         vars: &[(&str, &str)],
-    ) -> crate::Result<Self> {
+    ) -> crate::Result<(Self, String)> {
         let content = apply_vars(content.into(), vars);
         let seq = serde_json::from_str(&content)?;
 
-        Ok(seq)
+        Ok((seq, content))
     }
 
     pub fn should_handle(&self, p: &TypedPrompt) -> bool {

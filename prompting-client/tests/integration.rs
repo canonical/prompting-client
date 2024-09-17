@@ -7,7 +7,7 @@
 //! Creation of the SnapdSocketClient needs to be handled before spawning the test snap so that
 //! polling `after` is correct to pick up the prompt.
 use prompting_client::{
-    cli_actions::run_scripted_client_loop,
+    cli_actions::ScriptedClient,
     prompt_sequence::MatchError,
     snapd_client::{
         interfaces::{home::HomeInterface, SnapInterface},
@@ -422,7 +422,10 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let res = run_scripted_client_loop(&mut c, format!("{dir_path}/seq.json"), &[], None).await;
+
+    let mut scripted_client =
+        ScriptedClient::try_new(format!("{dir_path}/seq.json"), &[], c.clone())?;
+    let res = scripted_client.run(&mut c, None).await;
     sleep(Duration::from_millis(50)).await;
 
     if let Err(e) = res {
@@ -451,15 +454,14 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
     spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let res = run_scripted_client_loop(
-        &mut c,
+
+    let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
         &[("BASE_PATH", &dir_path)],
-        None,
-    )
-    .await;
+        c.clone(),
+    )?;
 
-    match res {
+    match scripted_client.run(&mut c, None).await {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedError { error },
         }) => {
@@ -485,15 +487,13 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
     spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let res = run_scripted_client_loop(
-        &mut c,
+    let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
         &[("BASE_PATH", &dir_path)],
-        None,
-    )
-    .await;
+        c.clone(),
+    )?;
 
-    match res {
+    match scripted_client.run(&mut c, None).await {
         Err(Error::FailedPromptSequence {
             error: MatchError::MatchFailures { index, failures },
         }) => {
@@ -518,15 +518,13 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let res = run_scripted_client_loop(
-        &mut c,
+    let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
         &[("BASE_PATH", &dir_path)],
-        Some(5),
-    )
-    .await;
+        c.clone(),
+    )?;
 
-    match res {
+    match scripted_client.run(&mut c, Some(5)).await {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedPrompts { .. },
         }) => Ok(()),
@@ -545,13 +543,13 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let res = run_scripted_client_loop(
-        &mut c,
+    let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
         &[("BASE_PATH", &dir_path)],
-        None,
-    )
-    .await;
+        c.clone(),
+    )?;
+
+    let res = scripted_client.run(&mut c, None).await;
 
     // Sleep to create a gap between this test and the next so that the outstanding prompts do not
     // get picked up as part of that test. Without this we are racey around what the first prompt
