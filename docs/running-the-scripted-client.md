@@ -5,10 +5,14 @@ provided in this repo can be run in a scripted mode. Doing so requires writing
 a prompt sequence file specifying the prompts that expected to be seen and how
 they should be actioned.
 
-## Running the scripted client from the command line
+# Running the scripted client from the command line
+
 The scripted client can be invoked using the `scripted` subcommand as shown below:
 ```bash
-$ apparmor-prompting scripted --script my-script.json
+$ apparmor-prompting.scripted \
+  --script my-script.json \
+  --var "MY_VAR:foo" \
+  --var "MY_OTHER_VAR:bar"
 ```
 
 The JSON script file provided as an argument must parse as a valid prompt
@@ -18,19 +22,24 @@ if the sequence completes successfully and exiting non-0 if there are any
 errors.
 
 
-## Writing a prompt sequence
+# Writing a prompt sequence
 
 A prompt sequence is a simple JSON file with the following structure:
 ```json
 {
   "version": 1,
+  "prompt-filter": {
+    "snap": "snap-name",
+    "interface": "home",
+    "constraints": {
+      "path": "$BASE_PATH/.*"
+    }
+  },
   "prompts": [
     {
       "prompt-filter": {
-        "snap": "snap-name",
-        "interface": "home",
         "constraints": {
-          "path": "/home/[a-zA-Z0-9]+/example.txt",
+          "path": ".*/example.txt",
           "permissions": [ "write" ],
           "available-permissions": [ "read", "write", "execute" ]
         }
@@ -40,7 +49,7 @@ A prompt sequence is a simple JSON file with the following structure:
         "lifespan": "timespan",
         "duration": "1h",
         "constraints": {
-          "path-pattern": "/home/foo/example.txt",
+          "path-pattern": "$BASE_PATH/example.txt",
           "permissions": [ "read", "write" ]
         }
       }
@@ -50,8 +59,35 @@ A prompt sequence is a simple JSON file with the following structure:
 }
 ```
 
+## Variables
+
+Bash style `$VAR_NAME` and `${VAR_NAME}` variables are supported within prompt sequence JSON
+files, being replaced using the `--var "VAR_NAME:value"` command line flag as shown in the
+example above. This is handled as a simple string replacement before attempting to parse the
+file, so long as the resulting string parses as valid JSON prompt sequence you are free to
+make use of variable substitution as you see fit.
+
+In the event that a scripted client run fails, it will output the fully resolved script to
+standard out as part of its exit behaviour so you are able to inspect what the final run
+looked like.
+
+
+## Fields
+
 ### Version
 The only supported version at this time is `1`. This field is required.
+
+### Prompt Filter
+The top-level `prompt-filter` field is used to provide a filter that will be used
+to determine which prompts the client will attempt to match against as part of the
+provided `prompts` sequence. It is not required that you specify a top level filter,
+but if you do then all prompts not matching it will be ignored by the scripted client.
+
+> This is particularly useful for factoring out common elements such the name of the
+> snap being matched against and based paths for home prompts etc.
+
+See the `Prompt filter fields` section below for specific details on each of the
+supported fields for a filter.
 
 ### Prompts
 A sequence of prompt cases: a prompt filter allowing for structural matching

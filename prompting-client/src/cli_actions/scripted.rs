@@ -15,54 +15,6 @@ use std::time::Duration;
 use tokio::{select, sync::mpsc::unbounded_channel};
 use tracing::{debug, error, info, warn};
 
-/// Run a scripted client that actions prompts based on a predefined sequence of prompts that we
-/// expect to see.
-pub async fn run_scripted_client_loop(
-    snapd_client: &mut SnapdSocketClient,
-    path: String,
-    grace_period: Option<u64>,
-) -> Result<()> {
-    let mut scripted_client =
-        ScriptedClient::try_new_allowing_script_read(path, snapd_client.clone())?;
-    let (tx_prompts, mut rx_prompts) = unbounded_channel();
-
-    info!("starting poll loop");
-    let mut poll_loop = PollLoop::new(snapd_client.clone(), tx_prompts);
-    poll_loop.skip_outstanding_prompts();
-    tokio::spawn(async move { poll_loop.run().await });
-
-    info!(
-        script=%scripted_client.path,
-        n_prompts=%scripted_client.seq.len(),
-        "running provided script"
-    );
-
-    while scripted_client.is_running() {
-        match rx_prompts.recv().await {
-            Some(PromptUpdate::Add(ep)) => {
-                scripted_client
-                    .reply_retrying_errors(ep, snapd_client)
-                    .await?
-            }
-
-            Some(PromptUpdate::Drop(PromptId(id))) => warn!(%id, "drop for prompt id"),
-
-            None => break,
-        }
-    }
-
-    let grace_period = match grace_period {
-        Some(n) => n,
-        None => return Ok(()),
-    };
-
-    info!(seconds=%grace_period, "sequence complete, entering grace period");
-    select! {
-        _ = tokio::time::sleep(Duration::from_secs(grace_period)) => Ok(()),
-        res = grace_period_deny_and_error(snapd_client) => res,
-    }
-}
-
 /// Poll for outstanding prompts and auto-deny them before returning an error. This function will
 /// loop until at least one un-actioned prompt is encountered.
 async fn grace_period_deny_and_error(snapd_client: &mut SnapdSocketClient) -> Result<()> {
@@ -95,14 +47,16 @@ async fn grace_period_deny_and_error(snapd_client: &mut SnapdSocketClient) -> Re
 }
 
 #[derive(Debug)]
-struct ScriptedClient {
+pub struct ScriptedClient {
     seq: PromptSequence,
+    raw_seq: String,
     path: String,
 }
 
 impl ScriptedClient {
-    fn try_new_allowing_script_read(
+    pub fn try_new(
         path: String,
+        vars: &[(&str, &str)],
         mut snapd_client: SnapdSocketClient,
     ) -> Result<Self> {
         // We need to spawn a task to wait for the read prompt we generate when reading in our
@@ -111,12 +65,14 @@ impl ScriptedClient {
         let mut filter = PromptFilter::default();
         let mut constraints = HomeConstraintsFilter::default();
         constraints
-            .try_with_path(format!(".*/{path}"))
+            .try_with_path(format!(".*{path}"))
             .expect("valid regex");
         filter
             .with_snap(SNAP_NAME)
             .with_interface("home")
             .with_constraints(constraints);
+
+        eprintln!("script path: {path}");
 
         tokio::task::spawn(async move {
             loop {
@@ -138,9 +94,56 @@ impl ScriptedClient {
             }
         });
 
-        let seq = PromptSequence::try_new_from_file(&path)?;
+        let (seq, raw_seq) = PromptSequence::try_new_from_file(&path, vars)?;
 
-        Ok(Self { seq, path })
+        Ok(Self { seq, raw_seq, path })
+    }
+
+    pub fn raw_seq(&self) -> &str {
+        &self.raw_seq
+    }
+
+    /// Run a scripted client that actions prompts based on a predefined sequence of prompts that we
+    /// expect to see.
+    pub async fn run(
+        &mut self,
+        snapd_client: &mut SnapdSocketClient,
+        grace_period: Option<u64>,
+    ) -> Result<()> {
+        let (tx_prompts, mut rx_prompts) = unbounded_channel();
+
+        info!("starting poll loop");
+        let mut poll_loop = PollLoop::new(snapd_client.clone(), tx_prompts);
+        poll_loop.skip_outstanding_prompts();
+        tokio::spawn(async move { poll_loop.run().await });
+
+        info!(script=%self.path, n_prompts=%self.seq.len(), "running provided script");
+
+        while self.is_running() {
+            match rx_prompts.recv().await {
+                Some(PromptUpdate::Add(ep)) if self.should_handle(&ep) => {
+                    self.reply(ep, snapd_client).await?
+                }
+                Some(PromptUpdate::Add(ep)) => eprintln!("dropping prompt: {ep:?}"),
+                Some(PromptUpdate::Drop(PromptId(id))) => warn!(%id, "drop for prompt id"),
+                None => break,
+            }
+        }
+
+        let grace_period = match grace_period {
+            Some(n) => n,
+            None => return Ok(()),
+        };
+
+        info!(seconds=%grace_period, "sequence complete, entering grace period");
+        select! {
+            _ = tokio::time::sleep(Duration::from_secs(grace_period)) => Ok(()),
+            res = grace_period_deny_and_error(snapd_client) => res,
+        }
+    }
+
+    fn should_handle(&self, ep: &EnrichedPrompt) -> bool {
+        self.seq.should_handle(&ep.prompt)
     }
 
     async fn reply_for_prompt(
@@ -173,7 +176,7 @@ impl ScriptedClient {
         !self.seq.is_empty()
     }
 
-    async fn reply_retrying_errors(
+    async fn reply(
         &mut self,
         EnrichedPrompt { prompt, .. }: EnrichedPrompt,
         snapd_client: &mut SnapdSocketClient,
