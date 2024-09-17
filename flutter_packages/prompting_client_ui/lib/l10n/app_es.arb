@@ -1,1 +1,115 @@
-{}
+{
+  "promptAccessMoreOptionsTitle": "Establecer acceso para {snap} a:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Otorgar a {snap} {permission} acceso a:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Permitir",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Permitir siempre",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Denegar",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Denegar una vez",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionForever": "Siempre",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Hasta cerrar sesión",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Una vez",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Duración",
+  "@promptLifespanTitle": {},
+  "promptTitle": "Notificación de seguridad",
+  "@promptTitle": {},
+  "homePatternTypeCustomPath": "Patrón de ruta personalizado",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Solo la carpeta solicitada",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeHomeDirectory": "Todo en tu carpeta personal",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptBody": "¿Permitir a {snap} tener {permissions} de acceso a {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "Acerca de esta aplicación",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataLastUpdated": "Última actualización el {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Más opciones...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptPermissionsRead": "Leer",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Escribir",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Ejecutar",
+  "@homePromptPermissionsExecute": {},
+  "homePromptMetaDataAppCenterLink": "Visita la página del Centro de aplicaciones",
+  "@homePromptMetaDataAppCenterLink": {},
+  "securityCenterInfo": "Siempre puedes cambiar estos permisos en el <Centro de seguridad>",
+  "@securityCenterInfo": {},
+  "homePatternTypeMatchingFileExtension": "Todos los archivos {fileExtension}",
+  "@homePatternTypeMatchingFileExtension": {},
+  "promptSaveAndContinue": "Guardar y continuar",
+  "@promptSaveAndContinue": {},
+  "homePatternTypeRequestedFile": "Solo el archivo solicitado",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeRequestedDirectoryContents": "Todo en la carpeta",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternInfo": "<Más información sobre los patrones de ruta>",
+  "@homePatternInfo": {},
+  "promptActionTitle": "Acción",
+  "@promptActionTitle": {},
+  "homePatternTypeTopLevelDirectory": "Todo en la carpeta {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeContainingDirectory": "Todo en la carpeta",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptMetaDataPublishedBy": "Publicado por {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Permisos",
+  "@homePromptPermissionsTitle": {},
+  "promptActionOptionAllowOnce": "Permitir una vez",
+  "@promptActionOptionAllowOnce": {}
+}

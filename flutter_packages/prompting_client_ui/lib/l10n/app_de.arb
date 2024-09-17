@@ -1,1 +1,115 @@
-{}
+{
+  "promptActionOptionAllow": "Erlauben",
+  "@promptActionOptionAllow": {},
+  "promptAccessMoreOptionsTitle": "Zugriff für {snap} festlegen auf:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "{snap} den Zugriff {permission} geben zu:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowAlways": "Immer zulassen",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Verweigern",
+  "@promptActionOptionDeny": {},
+  "promptActionTitle": "Aktion",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Immer",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Bis zur Abmeldung",
+  "@promptLifespanOptionSession": {},
+  "promptSaveAndContinue": "Speichern und fortfahren",
+  "@promptSaveAndContinue": {},
+  "homePatternInfo": "<Etwas über Pfadmuster erfahren>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "Benutzerdefiniertes Pfadmuster",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Nur der angeforderte Ordner",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Nur die angeforderte Datei",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-Dateien",
+  "@homePatternTypeMatchingFileExtension": {},
+  "homePromptBody": "{snap} den {permissions}-Zugriff auf {path} erlauben?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "Über diese App",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Herausgegeben von {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeHomeDirectory": "Alles im Benutzerordner",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptMetaDataLastUpdated": "Zuletzt aktualisiert am {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Weitere Optionen ...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptPermissionsTitle": "Berechtigungen",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "Lesen",
+  "@homePromptPermissionsRead": {},
+  "homePromptMetaDataAppCenterLink": "Seite des App-Zentrums besuchen",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsWrite": "Schreiben",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Ausführen",
+  "@homePromptPermissionsExecute": {},
+  "securityCenterInfo": "Sie können diese Berechtigungen jederzeit im <Sicherheitszentrum> ändern",
+  "@securityCenterInfo": {},
+  "promptActionOptionDenyOnce": "Einmal verweigern",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionSingle": "Einmal",
+  "@promptLifespanOptionSingle": {},
+  "promptTitle": "Sicherheitsbenachrichtigung",
+  "@promptTitle": {},
+  "promptLifespanTitle": "Dauer",
+  "@promptLifespanTitle": {},
+  "homePatternTypeTopLevelDirectory": "Alles im Ordner {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeContainingDirectory": "Alles im Ordner",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "promptActionOptionAllowOnce": "Einmal zulassen",
+  "@promptActionOptionAllowOnce": {}
+}

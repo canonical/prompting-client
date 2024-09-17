@@ -1,1 +1,115 @@
-{}
+{
+  "securityCenterInfo": "Du kan alltid ändra dessa behörigheter i <Säkerhetscenter>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "Ställ in åtkomst för {snap} till:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Ge {snap} {permission} åtkomst till:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Tillåt",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Tillåt alltid",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Neka",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Neka en gång",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Åtgärd",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Alltid",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Tills utloggning",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "En gång",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Varaktighet",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Spara och fortsätt",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Säkerhetsnotifiering",
+  "@promptTitle": {},
+  "homePatternTypeRequestedDirectory": "Den begärda mappen endast",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Den begärda filen endast",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeRequestedDirectoryContents": "Allt i mappen",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Allt i mappen",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Allt i hemkatalogen",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeMatchingFileExtension": "Alla {fileExtension} filer",
+  "@homePatternTypeMatchingFileExtension": {},
+  "homePromptMetaDataTitle": "Om detta program",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Publicerad av {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Senast uppdaterad på {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Mer alternativ...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptPermissionsRead": "Läs",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Skriv",
+  "@homePromptPermissionsWrite": {},
+  "homePatternTypeCustomPath": "Anpassat sökvägsmönster",
+  "@homePatternTypeCustomPath": {},
+  "homePatternInfo": "<Läs mer om sökvägsmönster>",
+  "@homePatternInfo": {},
+  "homePatternTypeTopLevelDirectory": "Allt i {topLevelDir}-mappen",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptBody": "Tillåt {snap} att ha {permissions} tillgång till {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataAppCenterLink": "Visa Appcentral sida",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "Behörigheter",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsExecute": "Exekvera",
+  "@homePromptPermissionsExecute": {},
+  "promptActionOptionAllowOnce": "Tillåt en gång",
+  "@promptActionOptionAllowOnce": {}
+}
