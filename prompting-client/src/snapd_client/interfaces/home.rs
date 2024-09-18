@@ -70,8 +70,8 @@ impl PatternOptions {
     ///
     /// Details of the cases and rationale behind how we handle this can be found here:
     ///   https://www.figma.com/board/1DIGbaCf4ZjTcShYjLiAIi/24.10-AppArmor-prompting---MVP-logic?node-id=0-1&t=4kUtDaqmQEvLA8v7-0
-    fn new(path: &str, home_dir: &str) -> Self {
-        let cpath = CategorisedPath::from_path(path);
+    fn new(path: &str, home_dir: &str) -> Result<Self> {
+        let cpath = CategorisedPath::from_path(path, home_dir)?;
 
         let mut options = vec![TypedPathPattern::after_more_options(
             PatternType::HomeDirectory,
@@ -93,15 +93,15 @@ impl PatternOptions {
         options.push(cpath.requested_path_pattern());
 
         if !cpath.is_dir {
-            if let Some(opt) = cpath.matching_extension_pattern(home_dir) {
+            if let Some(opt) = cpath.matching_extension_pattern() {
                 options.push(opt);
             }
         }
 
-        Self {
+        Ok(Self {
             initial_pattern_option: 1,
             pattern_options: options,
-        }
+        })
     }
 }
 
@@ -110,7 +110,7 @@ fn home_dir_from_env() -> String {
 }
 
 impl HomeInterface {
-    fn ui_options(&self, prompt: &Prompt<Self>) -> PatternOptions {
+    fn ui_options(&self, prompt: &Prompt<Self>) -> Result<PatternOptions> {
         let path = &prompt.constraints.path;
         PatternOptions::new(path, &home_dir_from_env())
     }
@@ -141,11 +141,11 @@ impl SnapInterface for HomeInterface {
         }
     }
 
-    fn map_ui_input(&self, prompt: Prompt<Self>, meta: Option<SnapMeta>) -> UiInput<Self> {
+    fn map_ui_input(&self, prompt: Prompt<Self>, meta: Option<SnapMeta>) -> Result<UiInput<Self>> {
         let PatternOptions {
             initial_pattern_option,
             pattern_options,
-        } = self.ui_options(&prompt);
+        } = self.ui_options(&prompt)?;
         let meta = meta.unwrap_or_else(|| SnapMeta {
             name: prompt.snap,
             updated_at: String::default(),
@@ -161,7 +161,7 @@ impl SnapInterface for HomeInterface {
             initial_permissions.push("read".to_string());
         }
 
-        UiInput {
+        Ok(UiInput {
             id: prompt.id,
             meta,
             data: HomeUiInputData {
@@ -173,7 +173,7 @@ impl SnapInterface for HomeInterface {
                 pattern_options,
                 initial_pattern_option,
             },
-        }
+        })
     }
 
     fn map_ui_reply(&self, reply: Self::UiReply) -> PromptReply<Self> {
@@ -343,33 +343,52 @@ impl ReplyConstraintsOverrides for HomeReplyConstraintsOverrides {
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct CategorisedPath<'a> {
     raw_path: &'a str,
+    home_dir: &'a str,
     path: PathBuf,
     is_dir: bool,
 }
 
 impl<'a> CategorisedPath<'a> {
-    fn from_path(path: &'a str) -> Self {
-        let is_dir = path.ends_with('/');
+    fn from_path(raw_path: &'a str, home_dir: &'a str) -> Result<Self> {
+        let is_dir = raw_path.ends_with('/');
+        let path = match PathBuf::from(raw_path).strip_prefix(home_dir) {
+            Ok(path) => path.to_path_buf(),
+            Err(_) => {
+                return Err(Error::InvalidHomePromptPath {
+                    path: raw_path.to_string(),
+                    home: home_dir.to_string(),
+                })
+            }
+        };
 
-        Self {
-            raw_path: path,
-            path: PathBuf::from(path),
+        Ok(Self {
+            raw_path,
+            home_dir,
+            path,
             is_dir,
-        }
+        })
     }
 
     fn is_home_dir_or_top_level_file(&self) -> bool {
         let n_segments = self.path.iter().count();
 
-        n_segments == 3 || (n_segments == 4 && !self.is_dir)
+        n_segments == 0 || (n_segments == 1 && !self.is_dir)
     }
 
     fn is_nested_file(&self) -> bool {
-        self.path.iter().count() > 5 && !self.is_dir
+        if self.is_dir {
+            return false;
+        }
+
+        self.path.iter().count() > 2
     }
 
     fn is_sub_dir(&self) -> bool {
-        self.path.iter().count() > 4 && self.is_dir
+        if !self.is_dir {
+            return false;
+        }
+
+        self.path.iter().count() > 1
     }
 
     fn requested_path_pattern(&self) -> TypedPathPattern {
@@ -386,11 +405,11 @@ impl<'a> CategorisedPath<'a> {
 
     fn top_level_dir_pattern(&self) -> TypedPathPattern {
         debug_assert!(!self.is_home_dir_or_top_level_file());
-        let top_level: PathBuf = self.path.iter().take(4).collect();
+        let top_level: PathBuf = self.path.iter().take(1).collect();
 
         TypedPathPattern::initial(
             PatternType::TopLevelDirectory,
-            format!("{}/**", top_level.to_string_lossy()),
+            format!("{}/{}/**", self.home_dir, top_level.to_string_lossy()),
         )
     }
 
@@ -402,7 +421,7 @@ impl<'a> CategorisedPath<'a> {
 
         TypedPathPattern::initial(
             PatternType::ContainingDirectory,
-            format!("{}/**", pb.to_string_lossy()),
+            format!("{}/{}/**", self.home_dir, pb.to_string_lossy()),
         )
     }
 
@@ -415,14 +434,14 @@ impl<'a> CategorisedPath<'a> {
         )
     }
 
-    fn matching_extension_pattern(&self, home_dir: &str) -> Option<TypedPathPattern> {
+    fn matching_extension_pattern(&self) -> Option<TypedPathPattern> {
         debug_assert!(!self.is_dir);
         match self.path.extension() {
             Some(ext) => {
                 let ext = ext.to_string_lossy();
                 Some(TypedPathPattern::after_more_options(
                     PatternType::MatchingFileExtension,
-                    format!("{home_dir}/**/*.{ext}"),
+                    format!("{}/**/*.{ext}", self.home_dir),
                 ))
             }
             _ => None,
@@ -494,47 +513,97 @@ mod tests {
         }
     }
 
+    #[test_case("/home/user"; "default home")]
+    #[test_case("/mnt"; "non standard home short")]
+    #[test_case("/non/standard/home/user"; "non standard home long")]
     #[test]
-    fn dir_contents_pattern_works() {
-        let cpath = CategorisedPath::from_path("/home/user/Documents/banking/");
-        let patt = cpath.dir_contents_pattern();
-        assert_eq!(patt.path_pattern, "/home/user/Documents/banking/**");
+    fn top_level_dir_pattern_works(home_dir: &str) {
+        let full_path = format!("{home_dir}/Documents/notes/");
+        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let patt = cpath.top_level_dir_pattern();
+        assert_eq!(patt.path_pattern, format!("{home_dir}/Documents/**"));
     }
 
-    #[test_case("/home/user/", false; "home dir")]
-    #[test_case("/home/user/foo.txt", false; "top level file")]
-    #[test_case("/home/user/Documents/", false; "top level dir")]
-    #[test_case("/home/user/Documents/foo/bar.txt", true; "nested file")]
-    #[test_case("/home/user/Documents/banking/", false; "nested dir")]
-    #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
+    #[test_case("/home/user"; "default home")]
+    #[test_case("/mnt"; "non standard home short")]
+    #[test_case("/non/standard/home/user"; "non standard home long")]
+    #[test]
+    fn containing_dir_pattern_works(home_dir: &str) {
+        let full_path = format!("{home_dir}/Documents/notes/todo.md");
+        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let patt = cpath.containing_dir_pattern();
+        assert_eq!(patt.path_pattern, format!("{home_dir}/Documents/notes/**"));
+    }
+
+    #[test_case("/home/user"; "default home")]
+    #[test_case("/mnt"; "non standard home short")]
+    #[test_case("/non/standard/home/user"; "non standard home long")]
+    #[test]
+    fn dir_contents_pattern_works(home_dir: &str) {
+        let full_path = format!("{home_dir}/Documents/notes/");
+        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let patt = cpath.dir_contents_pattern();
+        assert_eq!(patt.path_pattern, format!("{full_path}**"));
+    }
+
+    #[test_case("/home/user"; "default home")]
+    #[test_case("/mnt"; "non standard home short")]
+    #[test_case("/non/standard/home/user"; "non standard home long")]
+    #[test]
+    fn matching_extension_pattern_works(home_dir: &str) {
+        let full_path = format!("{home_dir}/Documents/notes/todo.md");
+        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let patt = cpath.matching_extension_pattern().unwrap();
+        assert_eq!(patt.path_pattern, format!("{home_dir}/**/*.md"));
+    }
+
+    #[test_case("", false; "home dir")]
+    #[test_case("foo.txt", false; "top level file")]
+    #[test_case("Documents/", false; "top level dir")]
+    #[test_case("Documents/foo/bar.txt", true; "nested file")]
+    #[test_case("Documents/notes/", false; "nested dir")]
+    #[test_case("Documents/foo.txt", false; "file in top level dir")]
     #[test]
     fn is_nested_file(path: &str, expected: bool) {
-        let cpath = CategorisedPath::from_path(path);
-        assert_eq!(cpath.is_nested_file(), expected);
+        for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
+            let full_path = format!("{home_dir}/{path}");
+            let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+            assert_eq!(cpath.is_nested_file(), expected, "home is {home_dir}");
+        }
     }
 
-    #[test_case("/home/user/", false; "home dir")]
-    #[test_case("/home/user/foo.txt", false; "top level file")]
-    #[test_case("/home/user/Documents/", false; "top level dir")]
-    #[test_case("/home/user/Documents/foo/bar.txt", false; "nested file")]
-    #[test_case("/home/user/Documents/banking/", true; "nested dir")]
-    #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
+    #[test_case("", false; "home dir")]
+    #[test_case("foo.txt", false; "top level file")]
+    #[test_case("Documents/", false; "top level dir")]
+    #[test_case("Documents/foo/bar.txt", false; "nested file")]
+    #[test_case("Documents/notes/", true; "nested dir")]
+    #[test_case("Documents/foo.txt", false; "file in top level dir")]
     #[test]
     fn is_sub_dir(path: &str, expected: bool) {
-        let cpath = CategorisedPath::from_path(path);
-        assert_eq!(cpath.is_sub_dir(), expected);
+        for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
+            let full_path = format!("{home_dir}/{path}");
+            let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+            assert_eq!(cpath.is_sub_dir(), expected, "home is {home_dir}");
+        }
     }
 
-    #[test_case("/home/user/", true; "home dir")]
-    #[test_case("/home/user/foo.txt", true; "top level file")]
-    #[test_case("/home/user/Documents/", false; "top level dir")]
-    #[test_case("/home/user/Documents/foo.txt", false; "nested file")]
-    #[test_case("/home/user/Documents/banking/", false; "nested dir")]
-    #[test_case("/home/user/Documents/foo.txt", false; "file in top level dir")]
+    #[test_case("", true; "home dir")]
+    #[test_case("foo.txt", true; "top level file")]
+    #[test_case("Documents/", false; "top level dir")]
+    #[test_case("Documents/foo.txt", false; "nested file")]
+    #[test_case("Documents/notes/", false; "nested dir")]
+    #[test_case("Documents/foo.txt", false; "file in top level dir")]
     #[test]
     fn is_home_dir_or_top_level_file(path: &str, expected: bool) {
-        let cpath = CategorisedPath::from_path(path);
-        assert_eq!(cpath.is_home_dir_or_top_level_file(), expected);
+        for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
+            let full_path = format!("{home_dir}/{path}");
+            let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+            assert_eq!(
+                cpath.is_home_dir_or_top_level_file(),
+                expected,
+                "home is {home_dir}"
+            );
+        }
     }
 
     #[test_case(
@@ -636,15 +705,26 @@ mod tests {
         initial_pattern_option: usize,
         expected: &[(PatternType, bool)],
     ) {
-        let p = PatternOptions::new(path, "/home/user");
-        assert_eq!(p.initial_pattern_option, initial_pattern_option);
+        for (full_path, home_dir) in [
+            (path, "/home/user"),
+            (&format!("/non/standard{path}"), "/non/standard/home/user"),
+        ] {
+            let p = PatternOptions::new(full_path, home_dir).unwrap();
+            assert_eq!(
+                p.initial_pattern_option, initial_pattern_option,
+                "initial pattern option with home_dir={home_dir}"
+            );
 
-        let descriptions: Vec<(PatternType, bool)> = p
-            .pattern_options
-            .iter()
-            .map(|pd| (pd.pattern_type, pd.show_initially))
-            .collect();
+            let options: Vec<(PatternType, bool)> = p
+                .pattern_options
+                .iter()
+                .map(|pd| (pd.pattern_type, pd.show_initially))
+                .collect();
 
-        assert_eq!(descriptions, expected);
+            assert_eq!(
+                options, expected,
+                "options with default home_dir={home_dir}"
+            );
+        }
     }
 }
