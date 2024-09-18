@@ -85,26 +85,6 @@ impl PromptRecording {
         }
     }
 
-    pub fn push_ui_input(&mut self, data: serde_json::Value) {
-        if self.is_recording() {
-            self.events.push(Event::UiInput { data });
-        }
-    }
-
-    pub fn push_reply(&mut self, r: &TypedPromptReply) {
-        if self.is_recording() {
-            self.events.push(Event::Reply { data: r.clone() })
-        }
-    }
-
-    pub fn push_error(&mut self, err: &Error) {
-        if self.is_recording() {
-            self.events.push(Event::Error {
-                data: err.to_string(),
-            })
-        }
-    }
-
     pub async fn await_update_handling_ctrl_c(
         &self,
         rx_prompts: &mut UnboundedReceiver<PromptUpdate>,
