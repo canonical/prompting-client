@@ -72,25 +72,44 @@ impl PatternOptions {
     ///   https://www.figma.com/board/1DIGbaCf4ZjTcShYjLiAIi/24.10-AppArmor-prompting---MVP-logic?node-id=0-1&t=4kUtDaqmQEvLA8v7-0
     fn new(path: &str, home_dir: &str) -> Result<Self> {
         let cpath = CategorisedPath::from_path(path, home_dir)?;
-
-        let mut options = vec![TypedPathPattern::after_more_options(
+        let everything_in_home_pattern = TypedPathPattern::after_more_options(
             PatternType::HomeDirectory,
             format!("{home_dir}/**"),
-        )];
+        );
 
-        if !cpath.is_home_dir_or_top_level_file() {
-            options.push(cpath.top_level_dir_pattern());
-        }
+        let mut options = match cpath.kind {
+            PathKind::HomeDir => vec![everything_in_home_pattern, cpath.requested_path_pattern()],
 
-        if cpath.is_nested_file() {
-            options.push(cpath.containing_dir_pattern());
-        }
+            PathKind::TopLevelDir => vec![
+                everything_in_home_pattern,
+                cpath.top_level_dir_pattern(),
+                cpath.requested_path_pattern(),
+            ],
 
-        if cpath.is_sub_dir() {
-            options.push(cpath.dir_contents_pattern());
-        }
+            PathKind::SubDir => vec![
+                everything_in_home_pattern,
+                cpath.top_level_dir_pattern(),
+                cpath.dir_contents_pattern(),
+                cpath.requested_path_pattern(),
+            ],
 
-        options.push(cpath.requested_path_pattern());
+            PathKind::HomeDirFile => {
+                vec![everything_in_home_pattern, cpath.requested_path_pattern()]
+            }
+
+            PathKind::TopLevelDirFile => vec![
+                everything_in_home_pattern,
+                cpath.top_level_dir_pattern(),
+                cpath.requested_path_pattern(),
+            ],
+
+            PathKind::SubDirFile => vec![
+                everything_in_home_pattern,
+                cpath.top_level_dir_pattern(),
+                cpath.containing_dir_pattern(),
+                cpath.requested_path_pattern(),
+            ],
+        };
 
         if !cpath.is_dir {
             if let Some(opt) = cpath.matching_extension_pattern() {
@@ -340,8 +359,19 @@ impl ReplyConstraintsOverrides for HomeReplyConstraintsOverrides {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum PathKind {
+    HomeDir,
+    TopLevelDir,
+    SubDir,
+    HomeDirFile,
+    TopLevelDirFile,
+    SubDirFile,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct CategorisedPath<'a> {
+    kind: PathKind,
     raw_path: &'a str,
     home_dir: &'a str,
     path: PathBuf,
@@ -350,6 +380,8 @@ struct CategorisedPath<'a> {
 
 impl<'a> CategorisedPath<'a> {
     fn from_path(raw_path: &'a str, home_dir: &'a str) -> Result<Self> {
+        use PathKind::*;
+
         let is_dir = raw_path.ends_with('/');
         let path = match PathBuf::from(raw_path).strip_prefix(home_dir) {
             Ok(path) => path.to_path_buf(),
@@ -361,34 +393,23 @@ impl<'a> CategorisedPath<'a> {
             }
         };
 
+        let n_segments = path.iter().count();
+        let kind = match (is_dir, n_segments) {
+            (true, 0) => HomeDir,
+            (true, 1) => TopLevelDir,
+            (true, _) => SubDir,
+            (false, 1) => HomeDirFile,
+            (false, 2) => TopLevelDirFile,
+            (false, _) => SubDirFile,
+        };
+
         Ok(Self {
+            kind,
             raw_path,
             home_dir,
             path,
             is_dir,
         })
-    }
-
-    fn is_home_dir_or_top_level_file(&self) -> bool {
-        let n_segments = self.path.iter().count();
-
-        n_segments == 0 || (n_segments == 1 && !self.is_dir)
-    }
-
-    fn is_nested_file(&self) -> bool {
-        if self.is_dir {
-            return false;
-        }
-
-        self.path.iter().count() > 2
-    }
-
-    fn is_sub_dir(&self) -> bool {
-        if !self.is_dir {
-            return false;
-        }
-
-        self.path.iter().count() > 1
     }
 
     fn requested_path_pattern(&self) -> TypedPathPattern {
@@ -397,14 +418,16 @@ impl<'a> CategorisedPath<'a> {
         } else {
             PatternType::RequestedFile
         };
-
-        let show_initially = !self.is_home_dir_or_top_level_file();
+        let show_initially = !matches!(self.kind, PathKind::HomeDir | PathKind::HomeDirFile);
 
         TypedPathPattern::new(pattern_type, self.raw_path, show_initially)
     }
 
     fn top_level_dir_pattern(&self) -> TypedPathPattern {
-        debug_assert!(!self.is_home_dir_or_top_level_file());
+        debug_assert!(!matches!(
+            self.kind,
+            PathKind::HomeDir | PathKind::HomeDirFile
+        ));
         let top_level: PathBuf = self.path.iter().take(1).collect();
 
         TypedPathPattern::initial(
@@ -414,7 +437,7 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn containing_dir_pattern(&self) -> TypedPathPattern {
-        debug_assert!(self.is_nested_file());
+        debug_assert!(matches!(self.kind, PathKind::SubDirFile));
         let mut segments: Vec<_> = self.path.iter().collect();
         segments.pop();
         let pb: PathBuf = segments.into_iter().collect();
@@ -426,7 +449,7 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn dir_contents_pattern(&self) -> TypedPathPattern {
-        debug_assert!(self.is_sub_dir());
+        debug_assert!(matches!(self.kind, PathKind::SubDir));
 
         TypedPathPattern::initial(
             PatternType::RequestedDirectoryContents,
@@ -465,6 +488,7 @@ mod tests {
     use super::*;
     use crate::snapd_client::{RawPrompt, TypedPrompt};
     use simple_test_case::test_case;
+    use PathKind::*;
 
     const HOME_PROMPT: &str = r#"{
       "id": "C7OUCCDWCE6CC===",
@@ -557,52 +581,18 @@ mod tests {
         assert_eq!(patt.path_pattern, format!("{home_dir}/**/*.md"));
     }
 
-    #[test_case("", false; "home dir")]
-    #[test_case("foo.txt", false; "top level file")]
-    #[test_case("Documents/", false; "top level dir")]
-    #[test_case("Documents/foo/bar.txt", true; "nested file")]
-    #[test_case("Documents/notes/", false; "nested dir")]
-    #[test_case("Documents/foo.txt", false; "file in top level dir")]
+    #[test_case("", HomeDir; "home dir")]
+    #[test_case("Documents/", TopLevelDir; "top level dir")]
+    #[test_case("Documents/notes/", SubDir; "nested dir")]
+    #[test_case("foo.txt", HomeDirFile; "top level file")]
+    #[test_case("Documents/foo.txt", TopLevelDirFile; "file in top level dir")]
+    #[test_case("Documents/foo/bar.txt", SubDirFile; "nested file")]
     #[test]
-    fn is_nested_file(path: &str, expected: bool) {
+    fn kind_works(path: &str, expected: PathKind) {
         for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
             let full_path = format!("{home_dir}/{path}");
             let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
-            assert_eq!(cpath.is_nested_file(), expected, "home is {home_dir}");
-        }
-    }
-
-    #[test_case("", false; "home dir")]
-    #[test_case("foo.txt", false; "top level file")]
-    #[test_case("Documents/", false; "top level dir")]
-    #[test_case("Documents/foo/bar.txt", false; "nested file")]
-    #[test_case("Documents/notes/", true; "nested dir")]
-    #[test_case("Documents/foo.txt", false; "file in top level dir")]
-    #[test]
-    fn is_sub_dir(path: &str, expected: bool) {
-        for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
-            let full_path = format!("{home_dir}/{path}");
-            let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
-            assert_eq!(cpath.is_sub_dir(), expected, "home is {home_dir}");
-        }
-    }
-
-    #[test_case("", true; "home dir")]
-    #[test_case("foo.txt", true; "top level file")]
-    #[test_case("Documents/", false; "top level dir")]
-    #[test_case("Documents/foo.txt", false; "nested file")]
-    #[test_case("Documents/notes/", false; "nested dir")]
-    #[test_case("Documents/foo.txt", false; "file in top level dir")]
-    #[test]
-    fn is_home_dir_or_top_level_file(path: &str, expected: bool) {
-        for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
-            let full_path = format!("{home_dir}/{path}");
-            let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
-            assert_eq!(
-                cpath.is_home_dir_or_top_level_file(),
-                expected,
-                "home is {home_dir}"
-            );
+            assert_eq!(cpath.kind, expected, "home is {home_dir}");
         }
     }
 
