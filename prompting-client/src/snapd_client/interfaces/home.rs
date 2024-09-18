@@ -194,19 +194,6 @@ impl SnapInterface for HomeInterface {
             },
         })
     }
-
-    fn map_ui_reply(&self, reply: Self::UiReply) -> PromptReply<Self> {
-        PromptReply {
-            action: reply.action,
-            lifespan: reply.lifespan,
-            duration: None,
-            constraints: HomeReplyConstraints {
-                path_pattern: reply.path_pattern,
-                permissions: reply.permissions,
-                available_permissions: Vec::new(),
-            },
-        }
-    }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]

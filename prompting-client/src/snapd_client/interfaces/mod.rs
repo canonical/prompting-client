@@ -30,8 +30,6 @@ pub trait SnapInterface: fmt::Debug + Clone {
     fn prompt_to_reply(prompt: Prompt<Self>, action: Action) -> PromptReply<Self>;
 
     fn map_ui_input(&self, prompt: Prompt<Self>, meta: Option<SnapMeta>) -> Result<UiInput<Self>>;
-
-    fn map_ui_reply(&self, reply: Self::UiReply) -> PromptReply<Self>;
 }
 
 pub trait ConstraintsFilter: Default + fmt::Debug + Clone + Serialize + DeserializeOwned {
