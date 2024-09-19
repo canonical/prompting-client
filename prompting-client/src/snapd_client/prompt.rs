@@ -195,9 +195,10 @@ impl TypedUiInput {
         &input.id
     }
 
-    pub fn from_prompt(prompt: TypedPrompt, meta: Option<SnapMeta>) -> Self {
+    pub fn try_from_prompt(prompt: TypedPrompt, meta: Option<SnapMeta>) -> Result<Self> {
         let TypedPrompt::Home(p) = prompt;
-        Self::Home(HomeInterface.map_ui_input(p, meta))
+
+        Ok(Self::Home(HomeInterface.map_ui_input(p, meta)?))
     }
 }
 

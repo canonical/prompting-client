@@ -198,7 +198,12 @@ where
         let prompt = ep.prompt.clone();
 
         debug!("updating active prompt");
-        self.update_active_prompt(ep);
+        if let Err(error) = self.update_active_prompt(ep) {
+            error!(%error, "failed to map prompt to UI input: replying with deny once");
+            let reply = prompt.into_deny_once();
+            self.client.reply(&expected_id, reply).await?;
+            return Ok(());
+        }
 
         // FIXME: the UI closing without replying or actioning multiple prompts gets tricky (when can we spawn the next UI?)
         debug!("spawning UI");
@@ -229,13 +234,18 @@ where
         Ok(())
     }
 
-    fn update_active_prompt(&mut self, EnrichedPrompt { prompt, meta }: EnrichedPrompt) {
-        let input = TypedUiInput::from_prompt(prompt, meta);
+    fn update_active_prompt(
+        &mut self,
+        EnrichedPrompt { prompt, meta }: EnrichedPrompt,
+    ) -> Result<()> {
+        let input = TypedUiInput::try_from_prompt(prompt, meta)?;
         let mut guard = match self.active_prompt.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
         guard.replace(input);
+
+        Ok(())
     }
 
     async fn wait_for_expected_prompt(&mut self, expected_id: &PromptId) -> Recv {
