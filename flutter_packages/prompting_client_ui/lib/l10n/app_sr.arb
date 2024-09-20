@@ -86,7 +86,7 @@
       }
     }
   },
-  "homePatternTypeMatchingFileExtension": "Одговарајући наставак фајла",
+  "homePatternTypeMatchingFileExtension": "Сви фајлови са екстензијом {fileExtension}",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptMetaDataTitle": "О овој апликацији",
   "@homePromptMetaDataTitle": {},
@@ -109,5 +109,7 @@
   "homePromptPermissionsTitle": "Овлашћења",
   "@homePromptPermissionsTitle": {},
   "homePromptPermissionsExecute": "Извршавање",
-  "@homePromptPermissionsExecute": {}
+  "@homePromptPermissionsExecute": {},
+  "promptActionOptionAllowOnce": "Дозволи једном",
+  "@promptActionOptionAllowOnce": {}
 }
