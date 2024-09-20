@@ -111,6 +111,14 @@
     "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "Visit App Center page",
     "@homePromptMetaDataAppCenterLink": {},
+    "homePromptSuggestedPermission": "Also give {permission} access",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
     "homePromptPermissionsTitle": "Permissions",
     "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "Read",

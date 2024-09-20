@@ -351,7 +351,8 @@ class Permissions extends ConsumerWidget {
       return CheckButtonList<Permission>(
         options: details.suggestedPermissions
             .whereNot(details.requestedPermissions.contains),
-        optionTitle: (option) => 'Also give ${option.localize(l10n)} access',
+        optionTitle: (option) =>
+            l10n.homePromptSuggestedPermission(option.localize(l10n)),
         hasOption: selectedPermissions.contains,
         toggleOption: notifier.togglePermission,
       );
