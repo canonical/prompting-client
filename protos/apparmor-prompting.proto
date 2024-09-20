@@ -59,7 +59,7 @@ message HomePrompt {
     string home_dir = 3;
     repeated string requested_permissions = 4;
     repeated string available_permissions = 5;
-    repeated string initial_permissions = 6;
+    repeated string suggested_permissions = 6;
     repeated PatternOption pattern_options = 7;
     int32 initial_pattern_option = 8;
     message PatternOption {

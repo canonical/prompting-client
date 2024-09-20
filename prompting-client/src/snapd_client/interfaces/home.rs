@@ -172,12 +172,12 @@ impl SnapInterface for HomeInterface {
             publisher: String::default(),
         });
 
-        // We elevate the initially selected permissions in the ui from write -> read/write
-        // in order to minimise the number of prompts users encounter in the common case that
-        // an app wants to interact with a file after writing it.
-        let mut initial_permissions = prompt.constraints.requested_permissions.clone();
+        // We elevate the suggested permissions in the ui from write -> read/write in order to
+        // minimise the number of prompts users encounter in the common case that an app wants to
+        // interact with a file after writing it.
+        let mut suggested_permissions = prompt.constraints.requested_permissions.clone();
         if prompt.constraints.is_only_write() {
-            initial_permissions.push("read".to_string());
+            suggested_permissions.push("read".to_string());
         }
 
         Ok(UiInput {
@@ -188,7 +188,7 @@ impl SnapInterface for HomeInterface {
                 home_dir: home_dir_from_env(),
                 requested_permissions: prompt.constraints.requested_permissions.clone(),
                 available_permissions: prompt.constraints.available_permissions,
-                initial_permissions,
+                suggested_permissions,
                 pattern_options,
                 initial_pattern_option,
             },
@@ -217,7 +217,7 @@ pub struct HomeUiInputData {
     pub(crate) home_dir: String,
     pub(crate) requested_permissions: Vec<String>,
     pub(crate) available_permissions: Vec<String>,
-    pub(crate) initial_permissions: Vec<String>,
+    pub(crate) suggested_permissions: Vec<String>,
     pub(crate) initial_pattern_option: usize,
     pub(crate) pattern_options: Vec<TypedPathPattern>,
 }

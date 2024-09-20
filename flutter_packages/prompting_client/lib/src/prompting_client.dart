@@ -116,7 +116,7 @@ extension PrompteDetailsConversion on PromptDetails {
             availablePermissions: response.homePrompt.availablePermissions
                 .map(PermissionConversion.fromString)
                 .toSet(),
-            initialPermissions: response.homePrompt.initialPermissions
+            suggestedPermissions: response.homePrompt.suggestedPermissions
                 .map(PermissionConversion.fromString)
                 .toSet(),
             patternOptions: response.homePrompt.patternOptions

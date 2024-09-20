@@ -349,7 +349,7 @@ class Permissions extends ConsumerWidget {
       );
     } else {
       return CheckButtonList<Permission>(
-        options: details.initialPermissions
+        options: details.suggestedPermissions
             .whereNot(details.requestedPermissions.contains),
         optionTitle: (option) => 'Also give ${option.localize(l10n)} access',
         hasOption: selectedPermissions.contains,
