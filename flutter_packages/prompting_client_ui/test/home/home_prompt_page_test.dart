@@ -490,4 +490,26 @@ void main() {
 
     expect(find.text('error message'), findsNothing);
   });
+
+  testWidgets('reveal custom path text field on error', (tester) async {
+    final container = createContainer();
+    registerMockPromptDetails(
+      promptDetails: testDetails,
+    );
+    registerMockAppArmorPromptingClient(
+      promptDetails: testDetails,
+      replyResponse: PromptReplyResponse.unknown(message: 'error message'),
+    );
+    await tester.pumpApp(
+      (_) => UncontrolledProviderScope(
+        container: container,
+        child: const PromptPage(),
+      ),
+    );
+
+    await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));
+    await tester.pumpAndSettle();
+
+    expect(find.text('error message'), findsOneWidget);
+  });
 }

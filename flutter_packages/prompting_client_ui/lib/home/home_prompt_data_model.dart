@@ -117,7 +117,14 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     final response = await getService<PromptingClient>()
         .replyToPrompt(buildReply(action: action, lifespan: lifespan));
     if (response is PromptReplyResponseUnknown) {
-      state = state.copyWith(errorMessage: response.message);
+      state = state.copyWith(
+        errorMessage: response.message,
+        showMoreOptions: true,
+        patternOption: PatternOption(
+          homePatternType: HomePatternType.customPath,
+          pathPattern: '',
+        ),
+      );
     }
     return response;
   }
