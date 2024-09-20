@@ -396,7 +396,7 @@ class HomePrompt extends $pb.GeneratedMessage {
     $core.String? homeDir,
     $core.Iterable<$core.String>? requestedPermissions,
     $core.Iterable<$core.String>? availablePermissions,
-    $core.Iterable<$core.String>? initialPermissions,
+    $core.Iterable<$core.String>? suggestedPermissions,
     $core.Iterable<HomePrompt_PatternOption>? patternOptions,
     $core.int? initialPatternOption,
   }) {
@@ -416,8 +416,8 @@ class HomePrompt extends $pb.GeneratedMessage {
     if (availablePermissions != null) {
       $result.availablePermissions.addAll(availablePermissions);
     }
-    if (initialPermissions != null) {
-      $result.initialPermissions.addAll(initialPermissions);
+    if (suggestedPermissions != null) {
+      $result.suggestedPermissions.addAll(suggestedPermissions);
     }
     if (patternOptions != null) {
       $result.patternOptions.addAll(patternOptions);
@@ -437,7 +437,7 @@ class HomePrompt extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'homeDir')
     ..pPS(4, _omitFieldNames ? '' : 'requestedPermissions')
     ..pPS(5, _omitFieldNames ? '' : 'availablePermissions')
-    ..pPS(6, _omitFieldNames ? '' : 'initialPermissions')
+    ..pPS(6, _omitFieldNames ? '' : 'suggestedPermissions')
     ..pc<HomePrompt_PatternOption>(7, _omitFieldNames ? '' : 'patternOptions', $pb.PbFieldType.PM, subBuilder: HomePrompt_PatternOption.create)
     ..a<$core.int>(8, _omitFieldNames ? '' : 'initialPatternOption', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -500,7 +500,7 @@ class HomePrompt extends $pb.GeneratedMessage {
   $core.List<$core.String> get availablePermissions => $_getList(4);
 
   @$pb.TagNumber(6)
-  $core.List<$core.String> get initialPermissions => $_getList(5);
+  $core.List<$core.String> get suggestedPermissions => $_getList(5);
 
   @$pb.TagNumber(7)
   $core.List<HomePrompt_PatternOption> get patternOptions => $_getList(6);
@@ -669,6 +669,56 @@ class ResolveHomePatternTypeResponse extends $pb.GeneratedMessage {
   $core.bool hasHomePatternType() => $_has(0);
   @$pb.TagNumber(1)
   void clearHomePatternType() => clearField(1);
+}
+
+class SetLoggingFilterResponse extends $pb.GeneratedMessage {
+  factory SetLoggingFilterResponse({
+    $core.String? current,
+  }) {
+    final $result = create();
+    if (current != null) {
+      $result.current = current;
+    }
+    return $result;
+  }
+  SetLoggingFilterResponse._() : super();
+  factory SetLoggingFilterResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory SetLoggingFilterResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'SetLoggingFilterResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'current')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  SetLoggingFilterResponse clone() => SetLoggingFilterResponse()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  SetLoggingFilterResponse copyWith(void Function(SetLoggingFilterResponse) updates) => super.copyWith((message) => updates(message as SetLoggingFilterResponse)) as SetLoggingFilterResponse;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static SetLoggingFilterResponse create() => SetLoggingFilterResponse._();
+  SetLoggingFilterResponse createEmptyInstance() => create();
+  static $pb.PbList<SetLoggingFilterResponse> createRepeated() => $pb.PbList<SetLoggingFilterResponse>();
+  @$core.pragma('dart2js:noInline')
+  static SetLoggingFilterResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<SetLoggingFilterResponse>(create);
+  static SetLoggingFilterResponse? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get current => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set current($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasCurrent() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearCurrent() => clearField(1);
 }
 
 

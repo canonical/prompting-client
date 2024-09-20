@@ -266,7 +266,7 @@ fn map_home_response(input: UiInput<HomeInterface>) -> Prompt {
         home_dir,
         requested_permissions,
         available_permissions,
-        initial_permissions,
+        suggested_permissions,
         initial_pattern_option,
         pattern_options,
     } = input.data;
@@ -282,7 +282,7 @@ fn map_home_response(input: UiInput<HomeInterface>) -> Prompt {
         requested_path,
         home_dir,
         requested_permissions,
-        initial_permissions,
+        suggested_permissions,
         available_permissions,
         initial_pattern_option: initial_pattern_option as i32,
         pattern_options: pattern_options
@@ -466,7 +466,7 @@ mod tests {
                 home_dir: "7".to_string(),
                 requested_permissions: Vec::new(),
                 available_permissions: Vec::new(),
-                initial_permissions: Vec::new(),
+                suggested_permissions: Vec::new(),
                 pattern_options: Vec::new(),
                 initial_pattern_option: 0,
             },
@@ -486,7 +486,7 @@ mod tests {
             home_dir: "7".to_string(),
             requested_permissions: Vec::new(),
             available_permissions: Vec::new(),
-            initial_permissions: Vec::new(),
+            suggested_permissions: Vec::new(),
             pattern_options: Vec::new(),
             initial_pattern_option: 0,
         })

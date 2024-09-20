@@ -52,7 +52,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
             )
           : details.patternOptions.toList()[details.initialPatternOption
               .clamp(0, details.patternOptions.length - 1)],
-      permissions: details.initialPermissions,
+      permissions: details.requestedPermissions,
       customPath: details.requestedPath,
     );
   }
@@ -100,9 +100,9 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     if (state.showMoreOptions) {
       state = state.copyWith(
         showMoreOptions: false,
-        // Remove permissions that were not initially requested when hiding more options
+        // Remove permissions that were not initially suggested when hiding more options
         permissions: state.details.requestedPermissions.union(
-          state.permissions.intersection(state.details.initialPermissions),
+          state.permissions.intersection(state.details.suggestedPermissions),
         ),
       );
     } else {

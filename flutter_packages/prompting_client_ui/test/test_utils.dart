@@ -58,7 +58,7 @@ PromptDetails mockPromptDetailsHome({
   String? homeDir,
   Set<Permission>? requestedPermissions,
   Set<Permission>? availablePermissions,
-  Set<Permission>? initialPermissions,
+  Set<Permission>? suggestedPermissions,
   Set<PatternOption>? patternOptions,
 }) =>
     PromptDetails.home(
@@ -73,7 +73,7 @@ PromptDetails mockPromptDetailsHome({
       homeDir: homeDir ?? '',
       requestedPermissions: requestedPermissions ?? {},
       availablePermissions: availablePermissions ?? {},
-      initialPermissions: initialPermissions ?? {},
+      suggestedPermissions: suggestedPermissions ?? {},
       patternOptions: patternOptions ?? {},
     );
 

@@ -107,7 +107,7 @@ pub struct HomePrompt {
     #[prost(string, repeated, tag = "5")]
     pub available_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     #[prost(string, repeated, tag = "6")]
-    pub initial_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    pub suggested_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     #[prost(message, repeated, tag = "7")]
     pub pattern_options: ::prost::alloc::vec::Vec<home_prompt::PatternOption>,
     #[prost(int32, tag = "8")]

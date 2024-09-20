@@ -149,7 +149,7 @@ const HomePrompt$json = {
     {'1': 'home_dir', '3': 3, '4': 1, '5': 9, '10': 'homeDir'},
     {'1': 'requested_permissions', '3': 4, '4': 3, '5': 9, '10': 'requestedPermissions'},
     {'1': 'available_permissions', '3': 5, '4': 3, '5': 9, '10': 'availablePermissions'},
-    {'1': 'initial_permissions', '3': 6, '4': 3, '5': 9, '10': 'initialPermissions'},
+    {'1': 'suggested_permissions', '3': 6, '4': 3, '5': 9, '10': 'suggestedPermissions'},
     {'1': 'pattern_options', '3': 7, '4': 3, '5': 11, '6': '.apparmor_prompting.HomePrompt.PatternOption', '10': 'patternOptions'},
     {'1': 'initial_pattern_option', '3': 8, '4': 1, '5': 5, '10': 'initialPatternOption'},
   ],
@@ -172,13 +172,14 @@ final $typed_data.Uint8List homePromptDescriptor = $convert.base64Decode(
     'RhRGF0YVIIbWV0YURhdGESJQoOcmVxdWVzdGVkX3BhdGgYAiABKAlSDXJlcXVlc3RlZFBhdGgS'
     'GQoIaG9tZV9kaXIYAyABKAlSB2hvbWVEaXISMwoVcmVxdWVzdGVkX3Blcm1pc3Npb25zGAQgAy'
     'gJUhRyZXF1ZXN0ZWRQZXJtaXNzaW9ucxIzChVhdmFpbGFibGVfcGVybWlzc2lvbnMYBSADKAlS'
-    'FGF2YWlsYWJsZVBlcm1pc3Npb25zEi8KE2luaXRpYWxfcGVybWlzc2lvbnMYBiADKAlSEmluaX'
-    'RpYWxQZXJtaXNzaW9ucxJVCg9wYXR0ZXJuX29wdGlvbnMYByADKAsyLC5hcHBhcm1vcl9wcm9t'
-    'cHRpbmcuSG9tZVByb21wdC5QYXR0ZXJuT3B0aW9uUg5wYXR0ZXJuT3B0aW9ucxI0ChZpbml0aW'
-    'FsX3BhdHRlcm5fb3B0aW9uGAggASgFUhRpbml0aWFsUGF0dGVybk9wdGlvbhqqAQoNUGF0dGVy'
-    'bk9wdGlvbhJPChFob21lX3BhdHRlcm5fdHlwZRgBIAEoDjIjLmFwcGFybW9yX3Byb21wdGluZy'
-    '5Ib21lUGF0dGVyblR5cGVSD2hvbWVQYXR0ZXJuVHlwZRIhCgxwYXRoX3BhdHRlcm4YAiABKAlS'
-    'C3BhdGhQYXR0ZXJuEiUKDnNob3dfaW5pdGlhbGx5GAMgASgIUg1zaG93SW5pdGlhbGx5');
+    'FGF2YWlsYWJsZVBlcm1pc3Npb25zEjMKFXN1Z2dlc3RlZF9wZXJtaXNzaW9ucxgGIAMoCVIUc3'
+    'VnZ2VzdGVkUGVybWlzc2lvbnMSVQoPcGF0dGVybl9vcHRpb25zGAcgAygLMiwuYXBwYXJtb3Jf'
+    'cHJvbXB0aW5nLkhvbWVQcm9tcHQuUGF0dGVybk9wdGlvblIOcGF0dGVybk9wdGlvbnMSNAoWaW'
+    '5pdGlhbF9wYXR0ZXJuX29wdGlvbhgIIAEoBVIUaW5pdGlhbFBhdHRlcm5PcHRpb24aqgEKDVBh'
+    'dHRlcm5PcHRpb24STwoRaG9tZV9wYXR0ZXJuX3R5cGUYASABKA4yIy5hcHBhcm1vcl9wcm9tcH'
+    'RpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5cGUSIQoMcGF0aF9wYXR0ZXJuGAIg'
+    'ASgJUgtwYXRoUGF0dGVybhIlCg5zaG93X2luaXRpYWxseRgDIAEoCFINc2hvd0luaXRpYWxseQ'
+    '==');
 
 @$core.Deprecated('Use metaDataDescriptor instead')
 const MetaData$json = {
@@ -211,4 +212,16 @@ final $typed_data.Uint8List resolveHomePatternTypeResponseDescriptor = $convert.
     'Ch5SZXNvbHZlSG9tZVBhdHRlcm5UeXBlUmVzcG9uc2USTwoRaG9tZV9wYXR0ZXJuX3R5cGUYAS'
     'ABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5'
     'cGU=');
+
+@$core.Deprecated('Use setLoggingFilterResponseDescriptor instead')
+const SetLoggingFilterResponse$json = {
+  '1': 'SetLoggingFilterResponse',
+  '2': [
+    {'1': 'current', '3': 1, '4': 1, '5': 9, '10': 'current'},
+  ],
+};
+
+/// Descriptor for `SetLoggingFilterResponse`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List setLoggingFilterResponseDescriptor = $convert.base64Decode(
+    'ChhTZXRMb2dnaW5nRmlsdGVyUmVzcG9uc2USGAoHY3VycmVudBgBIAEoCVIHY3VycmVudA==');
 

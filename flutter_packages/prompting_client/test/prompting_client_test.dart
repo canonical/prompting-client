@@ -29,7 +29,7 @@ void main() {
         homeDir: '/home/user',
         requestedPermissions: ['write'],
         availablePermissions: ['read', 'write', 'execute'],
-        initialPermissions: ['read', 'write'],
+        suggestedPermissions: ['read', 'write'],
         patternOptions: [
           pb.HomePrompt_PatternOption(
             homePatternType: pb.HomePatternType.REQUESTED_DIRECTORY,
@@ -59,7 +59,7 @@ void main() {
             Permission.write,
             Permission.execute,
           },
-          initialPermissions: {Permission.read, Permission.write},
+          suggestedPermissions: {Permission.read, Permission.write},
           patternOptions: {
             PatternOption(
               homePatternType: HomePatternType.requestedDirectory,

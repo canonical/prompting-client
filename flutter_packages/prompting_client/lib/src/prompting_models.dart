@@ -57,7 +57,7 @@ sealed class PromptDetails with _$PromptDetails {
     required String homeDir,
     required Set<Permission> requestedPermissions,
     required Set<Permission> availablePermissions,
-    required Set<Permission> initialPermissions,
+    required Set<Permission> suggestedPermissions,
     required Set<PatternOption> patternOptions,
     @Default(0) int initialPatternOption,
   }) = PromptDetailsHome;

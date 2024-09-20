@@ -35,6 +35,10 @@ class AppArmorPromptingClient extends $grpc.Client {
       '/apparmor_prompting.AppArmorPrompting/ResolveHomePatternType',
       ($2.StringValue value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $1.ResolveHomePatternTypeResponse.fromBuffer(value));
+  static final _$setLoggingFilter = $grpc.ClientMethod<$2.StringValue, $1.SetLoggingFilterResponse>(
+      '/apparmor_prompting.AppArmorPrompting/SetLoggingFilter',
+      ($2.StringValue value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $1.SetLoggingFilterResponse.fromBuffer(value));
 
   AppArmorPromptingClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -52,6 +56,10 @@ class AppArmorPromptingClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$1.ResolveHomePatternTypeResponse> resolveHomePatternType($2.StringValue request, {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$resolveHomePatternType, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$1.SetLoggingFilterResponse> setLoggingFilter($2.StringValue request, {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$setLoggingFilter, request, options: options);
   }
 }
 
@@ -81,6 +89,13 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
         ($1.ResolveHomePatternTypeResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$2.StringValue, $1.SetLoggingFilterResponse>(
+        'SetLoggingFilter',
+        setLoggingFilter_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($1.SetLoggingFilterResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$1.GetCurrentPromptResponse> getCurrentPrompt_Pre($grpc.ServiceCall call, $async.Future<$0.Empty> request) async {
@@ -95,7 +110,12 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
     return resolveHomePatternType(call, await request);
   }
 
+  $async.Future<$1.SetLoggingFilterResponse> setLoggingFilter_Pre($grpc.ServiceCall call, $async.Future<$2.StringValue> request) async {
+    return setLoggingFilter(call, await request);
+  }
+
   $async.Future<$1.GetCurrentPromptResponse> getCurrentPrompt($grpc.ServiceCall call, $0.Empty request);
   $async.Future<$1.PromptReplyResponse> replyToPrompt($grpc.ServiceCall call, $1.PromptReply request);
   $async.Future<$1.ResolveHomePatternTypeResponse> resolveHomePatternType($grpc.ServiceCall call, $2.StringValue request);
+  $async.Future<$1.SetLoggingFilterResponse> setLoggingFilter($grpc.ServiceCall call, $2.StringValue request);
 }
