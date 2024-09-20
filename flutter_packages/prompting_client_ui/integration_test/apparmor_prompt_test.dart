@@ -66,9 +66,7 @@ void main() {
     await tester
         .ensureVisibleAndTap(find.text(Lifespan.forever.localize(tester.l10n)));
 
-    // De-select 'read' permission, select 'execute' permission
-    await tester
-        .ensureVisibleAndTap(find.text(Permission.read.localize(tester.l10n)));
+    // Select 'execute' permission
     await tester.ensureVisibleAndTap(
       find.text(Permission.execute.localize(tester.l10n)),
     );
