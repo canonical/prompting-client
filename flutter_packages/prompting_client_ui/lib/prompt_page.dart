@@ -39,11 +39,14 @@ class PromptPage extends ConsumerWidget {
             }
 
             return SizeChangedLayoutNotifier(
-              child: Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: switch (prompt) {
-                  PromptDetailsHome() => const HomePromptPage(),
-                },
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 560),
+                child: Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: switch (prompt) {
+                    PromptDetailsHome() => const HomePromptPage(),
+                  },
+                ),
               ),
             );
           },
