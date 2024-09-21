@@ -97,7 +97,7 @@
   "@homePromptPermissionsExecute": {},
   "securityCenterInfo": "Вы всегда можете изменить эти разрешения в приложении <Центр безопасности>",
   "@securityCenterInfo": {},
-  "promptAccessTitle": "Предоставить {snap} {permission} доступ к:",
+  "promptAccessTitle": "Доступ на {permission} для {snap}:",
   "@promptAccessTitle": {
     "placeholders": {
       "snap": {
@@ -114,6 +114,14 @@
   "@promptAccessMoreOptionsTitle": {
     "placeholders": {
       "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptSuggestedPermission": "Также дать доступ на {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
         "type": "String"
       }
     }
