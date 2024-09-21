@@ -111,5 +111,13 @@
     }
   },
   "promptActionOptionAllowOnce": "Permesi unu fojon",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Ankaŭ permesi {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
