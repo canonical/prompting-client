@@ -9,7 +9,7 @@
       }
     }
   },
-  "promptActionOptionAllowAlways": "Zezwól zawsze",
+  "promptActionOptionAllowAlways": "Zezwalaj zawsze",
   "@promptActionOptionAllowAlways": {},
   "promptAccessTitle": "Udziel {snap} dostępu {permission} do:",
   "@promptAccessTitle": {
@@ -90,7 +90,7 @@
   "@homePatternTypeRequestedFile": {},
   "homePatternTypeContainingDirectory": "Wszystko w katalogu",
   "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeHomeDirectory": "Wszystko w katalogu osobistym",
+  "homePatternTypeHomeDirectory": "Wszystko w katalogu domowym",
   "@homePatternTypeHomeDirectory": {},
   "homePromptMetaDataLastUpdated": "Ostatnio zaktualizowany dnia {date}",
   "@homePromptMetaDataLastUpdated": {
@@ -111,5 +111,13 @@
   "homePromptPermissionsExecute": "Wykonywanie",
   "@homePromptPermissionsExecute": {},
   "promptActionOptionAllowOnce": "Zezwól raz",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Udziel także dostępu {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
