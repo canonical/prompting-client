@@ -1,5 +1,5 @@
 {
-  "promptAccessMoreOptionsTitle": "Nastaviť prístup pre aplikáciu {snap} na:",
+  "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
   "@promptAccessMoreOptionsTitle": {
     "placeholders": {
       "snap": {
@@ -79,7 +79,7 @@
   "@securityCenterInfo": {},
   "promptActionOptionAllowAlways": "Vždy povoliť",
   "@promptActionOptionAllowAlways": {},
-  "promptAccessTitle": "Poskytnúť aplikácii {snap} oprávnenie {permission} prístupu k:",
+  "promptAccessTitle": "Udeľte {snap} na {permission} prístup k:",
   "@promptAccessTitle": {
     "placeholders": {
       "snap": {
@@ -94,7 +94,7 @@
   "@homePatternInfo": {},
   "homePatternTypeRequestedFile": "Iba požadovaný súbor",
   "@homePatternTypeRequestedFile": {},
-  "homePromptBody": "Povoliť aplikácii {snap} mať oprávnenia {permissions} prístupu k {path}?",
+  "homePromptBody": "Povoliť {snap} mať na {permissions} prístup k {path}?",
   "@homePromptBody": {
     "placeholders": {
       "snap": {
@@ -111,5 +111,13 @@
   "homePromptMoreOptionsLabel": "Viac možností...",
   "@homePromptMoreOptionsLabel": {},
   "promptActionOptionAllowOnce": "Raz povoliť",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Udeliť prístup aj na {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
