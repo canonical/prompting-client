@@ -26,7 +26,7 @@
   "@promptActionOptionAllowAlways": {},
   "promptActionOptionDeny": "Nægt",
   "@promptActionOptionDeny": {},
-  "promptActionOptionDenyOnce": "Nægt én gang",
+  "promptActionOptionDenyOnce": "Nægt denne gang",
   "@promptActionOptionDenyOnce": {},
   "promptActionTitle": "Handling",
   "@promptActionTitle": {},
@@ -34,7 +34,7 @@
   "@promptLifespanOptionForever": {},
   "homePatternTypeCustomPath": "Tilpasset stimønster",
   "@homePatternTypeCustomPath": {},
-  "homePromptBody": "Tillad, at {snap} har {permissions} adgang til {path}?",
+  "homePromptBody": "Tillad, at {snap} har “{permissions}”-adgang til {path}?",
   "@homePromptBody": {
     "placeholders": {
       "snap": {
@@ -92,7 +92,7 @@
   "@promptLifespanTitle": {},
   "promptSaveAndContinue": "Gem og fortsæt",
   "@promptSaveAndContinue": {},
-  "promptTitle": "Sikkerhedsunderetning",
+  "promptTitle": "Sikkerhedsunderretning",
   "@promptTitle": {},
   "homePatternTypeRequestedFile": "Kun den ønskede fil",
   "@homePatternTypeRequestedFile": {},
@@ -116,6 +116,14 @@
   "@homePromptPermissionsRead": {},
   "homePromptPermissionsWrite": "Skriv",
   "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Udfør",
-  "@homePromptPermissionsExecute": {}
+  "homePromptPermissionsExecute": "Eksekvér",
+  "@homePromptPermissionsExecute": {},
+  "homePromptSuggestedPermission": "Giv også “{permission}”-adgang",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
