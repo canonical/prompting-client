@@ -11,7 +11,7 @@
       }
     }
   },
-  "promptAccessTitle": "Giv {snap} {permission} adgang til:",
+  "promptAccessTitle": "Giv {snap} {permission}-adgang til:",
   "@promptAccessTitle": {
     "placeholders": {
       "snap": {
@@ -34,7 +34,7 @@
   "@promptLifespanOptionForever": {},
   "homePatternTypeCustomPath": "Tilpasset stimønster",
   "@homePatternTypeCustomPath": {},
-  "homePromptBody": "Tillad, at {snap} har “{permissions}”-adgang til {path}?",
+  "homePromptBody": "Tillad, at {snap} har {permissions}-adgang til {path}?",
   "@homePromptBody": {
     "placeholders": {
       "snap": {
@@ -112,13 +112,13 @@
   "@homePatternTypeContainingDirectory": {},
   "homePatternTypeHomeDirectory": "Alt i hjemmemappen",
   "@homePatternTypeHomeDirectory": {},
-  "homePromptPermissionsRead": "Læs",
+  "homePromptPermissionsRead": "Læse",
   "@homePromptPermissionsRead": {},
-  "homePromptPermissionsWrite": "Skriv",
+  "homePromptPermissionsWrite": "Skrive",
   "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Eksekvér",
+  "homePromptPermissionsExecute": "Kørsel",
   "@homePromptPermissionsExecute": {},
-  "homePromptSuggestedPermission": "Giv også “{permission}”-adgang",
+  "homePromptSuggestedPermission": "Giv også {permission}-adgang",
   "@homePromptSuggestedPermission": {
     "placeholders": {
       "permission": {
