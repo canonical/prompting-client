@@ -111,5 +111,13 @@
     }
   },
   "promptActionOptionAllowOnce": "Povolit jednou",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Poskytnout také přístup k {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
