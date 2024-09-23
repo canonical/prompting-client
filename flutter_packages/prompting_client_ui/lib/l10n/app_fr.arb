@@ -117,5 +117,13 @@
     }
   },
   "homePatternTypeHomeDirectory": "Tout dans le dossier personnel",
-  "@homePatternTypeHomeDirectory": {}
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptSuggestedPermission": "Donner également l'accès en {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
