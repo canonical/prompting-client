@@ -7,6 +7,7 @@ import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/fake_prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/prompt_page.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:ubuntu_service/ubuntu_service.dart';
 import 'package:yaru/yaru.dart';
@@ -77,8 +78,8 @@ class PromptDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return YaruTheme(
       builder: (context, yaru, child) => MaterialApp(
-        theme: yaru.theme,
-        darkTheme: yaru.darkTheme,
+        theme: yaru.theme?.customize(),
+        darkTheme: yaru.darkTheme?.customize(),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: localizationsDelegates,
         supportedLocales: supportedLocales,
