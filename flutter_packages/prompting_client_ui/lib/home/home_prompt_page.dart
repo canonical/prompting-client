@@ -308,6 +308,7 @@ class _CustomPathTextField extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
+          style: Theme.of(context).textTheme.bodyMedium,
           initialValue: customPath,
           onChanged: notifier.setCustomPath,
           decoration: InputDecoration(
