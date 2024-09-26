@@ -77,8 +77,11 @@ fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(S
 macro_rules! expect_single_prompt {
     ($c:expr, $expected_path:expr, $expected_permissions:expr) => {
         async {
-            let mut pending = match $c.pending_prompt_ids().await {
-                Ok(pending) => pending,
+            let mut pending: Vec<_> = match $c.pending_prompt_notices().await {
+                Ok(pending) => pending
+                    .into_iter()
+                    .flat_map(|n| n.into_option_id())
+                    .collect(),
                 Err(e) => panic!("error pulling pending prompts: {e}"),
             };
             assert_eq!(pending.len(), 1, "expected a single prompt");

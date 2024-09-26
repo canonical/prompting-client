@@ -13,8 +13,8 @@ pub mod interfaces;
 mod prompt;
 
 pub use prompt::{
-    Action, Lifespan, Prompt, PromptId, PromptReply, TypedPrompt, TypedPromptReply, TypedUiInput,
-    UiInput,
+    Action, Lifespan, Prompt, PromptId, PromptNotice, PromptReply, TypedPrompt, TypedPromptReply,
+    TypedUiInput, UiInput,
 };
 
 const FEATURE_NAME: &str = "apparmor-prompting";
@@ -169,20 +169,35 @@ where
     ///
     /// Calling this method will update our [Self::notices_after] field when we successfully obtain
     /// new notices from snapd.
-    pub async fn pending_prompt_ids(&mut self) -> Result<Vec<PromptId>> {
+    ///
+    /// Notices from snapd have an optional top level key of 'last-data' which can contain
+    /// metadata that allows us to filter what IDs we need to look at. If the 'resolved' key is
+    /// present and if its value is 'replied' then this is snapd telling us that a prompt has
+    /// been actioned and we should clear any internal state we have associated with that ID.
+    pub async fn pending_prompt_notices(&mut self) -> Result<Vec<PromptNotice>> {
         let path = format!(
             "notices?types={NOTICE_TYPES}&timeout={LONG_POLL_TIMEOUT}&after={}",
             self.notices_after
         );
 
-        let notices: Vec<Notice> = self.client.get_json(&path).await?;
-        if let Some(n) = notices.last() {
+        let raw_notices: Vec<Notice> = self.client.get_json(&path).await?;
+        if let Some(n) = raw_notices.last() {
             n.last_occurred.clone_into(&mut self.notices_after);
         }
 
-        debug!("received notices: {notices:?}");
+        debug!("received notices: {raw_notices:?}");
 
-        return Ok(notices.into_iter().map(|n| n.key).collect());
+        let notices: Vec<PromptNotice> = raw_notices
+            .into_iter()
+            .map(|n| match n.last_data {
+                Some(LastData { resolved: Some(s) }) if s == "replied" => {
+                    PromptNotice::Resolved(n.key)
+                }
+                _ => PromptNotice::Update(n.key),
+            })
+            .collect();
+
+        return Ok(notices);
 
         // serde structs
 
@@ -191,9 +206,18 @@ where
         struct Notice {
             key: PromptId,
             last_occurred: String,
+            #[serde(default)]
+            last_data: Option<LastData>,
             #[allow(dead_code)]
             #[serde(flatten)]
             extra: HashMap<String, serde_json::Value>,
+        }
+
+        #[derive(Debug, Deserialize)]
+        #[serde(rename_all = "kebab-case")]
+        struct LastData {
+            #[serde(default)]
+            resolved: Option<String>,
         }
     }
 

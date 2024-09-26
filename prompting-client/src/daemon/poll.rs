@@ -6,7 +6,7 @@
 //! mapping into the data required for the prompt UI.
 use crate::{
     daemon::{EnrichedPrompt, PromptUpdate},
-    snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt},
+    snapd_client::{PromptId, PromptNotice, SnapMeta, SnapdSocketClient, TypedPrompt},
     Error,
 };
 use cached::proc_macro::cached;
@@ -66,8 +66,8 @@ impl PollLoop {
 
         while self.running {
             info!("polling for notices");
-            let pending = match self.client.pending_prompt_ids().await {
-                Ok(pending) => pending,
+            let notices = match self.client.pending_prompt_notices().await {
+                Ok(notices) => notices,
 
                 Err(Error::SnapdError {
                     status: StatusCode::FORBIDDEN,
@@ -94,9 +94,12 @@ impl PollLoop {
             };
 
             retries = 0;
-            debug!(?pending, "processing notices");
-            for id in pending {
-                self.pull_and_process_prompt(id).await;
+            debug!(?notices, "processing notices");
+            for notice in notices {
+                match notice {
+                    PromptNotice::Update(id) => self.pull_and_process_prompt(id).await,
+                    PromptNotice::Resolved(id) => self.send_update(PromptUpdate::Drop(id)),
+                }
             }
         }
     }
@@ -161,18 +164,22 @@ impl PollLoop {
         // the ones that we need to provide for the notices API, so we deliberately set up an
         // overlap between pulling all pending prompts first before pulling pending prompt IDs
         // and updating our internal `after` timestamp.
-        let pending = match self.client.pending_prompt_ids().await {
-            Ok(pending) => pending,
+        let notices = match self.client.pending_prompt_notices().await {
+            Ok(notices) => notices,
             Err(error) => {
                 error!(%error, "unable to pull pending prompt ids");
                 return;
             }
         };
 
-        for id in pending {
-            if !seen.contains(&id) {
-                self.pull_and_process_prompt(id).await;
-            }
+        for notice in notices {
+            match notice {
+                PromptNotice::Update(id) if !seen.contains(&id) => {
+                    self.pull_and_process_prompt(id).await
+                }
+
+                _ => (),
+            };
         }
     }
 }
