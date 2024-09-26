@@ -211,16 +211,6 @@ pub enum PromptNotice {
     Resolved(PromptId),
 }
 
-impl PromptNotice {
-    /// Flatten this notice into the enclosed ID if it was an update
-    pub fn into_option_id(self) -> Option<PromptId> {
-        match self {
-            Self::Update(id) => Some(id),
-            _ => None,
-        }
-    }
-}
-
 #[derive(
     Debug, Default, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, Display, EnumString,
 )]

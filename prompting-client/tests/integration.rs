@@ -11,7 +11,7 @@ use prompting_client::{
     prompt_sequence::MatchError,
     snapd_client::{
         interfaces::{home::HomeInterface, SnapInterface},
-        Action, Lifespan, PromptId, SnapdSocketClient, TypedPrompt,
+        Action, Lifespan, PromptId, PromptNotice, SnapdSocketClient, TypedPrompt,
     },
     Error, Result,
 };
@@ -80,7 +80,10 @@ macro_rules! expect_single_prompt {
             let mut pending: Vec<_> = match $c.pending_prompt_notices().await {
                 Ok(pending) => pending
                     .into_iter()
-                    .flat_map(|n| n.into_option_id())
+                    .flat_map(|n| match n {
+                        PromptNotice::Update(id) => Some(id),
+                        _ => None,
+                    })
                     .collect(),
                 Err(e) => panic!("error pulling pending prompts: {e}"),
             };
