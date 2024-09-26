@@ -11,7 +11,7 @@ use prompting_client::{
     prompt_sequence::MatchError,
     snapd_client::{
         interfaces::{home::HomeInterface, SnapInterface},
-        Action, Lifespan, PromptId, SnapdSocketClient, TypedPrompt,
+        Action, Lifespan, PromptId, PromptNotice, SnapdSocketClient, TypedPrompt,
     },
     Error, Result,
 };
@@ -77,8 +77,14 @@ fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(S
 macro_rules! expect_single_prompt {
     ($c:expr, $expected_path:expr, $expected_permissions:expr) => {
         async {
-            let mut pending = match $c.pending_prompt_ids().await {
-                Ok(pending) => pending,
+            let mut pending: Vec<_> = match $c.pending_prompt_notices().await {
+                Ok(pending) => pending
+                    .into_iter()
+                    .flat_map(|n| match n {
+                        PromptNotice::Update(id) => Some(id),
+                        _ => None,
+                    })
+                    .collect(),
                 Err(e) => panic!("error pulling pending prompts: {e}"),
             };
             assert_eq!(pending.len(), 1, "expected a single prompt");

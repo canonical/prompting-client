@@ -6,7 +6,7 @@ use crate::{
             home::{HomeConstraintsFilter, HomeInterface},
             SnapInterface,
         },
-        Action, PromptId, SnapdSocketClient, TypedPrompt, TypedPromptReply,
+        Action, PromptId, PromptNotice, SnapdSocketClient, TypedPrompt, TypedPromptReply,
     },
     Error, Result, SNAP_NAME,
 };
@@ -19,10 +19,15 @@ use tracing::{debug, error, info, warn};
 /// loop until at least one un-actioned prompt is encountered.
 async fn grace_period_deny_and_error(snapd_client: &mut SnapdSocketClient) -> Result<()> {
     loop {
-        let ids = snapd_client.pending_prompt_ids().await?;
-        let mut prompts = Vec::with_capacity(ids.len());
+        let notices = snapd_client.pending_prompt_notices().await?;
+        let mut prompts = Vec::with_capacity(notices.len());
 
-        for id in ids {
+        for notice in notices {
+            let id = match notice {
+                PromptNotice::Update(id) => id,
+                _ => continue,
+            };
+
             let prompt = match snapd_client.prompt_details(&id).await {
                 Ok(p) => p,
                 Err(_) => continue,
@@ -76,8 +81,13 @@ impl ScriptedClient {
 
         tokio::task::spawn(async move {
             loop {
-                let pending = snapd_client.pending_prompt_ids().await.unwrap();
-                for id in pending {
+                let notices = snapd_client.pending_prompt_notices().await.unwrap();
+                for notice in notices {
+                    let id = match notice {
+                        PromptNotice::Update(id) => id,
+                        _ => continue,
+                    };
+
                     match snapd_client.prompt_details(&id).await {
                         Ok(TypedPrompt::Home(inner)) if filter.matches(&inner).is_success() => {
                             debug!("allowing read of script file");
