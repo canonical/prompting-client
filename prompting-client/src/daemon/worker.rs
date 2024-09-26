@@ -77,7 +77,6 @@ where
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
     active_prompt: Arc<Mutex<Option<TypedUiInput>>>,
     pending_prompts: VecDeque<EnrichedPrompt>,
-    prompts_to_drop: Vec<PromptId>,
     dead_prompts: Vec<PromptId>,
     recv_timeout: Duration,
     ui: S,
@@ -99,7 +98,6 @@ impl Worker<FlutterUi, SnapdSocketClient> {
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
             pending_prompts: VecDeque::new(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: Vec::new(),
             recv_timeout: RECV_TIMEOUT,
             ui: FlutterUi { cmd },
@@ -159,28 +157,18 @@ where
         }
     }
 
+    fn drop_prompt(&mut self, id: PromptId) {
+        let len = self.pending_prompts.len();
+        self.pending_prompts.retain(|ep| ep.prompt.id() != &id);
+        if self.pending_prompts.len() < len {
+            info!(id=%id.0, "dropping prompt as it has already been actioned");
+        }
+    }
+
     fn process_update(&mut self, update: PromptUpdate) {
         match update {
-            PromptUpdate::Add(ep) if self.prompts_to_drop.contains(ep.prompt.id()) => {
-                info!(id=%ep.prompt.id().0, "dropping prompt as it has already been actioned");
-                self.prompts_to_drop.retain(|id| id != ep.prompt.id());
-            }
-
             PromptUpdate::Add(ep) => self.pending_prompts.push_back(ep),
-
-            PromptUpdate::Drop(id) => {
-                // If this prompt was already pending then remove it now, otherwise keep track of
-                // it as one to drop as and when it comes in
-                let len = self.pending_prompts.len();
-                self.pending_prompts.retain(|ep| ep.prompt.id() != &id);
-                if self.pending_prompts.len() < len {
-                    info!(id=%id.0, "dropping prompt as it has already been actioned");
-                } else {
-                    // TODO: do we need to worry about this growing unchecked if we get bogus
-                    // prompt IDs through that are never going to be cleared out?
-                    self.prompts_to_drop.push(id);
-                }
-            }
+            PromptUpdate::Drop(id) => self.drop_prompt(id),
         }
     }
 
@@ -252,8 +240,12 @@ where
         match timeout(self.recv_timeout, self.rx_actioned_prompts.recv()).await {
             Ok(Some(ActionedPrompt::Actioned { id, others })) => {
                 debug!(recv_id=%id.0, "reply sent for prompt");
-                debug!(to_drop=?others, "updating prompts to drop");
-                self.prompts_to_drop.extend(others);
+                if !others.is_empty() {
+                    debug!(to_drop=?others, "dropping prompts actioned by last reply");
+                    for id in others {
+                        self.drop_prompt(id);
+                    }
+                }
 
                 if self.dead_prompts.contains(&id) {
                     warn!(id=%id.0, "reply was for a dead prompt");
@@ -361,7 +353,6 @@ mod tests {
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
             pending_prompts: [ep("1")].into_iter().collect(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: Vec::new(),
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -380,32 +371,20 @@ mod tests {
         );
     }
 
-    #[test_case(add("1"), &[], &[], &["1"], &[]; "add new prompt")]
-    #[test_case(add("1"), &[], &["1"], &[], &[]; "add prompt that we have been told to drop")]
-    #[test_case(drop_id("1"), &["1"], &[], &[], &[]; "drop for pending prompt")]
-    #[test_case(drop_id("1"), &[], &[], &[], &["1"]; "drop prompt not seen yet")]
+    #[test_case(add("1"), &[], &["1"]; "add new prompt")]
+    #[test_case(drop_id("1"), &["1"], &[]; "drop for pending prompt")]
+    #[test_case(drop_id("1"), &[], &[]; "drop prompt not seen yet")]
     #[test]
-    fn process_update(
-        update: PromptUpdate,
-        current_pending: &[&str],
-        current_to_drop: &[&str],
-        expected_pending: &[&str],
-        expected_to_drop: &[&str],
-    ) {
+    fn process_update(update: PromptUpdate, current_pending: &[&str], expected_pending: &[&str]) {
         let (_, rx_prompts) = unbounded_channel();
         let (_, rx_actioned_prompts) = unbounded_channel();
         let pending_prompts = current_pending.iter().map(|id| ep(id)).collect();
-        let prompts_to_drop = current_to_drop
-            .iter()
-            .map(|id| PromptId(id.to_string()))
-            .collect();
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
             pending_prompts,
-            prompts_to_drop,
             dead_prompts: Vec::new(),
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -422,23 +401,20 @@ mod tests {
             .iter()
             .map(|ep| ep.prompt.id().0.as_str())
             .collect();
-        let to_drop: Vec<&str> = w.prompts_to_drop.iter().map(|id| id.0.as_str()).collect();
 
         assert_eq!(pending, expected_pending);
-        assert_eq!(to_drop, expected_to_drop);
     }
 
-    #[test_case("1", "1", 10, Recv::Success, &["drop-me"], &["dead"]; "recv expected within timeout")]
-    #[test_case("2", "1", 10, Recv::Unexpected, &["drop-me"], &["dead"]; "recv unexpected within timeout")]
-    #[test_case("dead", "1", 10, Recv::DeadPrompt, &["drop-me"], &[]; "recv dead prompt")]
-    #[test_case("1", "1", 200, Recv::Timeout, &[], &["dead", "1"]; "recv expected after timeout")]
+    #[test_case("1", "1", 10, Recv::Success, &["dead"]; "recv expected within timeout")]
+    #[test_case("2", "1", 10, Recv::Unexpected, &["dead"]; "recv unexpected within timeout")]
+    #[test_case("dead", "1", 10, Recv::DeadPrompt, &[]; "recv dead prompt")]
+    #[test_case("1", "1", 200, Recv::Timeout, &["dead", "1"]; "recv expected after timeout")]
     #[tokio::test]
     async fn wait_for_expected_prompt(
         sent_id: &str,
         expected_id: &str,
         sleep_ms: u64,
         expected_recv: Recv,
-        expected_prompts_to_drop: &[&str],
         expected_dead_prompts: &[&str],
     ) {
         let (_, rx_prompts) = unbounded_channel();
@@ -449,7 +425,6 @@ mod tests {
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
             pending_prompts: VecDeque::new(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -472,14 +447,6 @@ mod tests {
             .await;
 
         assert_eq!(recv, expected_recv);
-        assert_eq!(
-            w.prompts_to_drop,
-            Vec::from_iter(
-                expected_prompts_to_drop
-                    .iter()
-                    .map(|id| PromptId(id.to_string()))
-            )
-        );
         assert_eq!(
             w.dead_prompts,
             Vec::from_iter(
@@ -509,7 +476,6 @@ mod tests {
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
             pending_prompts: VecDeque::new(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -548,7 +514,6 @@ mod tests {
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
             pending_prompts: VecDeque::new(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -659,7 +624,6 @@ mod tests {
             rx_actioned_prompts,
             active_prompt,
             pending_prompts: VecDeque::new(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui,
@@ -719,7 +683,6 @@ mod tests {
             rx_actioned_prompts,
             active_prompt,
             pending_prompts: [ep("1")].into_iter().collect(),
-            prompts_to_drop: Vec::new(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui: StubUi,
