@@ -4,7 +4,7 @@ use crate::snapd_client::{
     },
     Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
 };
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use std::{collections::VecDeque, fs};
 
 #[allow(dead_code)]
@@ -40,7 +40,10 @@ impl PromptSequence {
         }
     }
 
-    pub fn try_match_next(&mut self, p: TypedPrompt) -> Result<TypedPromptReply, MatchError> {
+    pub fn try_match_next(
+        &mut self,
+        p: TypedPrompt,
+    ) -> Result<Option<TypedPromptReply>, MatchError> {
         let case = match self.prompts.pop_front() {
             Some(case) => case,
             None => return Err(MatchError::NoPromptsRemaining),
@@ -50,8 +53,9 @@ impl PromptSequence {
             (TypedPromptCase::Home(case), TypedPrompt::Home(p)) => {
                 let res = case
                     .into_reply_or_error(p, self.index)
-                    .map(TypedPromptReply::Home);
+                    .map(|res| res.map(TypedPromptReply::Home));
                 self.index += 1;
+
                 res
             }
         }
@@ -95,6 +99,16 @@ impl TypedPromptFilter {
     }
 }
 
+/// Override the default handling for a missing key in being parsed as `None` so that only an
+/// explicit value of `null` is accepted.
+fn explicit_null<'de, T, D>(de: D) -> Result<Option<T>, D::Error>
+where
+    T: Deserialize<'de>,
+    D: Deserializer<'de>,
+{
+    Deserialize::deserialize(de)
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct PromptCase<I>
@@ -102,7 +116,8 @@ where
     I: SnapInterface,
 {
     prompt_filter: PromptFilter<I>,
-    reply: PromptReplyTemplate<I>,
+    #[serde(deserialize_with = "explicit_null")]
+    reply: Option<PromptReplyTemplate<I>>,
 }
 
 impl<I> PromptCase<I>
@@ -113,20 +128,24 @@ where
         self,
         p: Prompt<I>,
         index: usize,
-    ) -> Result<PromptReply<I>, MatchError> {
-        match self.prompt_filter.matches(&p) {
-            MatchAttempt::Success => {
-                let mut reply = I::prompt_to_reply(p, self.reply.action);
-                reply.lifespan = self.reply.lifespan;
-                reply.duration = self.reply.duration;
-                if let Some(constraints) = self.reply.constraints {
+    ) -> Result<Option<PromptReply<I>>, MatchError> {
+        match (self.prompt_filter.matches(&p), self.reply) {
+            (MatchAttempt::Success, None) => Ok(None),
+
+            (MatchAttempt::Success, Some(template)) => {
+                let mut reply = I::prompt_to_reply(p, template.action);
+                reply.lifespan = template.lifespan;
+                reply.duration = template.duration;
+                if let Some(constraints) = template.constraints {
                     reply.constraints = constraints.apply(reply.constraints);
                 }
 
-                Ok(reply)
+                Ok(Some(reply))
             }
 
-            MatchAttempt::Failure(failures) => Err(MatchError::MatchFailures { index, failures }),
+            (MatchAttempt::Failure(failures), _) => {
+                Err(MatchError::MatchFailures { index, failures })
+            }
         }
     }
 }
@@ -256,6 +275,21 @@ mod tests {
         PromptId,
     };
     use simple_test_case::{dir_cases, test_case};
+
+    #[derive(Debug, Deserialize, PartialEq, Eq)]
+    struct TestStruct {
+        #[serde(deserialize_with = "explicit_null")]
+        a: Option<i32>,
+    }
+
+    #[test_case("{}", None; "field missing")]
+    #[test_case(r#"{"a":null}"#, Some(TestStruct { a: None }); "explicit null")]
+    #[test_case(r#"{"a":41}"#, Some(TestStruct { a: Some(41) }); "value")]
+    #[test]
+    fn explicit_null_works(s: &str, expected: Option<TestStruct>) {
+        let res = serde_json::from_str(s).ok();
+        assert_eq!(res, expected);
+    }
 
     #[dir_cases("resources/filter-serialize-tests")]
     #[test]
