@@ -160,7 +160,7 @@ impl ScriptedClient {
         &mut self,
         prompt: TypedPrompt,
         prev_error: Option<String>,
-    ) -> Result<TypedPromptReply> {
+    ) -> Result<Option<TypedPromptReply>> {
         if let Some(error) = prev_error {
             return Err(Error::FailedPromptSequence {
                 error: MatchError::UnexpectedError { error },
@@ -169,10 +169,10 @@ impl ScriptedClient {
 
         match prompt {
             TypedPrompt::Home(inner) if inner.constraints.path == self.path => {
-                Ok(TypedPromptReply::Home(
+                Ok(Some(TypedPromptReply::Home(
                     // Using a timespan so our rule auto-removes
                     HomeInterface::prompt_to_reply(inner, Action::Allow).for_timespan("10s"),
-                ))
+                )))
             }
 
             _ => match self.seq.try_match_next(prompt) {
@@ -191,7 +191,10 @@ impl ScriptedClient {
         EnrichedPrompt { prompt, .. }: EnrichedPrompt,
         snapd_client: &mut SnapdSocketClient,
     ) -> Result<()> {
-        let mut reply = self.reply_for_prompt(prompt.clone(), None).await?;
+        let mut reply = match self.reply_for_prompt(prompt.clone(), None).await? {
+            Some(reply) => reply,
+            None => return Ok(()),
+        };
         let id = prompt.id().clone();
 
         debug!(id=%id.0, ?reply, "replying to prompt");
@@ -212,9 +215,14 @@ impl ScriptedClient {
             };
 
             debug!(%prev_error, "error returned from snapd, retrying");
-            reply = self
+            let maybe_reply = self
                 .reply_for_prompt(prompt.clone(), Some(prev_error))
                 .await?;
+
+            reply = match maybe_reply {
+                Some(reply) => reply,
+                None => return Ok(()),
+            };
 
             debug!(id=%id.0, ?reply, "replying to prompt");
         }
