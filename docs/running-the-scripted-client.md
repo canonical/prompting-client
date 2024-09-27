@@ -54,6 +54,16 @@ A prompt sequence is a simple JSON file with the following structure:
         }
       }
     },
+    {
+      "prompt-filter": {
+        "constraints": {
+          "path": ".*/example.txt",
+          "permissions": [ "read" ],
+          "available-permissions": [ "read", "write", "execute" ]
+        }
+      },
+      "reply": null
+    }
     ...
   ]
 }
@@ -89,7 +99,7 @@ but if you do then all prompts not matching it will be ignored by the scripted c
 See the `Prompt filter fields` section below for specific details on each of the
 supported fields for a filter.
 
-### Prompts
+### Prompt cases
 A sequence of prompt cases: a prompt filter allowing for structural matching
 against the next prompt in the sequence along with a template for build the
 reply to that prompt provided the filter matches. If the filter does not match
@@ -116,7 +126,13 @@ prompts the following fields are available:
 - `available-permissions`: the ordered list of available permissions seen in the prompt
 
 ### Reply templates
-The only required fields for a reply template are the `action` (allow or deny)
+If you wish the client to send a reply for a particular prompt then you should provide
+a reply template under the `reply` field of prompt case. This is the expected default
+behaviour of the client. In order to expect that a certain prompt be observed as part
+of the sequence but _not_ send a reply you must explicitly provide `"reply": null`
+rather than simply omitting the key.
+
+When providing a reply template, the only required fields are the `action` (allow or deny)
 and `lifespan` (single, session, forever or timespan). If `lifespan` is set to
 timespan then the optional `duration` field must also be provided.
 
