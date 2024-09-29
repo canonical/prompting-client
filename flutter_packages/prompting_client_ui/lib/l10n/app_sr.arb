@@ -111,5 +111,13 @@
   "homePromptPermissionsExecute": "Извршавање",
   "@homePromptPermissionsExecute": {},
   "promptActionOptionAllowOnce": "Дозволи једном",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Такође дај {permission} приступ",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
