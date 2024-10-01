@@ -1,1 +1,30 @@
-{}
+{
+  "promptActionOptionDenyOnce": "Drausti tik šįkart",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Veiksmas",
+  "@promptActionTitle": {},
+  "promptAccessMoreOptionsTitle": "Leisti {snap} prieiti prie:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Leisti",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Visada leisti",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Drausti",
+  "@promptActionOptionDeny": {},
+  "promptLifespanOptionForever": "Visada",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSingle": "Šį kartą",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Trukmė",
+  "@promptLifespanTitle": {},
+  "promptActionOptionAllowOnce": "Leisti tik šįkart",
+  "@promptActionOptionAllowOnce": {},
+  "promptSaveAndContinue": "Įrašyti ir tęsti",
+  "@promptSaveAndContinue": {}
+}
