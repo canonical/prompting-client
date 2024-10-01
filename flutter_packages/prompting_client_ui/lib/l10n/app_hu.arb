@@ -1,1 +1,129 @@
-{}
+{
+  "homePromptSuggestedPermission": "Kapjon {permission} hozzáférést is",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "securityCenterInfo": "Ezeket a jogosultságokat bármikor megváltoztathatja a <Biztonsági központban>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "A(z) {snap} snap-csomaghoz való hozzáférés beállítása erre:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionDeny": "Tiltás",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Tiltás egyszer",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Művelet",
+  "@promptActionTitle": {},
+  "promptLifespanOptionSession": "Kijelentkezésig",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Egyszer",
+  "@promptLifespanOptionSingle": {},
+  "homePatternTypeCustomPath": "Egyéni útvonalminta",
+  "@homePatternTypeCustomPath": {},
+  "homePatternInfo": "<Tudjon meg többet az útvonalmintákról>",
+  "@homePatternInfo": {},
+  "homePatternTypeRequestedDirectory": "Csak a kért mappa",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Csak a kért fájl",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "Minden a(z) {topLevelDir} mappában",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeContainingDirectory": "Minden a mappában",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Minden a saját mappában",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptMetaDataTitle": "Az alkalmazás névjegye",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Közzétette: {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Utoljára frissítve: {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "További beállítások…",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptPermissionsRead": "Olvasás",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Írás",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Végrehajtás",
+  "@homePromptPermissionsExecute": {},
+  "promptAccessTitle": "{permission} jogosultság adása a(z) {snap} snap-csomagnak erre:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Engedélyezés",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Engedélyezés mindig",
+  "@promptActionOptionAllowAlways": {},
+  "promptLifespanOptionForever": "Mindig",
+  "@promptLifespanOptionForever": {},
+  "promptSaveAndContinue": "Mentés és folytatás",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Biztonsági értesítés",
+  "@promptTitle": {},
+  "homePatternTypeRequestedDirectoryContents": "Minden a mappában",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "promptActionOptionAllowOnce": "Engedélyezés egyszer",
+  "@promptActionOptionAllowOnce": {},
+  "promptLifespanTitle": "Időtartam",
+  "@promptLifespanTitle": {},
+  "homePatternTypeMatchingFileExtension": "Az összes {fileExtension} fájl",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptBody": "Engedélyezi a(z) {snap} snap-csomagnak, hogy {permissions} jogosultsága legyen a(z) {path} útvonalra?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataAppCenterLink": "Az alkalmazásközpont oldalának meglátogatása",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "Jogosultságok",
+  "@homePromptPermissionsTitle": {}
+}
