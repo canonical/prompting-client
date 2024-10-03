@@ -5,5 +5,4 @@ See [Privately reporting a security vulnerability](https://docs.github.com/en/co
 for instructions.
 
 The [Ubuntu Security disclosure and embargo policy](https://ubuntu.com/security/disclosure-policy)
-contains more information about what you can expect when you contact us
-and what we expect from you.
+contains more information about what you can expect when you contact us and what we expect from you.
