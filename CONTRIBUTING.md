@@ -34,10 +34,7 @@ project, you agree to uphold our [Code of Conduct](https://ubuntu.com/community/
 Contributions are made to this project via Issues and Pull Requests (PRs). A
 few general guidelines that cover both:
 
-* To report security vulnerabilities, please use the advisories page of the
-  repository and not a public bug report. Please use [launchpad private bugs](https://bugs.launchpad.net/ubuntu/+source/prompting-client/+filebug)
-  which is monitored by our security team. On ubuntu machine, it’s best to use
-  `ubuntu-bug prompting-client` to collect relevant information. FIXME: snap?
+* For reporting security issues, please see [SECURITY.md](SECURITY.md).
 * Search for existing Issues and PRs on this repository before creating your own.
 * We work hard to makes sure issues are handled in a timely manner but,
   depending on the impact, it could take a while to investigate the root cause.
