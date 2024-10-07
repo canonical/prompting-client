@@ -1,1 +1,129 @@
-{}
+{
+  "promptActionOptionAllow": "Tillad",
+  "@promptActionOptionAllow": {},
+  "securityCenterInfo": "Du kan altid ændre disse rettigheder i <Sikkerhedscenteret>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "Angiv adgang for {snap} til:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Giv {snap} {permission}-adgang til:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowAlways": "Tillad altid",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Nægt",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Nægt denne gang",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Handling",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Altid",
+  "@promptLifespanOptionForever": {},
+  "homePatternTypeCustomPath": "Tilpasset stimønster",
+  "@homePatternTypeCustomPath": {},
+  "homePromptBody": "Tillad, at {snap} har {permissions}-adgang til {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Flere muligheder …",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataTitle": "Om dette program",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Udgivet af {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Senest opdateret {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataAppCenterLink": "Besøg Appcenter-siden",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "Rettigheder",
+  "@homePromptPermissionsTitle": {},
+  "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-filer",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowOnce": "Tillad én gang",
+  "@promptActionOptionAllowOnce": {},
+  "promptLifespanOptionSession": "Indtil der logges ud",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Én gang",
+  "@promptLifespanOptionSingle": {},
+  "homePatternInfo": "<Læs om stimønstre>",
+  "@homePatternInfo": {},
+  "promptLifespanTitle": "Varighed",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Gem og fortsæt",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Sikkerhedsunderretning",
+  "@promptTitle": {},
+  "homePatternTypeRequestedFile": "Kun den ønskede fil",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeRequestedDirectory": "Kun den ønskede mappe",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeTopLevelDirectory": "Alt i {topLevelDir}-mappen",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "Alt i mappen",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Alt i mappen",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Alt i hjemmemappen",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptPermissionsRead": "Læse",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Skrive",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Kørsel",
+  "@homePromptPermissionsExecute": {},
+  "homePromptSuggestedPermission": "Giv også {permission}-adgang",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
+}

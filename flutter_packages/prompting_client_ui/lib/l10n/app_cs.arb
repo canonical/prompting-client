@@ -23,7 +23,7 @@
   },
   "homePatternTypeHomeDirectory": "Vše v domovské složce",
   "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Odpovídající příponě souboru",
+  "homePatternTypeMatchingFileExtension": "Všechny soubory {fileExtension}",
   "@homePatternTypeMatchingFileExtension": {},
   "homePromptPermissionsWrite": "Zapisovat",
   "@homePromptPermissionsWrite": {},
@@ -106,6 +106,16 @@
         "type": "String"
       },
       "path": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowOnce": "Povolit jednou",
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Poskytnout také přístup k {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
         "type": "String"
       }
     }

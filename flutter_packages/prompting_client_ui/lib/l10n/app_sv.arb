@@ -111,5 +111,13 @@
   "homePromptPermissionsExecute": "Exekvera",
   "@homePromptPermissionsExecute": {},
   "promptActionOptionAllowOnce": "Tillåt en gång",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Också ge {permission} tillgång",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }

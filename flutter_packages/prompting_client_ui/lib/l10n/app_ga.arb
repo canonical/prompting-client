@@ -111,5 +111,13 @@
   "homePromptPermissionsExecute": "Rith",
   "@homePromptPermissionsExecute": {},
   "promptActionOptionAllowOnce": "Ceadaigh uair amháin",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "Tabhair rochtain {permission} freisin",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }

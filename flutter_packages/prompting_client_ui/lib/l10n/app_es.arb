@@ -111,5 +111,13 @@
   "homePromptPermissionsTitle": "Permisos",
   "@homePromptPermissionsTitle": {},
   "promptActionOptionAllowOnce": "Permitir una vez",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptSuggestedPermission": "También dar acceso a {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }

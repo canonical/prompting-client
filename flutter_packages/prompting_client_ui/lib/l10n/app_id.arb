@@ -1,1 +1,129 @@
-{}
+{
+  "homePatternInfo": "<Pelajari tentang pola path>",
+  "@homePatternInfo": {},
+  "homePromptSuggestedPermission": "Berikan juga akses {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "securityCenterInfo": "Anda selalu dapat mengubah izin ini di <Security Center>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "Mengatur akses untuk {snap} ke:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Berikan akses {permission} {snap} ke:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Izinkan",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Selalu izinkan",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Tolak",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Tolak sekali",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionSession": "Sampai log keluar",
+  "@promptLifespanOptionSession": {},
+  "promptActionTitle": "Aksi",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Selalu",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSingle": "Sekali",
+  "@promptLifespanOptionSingle": {},
+  "promptTitle": "Pemberitahuan keamanan",
+  "@promptTitle": {},
+  "homePatternTypeRequestedFile": "Hanya berkas yang diminta",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "Semua dalam folder {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeContainingDirectory": "Semua dalam folder",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Semua dalam folder Rumah",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptBody": "Izinkan {snap} memiliki akses {permissions} ke {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "Tentang aplikasi ini",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Dipublikasikan oleh {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Terakhir diperbarui pada {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Opsi tambahan...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "Kunjungi halaman Pusat App",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsRead": "Baca",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Tulis",
+  "@homePromptPermissionsWrite": {},
+  "promptActionOptionAllowOnce": "Izinkan sekali",
+  "@promptActionOptionAllowOnce": {},
+  "promptLifespanTitle": "Durasi",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Simpan dan lanjutkan",
+  "@promptSaveAndContinue": {},
+  "homePatternTypeCustomPath": "Pola path ubahan",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Hanya folder yang diminta",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedDirectoryContents": "Semua dalam folder",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeMatchingFileExtension": "Semua berkas {fileExtension}",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Izin",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsExecute": "Jalankan",
+  "@homePromptPermissionsExecute": {}
+}

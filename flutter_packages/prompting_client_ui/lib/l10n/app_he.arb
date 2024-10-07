@@ -1,1 +1,129 @@
-{}
+{
+  "homePromptSuggestedPermission": "להעניק גם גישת {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeCustomPath": "תבנית נתיב מותאמת אישית",
+  "@homePatternTypeCustomPath": {},
+  "homePromptPermissionsWrite": "כתיבה",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "הפעלה",
+  "@homePromptPermissionsExecute": {},
+  "securityCenterInfo": "תמיד אפשר לשנות את ההרשאות האלה ב<מרכז האבטחה>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "הגדרת גישה ל־{snap} אל:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "להעניק ל־{snap} גישת {permission} אל:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "לאפשר",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "לאפשר תמיד",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "לדחות",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "לדחות חד־פעמית",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "פעולה",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "תמיד",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "עד היציאה מהמערכת",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "חד־פעמית",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "משך",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "לשמור ולהמשיך",
+  "@promptSaveAndContinue": {},
+  "homePatternTypeRequestedDirectory": "התיקייה המבוקשת בלבד",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "הקובץ המבוקש בלבד",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeRequestedDirectoryContents": "הכול בתיקייה",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeTopLevelDirectory": "הכול בתיקיית {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeHomeDirectory": "הכול בתיקיית הבית",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptBody": "לאפשר ל־{snap} גישת {permissions} אל {path}?",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "על היישום הזה",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "פורסם על ידי {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "עדכון אחרון ב־{date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "הרשאות",
+  "@homePromptPermissionsTitle": {},
+  "homePromptMetaDataAppCenterLink": "ביקור בעמוד מרכז היישומים",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsRead": "קריאה",
+  "@homePromptPermissionsRead": {},
+  "homePatternTypeMatchingFileExtension": "כל קובצי ה־{fileExtension}",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowOnce": "לאפשר חד־פעמית",
+  "@promptActionOptionAllowOnce": {},
+  "promptTitle": "התראת אבטחה",
+  "@promptTitle": {},
+  "homePatternInfo": "<מידע על תבניות נתיבים>",
+  "@homePatternInfo": {},
+  "homePatternTypeContainingDirectory": "הכול בתיקייה",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptMoreOptionsLabel": "אפשרויות נוספות…",
+  "@homePromptMoreOptionsLabel": {}
+}
