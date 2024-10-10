@@ -25,7 +25,7 @@ use hyper::StatusCode;
 use std::sync::Arc;
 use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
 use tonic::{async_trait, Code, Request, Response, Status};
-use tracing::{info, warn};
+use tracing::{debug, info, warn};
 use tracing_subscriber::{reload::Handle, EnvFilter};
 
 macro_rules! map_enum {
@@ -143,7 +143,7 @@ where
         let prompt = match self.active_prompt.get() {
             Some(TypedUiInput::Home(input)) => {
                 let id = &input.id.0;
-                info!(%id, "serving request for active prompt (id={id})");
+                debug!(%id, "serving request for active prompt (id={id})");
                 Some(map_home_response(input))
             }
 
@@ -164,7 +164,7 @@ where
         let reply = map_prompt_reply(req.clone())?;
         let id = PromptId(req.prompt_id.clone());
 
-        info!(id=%id.0, "replying to prompt id={}", id.0);
+        debug!(id=%id.0, "replying to prompt id={}", id.0);
         let resp = match self.client.reply(&id, reply).await {
             Ok(others) => {
                 self.update_worker(ActionedPrompt::Actioned { id, others })

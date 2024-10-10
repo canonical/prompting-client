@@ -65,7 +65,7 @@ impl PollLoop {
         let mut retries = 0;
 
         while self.running {
-            info!("polling for notices");
+            debug!("polling for notices");
             let notices = match self.client.pending_prompt_notices().await {
                 Ok(notices) => notices,
 
