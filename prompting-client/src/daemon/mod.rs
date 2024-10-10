@@ -7,7 +7,7 @@ use std::{env, fs, sync::Arc};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio_stream::wrappers::UnixListenerStream;
 use tonic::{async_trait, transport::Server};
-use tracing::{error, info};
+use tracing::{debug, error};
 use tracing_subscriber::{reload::Handle, EnvFilter};
 
 mod poll;
@@ -76,14 +76,14 @@ where
         path,
     );
 
-    info!("spawning poll loop");
+    debug!("spawning poll loop");
     let poll_loop = PollLoop::new(c, tx_prompts);
     tokio::spawn(async move { poll_loop.run().await });
 
-    info!("spawning worker thread");
+    debug!("spawning worker thread");
     tokio::spawn(async move { worker.run().await });
 
-    info!("serving incoming grpc connections");
+    debug!("serving incoming grpc connections");
     let res = Server::builder()
         .add_service(server)
         .serve_with_incoming(UnixListenerStream::new(listener))

@@ -16,6 +16,7 @@ apps:
     extensions: [gnome]
     environment: &env
       PROMPTING_CLIENT_SOCKET: "${XDG_RUNTIME_DIR}/prompting.sock"
+      TOKIO_WORKER_THREADS: 2
     plugs: &plugs
       - home
       - snap-interfaces-requests-control
