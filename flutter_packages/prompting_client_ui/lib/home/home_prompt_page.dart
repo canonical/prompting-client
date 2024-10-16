@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/home/home_prompt_data_model.dart';
+import 'package:prompting_client_ui/home/home_prompt_error.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
 import 'package:prompting_client_ui/widgets/form_widgets.dart';
@@ -23,16 +24,35 @@ class HomePromptPage extends ConsumerWidget {
       homePromptDataModelProvider
           .select((m) => m.visiblePatternOptions.isNotEmpty),
     );
+    final error = ref.watch(homePromptDataModelProvider.select((m) => m.error));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Header(),
         if (hasVisibleOptions) ...[const Divider(), const PatternOptions()],
+        if (error != null && showMoreOptions) _ErrorBox(error),
         const Permissions(),
         if (showMoreOptions) const LifespanToggle(),
+        if (error != null && !showMoreOptions) _ErrorBox(error),
         const ActionButtons(),
       ].withSpacing(20),
+    );
+  }
+}
+
+class _ErrorBox extends ConsumerWidget {
+  const _ErrorBox(this.error);
+
+  final HomePromptError error;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    return YaruInfoBox(
+      yaruInfoType: YaruInfoType.danger,
+      title: Text(error.title(l10n)),
+      child: Text(error.body(l10n)),
     );
   }
 }
@@ -300,8 +320,6 @@ class _CustomPathTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final customPath =
         ref.watch(homePromptDataModelProvider.select((m) => m.customPath));
-    final errorMessage =
-        ref.watch(homePromptDataModelProvider.select((m) => m.errorMessage));
     final notifier = ref.read(homePromptDataModelProvider.notifier);
 
     return Column(
@@ -311,9 +329,7 @@ class _CustomPathTextField extends ConsumerWidget {
           style: Theme.of(context).textTheme.bodyMedium,
           initialValue: customPath,
           onChanged: notifier.setCustomPath,
-          decoration: InputDecoration(
-            errorText: errorMessage,
-          ),
+          // TODO: show error if it is caused by the custom path pattern
         ),
         // Text(l10n.homePatternInfo),
         // TODO: re-enable when we have a link available for this to point to

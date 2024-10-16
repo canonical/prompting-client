@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:prompting_client/prompting_client.dart';
+import 'package:prompting_client_ui/home/home_prompt_error.dart';
 import 'package:prompting_client_ui/prompt_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ubuntu_service/ubuntu_service.dart';
@@ -15,7 +16,7 @@ class HomePromptData with _$HomePromptData {
     required String customPath,
     required PatternOption patternOption,
     @Default(Lifespan.forever) Lifespan lifespan,
-    String? errorMessage,
+    HomePromptError? error,
     @Default(false) bool showMoreOptions,
   }) = _HomePromptData;
 
@@ -72,8 +73,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     state = state.copyWith(patternOption: patternOption);
   }
 
-  void setCustomPath(String path) =>
-      state = state.copyWith(customPath: path, errorMessage: null);
+  void setCustomPath(String path) => state = state.copyWith(customPath: path);
 
   void setLifespan(Lifespan? lifespan) {
     if (lifespan == null || lifespan == state.lifespan) return;
@@ -116,15 +116,14 @@ class HomePromptDataModel extends _$HomePromptDataModel {
   }) async {
     final response = await getService<PromptingClient>()
         .replyToPrompt(buildReply(action: action, lifespan: lifespan));
-    if (response is PromptReplyResponseUnknown) {
-      state = state.copyWith(
-        errorMessage: response.message,
-        showMoreOptions: true,
-        patternOption: PatternOption(
-          homePatternType: HomePatternType.customPath,
-          pathPattern: '',
-        ),
-      );
+
+    final error = switch (response) {
+      PromptReplyResponseUnknown(message: final message) =>
+        HomePromptErrorUnknown(message),
+      _ => null,
+    };
+    if (error != null) {
+      state = state.copyWith(error: error);
     }
     return response;
   }
