@@ -126,5 +126,7 @@
     "homePromptPermissionsWrite": "Write",
     "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Execute",
-    "@homePromptPermissionsExecute": {}
+    "@homePromptPermissionsExecute": {},
+    "homePromptErrorUnknownTitle": "Something went wrong",
+    "@homePromptErrorUnknownTitle": {}
 }

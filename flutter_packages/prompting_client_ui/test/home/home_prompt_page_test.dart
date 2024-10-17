@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart' hide Action, MetaData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
+import 'package:prompting_client_ui/home/home_prompt_error.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
 import 'package:prompting_client_ui/prompt_page.dart';
@@ -453,7 +453,7 @@ void main() {
     }
   });
 
-  testWidgets('show custom path error', (tester) async {
+  testWidgets('show error message', (tester) async {
     final container = createContainer();
     registerMockPromptDetails(
       promptDetails: testDetails,
@@ -462,44 +462,8 @@ void main() {
       promptDetails: testDetails,
       replyResponse: PromptReplyResponse.unknown(message: 'error message'),
     );
-    await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
-        container: container,
-        child: const PromptPage(),
-      ),
-    );
+    final expectedError = HomePromptErrorUnknown('error message');
 
-    await tester.tap(
-      find.text(tester.l10n.homePromptMoreOptionsLabel),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.tap(
-      find.text(tester.l10n.homePatternTypeCustomPath),
-    );
-    await tester.pumpAndSettle();
-
-    await tester.enterText(find.byType(TextFormField), 'invalid path');
-    await tester.tap(find.text(tester.l10n.promptActionOptionAllow));
-    await tester.pumpAndSettle();
-
-    expect(find.text('error message'), findsOneWidget);
-
-    await tester.enterText(find.byType(TextFormField), 'another path');
-    await tester.pumpAndSettle();
-
-    expect(find.text('error message'), findsNothing);
-  });
-
-  testWidgets('reveal custom path text field on error', (tester) async {
-    final container = createContainer();
-    registerMockPromptDetails(
-      promptDetails: testDetails,
-    );
-    registerMockAppArmorPromptingClient(
-      promptDetails: testDetails,
-      replyResponse: PromptReplyResponse.unknown(message: 'error message'),
-    );
     await tester.pumpApp(
       (_) => UncontrolledProviderScope(
         container: container,
@@ -510,6 +474,15 @@ void main() {
     await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));
     await tester.pumpAndSettle();
 
-    expect(find.text('error message'), findsOneWidget);
+    expect(find.text(expectedError.body(tester.l10n)), findsOneWidget);
+    expect(find.text(expectedError.title(tester.l10n)), findsOneWidget);
+
+    await tester.tap(
+      find.text(tester.l10n.homePromptMoreOptionsLabel),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text(expectedError.body(tester.l10n)), findsOneWidget);
+    expect(find.text(expectedError.title(tester.l10n)), findsOneWidget);
   });
 }
