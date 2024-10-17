@@ -4,8 +4,7 @@ sealed class HomePromptError {
   const HomePromptError();
 
   String body(AppLocalizations l10n) => switch (this) {
-        HomePromptErrorUnknown(message: final message) =>
-          l10n.homePromptErrorUnknownBody(message),
+        HomePromptErrorUnknown(message: final message) => message
       };
   String title(AppLocalizations l10n) => switch (this) {
         HomePromptErrorUnknown() => l10n.homePromptErrorUnknownTitle,

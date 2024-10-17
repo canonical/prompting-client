@@ -127,14 +127,6 @@
     "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Execute",
     "@homePromptPermissionsExecute": {},
-    "homePromptErrorUnknownTitle": "Unknown error",
-    "@homePromptErrorUnknownTitle": {},
-    "homePromptErrorUnknownBody": "An unknown error occurred. Raw error message: {message}",
-    "@homePromptErrorUnknownBody": {
-        "placeholders": {
-            "message": {
-                "type": "String"
-            }
-        }
-    }
+    "homePromptErrorUnknownTitle": "Something went wrong",
+    "@homePromptErrorUnknownTitle": {}
 }
