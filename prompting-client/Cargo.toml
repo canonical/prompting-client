@@ -2,27 +2,19 @@
 name = "prompting-client"
 version = "0.1.0"
 edition = "2021"
-default-run = "prompting-client-echo"
+default-run = "prompting-client-cli"
 
 [profile.release]
 strip = true
 lto = true
 
 [[bin]]
-name = "prompting-client-scripted"
-path = "src/bin/scripted.rs"
-
-[[bin]]
-name = "prompting-client-echo"
-path = "src/bin/echo.rs"
+name = "prompting-client-cli"
+path = "src/bin/cli.rs"
 
 [[bin]]
 name = "prompting-client-daemon"
 path = "src/bin/daemon.rs"
-
-[[bin]]
-name = "prompting-client-set-log-level"
-path = "src/bin/set_log_level.rs"
 
 [dependencies]
 chrono = "0.4.38"
@@ -41,11 +33,9 @@ tokio-stream = "0.1.15"
 tokio = { version = "1.37.0", features = ["fs", "io-util", "macros", "net", "process", "signal", "rt-multi-thread"] }
 tonic = "0.12.0"
 tonic-reflection = "0.12.0"
-tower = "0.4.13"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 tracing-journald = "0.3.0"
-cached = { version = "0.53.1", features = ["async"] }
 
 [dev-dependencies]
 serial_test = "3.1.1"
@@ -53,6 +43,7 @@ simple_test_case = "1.2.0"
 tokio = { version = "1.37.0", features = ["process"] }
 uuid = { version = "1.8.0", features = ["v4"] }
 protobuf = "3.5.0"
+tower = "0.4.13"
 tokio-util = "0.7.11"
 
 [build-dependencies]
