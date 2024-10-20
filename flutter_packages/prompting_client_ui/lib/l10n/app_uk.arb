@@ -125,5 +125,7 @@
   "homePromptPermissionsTitle": "Дозволи",
   "@homePromptPermissionsTitle": {},
   "homePromptPermissionsRead": "Читання",
-  "@homePromptPermissionsRead": {}
+  "@homePromptPermissionsRead": {},
+  "homePromptErrorUnknownTitle": "Щось пішло не за планом",
+  "@homePromptErrorUnknownTitle": {}
 }
