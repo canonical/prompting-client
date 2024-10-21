@@ -24,19 +24,12 @@ pub enum SnapdError {
         requested: String,
         replied: String,
     },
-    MalformedFieldScalar {
-        reason: String,
+    ParseError {
         field: &'static str,
         value: String,
     },
-    MalformedFieldVector {
-        reason: String,
-        field: &'static str,
-        value: Vec<String>,
-        supported: Vec<String>,
-    },
     UnsupportedValue {
-        field: String,
+        field: &'static str,
         supported: Vec<String>,
         provided: Vec<String>,
     },
@@ -83,16 +76,6 @@ where
     where
         D: Deserializer<'de>,
     {
-        #[derive(Debug, Deserialize)]
-        #[serde(rename_all = "kebab-case")]
-        struct RawResponse {
-            #[serde(rename = "type")]
-            ty: String,
-            status_code: u16,
-            status: String,
-            result: serde_json::Value,
-        }
-
         let RawResponse {
             ty,
             status_code,
@@ -108,27 +91,6 @@ where
                 status,
                 result: Ok(result),
             });
-        }
-
-        #[derive(Debug, Deserialize)]
-        enum ErrorKind {
-            #[serde(rename = "interfaces-requests-invalid-fields")]
-            InvalidFields,
-            #[serde(rename = "interfaces-requests-prompt-not-found")]
-            PromptNotFound,
-            #[serde(rename = "interfaces-requests-reply-not-match-request")]
-            ReplyNotMatchRequest,
-            #[serde(rename = "interfaces-requests-rule-conflict")]
-            RuleConflict,
-            #[serde(rename = "interfaces-requests-rule-not-found")]
-            RuleNotFound,
-        }
-
-        #[derive(Debug, Deserialize)]
-        struct RawError {
-            message: String,
-            kind: Option<ErrorKind>,
-            value: Option<serde_json::Value>,
         }
 
         let RawError {
@@ -153,70 +115,20 @@ where
             }),
 
             (Some(ErrorKind::InvalidFields), Some(value)) => {
-                #[derive(Debug, Deserialize)]
-                #[serde(rename_all = "kebab-case")]
-                struct Fields {
-                    expiration: Option<StrValue>,
-                    duration: Option<StrValue>,
-                    path_pattern: Option<StrValue>,
-                    permissions: Option<VecSupportedValue>,
-                    interface: Option<VecSupportedValue>,
-                    lifespan: Option<VecSupportedValue>,
-                }
+                let fs: InvalidFields = serde_json::from_value(value).map_err(de::Error::custom)?;
 
-                #[derive(Debug, Deserialize)]
-                struct StrValue {
-                    reason: String,
-                    value: String,
-                }
-
-                #[derive(Debug, Deserialize)]
-                struct VecSupportedValue {
-                    reason: String,
-                    supported: Vec<String>,
-                    value: Vec<String>,
-                }
-
-                let fs: Fields = serde_json::from_value(value).map_err(de::Error::custom)?;
                 let err = if let Some(e) = fs.path_pattern {
-                    SnapdError::MalformedFieldScalar {
-                        reason: e.reason,
-                        field: "path-pattern",
-                        value: e.value,
-                    }
+                    e.into_error("path-pattern")
                 } else if let Some(e) = fs.expiration {
-                    SnapdError::MalformedFieldScalar {
-                        reason: e.reason,
-                        field: "expiration",
-                        value: e.value,
-                    }
+                    e.into_error("expiration")
                 } else if let Some(e) = fs.duration {
-                    SnapdError::MalformedFieldScalar {
-                        reason: e.reason,
-                        field: "duration",
-                        value: e.value,
-                    }
+                    e.into_error("duration")
                 } else if let Some(e) = fs.permissions {
-                    SnapdError::MalformedFieldVector {
-                        reason: e.reason,
-                        field: "permissions",
-                        value: e.value,
-                        supported: e.supported,
-                    }
+                    e.into_error("permissions")
                 } else if let Some(e) = fs.interface {
-                    SnapdError::MalformedFieldVector {
-                        reason: e.reason,
-                        field: "interface",
-                        value: e.value,
-                        supported: e.supported,
-                    }
+                    e.into_error("interface")
                 } else if let Some(e) = fs.lifespan {
-                    SnapdError::MalformedFieldVector {
-                        reason: e.reason,
-                        field: "lifespan",
-                        value: e.value,
-                        supported: e.supported,
-                    }
+                    e.into_error("lifespan")
                 } else {
                     error!("malformed reply-not-match-request error from snapd");
                     SnapdError::Raw
@@ -231,29 +143,12 @@ where
             }
 
             (Some(ErrorKind::ReplyNotMatchRequest), Some(value)) => {
-                #[derive(Debug, Deserialize)]
-                #[serde(rename_all = "kebab-case")]
-                struct Fields {
-                    path_pattern: Option<PathPatternError>,
-                    permissions: Option<PermissionsError>,
-                }
+                let ReplyNotMatchRequest {
+                    path_pattern,
+                    permissions,
+                } = serde_json::from_value(value).map_err(de::Error::custom)?;
 
-                #[derive(Debug, Deserialize)]
-                #[serde(rename_all = "kebab-case")]
-                struct PathPatternError {
-                    requested_path: String,
-                    replied_pattern: String,
-                }
-
-                #[derive(Debug, Deserialize)]
-                #[serde(rename_all = "kebab-case")]
-                struct PermissionsError {
-                    requested_permissions: Vec<String>,
-                    replied_permissions: Vec<String>,
-                }
-
-                let fs: Fields = serde_json::from_value(value).map_err(de::Error::custom)?;
-                let err = match (fs.path_pattern, fs.permissions) {
+                let err = match (path_pattern, permissions) {
                     (Some(e), None) => SnapdError::InvalidPathPattern {
                         requested: e.requested_path,
                         replied: e.replied_pattern,
@@ -321,16 +216,146 @@ where
     }
 }
 
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+struct RawResponse {
+    #[serde(rename = "type")]
+    ty: String,
+    status_code: u16,
+    status: String,
+    result: serde_json::Value,
+}
+
+#[derive(Debug, Deserialize)]
+enum ErrorKind {
+    #[serde(rename = "interfaces-requests-invalid-fields")]
+    InvalidFields,
+    #[serde(rename = "interfaces-requests-prompt-not-found")]
+    PromptNotFound,
+    #[serde(rename = "interfaces-requests-reply-not-match-request")]
+    ReplyNotMatchRequest,
+    #[serde(rename = "interfaces-requests-rule-conflict")]
+    RuleConflict,
+    #[serde(rename = "interfaces-requests-rule-not-found")]
+    RuleNotFound,
+}
+
+#[derive(Debug, Deserialize)]
+struct RawError {
+    message: String,
+    kind: Option<ErrorKind>,
+    value: Option<serde_json::Value>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+struct InvalidFields {
+    expiration: Option<StrValue>,
+    duration: Option<StrValue>,
+    path_pattern: Option<StrValue>,
+    permissions: Option<VecSupportedValue>,
+    interface: Option<VecSupportedValue>,
+    lifespan: Option<VecSupportedValue>,
+}
+
+#[derive(Debug, Deserialize)]
+struct StrValue {
+    reason: String,
+    value: String,
+}
+
+impl StrValue {
+    fn into_error(self, field: &'static str) -> SnapdError {
+        if self.reason == "parse-error" {
+            SnapdError::ParseError {
+                field,
+                value: self.value,
+            }
+        } else {
+            error!("unknown {field} error: {}", self.reason);
+            SnapdError::Raw
+        }
+    }
+}
+
+#[derive(Debug, Deserialize)]
+struct VecSupportedValue {
+    reason: String,
+    supported: Vec<String>,
+    value: Vec<String>,
+}
+
+impl VecSupportedValue {
+    fn into_error(self, field: &'static str) -> SnapdError {
+        if self.reason == "unsupported-value" {
+            SnapdError::UnsupportedValue {
+                field,
+                provided: self.value,
+                supported: self.supported,
+            }
+        } else {
+            error!("unknown {field} error: {}", self.reason);
+            SnapdError::Raw
+        }
+    }
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+struct ReplyNotMatchRequest {
+    path_pattern: Option<PathPatternError>,
+    permissions: Option<PermissionsError>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+struct PathPatternError {
+    requested_path: String,
+    replied_pattern: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+struct PermissionsError {
+    requested_permissions: Vec<String>,
+    replied_permissions: Vec<String>,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::snapd_client::{PromptId, RawPrompt};
     use simple_test_case::dir_cases;
 
+    // Files within this directory need to have a prefix that matches one of the assertion branches
+    // below in order to check the overall structure of the response
     #[dir_cases("resources/response-parsing-tests")]
     #[test]
-    fn response_parsing_sanity_check(_path: &str, contents: &str) {
-        let _parsed: SnapdResponse<String> = serde_json::from_str(contents).unwrap();
+    fn response_parsing_sanity_check(full_path: &str, contents: &str) {
+        let path = full_path.split('/').last().unwrap();
+
+        let parsed: SnapdResponse<String> = serde_json::from_str(contents).unwrap();
+        let (_, err) = parsed.result.unwrap_err();
+
+        if path.starts_with("raw") {
+            assert!(matches!(err, SnapdError::Raw));
+        } else if path.starts_with("rule-not-found") {
+            assert!(matches!(err, SnapdError::RuleNotFound));
+        } else if path.starts_with("prompt-not-found") {
+            assert!(matches!(err, SnapdError::PromptNotFound));
+        } else if path.starts_with("rule-conflict") {
+            assert!(matches!(err, SnapdError::RuleConflict { .. }));
+        } else if path.starts_with("invalid-path-pattern") {
+            assert!(matches!(err, SnapdError::InvalidPathPattern { .. }));
+        } else if path.starts_with("invalid-permissions") {
+            assert!(matches!(err, SnapdError::InvalidReplyPermissions { .. }));
+        } else if path.starts_with("parse-error") {
+            assert!(matches!(err, SnapdError::ParseError { .. }));
+        } else if path.starts_with("unsupported") {
+            assert!(matches!(err, SnapdError::UnsupportedValue { .. }));
+        } else {
+            panic!("no assertion in place for test case: {path}");
+        }
     }
 
     const RAW_PROMPT: &str = r#"{
