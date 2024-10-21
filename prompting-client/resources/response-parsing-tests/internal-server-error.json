@@ -1,0 +1,8 @@
+{
+  "result": {
+    "message": "some error message"
+  },
+  "status": "Internal Server Error",
+  "status-code": 500,
+  "type": "error"
+}
