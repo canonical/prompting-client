@@ -22,6 +22,8 @@ mod recording;
 mod socket_client;
 mod util;
 
+use snapd_client::SnapdError;
+
 pub(crate) const SNAP_NAME: &str = "prompting-client";
 pub const SOCKET_ENV_VAR: &str = "PROMPTING_CLIENT_SOCKET";
 pub const DEFAULT_LOG_LEVEL: &str = "info";
@@ -78,7 +80,11 @@ pub enum Error {
     NotSupported { reason: String },
 
     #[error("error message returned from snapd: {message}")]
-    SnapdError { status: StatusCode, message: String },
+    SnapdError {
+        status: StatusCode,
+        message: String,
+        err: Box<SnapdError>,
+    },
 
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },

@@ -1,0 +1,21 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-invalid-fields",
+    "value": {
+      "outcome": {
+        "reason": "unsupported-value",
+        "supported": [
+          "allow",
+          "deny"
+        ],
+        "value": [
+          "foo"
+        ]
+      }
+    }
+  },
+  "status": "Bad Request",
+  "status-code": 400,
+  "type": "error"
+}

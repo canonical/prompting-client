@@ -1,0 +1,15 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-invalid-fields",
+    "value": {
+      "path-pattern": {
+        "reason": "parse-error",
+        "value": "invalid/pattern"
+      }
+    }
+  },
+  "status": "Bad Request",
+  "status-code": 400,
+  "type": "error"
+}

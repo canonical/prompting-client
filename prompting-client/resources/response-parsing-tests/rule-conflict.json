@@ -1,0 +1,23 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-rule-conflict",
+    "value": {
+      "conflicts": [
+        {
+          "permission": "foo",
+          "variant": "variant 1",
+          "conflicting-id": "conflicting rule 1"
+        },
+        {
+          "permission": "bar",
+          "variant": "variant 2",
+          "conflicting-id": "conflicting rule 2"
+        }
+      ]
+    }
+  },
+  "status": "Conflict",
+  "status-code": 409,
+  "type": "error"
+}

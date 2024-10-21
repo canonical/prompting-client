@@ -1,0 +1,15 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-invalid-fields",
+    "value": {
+      "expiration": {
+        "reason": "parse-error",
+        "value": "0001-02-03T04:05:06.000000007Z"
+      }
+    }
+  },
+  "status": "Bad Request",
+  "status-code": 400,
+  "type": "error"
+}

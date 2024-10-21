@@ -1,0 +1,9 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-rule-not-found"
+  },
+  "status": "Not Found",
+  "status-code": 404,
+  "type": "error"
+}
