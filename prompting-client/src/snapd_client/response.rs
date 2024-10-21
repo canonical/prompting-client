@@ -16,7 +16,7 @@ pub enum SnapdError {
     RuleConflict {
         conflicts: Vec<RuleConflict>,
     },
-    InvalidReplyPermissions {
+    InvalidPermissions {
         requested: Vec<String>,
         replied: Vec<String>,
     },
@@ -129,6 +129,8 @@ where
                     e.into_error("interface")
                 } else if let Some(e) = fs.lifespan {
                     e.into_error("lifespan")
+                } else if let Some(e) = fs.outcome {
+                    e.into_error("outcome")
                 } else {
                     error!("malformed reply-not-match-request error from snapd");
                     SnapdError::Raw
@@ -154,7 +156,7 @@ where
                         replied: e.replied_pattern,
                     },
 
-                    (None, Some(e)) => SnapdError::InvalidReplyPermissions {
+                    (None, Some(e)) => SnapdError::InvalidPermissions {
                         requested: e.requested_permissions,
                         replied: e.replied_permissions,
                     },
@@ -256,6 +258,7 @@ struct InvalidFields {
     permissions: Option<VecSupportedValue>,
     interface: Option<VecSupportedValue>,
     lifespan: Option<VecSupportedValue>,
+    outcome: Option<VecSupportedValue>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -348,7 +351,7 @@ mod tests {
         } else if path.starts_with("invalid-path-pattern") {
             assert!(matches!(err, SnapdError::InvalidPathPattern { .. }));
         } else if path.starts_with("invalid-permissions") {
-            assert!(matches!(err, SnapdError::InvalidReplyPermissions { .. }));
+            assert!(matches!(err, SnapdError::InvalidPermissions { .. }));
         } else if path.starts_with("parse-error") {
             assert!(matches!(err, SnapdError::ParseError { .. }));
         } else if path.starts_with("unsupported") {
