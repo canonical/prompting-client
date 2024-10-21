@@ -125,5 +125,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homePromptErrorUnknownTitle": "Что-то пошло не так",
+  "@homePromptErrorUnknownTitle": {}
 }

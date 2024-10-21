@@ -119,5 +119,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homePromptErrorUnknownTitle": "Algo ha ido mal",
+  "@homePromptErrorUnknownTitle": {}
 }

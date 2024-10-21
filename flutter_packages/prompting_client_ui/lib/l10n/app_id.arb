@@ -125,5 +125,7 @@
   "homePromptPermissionsTitle": "Izin",
   "@homePromptPermissionsTitle": {},
   "homePromptPermissionsExecute": "Jalankan",
-  "@homePromptPermissionsExecute": {}
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "Ada yang tidak beres",
+  "@homePromptErrorUnknownTitle": {}
 }

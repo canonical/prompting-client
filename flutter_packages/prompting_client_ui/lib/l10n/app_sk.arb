@@ -119,5 +119,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
+  "@homePromptErrorUnknownTitle": {}
 }

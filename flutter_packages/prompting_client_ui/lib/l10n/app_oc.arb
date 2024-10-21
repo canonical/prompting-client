@@ -125,5 +125,7 @@
   "promptActionOptionAllowOnce": "Autorizar un còp",
   "@promptActionOptionAllowOnce": {},
   "homePromptPermissionsRead": "Lectura",
-  "@homePromptPermissionsRead": {}
+  "@homePromptPermissionsRead": {},
+  "homePromptErrorUnknownTitle": "Quicòm a trucat",
+  "@homePromptErrorUnknownTitle": {}
 }
