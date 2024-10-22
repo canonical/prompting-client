@@ -27,9 +27,13 @@ void main() {
         ),
         requestedPath: '/home/user/Downloads/example.txt',
         homeDir: '/home/user',
-        requestedPermissions: ['write'],
-        availablePermissions: ['read', 'write', 'execute'],
-        suggestedPermissions: ['read', 'write'],
+        requestedPermissions: [pb.HomePermission.WRITE],
+        availablePermissions: [
+          pb.HomePermission.READ,
+          pb.HomePermission.WRITE,
+          pb.HomePermission.EXECUTE,
+        ],
+        suggestedPermissions: [pb.HomePermission.READ, pb.HomePermission.WRITE],
         patternOptions: [
           pb.HomePrompt_PatternOption(
             homePatternType: pb.HomePatternType.REQUESTED_DIRECTORY,
@@ -69,18 +73,6 @@ void main() {
         ),
         expectError: false,
       ),
-      (
-        name: 'invalid requested permission',
-        mockResponse: mockResponse.rebuild(
-          (r) => r.homePrompt = r.homePrompt.rebuild(
-            (p) => p.requestedPermissions
-              ..clear()
-              ..add('invalid'),
-          ),
-        ),
-        expectedDetails: null,
-        expectError: true,
-      ),
     ];
 
     for (final testCase in testCases) {
@@ -112,16 +104,14 @@ void main() {
           pathPattern: '/home/user/Downloads/**',
           permissions: {Permission.read, Permission.write},
         ),
-        mockResponse: pb.PromptReplyResponse(
-          promptReplyType: pb.PromptReplyResponse_PromptReplyType.SUCCESS,
-        ),
+        mockResponse: pb.PromptReplyResponse(success: Empty()),
         expectedProto: pb.PromptReply(
           promptId: 'promptId',
           action: pb.Action.ALLOW,
           lifespan: pb.Lifespan.SESSION,
           homePromptReply: pb.HomePromptReply(
             pathPattern: '/home/user/Downloads/**',
-            permissions: ['read', 'write'],
+            permissions: [pb.HomePermission.READ, pb.HomePermission.WRITE],
           ),
         ),
         expectedResponse: PromptReplyResponse.success(),
@@ -136,7 +126,7 @@ void main() {
           permissions: {Permission.read, Permission.write},
         ),
         mockResponse: pb.PromptReplyResponse(
-          promptReplyType: pb.PromptReplyResponse_PromptReplyType.UNKNOWN,
+          raw: Empty(),
           message: 'error message',
         ),
         expectedProto: pb.PromptReply(
@@ -145,7 +135,7 @@ void main() {
           lifespan: pb.Lifespan.FOREVER,
           homePromptReply: pb.HomePromptReply(
             pathPattern: '/home/user/Downloads/**',
-            permissions: ['read', 'write'],
+            permissions: [pb.HomePermission.READ, pb.HomePermission.WRITE],
           ),
         ),
         expectedResponse: PromptReplyResponse.unknown(message: 'error message'),
@@ -215,19 +205,6 @@ void main() {
       test(variant.toString(), () {
         // Just checking that we don't throw for any of the protobuf variants
         HomePatternTypeConversion.fromProto(variant);
-      });
-    }
-  });
-
-  group('prompt reply response conversion is exhaustive', () {
-    for (final variant in pb.PromptReplyResponse_PromptReplyType.values) {
-      test(variant.toString(), () {
-        final response = pb.PromptReplyResponse(
-          promptReplyType: variant,
-          message: 'message',
-        );
-        // Just checking that we don't throw for any of the protobuf variants
-        PromptReplyResponseConversion.fromProto(response);
       });
     }
   });
