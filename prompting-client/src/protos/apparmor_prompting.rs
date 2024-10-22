@@ -25,8 +25,13 @@ pub mod prompt_reply {
 pub struct PromptReplyResponse {
     #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
-    #[prost(oneof = "prompt_reply_response::Data", tags = "2, 3, 4, 5, 6, 7, 8, 9, 10")]
-    pub data: ::core::option::Option<prompt_reply_response::Data>,
+    #[prost(
+        oneof = "prompt_reply_response::PromptReplyType",
+        tags = "2, 3, 4, 5, 6, 7, 8, 9, 10"
+    )]
+    pub prompt_reply_type: ::core::option::Option<
+        prompt_reply_response::PromptReplyType,
+    >,
 }
 /// Nested message and enum types in `PromptReplyResponse`.
 pub mod prompt_reply_response {
@@ -82,7 +87,7 @@ pub mod prompt_reply_response {
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum Data {
+    pub enum PromptReplyType {
         #[prost(message, tag = "2")]
         Success(()),
         #[prost(message, tag = "3")]

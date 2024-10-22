@@ -23,7 +23,7 @@ message PromptReply {
 
 message PromptReplyResponse {
     string message = 1;
-    oneof data {
+    oneof prompt_reply_type {
         google.protobuf.Empty success = 2;
         google.protobuf.Empty raw = 3;
         google.protobuf.Empty prompt_not_found = 4;

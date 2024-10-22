@@ -160,8 +160,8 @@ where
         request: Request<PromptReply>,
     ) -> Result<Response<PromptReplyResponse>, Status> {
         use crate::protos::apparmor_prompting::prompt_reply_response::{
-            Data, HomeRuleConflict, HomeRuleConflicts, InvalidHomePermissions, InvalidPathPattern,
-            ParseError, UnsupportedValue,
+            HomeRuleConflict, HomeRuleConflicts, InvalidHomePermissions, InvalidPathPattern,
+            ParseError, PromptReplyType, UnsupportedValue,
         };
 
         let req = request.into_inner();
@@ -176,24 +176,24 @@ where
 
                 PromptReplyResponse {
                     message: "success".to_string(),
-                    data: Some(Data::Success(())),
+                    prompt_reply_type: Some(PromptReplyType::Success(())),
                 }
             }
 
             Err(Error::SnapdError { message, err, .. }) => {
                 let data = match *err {
-                    SnapdError::Raw => Data::Raw(()),
+                    SnapdError::Raw => PromptReplyType::Raw(()),
 
-                    SnapdError::RuleNotFound => Data::RuleNotFound(()),
+                    SnapdError::RuleNotFound => PromptReplyType::RuleNotFound(()),
 
                     SnapdError::PromptNotFound => {
                         warn!(id=%id.0, "prompt not found (id={})", id.0);
                         self.update_worker(ActionedPrompt::NotFound { id }).await;
-                        Data::PromptNotFound(())
+                        PromptReplyType::PromptNotFound(())
                     }
 
                     SnapdError::RuleConflicts { conflicts } => {
-                        Data::RuleConflicts(HomeRuleConflicts {
+                        PromptReplyType::RuleConflicts(HomeRuleConflicts {
                             conflicts: conflicts
                                 .into_iter()
                                 .map(|c| {
@@ -208,26 +208,31 @@ where
                     }
 
                     SnapdError::InvalidPathPattern { requested, replied } => {
-                        Data::InvalidPathPattern(InvalidPathPattern { requested, replied })
+                        PromptReplyType::InvalidPathPattern(InvalidPathPattern {
+                            requested,
+                            replied,
+                        })
                     }
 
                     SnapdError::InvalidPermissions { requested, replied } => {
-                        Data::InvalidPermissions(InvalidHomePermissions {
+                        PromptReplyType::InvalidPermissions(InvalidHomePermissions {
                             requested: map_permissions(requested)?,
                             replied: map_permissions(replied)?,
                         })
                     }
 
-                    SnapdError::ParseError { field, value } => Data::ParseError(ParseError {
-                        field: field.to_string(),
-                        value,
-                    }),
+                    SnapdError::ParseError { field, value } => {
+                        PromptReplyType::ParseError(ParseError {
+                            field: field.to_string(),
+                            value,
+                        })
+                    }
 
                     SnapdError::UnsupportedValue {
                         field,
                         supported,
                         provided,
-                    } => Data::UnsupportedValue(UnsupportedValue {
+                    } => PromptReplyType::UnsupportedValue(UnsupportedValue {
                         field: field.to_string(),
                         supported,
                         provided,
@@ -236,7 +241,7 @@ where
 
                 PromptReplyResponse {
                     message,
-                    data: Some(data),
+                    prompt_reply_type: Some(data),
                 }
             }
 
@@ -244,7 +249,7 @@ where
                 warn!(id=%id.0, "unknown error from snapd when replying to prompt (id={}): {e}", id.0);
                 PromptReplyResponse {
                     message: e.to_string(),
-                    data: Some(Data::Raw(())),
+                    prompt_reply_type: Some(PromptReplyType::Raw(())),
                 }
             }
         };
@@ -408,7 +413,7 @@ mod tests {
         daemon::worker::ReadOnlyActivePrompt,
         protos::apparmor_prompting::{
             app_armor_prompting_client::AppArmorPromptingClient, prompt_reply,
-            prompt_reply_response::Data, Action, Lifespan,
+            prompt_reply_response::PromptReplyType, Action, Lifespan,
         },
         snapd_client::{interfaces::home::HomeUiInputData, PromptId, SnapMeta, TypedPromptReply},
         Error,
@@ -662,7 +667,10 @@ mod tests {
             return;
         }
 
-        let is_success = matches!(resp.unwrap().into_inner().data.unwrap(), Data::Success(()));
+        let is_success = matches!(
+            resp.unwrap().into_inner().prompt_reply_type.unwrap(),
+            PromptReplyType::Success(())
+        );
 
         if expected_errors.snapd_err {
             assert!(!is_success);
