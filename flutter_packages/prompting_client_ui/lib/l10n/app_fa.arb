@@ -1,1 +1,129 @@
-{}
+{
+  "homePromptSuggestedPermission": "همچنین دادن دسترسی {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptLifespanTitle": "مدّت",
+  "@promptLifespanTitle": {},
+  "promptActionTitle": "کنش",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "همیشه",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSingle": "یک بار",
+  "@promptLifespanOptionSingle": {},
+  "homePromptMetaDataPublishedBy": "منتشر شده به دست {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessMoreOptionsTitle": "تنظیم دسترسی برای {snap} به:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "securityCenterInfo": "همیشه می‌توانید این اجازه‌ها را در «مرکز امنیت» تغییر دهید",
+  "@securityCenterInfo": {},
+  "promptActionOptionAllow": "اجازه",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionDeny": "رد",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionAllowAlways": "اجازه برای همیشه",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDenyOnce": "رد کردن برای یک بار",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionSession": "تا خروج",
+  "@promptLifespanOptionSession": {},
+  "promptAccessTitle": "دادن دسترسی {permission}{snap} به:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptTitle": "آگاهی امنیتی",
+  "@promptTitle": {},
+  "homePatternTypeRequestedFile": "فقط پروندهٔ درخواستی",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "همه‌چیز در شاخهٔ {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "هر چیزی در شاخه",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "هر چیزی در شاخه",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "همه‌چیز در شاخهٔ خانگی",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptPermissionsWrite": "نوشتن",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "اجرا",
+  "@homePromptPermissionsExecute": {},
+  "promptActionOptionAllowOnce": "اجازه برای یک بار",
+  "@promptActionOptionAllowOnce": {},
+  "homePromptMoreOptionsLabel": "گزینه‌های بیش‌تر…",
+  "@homePromptMoreOptionsLabel": {},
+  "promptSaveAndContinue": "ذخیره و ادامه",
+  "@promptSaveAndContinue": {},
+  "homePatternTypeCustomPath": "الگوی مسیر سفارشی",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeMatchingFileExtension": "همهٔ پرونده‌های {fileExtension}",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "دربارهٔ این کاره",
+  "@homePromptMetaDataTitle": {},
+  "homePatternInfo": "<آموزش بیش‌تر دربارهٔ الگوهای مسیر>",
+  "@homePatternInfo": {},
+  "homePatternTypeRequestedDirectory": "فقط شاخهٔ درخواستی",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePromptMetaDataLastUpdated": "آخرین به‌روز رسانی در {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptBody": "اجازه به {snap} برای داشتن دسترسی {permissions} به {path}؟",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataAppCenterLink": "دیدن صفحهٔ مرکز کاره",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "اجازه‌ها",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "خواندن",
+  "@homePromptPermissionsRead": {}
+}
