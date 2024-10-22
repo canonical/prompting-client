@@ -12,7 +12,7 @@ part 'home_prompt_data_model.g.dart';
 class HomePromptData with _$HomePromptData {
   factory HomePromptData({
     required PromptDetailsHome details,
-    required Set<Permission> permissions,
+    required Set<HomePermission> permissions,
     required String customPath,
     required PatternOption patternOption,
     @Default(Lifespan.forever) Lifespan lifespan,
@@ -80,7 +80,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     state = state.copyWith(lifespan: lifespan);
   }
 
-  void togglePermission(Permission permission) {
+  void togglePermission(HomePermission permission) {
     if (!state.details.availablePermissions.contains(permission)) {
       throw ArgumentError('$permission is not an available permission');
     }

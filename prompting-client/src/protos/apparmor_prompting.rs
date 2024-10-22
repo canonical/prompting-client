@@ -23,51 +23,89 @@ pub mod prompt_reply {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromptReplyResponse {
-    #[prost(enumeration = "prompt_reply_response::PromptReplyType", tag = "1")]
-    pub prompt_reply_type: i32,
-    #[prost(string, tag = "2")]
+    #[prost(string, tag = "1")]
     pub message: ::prost::alloc::string::String,
+    #[prost(
+        oneof = "prompt_reply_response::PromptReplyType",
+        tags = "2, 3, 4, 5, 6, 7, 8, 9, 10"
+    )]
+    pub prompt_reply_type: ::core::option::Option<
+        prompt_reply_response::PromptReplyType,
+    >,
 }
 /// Nested message and enum types in `PromptReplyResponse`.
 pub mod prompt_reply_response {
-    #[derive(
-        Clone,
-        Copy,
-        Debug,
-        PartialEq,
-        Eq,
-        Hash,
-        PartialOrd,
-        Ord,
-        ::prost::Enumeration
-    )]
-    #[repr(i32)]
-    pub enum PromptReplyType {
-        Success = 0,
-        Unknown = 1,
-        PromptNotFound = 2,
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HomeRuleConflicts {
+        #[prost(message, repeated, tag = "1")]
+        pub conflicts: ::prost::alloc::vec::Vec<HomeRuleConflict>,
     }
-    impl PromptReplyType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                PromptReplyType::Success => "SUCCESS",
-                PromptReplyType::Unknown => "UNKNOWN",
-                PromptReplyType::PromptNotFound => "PROMPT_NOT_FOUND",
-            }
-        }
-        /// Creates an enum from field names used in the ProtoBuf definition.
-        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-            match value {
-                "SUCCESS" => Some(Self::Success),
-                "UNKNOWN" => Some(Self::Unknown),
-                "PROMPT_NOT_FOUND" => Some(Self::PromptNotFound),
-                _ => None,
-            }
-        }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct HomeRuleConflict {
+        #[prost(enumeration = "super::HomePermission", tag = "1")]
+        pub permission: i32,
+        #[prost(string, tag = "2")]
+        pub variant: ::prost::alloc::string::String,
+        #[prost(string, tag = "3")]
+        pub conflicting_id: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InvalidHomePermissions {
+        #[prost(enumeration = "super::HomePermission", repeated, tag = "1")]
+        pub requested: ::prost::alloc::vec::Vec<i32>,
+        #[prost(enumeration = "super::HomePermission", repeated, tag = "2")]
+        pub replied: ::prost::alloc::vec::Vec<i32>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InvalidPathPattern {
+        #[prost(string, tag = "1")]
+        pub requested: ::prost::alloc::string::String,
+        #[prost(string, tag = "2")]
+        pub replied: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ParseError {
+        #[prost(string, tag = "1")]
+        pub field: ::prost::alloc::string::String,
+        #[prost(string, tag = "2")]
+        pub value: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UnsupportedValue {
+        #[prost(string, tag = "1")]
+        pub field: ::prost::alloc::string::String,
+        #[prost(string, repeated, tag = "2")]
+        pub supported: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        #[prost(string, repeated, tag = "3")]
+        pub provided: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum PromptReplyType {
+        #[prost(message, tag = "2")]
+        Success(()),
+        #[prost(message, tag = "3")]
+        Raw(()),
+        #[prost(message, tag = "4")]
+        PromptNotFound(()),
+        #[prost(message, tag = "5")]
+        RuleNotFound(()),
+        #[prost(message, tag = "6")]
+        RuleConflicts(HomeRuleConflicts),
+        #[prost(message, tag = "7")]
+        InvalidPermissions(InvalidHomePermissions),
+        #[prost(message, tag = "8")]
+        InvalidPathPattern(InvalidPathPattern),
+        #[prost(message, tag = "9")]
+        ParseError(ParseError),
+        #[prost(message, tag = "10")]
+        UnsupportedValue(UnsupportedValue),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -90,8 +128,8 @@ pub mod get_current_prompt_response {
 pub struct HomePromptReply {
     #[prost(string, tag = "1")]
     pub path_pattern: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag = "2")]
-    pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(enumeration = "HomePermission", repeated, tag = "2")]
+    pub permissions: ::prost::alloc::vec::Vec<i32>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -102,12 +140,12 @@ pub struct HomePrompt {
     pub requested_path: ::prost::alloc::string::String,
     #[prost(string, tag = "3")]
     pub home_dir: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag = "4")]
-    pub requested_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(string, repeated, tag = "5")]
-    pub available_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    #[prost(string, repeated, tag = "6")]
-    pub suggested_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(enumeration = "HomePermission", repeated, tag = "4")]
+    pub requested_permissions: ::prost::alloc::vec::Vec<i32>,
+    #[prost(enumeration = "HomePermission", repeated, tag = "5")]
+    pub available_permissions: ::prost::alloc::vec::Vec<i32>,
+    #[prost(enumeration = "HomePermission", repeated, tag = "6")]
+    pub suggested_permissions: ::prost::alloc::vec::Vec<i32>,
     #[prost(message, repeated, tag = "7")]
     pub pattern_options: ::prost::alloc::vec::Vec<home_prompt::PatternOption>,
     #[prost(int32, tag = "8")]
@@ -203,6 +241,35 @@ impl Lifespan {
             "SINGLE" => Some(Self::Single),
             "SESSION" => Some(Self::Session),
             "FOREVER" => Some(Self::Forever),
+            _ => None,
+        }
+    }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum HomePermission {
+    Read = 0,
+    Write = 1,
+    Execute = 2,
+}
+impl HomePermission {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            HomePermission::Read => "READ",
+            HomePermission::Write => "WRITE",
+            HomePermission::Execute => "EXECUTE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "READ" => Some(Self::Read),
+            "WRITE" => Some(Self::Write),
+            "EXECUTE" => Some(Self::Execute),
             _ => None,
         }
     }

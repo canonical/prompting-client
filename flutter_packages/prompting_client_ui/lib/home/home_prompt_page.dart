@@ -355,7 +355,7 @@ class Permissions extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     if (showMoreOptions) {
-      return CheckButtonList<Permission>(
+      return CheckButtonList<HomePermission>(
         title: l10n.homePromptPermissionsTitle,
         options: details.availablePermissions,
         optionTitle: (option) => option.localize(l10n),
@@ -365,7 +365,7 @@ class Permissions extends ConsumerWidget {
         direction: Axis.horizontal,
       );
     } else {
-      return CheckButtonList<Permission>(
+      return CheckButtonList<HomePermission>(
         options: details.suggestedPermissions
             .whereNot(details.requestedPermissions.contains),
         optionTitle: (option) =>

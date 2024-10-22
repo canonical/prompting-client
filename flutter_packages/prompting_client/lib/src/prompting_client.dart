@@ -94,12 +94,20 @@ extension MoreOptionConversion on PatternOption {
       );
 }
 
-extension PermissionConversion on Permission {
-  static Permission fromString(String permission) =>
-      Permission.values.firstWhere(
-        (e) => e.name == permission,
-        orElse: () => throw ArgumentError('Unknown permission: $permission'),
-      );
+extension PermissionConversion on HomePermission {
+  static HomePermission fromProto(pb.HomePermission permission) =>
+      switch (permission) {
+        pb.HomePermission.READ => HomePermission.read,
+        pb.HomePermission.WRITE => HomePermission.write,
+        pb.HomePermission.EXECUTE => HomePermission.execute,
+        _ => throw ArgumentError('Unknown home permission: $permission'),
+      };
+
+  pb.HomePermission toProto() => switch (this) {
+        HomePermission.read => pb.HomePermission.READ,
+        HomePermission.write => pb.HomePermission.WRITE,
+        HomePermission.execute => pb.HomePermission.EXECUTE,
+      };
 }
 
 extension PrompteDetailsConversion on PromptDetails {
@@ -111,13 +119,13 @@ extension PrompteDetailsConversion on PromptDetails {
             requestedPath: response.homePrompt.requestedPath,
             homeDir: response.homePrompt.homeDir,
             requestedPermissions: response.homePrompt.requestedPermissions
-                .map(PermissionConversion.fromString)
+                .map(PermissionConversion.fromProto)
                 .toSet(),
             availablePermissions: response.homePrompt.availablePermissions
-                .map(PermissionConversion.fromString)
+                .map(PermissionConversion.fromProto)
                 .toSet(),
             suggestedPermissions: response.homePrompt.suggestedPermissions
-                .map(PermissionConversion.fromString)
+                .map(PermissionConversion.fromProto)
                 .toSet(),
             patternOptions: response.homePrompt.patternOptions
                 .map(MoreOptionConversion.fromProto)
@@ -137,7 +145,7 @@ extension PromptReplyConversion on PromptReply {
             lifespan: lifespan.toProto(),
             homePromptReply: pb.HomePromptReply(
               pathPattern: pathPattern,
-              permissions: permissions.map((e) => e.name),
+              permissions: permissions.map((e) => e.toProto()),
             ),
           ),
       };
@@ -145,13 +153,21 @@ extension PromptReplyConversion on PromptReply {
 
 extension PromptReplyResponseConversion on PromptReplyResponse {
   static PromptReplyResponse fromProto(pb.PromptReplyResponse response) =>
-      switch (response.promptReplyType) {
-        pb.PromptReplyResponse_PromptReplyType.SUCCESS =>
+      switch (response.whichPromptReplyType()) {
+        pb.PromptReplyResponse_PromptReplyType.success =>
           PromptReplyResponse.success(),
-        pb.PromptReplyResponse_PromptReplyType.PROMPT_NOT_FOUND =>
+        pb.PromptReplyResponse_PromptReplyType.promptNotFound =>
           PromptReplyResponse.promptNotFound(message: response.message),
-        pb.PromptReplyResponse_PromptReplyType.UNKNOWN =>
+        pb.PromptReplyResponse_PromptReplyType.raw ||
+        // TODO: handle new cases explicitly
+        pb.PromptReplyResponse_PromptReplyType.parseError ||
+        pb.PromptReplyResponse_PromptReplyType.ruleNotFound ||
+        pb.PromptReplyResponse_PromptReplyType.ruleConflicts ||
+        pb.PromptReplyResponse_PromptReplyType.unsupportedValue ||
+        pb.PromptReplyResponse_PromptReplyType.invalidPermissions ||
+        pb.PromptReplyResponse_PromptReplyType.invalidPathPattern =>
           PromptReplyResponse.unknown(message: response.message),
-        _ => throw ArgumentError('Unknown prompt reply type: $response'),
+        pb.PromptReplyResponse_PromptReplyType.notSet =>
+          throw ArgumentError('Prompt reply type not set'),
       };
 }

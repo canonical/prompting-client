@@ -19,13 +19,13 @@ void main() {
     storeUrl: 'snap://firefox',
     requestedPath: '/home/ubuntu/Downloads/file.txt',
     homeDir: '/home/ubuntu',
-    requestedPermissions: {Permission.read},
+    requestedPermissions: {HomePermission.read},
     availablePermissions: {
-      Permission.read,
-      Permission.write,
-      Permission.execute,
+      HomePermission.read,
+      HomePermission.write,
+      HomePermission.execute,
     },
-    suggestedPermissions: {Permission.read},
+    suggestedPermissions: {HomePermission.read},
     patternOptions: {
       PatternOption(
         homePatternType: HomePatternType.topLevelDirectory,
@@ -251,7 +251,7 @@ void main() {
           find.text(
             tester.l10n.homePromptBody(
               'firefox',
-              Permission.read.localize(tester.l10n).toLowerCase(),
+              HomePermission.read.localize(tester.l10n).toLowerCase(),
               testCase.requestedPath,
             ),
           ),
@@ -309,7 +309,7 @@ void main() {
       find.text(
         tester.l10n.homePromptBody(
           'firefox',
-          Permission.read.localize(tester.l10n).toLowerCase(),
+          HomePermission.read.localize(tester.l10n).toLowerCase(),
           '/home/ubuntu/Downloads/file.txt',
         ),
       ),
@@ -379,7 +379,7 @@ void main() {
               action: Action.deny,
               lifespan: Lifespan.forever,
               pathPattern: '/home/ubuntu/Downloads/file.txt',
-              permissions: {Permission.read},
+              permissions: {HomePermission.read},
             ),
           ),
         ).called(1);
@@ -395,7 +395,7 @@ void main() {
       action: Action.deny,
       lifespan: Lifespan.forever,
       pathPattern: '/home/ubuntu/Downloads/**',
-      permissions: {Permission.read},
+      permissions: {HomePermission.read},
     );
     for (final testCase in <({
       String name,

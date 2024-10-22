@@ -1,0 +1,22 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-invalid-fields",
+    "value": {
+      "permissions": {
+        "reason": "unsupported-value",
+        "supported": [
+          "fizz",
+          "buzz"
+        ],
+        "value": [
+          "bar",
+          "baz"
+        ]
+      }
+    }
+  },
+  "status": "Bad Request",
+  "status-code": 400,
+  "type": "error"
+}

@@ -56,9 +56,9 @@ PromptDetails mockPromptDetailsHome({
   String? storeUrl,
   String? requestedPath,
   String? homeDir,
-  Set<Permission>? requestedPermissions,
-  Set<Permission>? availablePermissions,
-  Set<Permission>? suggestedPermissions,
+  Set<HomePermission>? requestedPermissions,
+  Set<HomePermission>? availablePermissions,
+  Set<HomePermission>? suggestedPermissions,
   Set<PatternOption>? patternOptions,
 }) =>
     PromptDetails.home(

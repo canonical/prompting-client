@@ -1,0 +1,22 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-reply-not-match-request",
+    "value": {
+      "permissions": {
+        "requested-permissions": [
+          "foo",
+          "bar",
+          "baz"
+        ],
+        "replied-permissions": [
+          "fizz",
+          "buzz"
+        ]
+      }
+    }
+  },
+  "status": "Bad Request",
+  "status-code": 400,
+  "type": "error"
+}

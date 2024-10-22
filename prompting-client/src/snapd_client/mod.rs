@@ -1,21 +1,23 @@
 use crate::{
-    socket_client::{body_json, UnixSocketClient},
+    snapd_client::{prompt::RawPrompt, response::parse_response},
+    socket_client::UnixSocketClient,
     Error, Result,
 };
 use chrono::{DateTime, SecondsFormat, Utc};
-use hyper::{body::Incoming, Response, Uri};
-use prompt::RawPrompt;
+use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
 use tracing::{debug, error, warn};
 
 pub mod interfaces;
 mod prompt;
+mod response;
 
 pub use prompt::{
     Action, Lifespan, Prompt, PromptId, PromptNotice, PromptReply, TypedPrompt, TypedPromptReply,
     TypedUiInput, UiInput,
 };
+pub use response::{RuleConflict, SnapdError};
 
 const FEATURE_NAME: &str = "apparmor-prompting";
 const LONG_POLL_TIMEOUT: &str = "1h";
@@ -23,39 +25,6 @@ const NOTICE_TYPES: &str = "interfaces-requests-prompt";
 const SNAPD_BASE_URI: &str = "http://localhost/v2";
 const SNAPD_SOCKET: &str = "/run/snapd.socket";
 const SNAPD_SNAP_SOCKET: &str = "/run/snapd-snap.socket";
-
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(rename_all = "kebab-case")]
-struct SnapdResponse<T> {
-    #[serde(rename = "type")]
-    ty: String,
-    status_code: u16,
-    status: String,
-    result: ResOrErr<T>,
-}
-
-// NOTE: The ordering of the enum variants matters here as it is used by serde when deserializing
-// data to work out which variant we have. If we ever have a valid snapd response that also
-// contains the `message` key then it will not deserialize correctly.
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(untagged)]
-enum ResOrErr<T> {
-    Err { message: String },
-    Res(T),
-}
-
-async fn parse_response<T>(res: Response<Incoming>) -> Result<T>
-where
-    T: DeserializeOwned,
-{
-    let status = res.status();
-
-    let resp: SnapdResponse<T> = body_json(res).await?;
-    match resp.result {
-        ResOrErr::Res(t) => Ok(t),
-        ResOrErr::Err { message } => Err(Error::SnapdError { status, message }),
-    }
-}
 
 /// Abstraction layer to make swapping out the underlying client possible for
 /// testing.
@@ -377,48 +346,5 @@ mod tests {
             Err(Error::NotAvailable) => (),
             res => panic!("expected NotAvailable, got {res:?}"),
         }
-    }
-
-    const RAW_PROMPT: &str = r#"{
-  "result": {
-    "constraints": {
-      "available-permissions": [
-        "read",
-        "write",
-        "execute"
-      ],
-      "path": "/home/ubuntu/test/0ec9a598-eee3-4785-bd5a-c5c0e3ff04e9/test-2.txt",
-      "requested-permissions": [
-        "write"
-      ]
-    },
-    "id": "00000000000000BE",
-    "interface": "home",
-    "snap": "aa-prompting-test",
-    "timestamp": "2024-08-15T13:28:17.077016791Z"
-  },
-  "status": "OK",
-  "status-code": 200,
-  "type": "sync",
-  "warning-count": 2,
-  "warning-timestamp": "2024-08-14T06:39:37.371971895Z"
-}"#;
-
-    #[test]
-    fn raw_prompt_parsing_works() {
-        let raw: SnapdResponse<RawPrompt> = serde_json::from_str(RAW_PROMPT).unwrap();
-        let expected = RawPrompt {
-            id: PromptId("00000000000000BE".to_string()),
-            timestamp: "2024-08-15T13:28:17.077016791Z".to_string(),
-            snap: "aa-prompting-test".to_string(),
-            interface: "home".to_string(),
-            constraints: serde_json::json!({
-                "available-permissions": vec!["read", "write", "execute"],
-                "path": "/home/ubuntu/test/0ec9a598-eee3-4785-bd5a-c5c0e3ff04e9/test-2.txt",
-                "requested-permissions": vec!["write"]
-            }),
-        };
-
-        assert_eq!(raw.result, ResOrErr::Res(expected));
     }
 }

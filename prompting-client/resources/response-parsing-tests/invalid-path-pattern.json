@@ -1,0 +1,15 @@
+{
+  "result": {
+    "message": "some error message",
+    "kind": "interfaces-requests-reply-not-match-request",
+    "value": {
+      "path-pattern": {
+        "requested-path": "foo",
+        "replied-pattern": "bar"
+      }
+    }
+  },
+  "status": "Bad Request",
+  "status-code": 400,
+  "type": "error"
+}

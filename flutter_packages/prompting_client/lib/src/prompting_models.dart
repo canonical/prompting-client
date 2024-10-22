@@ -21,7 +21,7 @@ enum HomePatternType {
 // through the prompt UI.
 enum Lifespan { single, session, forever }
 
-enum Permission { read, write, execute }
+enum HomePermission { read, write, execute }
 
 @freezed
 class MetaData with _$MetaData {
@@ -55,9 +55,9 @@ sealed class PromptDetails with _$PromptDetails {
     required MetaData metaData,
     required String requestedPath,
     required String homeDir,
-    required Set<Permission> requestedPermissions,
-    required Set<Permission> availablePermissions,
-    required Set<Permission> suggestedPermissions,
+    required Set<HomePermission> requestedPermissions,
+    required Set<HomePermission> availablePermissions,
+    required Set<HomePermission> suggestedPermissions,
     required Set<PatternOption> patternOptions,
     @Default(0) int initialPatternOption,
   }) = PromptDetailsHome;
@@ -73,7 +73,7 @@ sealed class PromptReply with _$PromptReply {
     required Action action,
     required Lifespan lifespan,
     required String pathPattern,
-    required Set<Permission> permissions,
+    required Set<HomePermission> permissions,
   }) = PromptReplyHome;
 
   factory PromptReply.fromJson(Map<String, dynamic> json) =>
