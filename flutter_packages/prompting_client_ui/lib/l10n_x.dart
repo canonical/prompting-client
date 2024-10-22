@@ -38,10 +38,10 @@ extension PatternOptionL10n on PatternOption {
       };
 }
 
-extension PermissionL10n on Permission {
+extension PermissionL10n on HomePermission {
   String localize(AppLocalizations l10n) => switch (this) {
-        Permission.read => l10n.homePromptPermissionsRead,
-        Permission.write => l10n.homePromptPermissionsWrite,
-        Permission.execute => l10n.homePromptPermissionsExecute,
+        HomePermission.read => l10n.homePromptPermissionsRead,
+        HomePermission.write => l10n.homePromptPermissionsWrite,
+        HomePermission.execute => l10n.homePromptPermissionsExecute,
       };
 }

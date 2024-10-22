@@ -29,8 +29,8 @@ void main() {
             lifespan: Lifespan.forever,
             pathPattern: '/home/ubuntu/**/',
             permissions: {
-              Permission.write,
-              Permission.execute,
+              HomePermission.write,
+              HomePermission.execute,
             },
           ),
         );
@@ -68,7 +68,7 @@ void main() {
 
     // Select 'execute' permission
     await tester.ensureVisibleAndTap(
-      find.text(Permission.execute.localize(tester.l10n)),
+      find.text(HomePermission.execute.localize(tester.l10n)),
     );
 
     // Deny the request
