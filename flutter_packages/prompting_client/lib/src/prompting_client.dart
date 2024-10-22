@@ -153,20 +153,21 @@ extension PromptReplyConversion on PromptReply {
 
 extension PromptReplyResponseConversion on PromptReplyResponse {
   static PromptReplyResponse fromProto(pb.PromptReplyResponse response) =>
-      switch (response.whichData()) {
-        pb.PromptReplyResponse_Data.success => PromptReplyResponse.success(),
-        pb.PromptReplyResponse_Data.promptNotFound =>
+      switch (response.whichPromptReplyType()) {
+        pb.PromptReplyResponse_PromptReplyType.success =>
+          PromptReplyResponse.success(),
+        pb.PromptReplyResponse_PromptReplyType.promptNotFound =>
           PromptReplyResponse.promptNotFound(message: response.message),
-        pb.PromptReplyResponse_Data.raw ||
+        pb.PromptReplyResponse_PromptReplyType.raw ||
         // TODO: handle new cases explicitly
-        pb.PromptReplyResponse_Data.parseError ||
-        pb.PromptReplyResponse_Data.ruleNotFound ||
-        pb.PromptReplyResponse_Data.ruleConflicts ||
-        pb.PromptReplyResponse_Data.unsupportedValue ||
-        pb.PromptReplyResponse_Data.invalidPermissions ||
-        pb.PromptReplyResponse_Data.invalidPathPattern =>
+        pb.PromptReplyResponse_PromptReplyType.parseError ||
+        pb.PromptReplyResponse_PromptReplyType.ruleNotFound ||
+        pb.PromptReplyResponse_PromptReplyType.ruleConflicts ||
+        pb.PromptReplyResponse_PromptReplyType.unsupportedValue ||
+        pb.PromptReplyResponse_PromptReplyType.invalidPermissions ||
+        pb.PromptReplyResponse_PromptReplyType.invalidPathPattern =>
           PromptReplyResponse.unknown(message: response.message),
-        pb.PromptReplyResponse_Data.notSet =>
+        pb.PromptReplyResponse_PromptReplyType.notSet =>
           throw ArgumentError('Prompt reply type not set'),
       };
 }

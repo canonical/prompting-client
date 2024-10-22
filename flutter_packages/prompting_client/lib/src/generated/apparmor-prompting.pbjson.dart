@@ -114,7 +114,7 @@ const PromptReplyResponse$json = {
   ],
   '3': [PromptReplyResponse_HomeRuleConflicts$json, PromptReplyResponse_HomeRuleConflict$json, PromptReplyResponse_InvalidHomePermissions$json, PromptReplyResponse_InvalidPathPattern$json, PromptReplyResponse_ParseError$json, PromptReplyResponse_UnsupportedValue$json],
   '8': [
-    {'1': 'data'},
+    {'1': 'prompt_reply_type'},
   ],
 };
 
@@ -201,7 +201,7 @@ final $typed_data.Uint8List promptReplyResponseDescriptor = $convert.base64Decod
     'IgASgJUgdyZXBsaWVkGjgKClBhcnNlRXJyb3ISFAoFZmllbGQYASABKAlSBWZpZWxkEhQKBXZh'
     'bHVlGAIgASgJUgV2YWx1ZRpiChBVbnN1cHBvcnRlZFZhbHVlEhQKBWZpZWxkGAEgASgJUgVmaW'
     'VsZBIcCglzdXBwb3J0ZWQYAiADKAlSCXN1cHBvcnRlZBIaCghwcm92aWRlZBgDIAMoCVIIcHJv'
-    'dmlkZWRCBgoEZGF0YQ==');
+    'dmlkZWRCEwoRcHJvbXB0X3JlcGx5X3R5cGU=');
 
 @$core.Deprecated('Use getCurrentPromptResponseDescriptor instead')
 const GetCurrentPromptResponse$json = {

@@ -493,7 +493,7 @@ class PromptReplyResponse_UnsupportedValue extends $pb.GeneratedMessage {
   $core.List<$core.String> get provided => $_getList(2);
 }
 
-enum PromptReplyResponse_Data {
+enum PromptReplyResponse_PromptReplyType {
   success, 
   raw, 
   promptNotFound, 
@@ -556,17 +556,17 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
   factory PromptReplyResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory PromptReplyResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
-  static const $core.Map<$core.int, PromptReplyResponse_Data> _PromptReplyResponse_DataByTag = {
-    2 : PromptReplyResponse_Data.success,
-    3 : PromptReplyResponse_Data.raw,
-    4 : PromptReplyResponse_Data.promptNotFound,
-    5 : PromptReplyResponse_Data.ruleNotFound,
-    6 : PromptReplyResponse_Data.ruleConflicts,
-    7 : PromptReplyResponse_Data.invalidPermissions,
-    8 : PromptReplyResponse_Data.invalidPathPattern,
-    9 : PromptReplyResponse_Data.parseError,
-    10 : PromptReplyResponse_Data.unsupportedValue,
-    0 : PromptReplyResponse_Data.notSet
+  static const $core.Map<$core.int, PromptReplyResponse_PromptReplyType> _PromptReplyResponse_PromptReplyTypeByTag = {
+    2 : PromptReplyResponse_PromptReplyType.success,
+    3 : PromptReplyResponse_PromptReplyType.raw,
+    4 : PromptReplyResponse_PromptReplyType.promptNotFound,
+    5 : PromptReplyResponse_PromptReplyType.ruleNotFound,
+    6 : PromptReplyResponse_PromptReplyType.ruleConflicts,
+    7 : PromptReplyResponse_PromptReplyType.invalidPermissions,
+    8 : PromptReplyResponse_PromptReplyType.invalidPathPattern,
+    9 : PromptReplyResponse_PromptReplyType.parseError,
+    10 : PromptReplyResponse_PromptReplyType.unsupportedValue,
+    0 : PromptReplyResponse_PromptReplyType.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
     ..oo(0, [2, 3, 4, 5, 6, 7, 8, 9, 10])
@@ -604,8 +604,8 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
   static PromptReplyResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse>(create);
   static PromptReplyResponse? _defaultInstance;
 
-  PromptReplyResponse_Data whichData() => _PromptReplyResponse_DataByTag[$_whichOneof(0)]!;
-  void clearData() => clearField($_whichOneof(0));
+  PromptReplyResponse_PromptReplyType whichPromptReplyType() => _PromptReplyResponse_PromptReplyTypeByTag[$_whichOneof(0)]!;
+  void clearPromptReplyType() => clearField($_whichOneof(0));
 
   @$pb.TagNumber(1)
   $core.String get message => $_getSZ(0);
