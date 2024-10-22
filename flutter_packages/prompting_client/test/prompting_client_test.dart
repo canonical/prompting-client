@@ -9,7 +9,6 @@ import 'package:prompting_client/src/generated/google/protobuf/empty.pb.dart';
 import 'package:prompting_client/src/generated/google/protobuf/wrappers.pb.dart';
 import 'package:prompting_client/src/prompting_client.dart';
 import 'package:prompting_client/src/prompting_models.dart';
-import 'package:protobuf/protobuf.dart';
 import 'package:test/test.dart';
 
 import 'prompting_client_test.mocks.dart';
