@@ -56,13 +56,13 @@ void main() {
           ),
           requestedPath: '/home/user/Downloads/example.txt',
           homeDir: '/home/user',
-          requestedPermissions: {Permission.write},
+          requestedPermissions: {HomePermission.write},
           availablePermissions: {
-            Permission.read,
-            Permission.write,
-            Permission.execute,
+            HomePermission.read,
+            HomePermission.write,
+            HomePermission.execute,
           },
-          suggestedPermissions: {Permission.read, Permission.write},
+          suggestedPermissions: {HomePermission.read, HomePermission.write},
           patternOptions: {
             PatternOption(
               homePatternType: HomePatternType.requestedDirectory,
@@ -101,7 +101,7 @@ void main() {
           action: Action.allow,
           lifespan: Lifespan.session,
           pathPattern: '/home/user/Downloads/**',
-          permissions: {Permission.read, Permission.write},
+          permissions: {HomePermission.read, HomePermission.write},
         ),
         mockResponse: pb.PromptReplyResponse(success: Empty()),
         expectedProto: pb.PromptReply(
@@ -122,7 +122,7 @@ void main() {
           action: Action.deny,
           lifespan: Lifespan.forever,
           pathPattern: '/home/user/Downloads/**',
-          permissions: {Permission.read, Permission.write},
+          permissions: {HomePermission.read, HomePermission.write},
         ),
         mockResponse: pb.PromptReplyResponse(
           raw: Empty(),

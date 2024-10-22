@@ -94,19 +94,19 @@ extension MoreOptionConversion on PatternOption {
       );
 }
 
-extension PermissionConversion on Permission {
-  static Permission fromProto(pb.HomePermission permission) =>
+extension PermissionConversion on HomePermission {
+  static HomePermission fromProto(pb.HomePermission permission) =>
       switch (permission) {
-        pb.HomePermission.READ => Permission.read,
-        pb.HomePermission.WRITE => Permission.write,
-        pb.HomePermission.EXECUTE => Permission.execute,
+        pb.HomePermission.READ => HomePermission.read,
+        pb.HomePermission.WRITE => HomePermission.write,
+        pb.HomePermission.EXECUTE => HomePermission.execute,
         _ => throw ArgumentError('Unknown home permission: $permission'),
       };
 
   pb.HomePermission toProto() => switch (this) {
-        Permission.read => pb.HomePermission.READ,
-        Permission.write => pb.HomePermission.WRITE,
-        Permission.execute => pb.HomePermission.EXECUTE,
+        HomePermission.read => pb.HomePermission.READ,
+        HomePermission.write => pb.HomePermission.WRITE,
+        HomePermission.execute => pb.HomePermission.EXECUTE,
       };
 }
 
