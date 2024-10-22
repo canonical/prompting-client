@@ -38,9 +38,9 @@ pub enum SnapdError {
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct RuleConflict {
-    permission: String,
-    variant: String,
-    conflicting_id: String,
+    pub(crate) permission: String,
+    pub(crate) variant: String,
+    pub(crate) conflicting_id: String,
 }
 
 /// Parse a raw response body from snapd into our internal Result type

@@ -5,8 +5,8 @@ use crate::{
     protos::{
         apparmor_prompting::{
             self, get_current_prompt_response::Prompt, home_prompt::PatternOption,
-            prompt_reply::PromptReply::HomePromptReply, prompt_reply_response::PromptReplyType,
-            HomePatternType, MetaData, PromptReply, SetLoggingFilterResponse,
+            prompt_reply::PromptReply::HomePromptReply, HomePatternType, HomePermission, MetaData,
+            PromptReply, SetLoggingFilterResponse,
         },
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, HomePrompt,
         PromptReplyResponse, ResolveHomePatternTypeResponse,
@@ -16,12 +16,11 @@ use crate::{
         interfaces::home::{
             HomeInterface, HomeReplyConstraints, HomeUiInputData, PatternType, TypedPathPattern,
         },
-        PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPromptReply, TypedUiInput,
-        UiInput,
+        PromptId, PromptReply as SnapPromptReply, SnapMeta, SnapdError, TypedPromptReply,
+        TypedUiInput, UiInput,
     },
     Error,
 };
-use hyper::StatusCode;
 use std::sync::Arc;
 use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
 use tonic::{async_trait, Code, Request, Response, Status};
@@ -144,7 +143,7 @@ where
             Some(TypedUiInput::Home(input)) => {
                 let id = &input.id.0;
                 debug!(%id, "serving request for active prompt (id={id})");
-                Some(map_home_response(input))
+                Some(map_home_response(input)?)
             }
 
             None => {
@@ -160,6 +159,11 @@ where
         &self,
         request: Request<PromptReply>,
     ) -> Result<Response<PromptReplyResponse>, Status> {
+        use crate::protos::apparmor_prompting::prompt_reply_response::{
+            Data, HomeRuleConflict, HomeRuleConflicts, InvalidHomePermissions, InvalidPathPattern,
+            ParseError, UnsupportedValue,
+        };
+
         let req = request.into_inner();
         let reply = map_prompt_reply(req.clone())?;
         let id = PromptId(req.prompt_id.clone());
@@ -171,26 +175,76 @@ where
                     .await;
 
                 PromptReplyResponse {
-                    prompt_reply_type: PromptReplyType::Success as i32,
                     message: "success".to_string(),
+                    data: Some(Data::Success(())),
                 }
             }
 
-            Err(Error::SnapdError { status, .. }) if status == StatusCode::NOT_FOUND => {
-                warn!(id=%id.0, "prompt not found (id={})", id.0);
-                self.update_worker(ActionedPrompt::NotFound { id }).await;
+            Err(Error::SnapdError { message, err, .. }) => {
+                let data = match *err {
+                    SnapdError::Raw => Data::Raw(()),
+
+                    SnapdError::RuleNotFound => Data::RuleNotFound(()),
+
+                    SnapdError::PromptNotFound => {
+                        warn!(id=%id.0, "prompt not found (id={})", id.0);
+                        self.update_worker(ActionedPrompt::NotFound { id }).await;
+                        Data::PromptNotFound(())
+                    }
+
+                    SnapdError::RuleConflicts { conflicts } => {
+                        Data::RuleConflicts(HomeRuleConflicts {
+                            conflicts: conflicts
+                                .into_iter()
+                                .map(|c| {
+                                    Ok(HomeRuleConflict {
+                                        permission: map_permission(&c.permission)?,
+                                        variant: c.variant,
+                                        conflicting_id: c.conflicting_id,
+                                    })
+                                })
+                                .collect::<Result<Vec<_>, Status>>()?,
+                        })
+                    }
+
+                    SnapdError::InvalidPathPattern { requested, replied } => {
+                        Data::InvalidPathPattern(InvalidPathPattern { requested, replied })
+                    }
+
+                    SnapdError::InvalidPermissions { requested, replied } => {
+                        Data::InvalidPermissions(InvalidHomePermissions {
+                            requested: map_permissions(requested)?,
+                            replied: map_permissions(replied)?,
+                        })
+                    }
+
+                    SnapdError::ParseError { field, value } => Data::ParseError(ParseError {
+                        field: field.to_string(),
+                        value,
+                    }),
+
+                    SnapdError::UnsupportedValue {
+                        field,
+                        supported,
+                        provided,
+                    } => Data::UnsupportedValue(UnsupportedValue {
+                        field: field.to_string(),
+                        supported,
+                        provided,
+                    }),
+                };
 
                 PromptReplyResponse {
-                    prompt_reply_type: PromptReplyType::PromptNotFound as i32,
-                    message: "prompt not found".to_string(),
+                    message,
+                    data: Some(data),
                 }
             }
 
             Err(e) => {
-                warn!(id=%id.0, "got error from snapd when replying to prompt (id={}): {e}", id.0);
+                warn!(id=%id.0, "unknown error from snapd when replying to prompt (id={}): {e}", id.0);
                 PromptReplyResponse {
-                    prompt_reply_type: PromptReplyType::Unknown as i32,
                     message: e.to_string(),
+                    data: Some(Data::Raw(())),
                 }
             }
         };
@@ -225,6 +279,37 @@ where
     }
 }
 
+fn map_permission(perm: &str) -> Result<i32, Status> {
+    match perm {
+        "read" => Ok(HomePermission::Read as i32),
+        "write" => Ok(HomePermission::Write as i32),
+        "execute" => Ok(HomePermission::Execute as i32),
+        _ => Err(Status::internal(format!(
+            "invalid permission for home interface: {perm}"
+        ))),
+    }
+}
+
+fn map_permissions(perms: Vec<String>) -> Result<Vec<i32>, Status> {
+    perms.iter().map(|s| map_permission(s)).collect()
+}
+
+fn parse_permissions(ids: Vec<i32>) -> Result<Vec<String>, Status> {
+    ids.into_iter()
+        .map(|id| {
+            let perm = HomePermission::try_from(id)
+                .map_err(|_| Status::internal(format!("unknown permission id: {id}")))?;
+            let s = match perm {
+                HomePermission::Read => "read".to_owned(),
+                HomePermission::Write => "write".to_owned(),
+                HomePermission::Execute => "execute".to_owned(),
+            };
+
+            Ok(s)
+        })
+        .collect()
+}
+
 fn map_prompt_reply(mut reply: PromptReply) -> Result<TypedPromptReply, Status> {
     let prompt_type = reply.prompt_reply.take().ok_or(Status::new(
         Code::InvalidArgument,
@@ -246,14 +331,14 @@ fn map_prompt_reply(mut reply: PromptReply) -> Result<TypedPromptReply, Status> 
         constraints: match prompt_type {
             HomePromptReply(home_prompt_reply) => HomeReplyConstraints {
                 path_pattern: home_prompt_reply.path_pattern,
-                permissions: home_prompt_reply.permissions,
+                permissions: parse_permissions(home_prompt_reply.permissions)?,
                 available_permissions: Vec::new(),
             },
         },
     }))
 }
 
-fn map_home_response(input: UiInput<HomeInterface>) -> Prompt {
+fn map_home_response(input: UiInput<HomeInterface>) -> Result<Prompt, Status> {
     let SnapMeta {
         name,
         updated_at,
@@ -271,7 +356,7 @@ fn map_home_response(input: UiInput<HomeInterface>) -> Prompt {
         pattern_options,
     } = input.data;
 
-    Prompt::HomePrompt(HomePrompt {
+    Ok(Prompt::HomePrompt(HomePrompt {
         meta_data: Some(MetaData {
             prompt_id: input.id.0,
             snap_name: name,
@@ -281,15 +366,15 @@ fn map_home_response(input: UiInput<HomeInterface>) -> Prompt {
         }),
         requested_path,
         home_dir,
-        requested_permissions,
-        suggested_permissions,
-        available_permissions,
+        requested_permissions: map_permissions(requested_permissions)?,
+        suggested_permissions: map_permissions(suggested_permissions)?,
+        available_permissions: map_permissions(available_permissions)?,
         initial_pattern_option: initial_pattern_option as i32,
         pattern_options: pattern_options
             .into_iter()
             .map(map_pattern_option)
             .collect(),
-    })
+    }))
 }
 
 fn map_pattern_option(
@@ -322,7 +407,8 @@ mod tests {
     use crate::{
         daemon::worker::ReadOnlyActivePrompt,
         protos::apparmor_prompting::{
-            app_armor_prompting_client::AppArmorPromptingClient, prompt_reply, Action, Lifespan,
+            app_armor_prompting_client::AppArmorPromptingClient, prompt_reply,
+            prompt_reply_response::Data, Action, Lifespan,
         },
         snapd_client::{interfaces::home::HomeUiInputData, PromptId, SnapMeta, TypedPromptReply},
         Error,
@@ -575,22 +661,18 @@ mod tests {
             assert!(resp.is_err());
             return;
         }
-        if expected_errors.snapd_err {
-            assert_eq!(
-                resp.unwrap().into_inner().prompt_reply_type,
-                PromptReplyType::Unknown as i32
-            );
-            return;
-        }
-        assert_eq!(
-            resp.unwrap().into_inner().prompt_reply_type,
-            PromptReplyType::Success as i32
-        );
 
-        if let Some(mut rx) = rx_actioned_prompts {
-            match rx.recv().await {
-                Some(ActionedPrompt::Actioned { id, .. }) => assert_eq!(id.0, "1".to_string()),
-                res => panic!("expected actioned prompt, got {res:?}"),
+        let is_success = matches!(resp.unwrap().into_inner().data.unwrap(), Data::Success(()));
+
+        if expected_errors.snapd_err {
+            assert!(!is_success);
+        } else {
+            assert!(is_success);
+            if let Some(mut rx) = rx_actioned_prompts {
+                match rx.recv().await {
+                    Some(ActionedPrompt::Actioned { id, .. }) => assert_eq!(id.0, "1".to_string()),
+                    res => panic!("expected actioned prompt, got {res:?}"),
+                }
             }
         }
     }
