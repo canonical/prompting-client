@@ -13,7 +13,7 @@ pub enum SnapdError {
     Raw,
     PromptNotFound,
     RuleNotFound,
-    RuleConflict {
+    RuleConflicts {
         conflicts: Vec<RuleConflict>,
     },
     InvalidPermissions {
@@ -194,7 +194,7 @@ where
                     ty,
                     status_code,
                     status,
-                    result: Err((message, SnapdError::RuleConflict { conflicts })),
+                    result: Err((message, SnapdError::RuleConflicts { conflicts })),
                 })
             }
 
@@ -347,7 +347,7 @@ mod tests {
         } else if path.starts_with("prompt-not-found") {
             assert!(matches!(err, SnapdError::PromptNotFound));
         } else if path.starts_with("rule-conflict") {
-            assert!(matches!(err, SnapdError::RuleConflict { .. }));
+            assert!(matches!(err, SnapdError::RuleConflicts { .. }));
         } else if path.starts_with("invalid-path-pattern") {
             assert!(matches!(err, SnapdError::InvalidPathPattern { .. }));
         } else if path.starts_with("invalid-permissions") {
