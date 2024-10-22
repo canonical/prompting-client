@@ -40,6 +40,20 @@ const Lifespan$json = {
 final $typed_data.Uint8List lifespanDescriptor = $convert.base64Decode(
     'CghMaWZlc3BhbhIKCgZTSU5HTEUQABILCgdTRVNTSU9OEAESCwoHRk9SRVZFUhAC');
 
+@$core.Deprecated('Use homePermissionDescriptor instead')
+const HomePermission$json = {
+  '1': 'HomePermission',
+  '2': [
+    {'1': 'READ', '2': 0},
+    {'1': 'WRITE', '2': 1},
+    {'1': 'EXECUTE', '2': 2},
+  ],
+};
+
+/// Descriptor for `HomePermission`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List homePermissionDescriptor = $convert.base64Decode(
+    'Cg5Ib21lUGVybWlzc2lvbhIICgRSRUFEEAASCQoFV1JJVEUQARILCgdFWEVDVVRFEAI=');
+
 @$core.Deprecated('Use homePatternTypeDescriptor instead')
 const HomePatternType$json = {
   '1': 'HomePatternType',
@@ -87,28 +101,107 @@ final $typed_data.Uint8List promptReplyDescriptor = $convert.base64Decode(
 const PromptReplyResponse$json = {
   '1': 'PromptReplyResponse',
   '2': [
-    {'1': 'prompt_reply_type', '3': 1, '4': 1, '5': 14, '6': '.apparmor_prompting.PromptReplyResponse.PromptReplyType', '10': 'promptReplyType'},
-    {'1': 'message', '3': 2, '4': 1, '5': 9, '10': 'message'},
+    {'1': 'message', '3': 1, '4': 1, '5': 9, '10': 'message'},
+    {'1': 'success', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'success'},
+    {'1': 'raw', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'raw'},
+    {'1': 'prompt_not_found', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'promptNotFound'},
+    {'1': 'rule_not_found', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'ruleNotFound'},
+    {'1': 'rule_conflicts', '3': 6, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.HomeRuleConflicts', '9': 0, '10': 'ruleConflicts'},
+    {'1': 'invalid_permissions', '3': 7, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.InvalidHomePermissions', '9': 0, '10': 'invalidPermissions'},
+    {'1': 'invalid_path_pattern', '3': 8, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.InvalidPathPattern', '9': 0, '10': 'invalidPathPattern'},
+    {'1': 'parse_error', '3': 9, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.ParseError', '9': 0, '10': 'parseError'},
+    {'1': 'unsupported_value', '3': 10, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.UnsupportedValue', '9': 0, '10': 'unsupportedValue'},
   ],
-  '4': [PromptReplyResponse_PromptReplyType$json],
+  '3': [PromptReplyResponse_HomeRuleConflicts$json, PromptReplyResponse_HomeRuleConflict$json, PromptReplyResponse_InvalidHomePermissions$json, PromptReplyResponse_InvalidPathPattern$json, PromptReplyResponse_ParseError$json, PromptReplyResponse_UnsupportedValue$json],
+  '8': [
+    {'1': 'data'},
+  ],
 };
 
 @$core.Deprecated('Use promptReplyResponseDescriptor instead')
-const PromptReplyResponse_PromptReplyType$json = {
-  '1': 'PromptReplyType',
+const PromptReplyResponse_HomeRuleConflicts$json = {
+  '1': 'HomeRuleConflicts',
   '2': [
-    {'1': 'SUCCESS', '2': 0},
-    {'1': 'UNKNOWN', '2': 1},
-    {'1': 'PROMPT_NOT_FOUND', '2': 2},
+    {'1': 'conflicts', '3': 1, '4': 3, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.HomeRuleConflict', '10': 'conflicts'},
+  ],
+};
+
+@$core.Deprecated('Use promptReplyResponseDescriptor instead')
+const PromptReplyResponse_HomeRuleConflict$json = {
+  '1': 'HomeRuleConflict',
+  '2': [
+    {'1': 'permission', '3': 1, '4': 1, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'permission'},
+    {'1': 'variant', '3': 2, '4': 1, '5': 9, '10': 'variant'},
+    {'1': 'conflicting_id', '3': 3, '4': 1, '5': 9, '10': 'conflictingId'},
+  ],
+};
+
+@$core.Deprecated('Use promptReplyResponseDescriptor instead')
+const PromptReplyResponse_InvalidHomePermissions$json = {
+  '1': 'InvalidHomePermissions',
+  '2': [
+    {'1': 'requested', '3': 1, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'requested'},
+    {'1': 'replied', '3': 2, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'replied'},
+  ],
+};
+
+@$core.Deprecated('Use promptReplyResponseDescriptor instead')
+const PromptReplyResponse_InvalidPathPattern$json = {
+  '1': 'InvalidPathPattern',
+  '2': [
+    {'1': 'requested', '3': 1, '4': 1, '5': 9, '10': 'requested'},
+    {'1': 'replied', '3': 2, '4': 1, '5': 9, '10': 'replied'},
+  ],
+};
+
+@$core.Deprecated('Use promptReplyResponseDescriptor instead')
+const PromptReplyResponse_ParseError$json = {
+  '1': 'ParseError',
+  '2': [
+    {'1': 'field', '3': 1, '4': 1, '5': 9, '10': 'field'},
+    {'1': 'value', '3': 2, '4': 1, '5': 9, '10': 'value'},
+  ],
+};
+
+@$core.Deprecated('Use promptReplyResponseDescriptor instead')
+const PromptReplyResponse_UnsupportedValue$json = {
+  '1': 'UnsupportedValue',
+  '2': [
+    {'1': 'field', '3': 1, '4': 1, '5': 9, '10': 'field'},
+    {'1': 'supported', '3': 2, '4': 3, '5': 9, '10': 'supported'},
+    {'1': 'provided', '3': 3, '4': 3, '5': 9, '10': 'provided'},
   ],
 };
 
 /// Descriptor for `PromptReplyResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List promptReplyResponseDescriptor = $convert.base64Decode(
-    'ChNQcm9tcHRSZXBseVJlc3BvbnNlEmMKEXByb21wdF9yZXBseV90eXBlGAEgASgOMjcuYXBwYX'
-    'Jtb3JfcHJvbXB0aW5nLlByb21wdFJlcGx5UmVzcG9uc2UuUHJvbXB0UmVwbHlUeXBlUg9wcm9t'
-    'cHRSZXBseVR5cGUSGAoHbWVzc2FnZRgCIAEoCVIHbWVzc2FnZSJBCg9Qcm9tcHRSZXBseVR5cG'
-    'USCwoHU1VDQ0VTUxAAEgsKB1VOS05PV04QARIUChBQUk9NUFRfTk9UX0ZPVU5EEAI=');
+    'ChNQcm9tcHRSZXBseVJlc3BvbnNlEhgKB21lc3NhZ2UYASABKAlSB21lc3NhZ2USMgoHc3VjY2'
+    'VzcxgCIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAUgdzdWNjZXNzEioKA3JhdxgDIAEo'
+    'CzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAUgNyYXcSQgoQcHJvbXB0X25vdF9mb3VuZBgEIA'
+    'EoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAUg5wcm9tcHROb3RGb3VuZBI+Cg5ydWxlX25v'
+    'dF9mb3VuZBgFIAEoCzIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eUgAUgxydWxlTm90Rm91bmQSYg'
+    'oOcnVsZV9jb25mbGljdHMYBiABKAsyOS5hcHBhcm1vcl9wcm9tcHRpbmcuUHJvbXB0UmVwbHlS'
+    'ZXNwb25zZS5Ib21lUnVsZUNvbmZsaWN0c0gAUg1ydWxlQ29uZmxpY3RzEnEKE2ludmFsaWRfcG'
+    'VybWlzc2lvbnMYByABKAsyPi5hcHBhcm1vcl9wcm9tcHRpbmcuUHJvbXB0UmVwbHlSZXNwb25z'
+    'ZS5JbnZhbGlkSG9tZVBlcm1pc3Npb25zSABSEmludmFsaWRQZXJtaXNzaW9ucxJuChRpbnZhbG'
+    'lkX3BhdGhfcGF0dGVybhgIIAEoCzI6LmFwcGFybW9yX3Byb21wdGluZy5Qcm9tcHRSZXBseVJl'
+    'c3BvbnNlLkludmFsaWRQYXRoUGF0dGVybkgAUhJpbnZhbGlkUGF0aFBhdHRlcm4SVQoLcGFyc2'
+    'VfZXJyb3IYCSABKAsyMi5hcHBhcm1vcl9wcm9tcHRpbmcuUHJvbXB0UmVwbHlSZXNwb25zZS5Q'
+    'YXJzZUVycm9ySABSCnBhcnNlRXJyb3ISZwoRdW5zdXBwb3J0ZWRfdmFsdWUYCiABKAsyOC5hcH'
+    'Bhcm1vcl9wcm9tcHRpbmcuUHJvbXB0UmVwbHlSZXNwb25zZS5VbnN1cHBvcnRlZFZhbHVlSABS'
+    'EHVuc3VwcG9ydGVkVmFsdWUaawoRSG9tZVJ1bGVDb25mbGljdHMSVgoJY29uZmxpY3RzGAEgAy'
+    'gLMjguYXBwYXJtb3JfcHJvbXB0aW5nLlByb21wdFJlcGx5UmVzcG9uc2UuSG9tZVJ1bGVDb25m'
+    'bGljdFIJY29uZmxpY3RzGpcBChBIb21lUnVsZUNvbmZsaWN0EkIKCnBlcm1pc3Npb24YASABKA'
+    '4yIi5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVBlcm1pc3Npb25SCnBlcm1pc3Npb24SGAoHdmFy'
+    'aWFudBgCIAEoCVIHdmFyaWFudBIlCg5jb25mbGljdGluZ19pZBgDIAEoCVINY29uZmxpY3Rpbm'
+    'dJZBqYAQoWSW52YWxpZEhvbWVQZXJtaXNzaW9ucxJACglyZXF1ZXN0ZWQYASADKA4yIi5hcHBh'
+    'cm1vcl9wcm9tcHRpbmcuSG9tZVBlcm1pc3Npb25SCXJlcXVlc3RlZBI8CgdyZXBsaWVkGAIgAy'
+    'gOMiIuYXBwYXJtb3JfcHJvbXB0aW5nLkhvbWVQZXJtaXNzaW9uUgdyZXBsaWVkGkwKEkludmFs'
+    'aWRQYXRoUGF0dGVybhIcCglyZXF1ZXN0ZWQYASABKAlSCXJlcXVlc3RlZBIYCgdyZXBsaWVkGA'
+    'IgASgJUgdyZXBsaWVkGjgKClBhcnNlRXJyb3ISFAoFZmllbGQYASABKAlSBWZpZWxkEhQKBXZh'
+    'bHVlGAIgASgJUgV2YWx1ZRpiChBVbnN1cHBvcnRlZFZhbHVlEhQKBWZpZWxkGAEgASgJUgVmaW'
+    'VsZBIcCglzdXBwb3J0ZWQYAiADKAlSCXN1cHBvcnRlZBIaCghwcm92aWRlZBgDIAMoCVIIcHJv'
+    'dmlkZWRCBgoEZGF0YQ==');
 
 @$core.Deprecated('Use getCurrentPromptResponseDescriptor instead')
 const GetCurrentPromptResponse$json = {
@@ -131,14 +224,15 @@ const HomePromptReply$json = {
   '1': 'HomePromptReply',
   '2': [
     {'1': 'path_pattern', '3': 1, '4': 1, '5': 9, '10': 'pathPattern'},
-    {'1': 'permissions', '3': 2, '4': 3, '5': 9, '10': 'permissions'},
+    {'1': 'permissions', '3': 2, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'permissions'},
   ],
 };
 
 /// Descriptor for `HomePromptReply`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List homePromptReplyDescriptor = $convert.base64Decode(
-    'Cg9Ib21lUHJvbXB0UmVwbHkSIQoMcGF0aF9wYXR0ZXJuGAEgASgJUgtwYXRoUGF0dGVybhIgCg'
-    'twZXJtaXNzaW9ucxgCIAMoCVILcGVybWlzc2lvbnM=');
+    'Cg9Ib21lUHJvbXB0UmVwbHkSIQoMcGF0aF9wYXR0ZXJuGAEgASgJUgtwYXRoUGF0dGVybhJECg'
+    'twZXJtaXNzaW9ucxgCIAMoDjIiLmFwcGFybW9yX3Byb21wdGluZy5Ib21lUGVybWlzc2lvblIL'
+    'cGVybWlzc2lvbnM=');
 
 @$core.Deprecated('Use homePromptDescriptor instead')
 const HomePrompt$json = {
@@ -147,9 +241,9 @@ const HomePrompt$json = {
     {'1': 'meta_data', '3': 1, '4': 1, '5': 11, '6': '.apparmor_prompting.MetaData', '10': 'metaData'},
     {'1': 'requested_path', '3': 2, '4': 1, '5': 9, '10': 'requestedPath'},
     {'1': 'home_dir', '3': 3, '4': 1, '5': 9, '10': 'homeDir'},
-    {'1': 'requested_permissions', '3': 4, '4': 3, '5': 9, '10': 'requestedPermissions'},
-    {'1': 'available_permissions', '3': 5, '4': 3, '5': 9, '10': 'availablePermissions'},
-    {'1': 'suggested_permissions', '3': 6, '4': 3, '5': 9, '10': 'suggestedPermissions'},
+    {'1': 'requested_permissions', '3': 4, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'requestedPermissions'},
+    {'1': 'available_permissions', '3': 5, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'availablePermissions'},
+    {'1': 'suggested_permissions', '3': 6, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'suggestedPermissions'},
     {'1': 'pattern_options', '3': 7, '4': 3, '5': 11, '6': '.apparmor_prompting.HomePrompt.PatternOption', '10': 'patternOptions'},
     {'1': 'initial_pattern_option', '3': 8, '4': 1, '5': 5, '10': 'initialPatternOption'},
   ],
@@ -170,16 +264,17 @@ const HomePrompt_PatternOption$json = {
 final $typed_data.Uint8List homePromptDescriptor = $convert.base64Decode(
     'CgpIb21lUHJvbXB0EjkKCW1ldGFfZGF0YRgBIAEoCzIcLmFwcGFybW9yX3Byb21wdGluZy5NZX'
     'RhRGF0YVIIbWV0YURhdGESJQoOcmVxdWVzdGVkX3BhdGgYAiABKAlSDXJlcXVlc3RlZFBhdGgS'
-    'GQoIaG9tZV9kaXIYAyABKAlSB2hvbWVEaXISMwoVcmVxdWVzdGVkX3Blcm1pc3Npb25zGAQgAy'
-    'gJUhRyZXF1ZXN0ZWRQZXJtaXNzaW9ucxIzChVhdmFpbGFibGVfcGVybWlzc2lvbnMYBSADKAlS'
-    'FGF2YWlsYWJsZVBlcm1pc3Npb25zEjMKFXN1Z2dlc3RlZF9wZXJtaXNzaW9ucxgGIAMoCVIUc3'
-    'VnZ2VzdGVkUGVybWlzc2lvbnMSVQoPcGF0dGVybl9vcHRpb25zGAcgAygLMiwuYXBwYXJtb3Jf'
-    'cHJvbXB0aW5nLkhvbWVQcm9tcHQuUGF0dGVybk9wdGlvblIOcGF0dGVybk9wdGlvbnMSNAoWaW'
-    '5pdGlhbF9wYXR0ZXJuX29wdGlvbhgIIAEoBVIUaW5pdGlhbFBhdHRlcm5PcHRpb24aqgEKDVBh'
-    'dHRlcm5PcHRpb24STwoRaG9tZV9wYXR0ZXJuX3R5cGUYASABKA4yIy5hcHBhcm1vcl9wcm9tcH'
-    'RpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5cGUSIQoMcGF0aF9wYXR0ZXJuGAIg'
-    'ASgJUgtwYXRoUGF0dGVybhIlCg5zaG93X2luaXRpYWxseRgDIAEoCFINc2hvd0luaXRpYWxseQ'
-    '==');
+    'GQoIaG9tZV9kaXIYAyABKAlSB2hvbWVEaXISVwoVcmVxdWVzdGVkX3Blcm1pc3Npb25zGAQgAy'
+    'gOMiIuYXBwYXJtb3JfcHJvbXB0aW5nLkhvbWVQZXJtaXNzaW9uUhRyZXF1ZXN0ZWRQZXJtaXNz'
+    'aW9ucxJXChVhdmFpbGFibGVfcGVybWlzc2lvbnMYBSADKA4yIi5hcHBhcm1vcl9wcm9tcHRpbm'
+    'cuSG9tZVBlcm1pc3Npb25SFGF2YWlsYWJsZVBlcm1pc3Npb25zElcKFXN1Z2dlc3RlZF9wZXJt'
+    'aXNzaW9ucxgGIAMoDjIiLmFwcGFybW9yX3Byb21wdGluZy5Ib21lUGVybWlzc2lvblIUc3VnZ2'
+    'VzdGVkUGVybWlzc2lvbnMSVQoPcGF0dGVybl9vcHRpb25zGAcgAygLMiwuYXBwYXJtb3JfcHJv'
+    'bXB0aW5nLkhvbWVQcm9tcHQuUGF0dGVybk9wdGlvblIOcGF0dGVybk9wdGlvbnMSNAoWaW5pdG'
+    'lhbF9wYXR0ZXJuX29wdGlvbhgIIAEoBVIUaW5pdGlhbFBhdHRlcm5PcHRpb24aqgEKDVBhdHRl'
+    'cm5PcHRpb24STwoRaG9tZV9wYXR0ZXJuX3R5cGUYASABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbm'
+    'cuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5cGUSIQoMcGF0aF9wYXR0ZXJuGAIgASgJ'
+    'UgtwYXRoUGF0dGVybhIlCg5zaG93X2luaXRpYWxseRgDIAEoCFINc2hvd0luaXRpYWxseQ==');
 
 @$core.Deprecated('Use metaDataDescriptor instead')
 const MetaData$json = {

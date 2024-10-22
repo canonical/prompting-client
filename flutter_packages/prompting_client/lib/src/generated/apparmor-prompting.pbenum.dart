@@ -45,6 +45,23 @@ class Lifespan extends $pb.ProtobufEnum {
   const Lifespan._($core.int v, $core.String n) : super(v, n);
 }
 
+class HomePermission extends $pb.ProtobufEnum {
+  static const HomePermission READ = HomePermission._(0, _omitEnumNames ? '' : 'READ');
+  static const HomePermission WRITE = HomePermission._(1, _omitEnumNames ? '' : 'WRITE');
+  static const HomePermission EXECUTE = HomePermission._(2, _omitEnumNames ? '' : 'EXECUTE');
+
+  static const $core.List<HomePermission> values = <HomePermission> [
+    READ,
+    WRITE,
+    EXECUTE,
+  ];
+
+  static final $core.Map<$core.int, HomePermission> _byValue = $pb.ProtobufEnum.initByValue(values);
+  static HomePermission? valueOf($core.int value) => _byValue[value];
+
+  const HomePermission._($core.int v, $core.String n) : super(v, n);
+}
+
 class HomePatternType extends $pb.ProtobufEnum {
   static const HomePatternType REQUESTED_DIRECTORY = HomePatternType._(0, _omitEnumNames ? '' : 'REQUESTED_DIRECTORY');
   static const HomePatternType REQUESTED_FILE = HomePatternType._(1, _omitEnumNames ? '' : 'REQUESTED_FILE');
@@ -68,23 +85,6 @@ class HomePatternType extends $pb.ProtobufEnum {
   static HomePatternType? valueOf($core.int value) => _byValue[value];
 
   const HomePatternType._($core.int v, $core.String n) : super(v, n);
-}
-
-class PromptReplyResponse_PromptReplyType extends $pb.ProtobufEnum {
-  static const PromptReplyResponse_PromptReplyType SUCCESS = PromptReplyResponse_PromptReplyType._(0, _omitEnumNames ? '' : 'SUCCESS');
-  static const PromptReplyResponse_PromptReplyType UNKNOWN = PromptReplyResponse_PromptReplyType._(1, _omitEnumNames ? '' : 'UNKNOWN');
-  static const PromptReplyResponse_PromptReplyType PROMPT_NOT_FOUND = PromptReplyResponse_PromptReplyType._(2, _omitEnumNames ? '' : 'PROMPT_NOT_FOUND');
-
-  static const $core.List<PromptReplyResponse_PromptReplyType> values = <PromptReplyResponse_PromptReplyType> [
-    SUCCESS,
-    UNKNOWN,
-    PROMPT_NOT_FOUND,
-  ];
-
-  static final $core.Map<$core.int, PromptReplyResponse_PromptReplyType> _byValue = $pb.ProtobufEnum.initByValue(values);
-  static PromptReplyResponse_PromptReplyType? valueOf($core.int value) => _byValue[value];
-
-  const PromptReplyResponse_PromptReplyType._($core.int v, $core.String n) : super(v, n);
 }
 
 

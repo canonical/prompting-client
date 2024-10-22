@@ -14,6 +14,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'apparmor-prompting.pbenum.dart';
+import 'google/protobuf/empty.pb.dart' as $0;
 
 export 'apparmor-prompting.pbenum.dart';
 
@@ -124,17 +125,430 @@ class PromptReply extends $pb.GeneratedMessage {
   HomePromptReply ensureHomePromptReply() => $_ensure(3);
 }
 
-class PromptReplyResponse extends $pb.GeneratedMessage {
-  factory PromptReplyResponse({
-    PromptReplyResponse_PromptReplyType? promptReplyType,
-    $core.String? message,
+class PromptReplyResponse_HomeRuleConflicts extends $pb.GeneratedMessage {
+  factory PromptReplyResponse_HomeRuleConflicts({
+    $core.Iterable<PromptReplyResponse_HomeRuleConflict>? conflicts,
   }) {
     final $result = create();
-    if (promptReplyType != null) {
-      $result.promptReplyType = promptReplyType;
+    if (conflicts != null) {
+      $result.conflicts.addAll(conflicts);
     }
+    return $result;
+  }
+  PromptReplyResponse_HomeRuleConflicts._() : super();
+  factory PromptReplyResponse_HomeRuleConflicts.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PromptReplyResponse_HomeRuleConflicts.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse.HomeRuleConflicts', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..pc<PromptReplyResponse_HomeRuleConflict>(1, _omitFieldNames ? '' : 'conflicts', $pb.PbFieldType.PM, subBuilder: PromptReplyResponse_HomeRuleConflict.create)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_HomeRuleConflicts clone() => PromptReplyResponse_HomeRuleConflicts()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_HomeRuleConflicts copyWith(void Function(PromptReplyResponse_HomeRuleConflicts) updates) => super.copyWith((message) => updates(message as PromptReplyResponse_HomeRuleConflicts)) as PromptReplyResponse_HomeRuleConflicts;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_HomeRuleConflicts create() => PromptReplyResponse_HomeRuleConflicts._();
+  PromptReplyResponse_HomeRuleConflicts createEmptyInstance() => create();
+  static $pb.PbList<PromptReplyResponse_HomeRuleConflicts> createRepeated() => $pb.PbList<PromptReplyResponse_HomeRuleConflicts>();
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_HomeRuleConflicts getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse_HomeRuleConflicts>(create);
+  static PromptReplyResponse_HomeRuleConflicts? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<PromptReplyResponse_HomeRuleConflict> get conflicts => $_getList(0);
+}
+
+class PromptReplyResponse_HomeRuleConflict extends $pb.GeneratedMessage {
+  factory PromptReplyResponse_HomeRuleConflict({
+    HomePermission? permission,
+    $core.String? variant,
+    $core.String? conflictingId,
+  }) {
+    final $result = create();
+    if (permission != null) {
+      $result.permission = permission;
+    }
+    if (variant != null) {
+      $result.variant = variant;
+    }
+    if (conflictingId != null) {
+      $result.conflictingId = conflictingId;
+    }
+    return $result;
+  }
+  PromptReplyResponse_HomeRuleConflict._() : super();
+  factory PromptReplyResponse_HomeRuleConflict.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PromptReplyResponse_HomeRuleConflict.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse.HomeRuleConflict', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..e<HomePermission>(1, _omitFieldNames ? '' : 'permission', $pb.PbFieldType.OE, defaultOrMaker: HomePermission.READ, valueOf: HomePermission.valueOf, enumValues: HomePermission.values)
+    ..aOS(2, _omitFieldNames ? '' : 'variant')
+    ..aOS(3, _omitFieldNames ? '' : 'conflictingId')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_HomeRuleConflict clone() => PromptReplyResponse_HomeRuleConflict()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_HomeRuleConflict copyWith(void Function(PromptReplyResponse_HomeRuleConflict) updates) => super.copyWith((message) => updates(message as PromptReplyResponse_HomeRuleConflict)) as PromptReplyResponse_HomeRuleConflict;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_HomeRuleConflict create() => PromptReplyResponse_HomeRuleConflict._();
+  PromptReplyResponse_HomeRuleConflict createEmptyInstance() => create();
+  static $pb.PbList<PromptReplyResponse_HomeRuleConflict> createRepeated() => $pb.PbList<PromptReplyResponse_HomeRuleConflict>();
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_HomeRuleConflict getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse_HomeRuleConflict>(create);
+  static PromptReplyResponse_HomeRuleConflict? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  HomePermission get permission => $_getN(0);
+  @$pb.TagNumber(1)
+  set permission(HomePermission v) { setField(1, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasPermission() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearPermission() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get variant => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set variant($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasVariant() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearVariant() => clearField(2);
+
+  @$pb.TagNumber(3)
+  $core.String get conflictingId => $_getSZ(2);
+  @$pb.TagNumber(3)
+  set conflictingId($core.String v) { $_setString(2, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasConflictingId() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearConflictingId() => clearField(3);
+}
+
+class PromptReplyResponse_InvalidHomePermissions extends $pb.GeneratedMessage {
+  factory PromptReplyResponse_InvalidHomePermissions({
+    $core.Iterable<HomePermission>? requested,
+    $core.Iterable<HomePermission>? replied,
+  }) {
+    final $result = create();
+    if (requested != null) {
+      $result.requested.addAll(requested);
+    }
+    if (replied != null) {
+      $result.replied.addAll(replied);
+    }
+    return $result;
+  }
+  PromptReplyResponse_InvalidHomePermissions._() : super();
+  factory PromptReplyResponse_InvalidHomePermissions.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PromptReplyResponse_InvalidHomePermissions.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse.InvalidHomePermissions', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..pc<HomePermission>(1, _omitFieldNames ? '' : 'requested', $pb.PbFieldType.KE, valueOf: HomePermission.valueOf, enumValues: HomePermission.values, defaultEnumValue: HomePermission.READ)
+    ..pc<HomePermission>(2, _omitFieldNames ? '' : 'replied', $pb.PbFieldType.KE, valueOf: HomePermission.valueOf, enumValues: HomePermission.values, defaultEnumValue: HomePermission.READ)
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_InvalidHomePermissions clone() => PromptReplyResponse_InvalidHomePermissions()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_InvalidHomePermissions copyWith(void Function(PromptReplyResponse_InvalidHomePermissions) updates) => super.copyWith((message) => updates(message as PromptReplyResponse_InvalidHomePermissions)) as PromptReplyResponse_InvalidHomePermissions;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_InvalidHomePermissions create() => PromptReplyResponse_InvalidHomePermissions._();
+  PromptReplyResponse_InvalidHomePermissions createEmptyInstance() => create();
+  static $pb.PbList<PromptReplyResponse_InvalidHomePermissions> createRepeated() => $pb.PbList<PromptReplyResponse_InvalidHomePermissions>();
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_InvalidHomePermissions getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse_InvalidHomePermissions>(create);
+  static PromptReplyResponse_InvalidHomePermissions? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.List<HomePermission> get requested => $_getList(0);
+
+  @$pb.TagNumber(2)
+  $core.List<HomePermission> get replied => $_getList(1);
+}
+
+class PromptReplyResponse_InvalidPathPattern extends $pb.GeneratedMessage {
+  factory PromptReplyResponse_InvalidPathPattern({
+    $core.String? requested,
+    $core.String? replied,
+  }) {
+    final $result = create();
+    if (requested != null) {
+      $result.requested = requested;
+    }
+    if (replied != null) {
+      $result.replied = replied;
+    }
+    return $result;
+  }
+  PromptReplyResponse_InvalidPathPattern._() : super();
+  factory PromptReplyResponse_InvalidPathPattern.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PromptReplyResponse_InvalidPathPattern.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse.InvalidPathPattern', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'requested')
+    ..aOS(2, _omitFieldNames ? '' : 'replied')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_InvalidPathPattern clone() => PromptReplyResponse_InvalidPathPattern()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_InvalidPathPattern copyWith(void Function(PromptReplyResponse_InvalidPathPattern) updates) => super.copyWith((message) => updates(message as PromptReplyResponse_InvalidPathPattern)) as PromptReplyResponse_InvalidPathPattern;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_InvalidPathPattern create() => PromptReplyResponse_InvalidPathPattern._();
+  PromptReplyResponse_InvalidPathPattern createEmptyInstance() => create();
+  static $pb.PbList<PromptReplyResponse_InvalidPathPattern> createRepeated() => $pb.PbList<PromptReplyResponse_InvalidPathPattern>();
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_InvalidPathPattern getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse_InvalidPathPattern>(create);
+  static PromptReplyResponse_InvalidPathPattern? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get requested => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set requested($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasRequested() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearRequested() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get replied => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set replied($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasReplied() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearReplied() => clearField(2);
+}
+
+class PromptReplyResponse_ParseError extends $pb.GeneratedMessage {
+  factory PromptReplyResponse_ParseError({
+    $core.String? field_1,
+    $core.String? value,
+  }) {
+    final $result = create();
+    if (field_1 != null) {
+      $result.field_1 = field_1;
+    }
+    if (value != null) {
+      $result.value = value;
+    }
+    return $result;
+  }
+  PromptReplyResponse_ParseError._() : super();
+  factory PromptReplyResponse_ParseError.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PromptReplyResponse_ParseError.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse.ParseError', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'field')
+    ..aOS(2, _omitFieldNames ? '' : 'value')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_ParseError clone() => PromptReplyResponse_ParseError()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_ParseError copyWith(void Function(PromptReplyResponse_ParseError) updates) => super.copyWith((message) => updates(message as PromptReplyResponse_ParseError)) as PromptReplyResponse_ParseError;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_ParseError create() => PromptReplyResponse_ParseError._();
+  PromptReplyResponse_ParseError createEmptyInstance() => create();
+  static $pb.PbList<PromptReplyResponse_ParseError> createRepeated() => $pb.PbList<PromptReplyResponse_ParseError>();
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_ParseError getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse_ParseError>(create);
+  static PromptReplyResponse_ParseError? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get field_1 => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set field_1($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasField_1() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearField_1() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get value => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set value($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasValue() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearValue() => clearField(2);
+}
+
+class PromptReplyResponse_UnsupportedValue extends $pb.GeneratedMessage {
+  factory PromptReplyResponse_UnsupportedValue({
+    $core.String? field_1,
+    $core.Iterable<$core.String>? supported,
+    $core.Iterable<$core.String>? provided,
+  }) {
+    final $result = create();
+    if (field_1 != null) {
+      $result.field_1 = field_1;
+    }
+    if (supported != null) {
+      $result.supported.addAll(supported);
+    }
+    if (provided != null) {
+      $result.provided.addAll(provided);
+    }
+    return $result;
+  }
+  PromptReplyResponse_UnsupportedValue._() : super();
+  factory PromptReplyResponse_UnsupportedValue.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory PromptReplyResponse_UnsupportedValue.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse.UnsupportedValue', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
+    ..aOS(1, _omitFieldNames ? '' : 'field')
+    ..pPS(2, _omitFieldNames ? '' : 'supported')
+    ..pPS(3, _omitFieldNames ? '' : 'provided')
+    ..hasRequiredFields = false
+  ;
+
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.deepCopy] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_UnsupportedValue clone() => PromptReplyResponse_UnsupportedValue()..mergeFromMessage(this);
+  @$core.Deprecated(
+  'Using this can add significant overhead to your binary. '
+  'Use [GeneratedMessageGenericExtensions.rebuild] instead. '
+  'Will be removed in next major version')
+  PromptReplyResponse_UnsupportedValue copyWith(void Function(PromptReplyResponse_UnsupportedValue) updates) => super.copyWith((message) => updates(message as PromptReplyResponse_UnsupportedValue)) as PromptReplyResponse_UnsupportedValue;
+
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_UnsupportedValue create() => PromptReplyResponse_UnsupportedValue._();
+  PromptReplyResponse_UnsupportedValue createEmptyInstance() => create();
+  static $pb.PbList<PromptReplyResponse_UnsupportedValue> createRepeated() => $pb.PbList<PromptReplyResponse_UnsupportedValue>();
+  @$core.pragma('dart2js:noInline')
+  static PromptReplyResponse_UnsupportedValue getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse_UnsupportedValue>(create);
+  static PromptReplyResponse_UnsupportedValue? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get field_1 => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set field_1($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasField_1() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearField_1() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.List<$core.String> get supported => $_getList(1);
+
+  @$pb.TagNumber(3)
+  $core.List<$core.String> get provided => $_getList(2);
+}
+
+enum PromptReplyResponse_Data {
+  success, 
+  raw, 
+  promptNotFound, 
+  ruleNotFound, 
+  ruleConflicts, 
+  invalidPermissions, 
+  invalidPathPattern, 
+  parseError, 
+  unsupportedValue, 
+  notSet
+}
+
+class PromptReplyResponse extends $pb.GeneratedMessage {
+  factory PromptReplyResponse({
+    $core.String? message,
+    $0.Empty? success,
+    $0.Empty? raw,
+    $0.Empty? promptNotFound,
+    $0.Empty? ruleNotFound,
+    PromptReplyResponse_HomeRuleConflicts? ruleConflicts,
+    PromptReplyResponse_InvalidHomePermissions? invalidPermissions,
+    PromptReplyResponse_InvalidPathPattern? invalidPathPattern,
+    PromptReplyResponse_ParseError? parseError,
+    PromptReplyResponse_UnsupportedValue? unsupportedValue,
+  }) {
+    final $result = create();
     if (message != null) {
       $result.message = message;
+    }
+    if (success != null) {
+      $result.success = success;
+    }
+    if (raw != null) {
+      $result.raw = raw;
+    }
+    if (promptNotFound != null) {
+      $result.promptNotFound = promptNotFound;
+    }
+    if (ruleNotFound != null) {
+      $result.ruleNotFound = ruleNotFound;
+    }
+    if (ruleConflicts != null) {
+      $result.ruleConflicts = ruleConflicts;
+    }
+    if (invalidPermissions != null) {
+      $result.invalidPermissions = invalidPermissions;
+    }
+    if (invalidPathPattern != null) {
+      $result.invalidPathPattern = invalidPathPattern;
+    }
+    if (parseError != null) {
+      $result.parseError = parseError;
+    }
+    if (unsupportedValue != null) {
+      $result.unsupportedValue = unsupportedValue;
     }
     return $result;
   }
@@ -142,9 +556,30 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
   factory PromptReplyResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
   factory PromptReplyResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
 
+  static const $core.Map<$core.int, PromptReplyResponse_Data> _PromptReplyResponse_DataByTag = {
+    2 : PromptReplyResponse_Data.success,
+    3 : PromptReplyResponse_Data.raw,
+    4 : PromptReplyResponse_Data.promptNotFound,
+    5 : PromptReplyResponse_Data.ruleNotFound,
+    6 : PromptReplyResponse_Data.ruleConflicts,
+    7 : PromptReplyResponse_Data.invalidPermissions,
+    8 : PromptReplyResponse_Data.invalidPathPattern,
+    9 : PromptReplyResponse_Data.parseError,
+    10 : PromptReplyResponse_Data.unsupportedValue,
+    0 : PromptReplyResponse_Data.notSet
+  };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'PromptReplyResponse', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
-    ..e<PromptReplyResponse_PromptReplyType>(1, _omitFieldNames ? '' : 'promptReplyType', $pb.PbFieldType.OE, defaultOrMaker: PromptReplyResponse_PromptReplyType.SUCCESS, valueOf: PromptReplyResponse_PromptReplyType.valueOf, enumValues: PromptReplyResponse_PromptReplyType.values)
-    ..aOS(2, _omitFieldNames ? '' : 'message')
+    ..oo(0, [2, 3, 4, 5, 6, 7, 8, 9, 10])
+    ..aOS(1, _omitFieldNames ? '' : 'message')
+    ..aOM<$0.Empty>(2, _omitFieldNames ? '' : 'success', subBuilder: $0.Empty.create)
+    ..aOM<$0.Empty>(3, _omitFieldNames ? '' : 'raw', subBuilder: $0.Empty.create)
+    ..aOM<$0.Empty>(4, _omitFieldNames ? '' : 'promptNotFound', subBuilder: $0.Empty.create)
+    ..aOM<$0.Empty>(5, _omitFieldNames ? '' : 'ruleNotFound', subBuilder: $0.Empty.create)
+    ..aOM<PromptReplyResponse_HomeRuleConflicts>(6, _omitFieldNames ? '' : 'ruleConflicts', subBuilder: PromptReplyResponse_HomeRuleConflicts.create)
+    ..aOM<PromptReplyResponse_InvalidHomePermissions>(7, _omitFieldNames ? '' : 'invalidPermissions', subBuilder: PromptReplyResponse_InvalidHomePermissions.create)
+    ..aOM<PromptReplyResponse_InvalidPathPattern>(8, _omitFieldNames ? '' : 'invalidPathPattern', subBuilder: PromptReplyResponse_InvalidPathPattern.create)
+    ..aOM<PromptReplyResponse_ParseError>(9, _omitFieldNames ? '' : 'parseError', subBuilder: PromptReplyResponse_ParseError.create)
+    ..aOM<PromptReplyResponse_UnsupportedValue>(10, _omitFieldNames ? '' : 'unsupportedValue', subBuilder: PromptReplyResponse_UnsupportedValue.create)
     ..hasRequiredFields = false
   ;
 
@@ -169,23 +604,116 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
   static PromptReplyResponse getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<PromptReplyResponse>(create);
   static PromptReplyResponse? _defaultInstance;
 
+  PromptReplyResponse_Data whichData() => _PromptReplyResponse_DataByTag[$_whichOneof(0)]!;
+  void clearData() => clearField($_whichOneof(0));
+
   @$pb.TagNumber(1)
-  PromptReplyResponse_PromptReplyType get promptReplyType => $_getN(0);
+  $core.String get message => $_getSZ(0);
   @$pb.TagNumber(1)
-  set promptReplyType(PromptReplyResponse_PromptReplyType v) { setField(1, v); }
+  set message($core.String v) { $_setString(0, v); }
   @$pb.TagNumber(1)
-  $core.bool hasPromptReplyType() => $_has(0);
+  $core.bool hasMessage() => $_has(0);
   @$pb.TagNumber(1)
-  void clearPromptReplyType() => clearField(1);
+  void clearMessage() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.String get message => $_getSZ(1);
+  $0.Empty get success => $_getN(1);
   @$pb.TagNumber(2)
-  set message($core.String v) { $_setString(1, v); }
+  set success($0.Empty v) { setField(2, v); }
   @$pb.TagNumber(2)
-  $core.bool hasMessage() => $_has(1);
+  $core.bool hasSuccess() => $_has(1);
   @$pb.TagNumber(2)
-  void clearMessage() => clearField(2);
+  void clearSuccess() => clearField(2);
+  @$pb.TagNumber(2)
+  $0.Empty ensureSuccess() => $_ensure(1);
+
+  @$pb.TagNumber(3)
+  $0.Empty get raw => $_getN(2);
+  @$pb.TagNumber(3)
+  set raw($0.Empty v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasRaw() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearRaw() => clearField(3);
+  @$pb.TagNumber(3)
+  $0.Empty ensureRaw() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $0.Empty get promptNotFound => $_getN(3);
+  @$pb.TagNumber(4)
+  set promptNotFound($0.Empty v) { setField(4, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPromptNotFound() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPromptNotFound() => clearField(4);
+  @$pb.TagNumber(4)
+  $0.Empty ensurePromptNotFound() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  $0.Empty get ruleNotFound => $_getN(4);
+  @$pb.TagNumber(5)
+  set ruleNotFound($0.Empty v) { setField(5, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasRuleNotFound() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearRuleNotFound() => clearField(5);
+  @$pb.TagNumber(5)
+  $0.Empty ensureRuleNotFound() => $_ensure(4);
+
+  @$pb.TagNumber(6)
+  PromptReplyResponse_HomeRuleConflicts get ruleConflicts => $_getN(5);
+  @$pb.TagNumber(6)
+  set ruleConflicts(PromptReplyResponse_HomeRuleConflicts v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasRuleConflicts() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearRuleConflicts() => clearField(6);
+  @$pb.TagNumber(6)
+  PromptReplyResponse_HomeRuleConflicts ensureRuleConflicts() => $_ensure(5);
+
+  @$pb.TagNumber(7)
+  PromptReplyResponse_InvalidHomePermissions get invalidPermissions => $_getN(6);
+  @$pb.TagNumber(7)
+  set invalidPermissions(PromptReplyResponse_InvalidHomePermissions v) { setField(7, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasInvalidPermissions() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearInvalidPermissions() => clearField(7);
+  @$pb.TagNumber(7)
+  PromptReplyResponse_InvalidHomePermissions ensureInvalidPermissions() => $_ensure(6);
+
+  @$pb.TagNumber(8)
+  PromptReplyResponse_InvalidPathPattern get invalidPathPattern => $_getN(7);
+  @$pb.TagNumber(8)
+  set invalidPathPattern(PromptReplyResponse_InvalidPathPattern v) { setField(8, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasInvalidPathPattern() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearInvalidPathPattern() => clearField(8);
+  @$pb.TagNumber(8)
+  PromptReplyResponse_InvalidPathPattern ensureInvalidPathPattern() => $_ensure(7);
+
+  @$pb.TagNumber(9)
+  PromptReplyResponse_ParseError get parseError => $_getN(8);
+  @$pb.TagNumber(9)
+  set parseError(PromptReplyResponse_ParseError v) { setField(9, v); }
+  @$pb.TagNumber(9)
+  $core.bool hasParseError() => $_has(8);
+  @$pb.TagNumber(9)
+  void clearParseError() => clearField(9);
+  @$pb.TagNumber(9)
+  PromptReplyResponse_ParseError ensureParseError() => $_ensure(8);
+
+  @$pb.TagNumber(10)
+  PromptReplyResponse_UnsupportedValue get unsupportedValue => $_getN(9);
+  @$pb.TagNumber(10)
+  set unsupportedValue(PromptReplyResponse_UnsupportedValue v) { setField(10, v); }
+  @$pb.TagNumber(10)
+  $core.bool hasUnsupportedValue() => $_has(9);
+  @$pb.TagNumber(10)
+  void clearUnsupportedValue() => clearField(10);
+  @$pb.TagNumber(10)
+  PromptReplyResponse_UnsupportedValue ensureUnsupportedValue() => $_ensure(9);
 }
 
 enum GetCurrentPromptResponse_Prompt {
@@ -256,7 +784,7 @@ class GetCurrentPromptResponse extends $pb.GeneratedMessage {
 class HomePromptReply extends $pb.GeneratedMessage {
   factory HomePromptReply({
     $core.String? pathPattern,
-    $core.Iterable<$core.String>? permissions,
+    $core.Iterable<HomePermission>? permissions,
   }) {
     final $result = create();
     if (pathPattern != null) {
@@ -273,7 +801,7 @@ class HomePromptReply extends $pb.GeneratedMessage {
 
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(_omitMessageNames ? '' : 'HomePromptReply', package: const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'), createEmptyInstance: create)
     ..aOS(1, _omitFieldNames ? '' : 'pathPattern')
-    ..pPS(2, _omitFieldNames ? '' : 'permissions')
+    ..pc<HomePermission>(2, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.KE, valueOf: HomePermission.valueOf, enumValues: HomePermission.values, defaultEnumValue: HomePermission.READ)
     ..hasRequiredFields = false
   ;
 
@@ -308,7 +836,7 @@ class HomePromptReply extends $pb.GeneratedMessage {
   void clearPathPattern() => clearField(1);
 
   @$pb.TagNumber(2)
-  $core.List<$core.String> get permissions => $_getList(1);
+  $core.List<HomePermission> get permissions => $_getList(1);
 }
 
 class HomePrompt_PatternOption extends $pb.GeneratedMessage {
@@ -394,9 +922,9 @@ class HomePrompt extends $pb.GeneratedMessage {
     MetaData? metaData,
     $core.String? requestedPath,
     $core.String? homeDir,
-    $core.Iterable<$core.String>? requestedPermissions,
-    $core.Iterable<$core.String>? availablePermissions,
-    $core.Iterable<$core.String>? suggestedPermissions,
+    $core.Iterable<HomePermission>? requestedPermissions,
+    $core.Iterable<HomePermission>? availablePermissions,
+    $core.Iterable<HomePermission>? suggestedPermissions,
     $core.Iterable<HomePrompt_PatternOption>? patternOptions,
     $core.int? initialPatternOption,
   }) {
@@ -435,9 +963,9 @@ class HomePrompt extends $pb.GeneratedMessage {
     ..aOM<MetaData>(1, _omitFieldNames ? '' : 'metaData', subBuilder: MetaData.create)
     ..aOS(2, _omitFieldNames ? '' : 'requestedPath')
     ..aOS(3, _omitFieldNames ? '' : 'homeDir')
-    ..pPS(4, _omitFieldNames ? '' : 'requestedPermissions')
-    ..pPS(5, _omitFieldNames ? '' : 'availablePermissions')
-    ..pPS(6, _omitFieldNames ? '' : 'suggestedPermissions')
+    ..pc<HomePermission>(4, _omitFieldNames ? '' : 'requestedPermissions', $pb.PbFieldType.KE, valueOf: HomePermission.valueOf, enumValues: HomePermission.values, defaultEnumValue: HomePermission.READ)
+    ..pc<HomePermission>(5, _omitFieldNames ? '' : 'availablePermissions', $pb.PbFieldType.KE, valueOf: HomePermission.valueOf, enumValues: HomePermission.values, defaultEnumValue: HomePermission.READ)
+    ..pc<HomePermission>(6, _omitFieldNames ? '' : 'suggestedPermissions', $pb.PbFieldType.KE, valueOf: HomePermission.valueOf, enumValues: HomePermission.values, defaultEnumValue: HomePermission.READ)
     ..pc<HomePrompt_PatternOption>(7, _omitFieldNames ? '' : 'patternOptions', $pb.PbFieldType.PM, subBuilder: HomePrompt_PatternOption.create)
     ..a<$core.int>(8, _omitFieldNames ? '' : 'initialPatternOption', $pb.PbFieldType.O3)
     ..hasRequiredFields = false
@@ -494,13 +1022,13 @@ class HomePrompt extends $pb.GeneratedMessage {
   void clearHomeDir() => clearField(3);
 
   @$pb.TagNumber(4)
-  $core.List<$core.String> get requestedPermissions => $_getList(3);
+  $core.List<HomePermission> get requestedPermissions => $_getList(3);
 
   @$pb.TagNumber(5)
-  $core.List<$core.String> get availablePermissions => $_getList(4);
+  $core.List<HomePermission> get availablePermissions => $_getList(4);
 
   @$pb.TagNumber(6)
-  $core.List<$core.String> get suggestedPermissions => $_getList(5);
+  $core.List<HomePermission> get suggestedPermissions => $_getList(5);
 
   @$pb.TagNumber(7)
   $core.List<HomePrompt_PatternOption> get patternOptions => $_getList(6);
