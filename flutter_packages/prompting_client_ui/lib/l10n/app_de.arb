@@ -111,5 +111,7 @@
   "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
   "@homePatternTypeRequestedDirectoryContents": {},
   "promptActionOptionAllowOnce": "Einmal zulassen",
-  "@promptActionOptionAllowOnce": {}
+  "@promptActionOptionAllowOnce": {},
+  "homePromptErrorUnknownTitle": "Etwas ist schiefgelaufen",
+  "@homePromptErrorUnknownTitle": {}
 }
