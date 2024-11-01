@@ -1,1 +1,26 @@
-{}
+{
+  "homePromptPermissionsTitle": "წვდომები",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsWrite": "ჩაწერა",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "გაშვება",
+  "@homePromptPermissionsExecute": {},
+  "promptActionOptionDeny": "აკრძალვა",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionAllowAlways": "ყოველთვის დაშვება",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDenyOnce": "ერთხელ აკრძალვა",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "ქმედება",
+  "@promptActionTitle": {},
+  "promptActionOptionAllow": "დაშვება",
+  "@promptActionOptionAllow": {},
+  "promptLifespanOptionForever": "ყოველთვის",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanTitle": "ხანგრძლივობა",
+  "@promptLifespanTitle": {},
+  "homePromptPermissionsRead": "წაკითხვა",
+  "@homePromptPermissionsRead": {},
+  "promptLifespanOptionSingle": "ერთხელ",
+  "@promptLifespanOptionSingle": {}
+}
