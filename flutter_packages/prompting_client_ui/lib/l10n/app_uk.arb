@@ -38,7 +38,7 @@
       }
     }
   },
-  "homePromptMetaDataTitle": "Про цей застосунок",
+  "homePromptMetaDataTitle": "Про цю програму",
   "@homePromptMetaDataTitle": {},
   "securityCenterInfo": "Ви завжди можете змінити ці дозволи в <Центрі безпеки>",
   "@securityCenterInfo": {},
@@ -118,7 +118,7 @@
   "@homePromptPermissionsWrite": {},
   "homePromptPermissionsExecute": "Виконання",
   "@homePromptPermissionsExecute": {},
-  "homePromptMetaDataAppCenterLink": "Відвідати сторінку Центру застосунків",
+  "homePromptMetaDataAppCenterLink": "Відвідати сторінку Центру програмного забезпечення",
   "@homePromptMetaDataAppCenterLink": {},
   "homePromptMoreOptionsLabel": "Інші опції...",
   "@homePromptMoreOptionsLabel": {},
