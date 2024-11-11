@@ -125,5 +125,7 @@
   "homePatternTypeContainingDirectory": "הכול בתיקייה",
   "@homePatternTypeContainingDirectory": {},
   "homePromptMoreOptionsLabel": "אפשרויות נוספות…",
-  "@homePromptMoreOptionsLabel": {}
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptErrorUnknownTitle": "משהו השתבש",
+  "@homePromptErrorUnknownTitle": {}
 }
