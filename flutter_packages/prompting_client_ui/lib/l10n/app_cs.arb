@@ -119,5 +119,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homePromptErrorUnknownTitle": "Něco se nepovedlo",
+  "@homePromptErrorUnknownTitle": {}
 }
