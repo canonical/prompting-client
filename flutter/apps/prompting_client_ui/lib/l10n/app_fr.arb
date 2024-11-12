@@ -125,5 +125,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homePromptErrorUnknownTitle": "Quelque chose a mal tourné",
+  "@homePromptErrorUnknownTitle": {}
 }
