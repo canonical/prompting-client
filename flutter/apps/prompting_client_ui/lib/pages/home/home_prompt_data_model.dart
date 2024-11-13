@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:prompting_client/prompting_client.dart';
-import 'package:prompting_client_ui/home/home_prompt_error.dart';
-import 'package:prompting_client_ui/prompt_model.dart';
+import 'package:prompting_client_ui/app/prompt_model.dart';
+import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ubuntu_service/ubuntu_service.dart';
 

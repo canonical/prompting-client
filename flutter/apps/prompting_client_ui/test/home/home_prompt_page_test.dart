@@ -2,10 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
-import 'package:prompting_client_ui/home/home_prompt_error.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
-import 'package:prompting_client_ui/prompt_page.dart';
+import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
+import 'package:prompting_client_ui/pages/prompt_page.dart';
 import 'package:yaru_test/yaru_test.dart';
 
 import '../test_utils.dart';

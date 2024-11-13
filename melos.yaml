@@ -2,7 +2,8 @@ name: apparmor_prompting
 sdkPath: .fvm/flutter_sdk
 
 packages:
-  - flutter_packages/**
+  - flutter/apps/**
+  - flutter/packages/**
 
 command:
   bootstrap:
@@ -77,6 +78,6 @@ scripts:
   # generate protobuf files in prompting_client
   protoc:
     run: |
-      rm -rf ./flutter_packages/prompting_client/lib/src/generated/* &&
-      protoc --dart_out=grpc:./flutter_packages/prompting_client/lib/src/generated \
+      rm -rf ./flutter/packages/prompting_client/lib/src/generated/* &&
+      protoc --dart_out=grpc:./flutter/packages/prompting_client/lib/src/generated \
         -Iprotos protos/*.proto google/protobuf/empty.proto google/protobuf/wrappers.proto

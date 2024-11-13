@@ -90,5 +90,5 @@ jobs:
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y clang cmake libglib2.0-dev libgtk-3-dev liblzma-dev ninja-build pkg-config xvfb
       - name: Run integration tests
-        working-directory: flutter_packages/prompting_client_ui
+        working-directory: flutter/apps/prompting_client_ui
         run: xvfb-run -a -s '-screen 0 1024x768x24 +extension GLX' flutter test integration_test
