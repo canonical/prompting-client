@@ -708,7 +708,7 @@ packages:
   prompting_client:
     dependency: "direct main"
     description:
-      path: "../prompting_client"
+      path: "../../packages/prompting_client"
       relative: true
     source: path
     version: "1.0.0"

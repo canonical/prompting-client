@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/fake_prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
-import 'package:prompting_client_ui/prompt_page.dart';
+import 'package:prompting_client_ui/pages/prompt_page.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:ubuntu_service/ubuntu_service.dart';

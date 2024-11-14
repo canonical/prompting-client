@@ -93,7 +93,7 @@ parts:
       fvm dart pub global run melos bootstrap
       fvm dart pub global run melos generate
 
-      cd flutter_packages/prompting_client_ui
+      cd flutter/apps/prompting_client_ui
       fvm flutter build linux --release -v
       mkdir -p $CRAFT_PART_INSTALL/bin/
       cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
