@@ -113,5 +113,13 @@
   "promptActionOptionAllowOnce": "Einmal zulassen",
   "@promptActionOptionAllowOnce": {},
   "homePromptErrorUnknownTitle": "Etwas ist schiefgelaufen",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptSuggestedPermission": "Auch Zugriff für {permission} geben",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
 }
