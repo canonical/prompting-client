@@ -1,1 +1,32 @@
-{}
+{
+  "promptActionOptionAllow": "允許",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "總是允許",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "允許一次",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "拒絕",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "拒絕一次",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionForever": "總是",
+  "@promptLifespanOptionForever": {},
+  "promptSaveAndContinue": "儲存並繼續",
+  "@promptSaveAndContinue": {},
+  "homePromptMetaDataTitle": "關於此應用程式",
+  "@homePromptMetaDataTitle": {},
+  "homePromptPermissionsExecute": "執行",
+  "@homePromptPermissionsExecute": {},
+  "homePromptMetaDataPublishedBy": "由 {publisher} 發布",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptErrorUnknownTitle": "發生一些問題",
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptMetaDataAppCenterLink": "造訪《應用中心》頁面",
+  "@homePromptMetaDataAppCenterLink": {}
+}
