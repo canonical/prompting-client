@@ -45,7 +45,7 @@ tower = "0.4.13"
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 tracing-journald = "0.3.0"
-cached = { version = "0.53.1", features = ["async"] }
+cached = { version = "0.54.0", features = ["async"] }
 
 [dev-dependencies]
 serial_test = "3.1.1"
