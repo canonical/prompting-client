@@ -28,5 +28,73 @@
   "homePromptErrorUnknownTitle": "發生一些問題",
   "@homePromptErrorUnknownTitle": {},
   "homePromptMetaDataAppCenterLink": "造訪《應用中心》頁面",
-  "@homePromptMetaDataAppCenterLink": {}
+  "@homePromptMetaDataAppCenterLink": {},
+  "promptAccessMoreOptionsTitle": "設定 {snap} 的存取權限為：",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptLifespanOptionSession": "直到登出",
+  "@promptLifespanOptionSession": {},
+  "homePatternTypeTopLevelDirectory": "{topLevelDir} 資料夾中的所有內容",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "資料夾中的所有內容",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "資料夾中的所有內容",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeMatchingFileExtension": "所有 {fileExtension} 檔案",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptBody": "允許 {snap} 擁有對 {path} 的 {permissions} 存取權限嗎？",
+  "@homePromptBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "最後更新日期為 {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "更多選項...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptSuggestedPermission": "同時給予{permission}存取權限",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "權限",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "讀取",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "寫入",
+  "@homePromptPermissionsWrite": {}
 }
