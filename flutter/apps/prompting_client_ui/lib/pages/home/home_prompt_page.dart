@@ -68,20 +68,55 @@ class Header extends ConsumerWidget {
     final hasMeta = ref.watch(
       homePromptDataModelProvider.select((m) => m.hasMeta),
     );
+    final patternType = ref.watch(homePromptDataModelProvider
+        .select((m) => m.patternOption.homePatternType));
     final l10n = AppLocalizations.of(context);
+
+    String markdownText;
+
+    switch (patternType) {
+      case HomePatternType.requestedDirectory:
+        markdownText = l10n.homePromptSubfolderBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          details.requestedPath.bold(),
+        );
+
+        break;
+
+      case HomePatternType.topLevelDirectory:
+        final lastSlash = details.requestedPath.lastIndexOf('/');
+        markdownText = l10n.homePromptTopLevelFolderBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          details.requestedPath.substring(lastSlash + 1).bold(),
+          details.requestedPath.substring(0, lastSlash).bold(),
+        );
+        break;
+
+      default:
+        markdownText = l10n.homePromptBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          details.requestedPath.bold(),
+        );
+        break;
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MarkdownText(
-          l10n.homePromptBody(
-            details.metaData.snapName.bold(),
-            details.requestedPermissions
-                .map((p) => p.localize(l10n).toLowerCase())
-                .join(', ')
-                .bold(),
-            details.requestedPath.bold(),
-          ),
+          markdownText,
         ),
         if (hasMeta) const MetaDataDropdown(),
       ],
