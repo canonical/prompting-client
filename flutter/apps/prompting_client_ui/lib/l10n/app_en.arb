@@ -89,7 +89,7 @@
             }
         }
     },
-    "homePromptSubfolderBody": "{snap} wants to get {permissions} access to {path}",
+    "homePromptSubFolderBody": "{snap} wants to get {permissions} access to {path}",
     "@homePromptSubfolderBody": {
         "placeholders": {
             "snap": {

@@ -76,7 +76,7 @@ class Header extends ConsumerWidget {
 
     switch (patternType) {
       case HomePatternType.requestedDirectory:
-        markdownText = l10n.homePromptSubfolderBody(
+        markdownText = l10n.homePromptSubFolderBody(
           details.metaData.snapName.bold(),
           details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
