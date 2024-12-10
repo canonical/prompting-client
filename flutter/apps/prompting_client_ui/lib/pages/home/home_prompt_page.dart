@@ -68,8 +68,10 @@ class Header extends ConsumerWidget {
     final hasMeta = ref.watch(
       homePromptDataModelProvider.select((m) => m.hasMeta),
     );
-    final patternType = ref.watch(homePromptDataModelProvider
-        .select((m) => m.patternOption.homePatternType));
+    final patternType = ref.watch(
+      homePromptDataModelProvider
+          .select((m) => m.patternOption.homePatternType),
+    );
     final l10n = AppLocalizations.of(context);
 
     String markdownText;
