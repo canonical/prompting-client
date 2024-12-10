@@ -75,8 +75,8 @@
             }
         }
     },
-    "homePromptBody": "{snap} wants to get {permissions} access to {path} in your home folder",
-    "@homePromptBody": {
+    "homePromptDefaultBody": "{snap} wants to get {permissions} access to {path}",
+    "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
                 "type": "String"
@@ -89,8 +89,8 @@
             }
         }
     },
-    "homePromptSubFolderBody": "{snap} wants to get {permissions} access to {path}",
-    "@homePromptSubfolderBody": {
+    "homePromptHomeDirectoryBody": "{snap} wants to get {permissions} access to {path} in your home folder",
+    "@homePromptHomeDirectoryBody": {
         "placeholders": {
             "snap": {
                 "type": "String"

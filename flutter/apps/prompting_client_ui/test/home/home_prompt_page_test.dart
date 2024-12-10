@@ -249,7 +249,7 @@ void main() {
 
         expect(
           find.text(
-            tester.l10n.homePromptBody(
+            tester.l10n.homePromptDefaultBody(
               'firefox',
               HomePermission.read.localize(tester.l10n).toLowerCase(),
               testCase.requestedPath,
@@ -307,7 +307,7 @@ void main() {
 
     expect(
       find.text(
-        tester.l10n.homePromptBody(
+        tester.l10n.homePromptDefaultBody(
           'firefox',
           HomePermission.read.localize(tester.l10n).toLowerCase(),
           '/home/ubuntu/Downloads/file.txt',

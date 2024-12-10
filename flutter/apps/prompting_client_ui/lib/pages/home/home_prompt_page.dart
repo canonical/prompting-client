@@ -77,18 +77,6 @@ class Header extends ConsumerWidget {
     String markdownText;
 
     switch (patternType) {
-      case HomePatternType.requestedDirectory:
-        markdownText = l10n.homePromptSubFolderBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
-              .map((p) => p.localize(l10n).toLowerCase())
-              .join(', ')
-              .bold(),
-          details.requestedPath.bold(),
-        );
-
-        break;
-
       case HomePatternType.topLevelDirectory:
         final lastSlash = details.requestedPath.lastIndexOf('/');
         markdownText = l10n.homePromptTopLevelFolderBody(
@@ -97,13 +85,24 @@ class Header extends ConsumerWidget {
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
+          // Filename is after the last "/" in the file path
           details.requestedPath.substring(lastSlash + 1).bold(),
-          details.requestedPath.substring(0, lastSlash).bold(),
+          // Foldername is between the secondlast and last "/"
+          details.requestedPath.substring(lastSlash - 1, lastSlash).bold(),
         );
         break;
-
+      case HomePatternType.homeDirectory:
+        markdownText = l10n.homePromptHomeDirectoryBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          details.requestedPath.bold(),
+        );
+        break;
       default:
-        markdownText = l10n.homePromptBody(
+        markdownText = l10n.homePromptDefaultBody(
           details.metaData.snapName.bold(),
           details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
