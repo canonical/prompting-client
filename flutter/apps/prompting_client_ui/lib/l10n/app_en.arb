@@ -75,7 +75,7 @@
             }
         }
     },
-    "homePromptBody": "Allow {snap} to have {permissions} access to {path}?",
+    "homePromptBody": "{snap} wants to get {permissions} access to {path} in your home folder",
     "@homePromptBody": {
         "placeholders": {
             "snap": {
@@ -85,6 +85,37 @@
                 "type": "String"
             },
             "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptSubfolderBody": "{snap} wants to get {permissions} access to {path}",
+    "@homePromptSubfolderBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelFolderBody": "{snap} wants to get {permissions} access to {filename} in the {foldername} folder",
+    "@homePromptTopLevelFolderBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
                 "type": "String"
             }
         }
