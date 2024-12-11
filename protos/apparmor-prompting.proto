@@ -108,7 +108,8 @@ message HomePrompt {
         HomePatternType home_pattern_type = 1;
         string path_pattern = 2;
         bool show_initially = 3;
-    }
+    };
+    EnrichedPathKind enriched_path_kind = 9;
 }
 
 enum HomePatternType {
@@ -136,3 +137,33 @@ message ResolveHomePatternTypeResponse {
 message SetLoggingFilterResponse {
     string current = 1;
 }
+
+message EnrichedPathKind {
+  oneof kind {
+    HomeDir home_dir = 1;
+    TopLevelDir top_level_dir = 2;
+    SubDir sub_dir = 3;
+    HomeDirFile home_dir_file = 4;
+    TopLevelDirFile top_level_dir_file = 5;
+    SubDirFile sub_dir_file = 6;
+  }
+}
+
+message HomeDir {}
+
+message TopLevelDir {
+  string dirname = 1;
+}
+
+message SubDir {}
+
+message HomeDirFile {
+  string filename = 1;
+}
+
+message TopLevelDirFile {
+  string dirname = 1;
+  string filename = 2;
+}
+
+message SubDirFile {}
