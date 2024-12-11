@@ -50,6 +50,31 @@ class PatternOption with _$PatternOption {
 }
 
 @freezed
+class EnrichedPathKind with _$EnrichedPathKind {
+  factory EnrichedPathKind.homeDir() = EnrichedPathKindHomeDir;
+
+  factory EnrichedPathKind.topLevelDir({
+    required String dirname,
+  }) = EnrichedPathKindTopLevelDir;
+
+  factory EnrichedPathKind.subDir() = EnrichedPathKindSubDir;
+
+  factory EnrichedPathKind.homeDirFile({
+    required String filename,
+  }) = EnrichedPathKindHomeDirFile;
+
+  factory EnrichedPathKind.topLevelDirFile({
+    required String dirname,
+    required String filename,
+  }) = EnrichedPathKindTopLevelDirFile;
+
+  factory EnrichedPathKind.subDirFile() = EnrichedPathKindSubDirFile;
+
+  factory EnrichedPathKind.fromJson(Map<String, dynamic> json) =>
+      _$EnrichedPathKindFromJson(json);
+}
+
+@freezed
 sealed class PromptDetails with _$PromptDetails {
   factory PromptDetails.home({
     required MetaData metaData,
@@ -59,6 +84,7 @@ sealed class PromptDetails with _$PromptDetails {
     required Set<HomePermission> availablePermissions,
     required Set<HomePermission> suggestedPermissions,
     required Set<PatternOption> patternOptions,
+    required EnrichedPathKind enrichedPathKind,
     @Default(0) int initialPatternOption,
   }) = PromptDetailsHome;
 
