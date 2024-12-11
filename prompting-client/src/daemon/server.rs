@@ -4,9 +4,11 @@ use crate::{
     log_filter,
     protos::{
         apparmor_prompting::{
-            self, get_current_prompt_response::Prompt, home_prompt::PatternOption,
-            prompt_reply::PromptReply::HomePromptReply, HomePatternType, HomePermission, MetaData,
-            PromptReply, SetLoggingFilterResponse,
+            self, enriched_path_kind, get_current_prompt_response::Prompt,
+            home_prompt::PatternOption, prompt_reply::PromptReply::HomePromptReply,
+            EnrichedPathKind as PbEnrichedPathKind, HomeDir, HomeDirFile, HomePatternType,
+            HomePermission, MetaData, PromptReply, SetLoggingFilterResponse, SubDir, SubDirFile,
+            TopLevelDir, TopLevelDirFile,
         },
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, HomePrompt,
         PromptReplyResponse, ResolveHomePatternTypeResponse,
@@ -14,7 +16,8 @@ use crate::{
     snapd_client::{
         self,
         interfaces::home::{
-            HomeInterface, HomeReplyConstraints, HomeUiInputData, PatternType, TypedPathPattern,
+            EnrichedPathKind, HomeInterface, HomeReplyConstraints, HomeUiInputData, PatternType,
+            TypedPathPattern,
         },
         PromptId, PromptReply as SnapPromptReply, SnapMeta, SnapdError, TypedPromptReply,
         TypedUiInput, UiInput,
@@ -359,6 +362,7 @@ fn map_home_response(input: UiInput<HomeInterface>) -> Result<Prompt, Status> {
         suggested_permissions,
         initial_pattern_option,
         pattern_options,
+        enriched_path_kind,
     } = input.data;
 
     Ok(Prompt::HomePrompt(HomePrompt {
@@ -379,6 +383,7 @@ fn map_home_response(input: UiInput<HomeInterface>) -> Result<Prompt, Status> {
             .into_iter()
             .map(map_pattern_option)
             .collect(),
+        enriched_path_kind: Some(enriched_path_kind.into()),
     }))
 }
 
@@ -406,6 +411,38 @@ fn map_pattern_option(
     }
 }
 
+impl From<EnrichedPathKind> for PbEnrichedPathKind {
+    fn from(k: EnrichedPathKind) -> Self {
+        match k {
+            EnrichedPathKind::HomeDir => Self {
+                kind: Some(enriched_path_kind::Kind::HomeDir(HomeDir {})),
+            },
+            EnrichedPathKind::TopLevelDir { dirname } => Self {
+                kind: Some(enriched_path_kind::Kind::TopLevelDir(TopLevelDir {
+                    dirname,
+                })),
+            },
+            EnrichedPathKind::SubDir => Self {
+                kind: Some(enriched_path_kind::Kind::SubDir(SubDir {})),
+            },
+            EnrichedPathKind::HomeDirFile { filename } => Self {
+                kind: Some(enriched_path_kind::Kind::HomeDirFile(HomeDirFile {
+                    filename,
+                })),
+            },
+            EnrichedPathKind::TopLevelDirFile { dirname, filename } => Self {
+                kind: Some(enriched_path_kind::Kind::TopLevelDirFile(TopLevelDirFile {
+                    dirname,
+                    filename,
+                })),
+            },
+            EnrichedPathKind::SubDirFile => Self {
+                kind: Some(enriched_path_kind::Kind::SubDirFile(SubDirFile {})),
+            },
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -420,6 +457,7 @@ mod tests {
     };
     use hyper_util::rt::TokioIo;
     use simple_test_case::test_case;
+    use snapd_client::interfaces::home::EnrichedPathKind;
     use std::{
         fs, io,
         ops::{Deref, DerefMut},
@@ -560,6 +598,7 @@ mod tests {
                 suggested_permissions: Vec::new(),
                 pattern_options: Vec::new(),
                 initial_pattern_option: 0,
+                enriched_path_kind: EnrichedPathKind::HomeDir,
             },
         })
     }
@@ -580,6 +619,9 @@ mod tests {
             suggested_permissions: Vec::new(),
             pattern_options: Vec::new(),
             initial_pattern_option: 0,
+            enriched_path_kind: Some(PbEnrichedPathKind {
+                kind: Some(enriched_path_kind::Kind::HomeDir(HomeDir {})),
+            }),
         })
     }
 
