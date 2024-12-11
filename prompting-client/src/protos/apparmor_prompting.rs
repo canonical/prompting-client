@@ -150,6 +150,8 @@ pub struct HomePrompt {
     pub pattern_options: ::prost::alloc::vec::Vec<home_prompt::PatternOption>,
     #[prost(int32, tag = "8")]
     pub initial_pattern_option: i32,
+    #[prost(message, optional, tag = "9")]
+    pub enriched_path_kind: ::core::option::Option<EnrichedPathKind>,
 }
 /// Nested message and enum types in `HomePrompt`.
 pub mod home_prompt {
@@ -190,6 +192,60 @@ pub struct SetLoggingFilterResponse {
     #[prost(string, tag = "1")]
     pub current: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnrichedPathKind {
+    #[prost(oneof = "enriched_path_kind::Kind", tags = "1, 2, 3, 4, 5, 6")]
+    pub kind: ::core::option::Option<enriched_path_kind::Kind>,
+}
+/// Nested message and enum types in `EnrichedPathKind`.
+pub mod enriched_path_kind {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Kind {
+        #[prost(message, tag = "1")]
+        HomeDir(super::HomeDir),
+        #[prost(message, tag = "2")]
+        TopLevelDir(super::TopLevelDir),
+        #[prost(message, tag = "3")]
+        SubDir(super::SubDir),
+        #[prost(message, tag = "4")]
+        HomeDirFile(super::HomeDirFile),
+        #[prost(message, tag = "5")]
+        TopLevelDirFile(super::TopLevelDirFile),
+        #[prost(message, tag = "6")]
+        SubDirFile(super::SubDirFile),
+    }
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct HomeDir {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TopLevelDir {
+    #[prost(string, tag = "1")]
+    pub dirname: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SubDir {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HomeDirFile {
+    #[prost(string, tag = "1")]
+    pub filename: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TopLevelDirFile {
+    #[prost(string, tag = "1")]
+    pub dirname: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub filename: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct SubDirFile {}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Action {

@@ -246,6 +246,7 @@ const HomePrompt$json = {
     {'1': 'suggested_permissions', '3': 6, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'suggestedPermissions'},
     {'1': 'pattern_options', '3': 7, '4': 3, '5': 11, '6': '.apparmor_prompting.HomePrompt.PatternOption', '10': 'patternOptions'},
     {'1': 'initial_pattern_option', '3': 8, '4': 1, '5': 5, '10': 'initialPatternOption'},
+    {'1': 'enriched_path_kind', '3': 9, '4': 1, '5': 11, '6': '.apparmor_prompting.EnrichedPathKind', '10': 'enrichedPathKind'},
   ],
   '3': [HomePrompt_PatternOption$json],
 };
@@ -271,10 +272,12 @@ final $typed_data.Uint8List homePromptDescriptor = $convert.base64Decode(
     'aXNzaW9ucxgGIAMoDjIiLmFwcGFybW9yX3Byb21wdGluZy5Ib21lUGVybWlzc2lvblIUc3VnZ2'
     'VzdGVkUGVybWlzc2lvbnMSVQoPcGF0dGVybl9vcHRpb25zGAcgAygLMiwuYXBwYXJtb3JfcHJv'
     'bXB0aW5nLkhvbWVQcm9tcHQuUGF0dGVybk9wdGlvblIOcGF0dGVybk9wdGlvbnMSNAoWaW5pdG'
-    'lhbF9wYXR0ZXJuX29wdGlvbhgIIAEoBVIUaW5pdGlhbFBhdHRlcm5PcHRpb24aqgEKDVBhdHRl'
-    'cm5PcHRpb24STwoRaG9tZV9wYXR0ZXJuX3R5cGUYASABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbm'
-    'cuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5cGUSIQoMcGF0aF9wYXR0ZXJuGAIgASgJ'
-    'UgtwYXRoUGF0dGVybhIlCg5zaG93X2luaXRpYWxseRgDIAEoCFINc2hvd0luaXRpYWxseQ==');
+    'lhbF9wYXR0ZXJuX29wdGlvbhgIIAEoBVIUaW5pdGlhbFBhdHRlcm5PcHRpb24SUgoSZW5yaWNo'
+    'ZWRfcGF0aF9raW5kGAkgASgLMiQuYXBwYXJtb3JfcHJvbXB0aW5nLkVucmljaGVkUGF0aEtpbm'
+    'RSEGVucmljaGVkUGF0aEtpbmQaqgEKDVBhdHRlcm5PcHRpb24STwoRaG9tZV9wYXR0ZXJuX3R5'
+    'cGUYASABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dG'
+    'VyblR5cGUSIQoMcGF0aF9wYXR0ZXJuGAIgASgJUgtwYXRoUGF0dGVybhIlCg5zaG93X2luaXRp'
+    'YWxseRgDIAEoCFINc2hvd0luaXRpYWxseQ==');
 
 @$core.Deprecated('Use metaDataDescriptor instead')
 const MetaData$json = {
@@ -319,4 +322,96 @@ const SetLoggingFilterResponse$json = {
 /// Descriptor for `SetLoggingFilterResponse`. Decode as a `google.protobuf.DescriptorProto`.
 final $typed_data.Uint8List setLoggingFilterResponseDescriptor = $convert.base64Decode(
     'ChhTZXRMb2dnaW5nRmlsdGVyUmVzcG9uc2USGAoHY3VycmVudBgBIAEoCVIHY3VycmVudA==');
+
+@$core.Deprecated('Use enrichedPathKindDescriptor instead')
+const EnrichedPathKind$json = {
+  '1': 'EnrichedPathKind',
+  '2': [
+    {'1': 'home_dir', '3': 1, '4': 1, '5': 11, '6': '.apparmor_prompting.HomeDir', '9': 0, '10': 'homeDir'},
+    {'1': 'top_level_dir', '3': 2, '4': 1, '5': 11, '6': '.apparmor_prompting.TopLevelDir', '9': 0, '10': 'topLevelDir'},
+    {'1': 'sub_dir', '3': 3, '4': 1, '5': 11, '6': '.apparmor_prompting.SubDir', '9': 0, '10': 'subDir'},
+    {'1': 'home_dir_file', '3': 4, '4': 1, '5': 11, '6': '.apparmor_prompting.HomeDirFile', '9': 0, '10': 'homeDirFile'},
+    {'1': 'top_level_dir_file', '3': 5, '4': 1, '5': 11, '6': '.apparmor_prompting.TopLevelDirFile', '9': 0, '10': 'topLevelDirFile'},
+    {'1': 'sub_dir_file', '3': 6, '4': 1, '5': 11, '6': '.apparmor_prompting.SubDirFile', '9': 0, '10': 'subDirFile'},
+  ],
+  '8': [
+    {'1': 'kind'},
+  ],
+};
+
+/// Descriptor for `EnrichedPathKind`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List enrichedPathKindDescriptor = $convert.base64Decode(
+    'ChBFbnJpY2hlZFBhdGhLaW5kEjgKCGhvbWVfZGlyGAEgASgLMhsuYXBwYXJtb3JfcHJvbXB0aW'
+    '5nLkhvbWVEaXJIAFIHaG9tZURpchJFCg10b3BfbGV2ZWxfZGlyGAIgASgLMh8uYXBwYXJtb3Jf'
+    'cHJvbXB0aW5nLlRvcExldmVsRGlySABSC3RvcExldmVsRGlyEjUKB3N1Yl9kaXIYAyABKAsyGi'
+    '5hcHBhcm1vcl9wcm9tcHRpbmcuU3ViRGlySABSBnN1YkRpchJFCg1ob21lX2Rpcl9maWxlGAQg'
+    'ASgLMh8uYXBwYXJtb3JfcHJvbXB0aW5nLkhvbWVEaXJGaWxlSABSC2hvbWVEaXJGaWxlElIKEn'
+    'RvcF9sZXZlbF9kaXJfZmlsZRgFIAEoCzIjLmFwcGFybW9yX3Byb21wdGluZy5Ub3BMZXZlbERp'
+    'ckZpbGVIAFIPdG9wTGV2ZWxEaXJGaWxlEkIKDHN1Yl9kaXJfZmlsZRgGIAEoCzIeLmFwcGFybW'
+    '9yX3Byb21wdGluZy5TdWJEaXJGaWxlSABSCnN1YkRpckZpbGVCBgoEa2luZA==');
+
+@$core.Deprecated('Use homeDirDescriptor instead')
+const HomeDir$json = {
+  '1': 'HomeDir',
+};
+
+/// Descriptor for `HomeDir`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List homeDirDescriptor = $convert.base64Decode(
+    'CgdIb21lRGly');
+
+@$core.Deprecated('Use topLevelDirDescriptor instead')
+const TopLevelDir$json = {
+  '1': 'TopLevelDir',
+  '2': [
+    {'1': 'dirname', '3': 1, '4': 1, '5': 9, '10': 'dirname'},
+  ],
+};
+
+/// Descriptor for `TopLevelDir`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List topLevelDirDescriptor = $convert.base64Decode(
+    'CgtUb3BMZXZlbERpchIYCgdkaXJuYW1lGAEgASgJUgdkaXJuYW1l');
+
+@$core.Deprecated('Use subDirDescriptor instead')
+const SubDir$json = {
+  '1': 'SubDir',
+};
+
+/// Descriptor for `SubDir`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subDirDescriptor = $convert.base64Decode(
+    'CgZTdWJEaXI=');
+
+@$core.Deprecated('Use homeDirFileDescriptor instead')
+const HomeDirFile$json = {
+  '1': 'HomeDirFile',
+  '2': [
+    {'1': 'filename', '3': 1, '4': 1, '5': 9, '10': 'filename'},
+  ],
+};
+
+/// Descriptor for `HomeDirFile`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List homeDirFileDescriptor = $convert.base64Decode(
+    'CgtIb21lRGlyRmlsZRIaCghmaWxlbmFtZRgBIAEoCVIIZmlsZW5hbWU=');
+
+@$core.Deprecated('Use topLevelDirFileDescriptor instead')
+const TopLevelDirFile$json = {
+  '1': 'TopLevelDirFile',
+  '2': [
+    {'1': 'dirname', '3': 1, '4': 1, '5': 9, '10': 'dirname'},
+    {'1': 'filename', '3': 2, '4': 1, '5': 9, '10': 'filename'},
+  ],
+};
+
+/// Descriptor for `TopLevelDirFile`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List topLevelDirFileDescriptor = $convert.base64Decode(
+    'Cg9Ub3BMZXZlbERpckZpbGUSGAoHZGlybmFtZRgBIAEoCVIHZGlybmFtZRIaCghmaWxlbmFtZR'
+    'gCIAEoCVIIZmlsZW5hbWU=');
+
+@$core.Deprecated('Use subDirFileDescriptor instead')
+const SubDirFile$json = {
+  '1': 'SubDirFile',
+};
+
+/// Descriptor for `SubDirFile`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List subDirFileDescriptor = $convert.base64Decode(
+    'CgpTdWJEaXJGaWxl');
 
