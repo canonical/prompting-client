@@ -496,7 +496,7 @@ impl<'a> CategorisedPath<'a> {
             PathKind::TopLevelDir | PathKind::TopLevelDirFile
         ));
         let top_level: PathBuf = self.path.iter().take(1).collect();
-        format!("{}", top_level.to_string_lossy())
+        top_level.to_string_lossy().to_owned().to_string()
     }
 
     fn get_file_name(&self) -> String {
@@ -505,7 +505,7 @@ impl<'a> CategorisedPath<'a> {
             PathKind::HomeDirFile | PathKind::TopLevelDirFile
         ));
         let file: PathBuf = self.path.iter().last().into_iter().collect();
-        format!("{}", file.to_string_lossy())
+        file.to_string_lossy().to_owned().to_string()
     }
 }
 
