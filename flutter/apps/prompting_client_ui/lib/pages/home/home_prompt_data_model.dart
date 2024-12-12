@@ -15,6 +15,7 @@ class HomePromptData with _$HomePromptData {
     required Set<HomePermission> permissions,
     required String customPath,
     required PatternOption patternOption,
+    required EnrichedPathKind enrichedPathKind,
     @Default(Lifespan.forever) Lifespan lifespan,
     HomePromptError? error,
     @Default(false) bool showMoreOptions,
@@ -55,6 +56,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
               .clamp(0, details.patternOptions.length - 1)],
       permissions: details.requestedPermissions,
       customPath: details.requestedPath,
+      enrichedPathKind: details.enrichedPathKind,
     );
   }
 

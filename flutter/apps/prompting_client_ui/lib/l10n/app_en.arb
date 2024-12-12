@@ -89,8 +89,8 @@
             }
         }
     },
-    "homePromptHomeDirectoryBody": "{snap} wants to get {permissions} access to {path} in your home folder",
-    "@homePromptHomeDirectoryBody": {
+    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder",
+    "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
                 "type": "String"
@@ -98,13 +98,27 @@
             "permissions": {
                 "type": "String"
             },
-            "path": {
+            "folder": {
                 "type": "String"
             }
         }
     },
-    "homePromptTopLevelFolderBody": "{snap} wants to get {permissions} access to {filename} in the {foldername} folder",
-    "@homePromptTopLevelFolderBody": {
+    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} wants to get {permissions} access to {filename} in the {foldername} folder",
+    "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
                 "type": "String"
@@ -116,6 +130,31 @@
                 "type": "String"
             },
             "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} wants to get {permissions} access to your Home folder",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to file {filename} in your Home folder",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
                 "type": "String"
             }
         }

@@ -68,50 +68,62 @@ class Header extends ConsumerWidget {
     final hasMeta = ref.watch(
       homePromptDataModelProvider.select((m) => m.hasMeta),
     );
-    final patternType = ref.watch(
-      homePromptDataModelProvider
-          .select((m) => m.patternOption.homePatternType),
+    final enrichedPathKind = ref.watch(
+      homePromptDataModelProvider.select((m) => m.enrichedPathKind),
     );
     final l10n = AppLocalizations.of(context);
 
-    String markdownText;
-
-    switch (patternType) {
-      case HomePatternType.topLevelDirectory:
-        final lastSlash = details.requestedPath.lastIndexOf('/');
-        markdownText = l10n.homePromptTopLevelFolderBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
-              .map((p) => p.localize(l10n).toLowerCase())
-              .join(', ')
-              .bold(),
-          // Filename is after the last "/" in the file path
-          details.requestedPath.substring(lastSlash + 1).bold(),
-          // Foldername is between the secondlast and last "/"
-          details.requestedPath.substring(lastSlash - 1, lastSlash).bold(),
-        );
-        break;
-      case HomePatternType.homeDirectory:
-        markdownText = l10n.homePromptHomeDirectoryBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
-              .map((p) => p.localize(l10n).toLowerCase())
-              .join(', ')
-              .bold(),
-          details.requestedPath.bold(),
-        );
-        break;
-      default:
-        markdownText = l10n.homePromptDefaultBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
-              .map((p) => p.localize(l10n).toLowerCase())
-              .join(', ')
-              .bold(),
-          details.requestedPath.bold(),
-        );
-        break;
-    }
+    final markdownText = enrichedPathKind.when(
+      homeDir: () => l10n.homePromptHomeDirBody(
+        details.metaData.snapName.bold(),
+        details.requestedPermissions
+            .map((p) => p.localize(l10n).toLowerCase())
+            .join(', ')
+            .bold(),
+      ),
+      topLevelDir: (dirname) => l10n.homePromptTopLevelDirBody(
+        details.metaData.snapName.bold(),
+        details.requestedPermissions
+            .map((p) => p.localize(l10n).toLowerCase())
+            .join(', ')
+            .bold(),
+        dirname.bold(),
+      ),
+      subDir: () => l10n.homePromptDefaultBody(
+        details.metaData.snapName.bold(),
+        details.requestedPermissions
+            .map((p) => p.localize(l10n).toLowerCase())
+            .join(', ')
+            .bold(),
+        details.requestedPath.bold(),
+      ),
+      homeDirFile: (filename) => l10n.homePromptHomeDirFileBody(
+        details.metaData.snapName.bold(),
+        details.requestedPermissions
+            .map((p) => p.localize(l10n).toLowerCase())
+            .join(', ')
+            .bold(),
+        filename.bold(),
+      ),
+      topLevelDirFile: (dirname, filename) =>
+          l10n.homePromptTopLevelDirFileBody(
+        details.metaData.snapName.bold(),
+        details.requestedPermissions
+            .map((p) => p.localize(l10n).toLowerCase())
+            .join(', ')
+            .bold(),
+        filename.bold(),
+        dirname.bold(),
+      ),
+      subDirFile: () => l10n.homePromptDefaultBody(
+        details.metaData.snapName.bold(),
+        details.requestedPermissions
+            .map((p) => p.localize(l10n).toLowerCase())
+            .join(', ')
+            .bold(),
+        details.requestedPath.bold(),
+      ),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
