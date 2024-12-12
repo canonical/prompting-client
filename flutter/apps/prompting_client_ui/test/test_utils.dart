@@ -60,6 +60,7 @@ PromptDetails mockPromptDetailsHome({
   Set<HomePermission>? availablePermissions,
   Set<HomePermission>? suggestedPermissions,
   Set<PatternOption>? patternOptions,
+  EnrichedPathKind? enrichedPathKind,
 }) =>
     PromptDetails.home(
       metaData: MetaData(
@@ -75,6 +76,7 @@ PromptDetails mockPromptDetailsHome({
       availablePermissions: availablePermissions ?? {},
       suggestedPermissions: suggestedPermissions ?? {},
       patternOptions: patternOptions ?? {},
+      enrichedPathKind: enrichedPathKind ?? EnrichedPathKind.homeDir(),
     );
 
 PromptDetails registerMockPromptDetails({

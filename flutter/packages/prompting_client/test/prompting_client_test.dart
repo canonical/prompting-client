@@ -40,6 +40,9 @@ void main() {
           ),
         ],
         initialPatternOption: 0,
+        enrichedPathKind: pb.EnrichedPathKind(
+          homeDir: pb.HomeDir(),
+        ),
       ),
     )..freeze();
     final testCases = [
@@ -69,6 +72,7 @@ void main() {
               pathPattern: '/home/user/Downloads/**',
             ),
           },
+          enrichedPathKind: EnrichedPathKind.homeDir(),
         ),
         expectError: false,
       ),

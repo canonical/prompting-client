@@ -110,6 +110,27 @@ extension PermissionConversion on HomePermission {
       };
 }
 
+extension EnrichedPathKindConversion on EnrichedPathKind {
+  static EnrichedPathKind fromProto(pb.EnrichedPathKind kind) =>
+      switch (kind.whichKind()) {
+        pb.EnrichedPathKind_Kind.homeDir => EnrichedPathKind.homeDir(),
+        pb.EnrichedPathKind_Kind.topLevelDir => EnrichedPathKind.topLevelDir(
+            dirname: kind.topLevelDir.dirname,
+          ),
+        pb.EnrichedPathKind_Kind.subDir => EnrichedPathKind.subDir(),
+        pb.EnrichedPathKind_Kind.homeDirFile => EnrichedPathKind.homeDirFile(
+            filename: kind.homeDirFile.filename,
+          ),
+        pb.EnrichedPathKind_Kind.topLevelDirFile =>
+          EnrichedPathKind.topLevelDirFile(
+            dirname: kind.topLevelDirFile.dirname,
+            filename: kind.topLevelDirFile.filename,
+          ),
+        pb.EnrichedPathKind_Kind.subDirFile => EnrichedPathKind.subDirFile(),
+        pb.EnrichedPathKind_Kind.notSet => throw ArgumentError('Unknown kind'),
+      };
+}
+
 extension PrompteDetailsConversion on PromptDetails {
   static PromptDetails fromProto(pb.GetCurrentPromptResponse response) =>
       switch (response.whichPrompt()) {
@@ -131,6 +152,9 @@ extension PrompteDetailsConversion on PromptDetails {
                 .map(MoreOptionConversion.fromProto)
                 .toSet(),
             initialPatternOption: response.homePrompt.initialPatternOption,
+            enrichedPathKind: EnrichedPathKindConversion.fromProto(
+              response.homePrompt.enrichedPathKind,
+            ),
           ),
         pb.GetCurrentPromptResponse_Prompt.notSet =>
           throw ArgumentError('Prompt type not set'),

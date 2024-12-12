@@ -60,6 +60,7 @@ impl PromptReply<HomeInterface> {
 pub struct HomeInterface;
 
 struct PatternOptions {
+    enriched_path_kind: EnrichedPathKind,
     initial_pattern_option: usize,
     pattern_options: Vec<TypedPathPattern>,
 }
@@ -111,6 +112,22 @@ impl PatternOptions {
             ],
         };
 
+        let enriched_path_kind = match cpath.kind {
+            PathKind::HomeDir => EnrichedPathKind::HomeDir,
+            PathKind::TopLevelDir => EnrichedPathKind::TopLevelDir {
+                dirname: cpath.get_top_level_dir(),
+            },
+            PathKind::SubDir => EnrichedPathKind::SubDir,
+            PathKind::HomeDirFile => EnrichedPathKind::HomeDirFile {
+                filename: cpath.get_file_name(),
+            },
+            PathKind::TopLevelDirFile => EnrichedPathKind::TopLevelDirFile {
+                dirname: cpath.get_top_level_dir(),
+                filename: cpath.get_file_name(),
+            },
+            PathKind::SubDirFile => EnrichedPathKind::SubDirFile,
+        };
+
         if !cpath.is_dir {
             if let Some(opt) = cpath.matching_extension_pattern() {
                 options.push(opt);
@@ -118,6 +135,7 @@ impl PatternOptions {
         }
 
         Ok(Self {
+            enriched_path_kind,
             initial_pattern_option: 1,
             pattern_options: options,
         })
@@ -164,6 +182,7 @@ impl SnapInterface for HomeInterface {
         let PatternOptions {
             initial_pattern_option,
             pattern_options,
+            enriched_path_kind,
         } = self.ui_options(&prompt)?;
         let meta = meta.unwrap_or_else(|| SnapMeta {
             name: prompt.snap,
@@ -191,6 +210,7 @@ impl SnapInterface for HomeInterface {
                 suggested_permissions,
                 pattern_options,
                 initial_pattern_option,
+                enriched_path_kind,
             },
         })
     }
@@ -220,6 +240,7 @@ pub struct HomeUiInputData {
     pub(crate) suggested_permissions: Vec<String>,
     pub(crate) initial_pattern_option: usize,
     pub(crate) pattern_options: Vec<TypedPathPattern>,
+    pub(crate) enriched_path_kind: EnrichedPathKind,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -346,6 +367,17 @@ impl ReplyConstraintsOverrides for HomeReplyConstraintsOverrides {
     }
 }
 
+/// PathKind's enriched with file names and directory names when needed for templating in the prompting UI.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub enum EnrichedPathKind {
+    HomeDir,
+    TopLevelDir { dirname: String },
+    SubDir,
+    HomeDirFile { filename: String },
+    TopLevelDirFile { dirname: String, filename: String },
+    SubDirFile,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum PathKind {
     HomeDir,
@@ -456,6 +488,24 @@ impl<'a> CategorisedPath<'a> {
             }
             _ => None,
         }
+    }
+
+    fn get_top_level_dir(&self) -> String {
+        debug_assert!(matches!(
+            self.kind,
+            PathKind::TopLevelDir | PathKind::TopLevelDirFile
+        ));
+        let top_level: PathBuf = self.path.iter().take(1).collect();
+        top_level.to_string_lossy().into_owned().to_string()
+    }
+
+    fn get_file_name(&self) -> String {
+        debug_assert!(matches!(
+            self.kind,
+            PathKind::HomeDirFile | PathKind::TopLevelDirFile
+        ));
+        let file: PathBuf = self.path.iter().last().into_iter().collect();
+        file.to_string_lossy().into_owned().to_string()
     }
 }
 

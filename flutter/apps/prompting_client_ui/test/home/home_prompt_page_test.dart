@@ -41,10 +41,12 @@ void main() {
       String name,
       String requestedPath,
       Set<PatternOption> options,
+      EnrichedPathKind enrichedPathKind,
     })>[
       (
         name: 'file in subfolder',
         requestedPath: '/home/user/Pictures/nested/foo.jpeg',
+        enrichedPathKind: EnrichedPathKind.subDirFile(),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -73,6 +75,7 @@ void main() {
       (
         name: 'file in subfolder without extension',
         requestedPath: '/home/user/Pictures/nested/foo',
+        enrichedPathKind: EnrichedPathKind.subDirFile(),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -97,6 +100,10 @@ void main() {
       (
         name: 'file in top level folder',
         requestedPath: '/home/user/Downloads/foo.jpeg',
+        enrichedPathKind: EnrichedPathKind.topLevelDirFile(
+          filename: 'foo.jpeg',
+          dirname: 'Downloads',
+        ),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -121,6 +128,10 @@ void main() {
       (
         name: 'file in top level folder without extension',
         requestedPath: '/home/user/Downloads/foo',
+        enrichedPathKind: EnrichedPathKind.topLevelDirFile(
+          filename: 'foo',
+          dirname: 'Downloads',
+        ),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -141,6 +152,7 @@ void main() {
       (
         name: 'file in home folder',
         requestedPath: '/home/user/foo.jpeg',
+        enrichedPathKind: EnrichedPathKind.homeDirFile(filename: 'foo.jpeg'),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -160,6 +172,7 @@ void main() {
       (
         name: 'file in home folder without extension',
         requestedPath: '/home/user/foo',
+        enrichedPathKind: EnrichedPathKind.homeDirFile(filename: 'foo'),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -175,6 +188,7 @@ void main() {
       (
         name: 'sub folder',
         requestedPath: '/home/user/Downloads/stuff/',
+        enrichedPathKind: EnrichedPathKind.subDir(),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -200,6 +214,7 @@ void main() {
       (
         name: 'top level folder',
         requestedPath: '/home/user/Downloads/',
+        enrichedPathKind: EnrichedPathKind.topLevelDir(dirname: 'Downloads'),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -220,6 +235,7 @@ void main() {
       (
         name: 'top level folder',
         requestedPath: '/home/user/',
+        enrichedPathKind: EnrichedPathKind.homeDir(),
         options: {
           PatternOption(
             homePatternType: HomePatternType.homeDirectory,
@@ -238,6 +254,7 @@ void main() {
           promptDetails: testDetails.copyWith(
             requestedPath: testCase.requestedPath,
             patternOptions: testCase.options,
+            enrichedPathKind: testCase.enrichedPathKind,
           ),
         );
         await tester.pumpApp(
@@ -247,16 +264,88 @@ void main() {
           ),
         );
 
-        expect(
-          find.text(
-            tester.l10n.homePromptBody(
-              'firefox',
-              HomePermission.read.localize(tester.l10n).toLowerCase(),
-              testCase.requestedPath,
-            ),
-          ),
-          findsOneWidget,
-        );
+        switch (testCase.enrichedPathKind) {
+          case EnrichedPathKindHomeDir():
+            expect(
+              find.text(
+                tester.l10n.homePromptHomeDirBody(
+                  'firefox',
+                  HomePermission.read.localize(tester.l10n).toLowerCase(),
+                ),
+              ),
+              findsOneWidget,
+            );
+            break;
+
+          case EnrichedPathKindHomeDirFile(filename: final filename):
+            expect(
+              find.text(
+                tester.l10n.homePromptHomeDirFileBody(
+                  'firefox',
+                  HomePermission.read.localize(tester.l10n).toLowerCase(),
+                  filename,
+                ),
+              ),
+              findsOneWidget,
+            );
+            break;
+
+          case EnrichedPathKindTopLevelDir(dirname: final dirname):
+            expect(
+              find.text(
+                tester.l10n.homePromptTopLevelDirBody(
+                  'firefox',
+                  HomePermission.read.localize(tester.l10n).toLowerCase(),
+                  dirname,
+                ),
+              ),
+              findsOneWidget,
+            );
+            break;
+
+          case EnrichedPathKindTopLevelDirFile(
+              dirname: final dirname,
+              filename: final filename
+            ):
+            expect(
+              find.text(
+                tester.l10n.homePromptTopLevelDirFileBody(
+                  'firefox',
+                  HomePermission.read.localize(tester.l10n).toLowerCase(),
+                  filename,
+                  dirname,
+                ),
+              ),
+              findsOneWidget,
+            );
+            break;
+
+          case EnrichedPathKindSubDir():
+            expect(
+              find.text(
+                tester.l10n.homePromptDefaultBody(
+                  'firefox',
+                  HomePermission.read.localize(tester.l10n).toLowerCase(),
+                  testCase.requestedPath,
+                ),
+              ),
+              findsOneWidget,
+            );
+            break;
+
+          case EnrichedPathKindSubDirFile():
+            expect(
+              find.text(
+                tester.l10n.homePromptDefaultBody(
+                  'firefox',
+                  HomePermission.read.localize(tester.l10n).toLowerCase(),
+                  testCase.requestedPath,
+                ),
+              ),
+              findsOneWidget,
+            );
+            break;
+        }
 
         expect(
           find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
@@ -294,6 +383,10 @@ void main() {
         publisher: '',
         storeUrl: '',
       ),
+      enrichedPathKind: EnrichedPathKind.topLevelDirFile(
+        dirname: 'Downloads',
+        filename: 'file.txt',
+      ),
     );
     registerMockPromptDetails(
       promptDetails: testDetailsWithoutMeta,
@@ -307,10 +400,11 @@ void main() {
 
     expect(
       find.text(
-        tester.l10n.homePromptBody(
+        tester.l10n.homePromptTopLevelDirFileBody(
           'firefox',
           HomePermission.read.localize(tester.l10n).toLowerCase(),
-          '/home/ubuntu/Downloads/file.txt',
+          'file.txt',
+          'Downloads',
         ),
       ),
       findsOneWidget,

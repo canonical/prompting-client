@@ -45,5 +45,8 @@
             "pathPattern": "/home/user/**/*.jpeg"
         }
     ],
-    "initialPatternOption": 1
+    "initialPatternOption": 1,
+    "enrichedPathKind": {
+        "runtimeType": "subDirFile"
+    }
 }
