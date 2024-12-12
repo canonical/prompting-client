@@ -264,8 +264,8 @@ void main() {
           ),
         );
 
-        testCase.enrichedPathKind.when(
-          homeDir: () {
+        switch (testCase.enrichedPathKind) {
+          case EnrichedPathKindHomeDir():
             expect(
               find.text(
                 tester.l10n.homePromptHomeDirBody(
@@ -275,8 +275,9 @@ void main() {
               ),
               findsOneWidget,
             );
-          },
-          homeDirFile: (filename) {
+            break;
+
+          case EnrichedPathKindHomeDirFile(filename: final filename):
             expect(
               find.text(
                 tester.l10n.homePromptHomeDirFileBody(
@@ -287,8 +288,9 @@ void main() {
               ),
               findsOneWidget,
             );
-          },
-          topLevelDir: (dirname) {
+            break;
+
+          case EnrichedPathKindTopLevelDir(dirname: final dirname):
             expect(
               find.text(
                 tester.l10n.homePromptTopLevelDirBody(
@@ -299,8 +301,12 @@ void main() {
               ),
               findsOneWidget,
             );
-          },
-          topLevelDirFile: (dirname, filename) {
+            break;
+
+          case EnrichedPathKindTopLevelDirFile(
+              dirname: final dirname,
+              filename: final filename
+            ):
             expect(
               find.text(
                 tester.l10n.homePromptTopLevelDirFileBody(
@@ -312,8 +318,9 @@ void main() {
               ),
               findsOneWidget,
             );
-          },
-          subDir: () {
+            break;
+
+          case EnrichedPathKindSubDir():
             expect(
               find.text(
                 tester.l10n.homePromptDefaultBody(
@@ -324,8 +331,9 @@ void main() {
               ),
               findsOneWidget,
             );
-          },
-          subDirFile: () {
+            break;
+
+          case EnrichedPathKindSubDirFile():
             expect(
               find.text(
                 tester.l10n.homePromptDefaultBody(
@@ -336,8 +344,8 @@ void main() {
               ),
               findsOneWidget,
             );
-          },
-        );
+            break;
+        }
 
         expect(
           find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),

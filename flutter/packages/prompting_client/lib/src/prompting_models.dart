@@ -50,7 +50,7 @@ class PatternOption with _$PatternOption {
 }
 
 @freezed
-class EnrichedPathKind with _$EnrichedPathKind {
+sealed class EnrichedPathKind with _$EnrichedPathKind {
   factory EnrichedPathKind.homeDir() = EnrichedPathKindHomeDir;
 
   factory EnrichedPathKind.topLevelDir({

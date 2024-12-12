@@ -73,57 +73,62 @@ class Header extends ConsumerWidget {
     );
     final l10n = AppLocalizations.of(context);
 
-    final markdownText = enrichedPathKind.when(
-      homeDir: () => l10n.homePromptHomeDirBody(
-        details.metaData.snapName.bold(),
-        details.requestedPermissions
-            .map((p) => p.localize(l10n).toLowerCase())
-            .join(', ')
-            .bold(),
-      ),
-      topLevelDir: (dirname) => l10n.homePromptTopLevelDirBody(
-        details.metaData.snapName.bold(),
-        details.requestedPermissions
-            .map((p) => p.localize(l10n).toLowerCase())
-            .join(', ')
-            .bold(),
-        dirname.bold(),
-      ),
-      subDir: () => l10n.homePromptDefaultBody(
-        details.metaData.snapName.bold(),
-        details.requestedPermissions
-            .map((p) => p.localize(l10n).toLowerCase())
-            .join(', ')
-            .bold(),
-        details.requestedPath.bold(),
-      ),
-      homeDirFile: (filename) => l10n.homePromptHomeDirFileBody(
-        details.metaData.snapName.bold(),
-        details.requestedPermissions
-            .map((p) => p.localize(l10n).toLowerCase())
-            .join(', ')
-            .bold(),
-        filename.bold(),
-      ),
-      topLevelDirFile: (dirname, filename) =>
-          l10n.homePromptTopLevelDirFileBody(
-        details.metaData.snapName.bold(),
-        details.requestedPermissions
-            .map((p) => p.localize(l10n).toLowerCase())
-            .join(', ')
-            .bold(),
-        filename.bold(),
-        dirname.bold(),
-      ),
-      subDirFile: () => l10n.homePromptDefaultBody(
-        details.metaData.snapName.bold(),
-        details.requestedPermissions
-            .map((p) => p.localize(l10n).toLowerCase())
-            .join(', ')
-            .bold(),
-        details.requestedPath.bold(),
-      ),
-    );
+    final markdownText = switch (enrichedPathKind) {
+      EnrichedPathKindHomeDir() => l10n.homePromptHomeDirBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+        ),
+      EnrichedPathKindTopLevelDir(dirname: final dirname) =>
+        l10n.homePromptTopLevelDirBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          dirname.bold(),
+        ),
+      EnrichedPathKindSubDir() => l10n.homePromptDefaultBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          details.requestedPath.bold(),
+        ),
+      EnrichedPathKindHomeDirFile(filename: final filename) =>
+        l10n.homePromptHomeDirFileBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          filename.bold(),
+        ),
+      EnrichedPathKindTopLevelDirFile(
+        dirname: final dirname,
+        filename: final filename
+      ) =>
+        l10n.homePromptTopLevelDirFileBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          filename.bold(),
+          dirname.bold(),
+        ),
+      EnrichedPathKindSubDirFile() => l10n.homePromptDefaultBody(
+          details.metaData.snapName.bold(),
+          details.requestedPermissions
+              .map((p) => p.localize(l10n).toLowerCase())
+              .join(', ')
+              .bold(),
+          details.requestedPath.bold(),
+        ),
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
