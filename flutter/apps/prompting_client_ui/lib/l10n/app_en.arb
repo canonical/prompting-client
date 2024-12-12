@@ -89,7 +89,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder",
+    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -103,7 +103,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder",
+    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -117,7 +117,7 @@
             }
         }
     },
-    "homePromptTopLevelDirFileBody": "{snap} wants to get {permissions} access to {filename} in the {foldername} folder",
+    "homePromptTopLevelDirFileBody": "{snap} wants to get {permissions} access to {filename} in the {foldername} folder.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -134,7 +134,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} wants to get {permissions} access to your Home folder",
+    "homePromptHomeDirBody": "{snap} wants to get {permissions} access to your Home folder.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -145,7 +145,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to {filename} in your Home folder",
+    "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to {filename} in your Home folder.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
