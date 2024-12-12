@@ -145,7 +145,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to file {filename} in your Home folder",
+    "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to {filename} in your Home folder",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
