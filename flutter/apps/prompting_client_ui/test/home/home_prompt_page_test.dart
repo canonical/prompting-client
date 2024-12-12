@@ -369,17 +369,18 @@ void main() {
   testWidgets('display prompt details without meta', (tester) async {
     final container = createContainer();
     final testDetailsWithoutMeta = testDetails.copyWith(
-      metaData: MetaData(
-        promptId: 'promptId',
-        snapName: 'firefox',
-        publisher: '',
-        storeUrl: '',
-      ),
-      enrichedPathKind: EnrichedPathKind.topLevelDirFile(dirname: 'Downloads', filename: 'file.txt')
-    );
+        metaData: MetaData(
+          promptId: 'promptId',
+          snapName: 'firefox',
+          publisher: '',
+          storeUrl: '',
+        ),
+        enrichedPathKind: EnrichedPathKind.topLevelDirFile(
+          dirname: 'Downloads',
+          filename: 'file.txt',
+        ),);
     registerMockPromptDetails(
       promptDetails: testDetailsWithoutMeta,
-
     );
     await tester.pumpApp(
       (_) => UncontrolledProviderScope(
