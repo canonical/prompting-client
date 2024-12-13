@@ -9,7 +9,7 @@ on:
 
 jobs:
   setup:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: Atsumi3/actions-setup-fvm@0.0.3
@@ -22,7 +22,7 @@ jobs:
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
 
   analyze:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: setup
     steps:
       - uses: actions/checkout@v3
@@ -38,7 +38,7 @@ jobs:
       - run: melos analyze --fatal-infos
 
   format:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: setup
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +54,7 @@ jobs:
       - run: melos format:exclude
 
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: setup
     steps:
       - uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
           token: ${{secrets.CODECOV_TOKEN}}
 
   prompting-client-ui:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: setup
     steps:
       - uses: actions/checkout@v4
