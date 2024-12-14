@@ -184,7 +184,7 @@
       }
     }
   },
-  "homePromptHomeDirFileBody": "{snap} запрашивает доступ {permissions} access to {filename} in your Home folder.",
+  "homePromptHomeDirFileBody": "{snap} запрашивает разрешение {permissions} на доступ к файлу {filename}, расположенному в вашей домашней папке.",
   "@homePromptHomeDirFileBody": {
     "placeholders": {
       "snap": {
