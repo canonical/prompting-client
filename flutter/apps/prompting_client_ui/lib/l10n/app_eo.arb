@@ -121,5 +121,75 @@
     }
   },
   "homePromptErrorUnknownTitle": "Io fiaskis",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptTopLevelDirBody": "{snap} volas havi permeson {permissions} la dosierujon {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} volas havi permeson {permissions} la dosieron {filename} en via hejma dosierujo.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} volas havi permeson {permissions} {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} volas havi permeson {permissions} vian hejman dosierujon.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} volas havi permeson {permissions} la dosieron {filename} en la dosierujo {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  }
 }
