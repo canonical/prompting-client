@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: setup
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Restore repository cache
         uses: actions/cache@v4
         with:
