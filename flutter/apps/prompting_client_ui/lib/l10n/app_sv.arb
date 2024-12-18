@@ -121,5 +121,75 @@
     }
   },
   "homePromptErrorUnknownTitle": "Någonting gick fel",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptTopLevelDirFileBody": "{snap} vill få {permissions} åtkomst till {filename} i {foldername} mappen.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} vill få {permissions} till din hemmapp.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} vill få {permissions} åtkomst till {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} vill få {permissions} tillgång till {foldername} mapp.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} vill få {permissions} åtkomst till {filename} i din hemmapp.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
 }

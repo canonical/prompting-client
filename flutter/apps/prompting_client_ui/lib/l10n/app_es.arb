@@ -121,5 +121,75 @@
     }
   },
   "homePromptErrorUnknownTitle": "Algo ha ido mal",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptHomeDirFileBody": "{snap} quiere obtener {permissions} acceso a {filename} en su carpeta de inicio.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} quiere obtener {permissions} acceso a {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} quiere obtener {permissions} acceso a la carpeta {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} quiere obtener {permissions} acceso a {filename} en la carpeta {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} quiere obtener {permissions} acceso a su carpeta de inicio.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  }
 }

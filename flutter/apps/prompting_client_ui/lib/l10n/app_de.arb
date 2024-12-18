@@ -113,5 +113,83 @@
   "promptActionOptionAllowOnce": "Einmal zulassen",
   "@promptActionOptionAllowOnce": {},
   "homePromptErrorUnknownTitle": "Etwas ist schiefgelaufen",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptSuggestedPermission": "Auch Zugriff für {permission} geben",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} möchte Zugriff zum {permissions} auf {path} erhalten",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} möchte Zugriff zum {permissions} auf Ihren Benutzerordner erhalten.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} möchte Zugriff zum {permissions} auf Ordner {foldername} erhalten.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} möchte Zugriff zum {permissions} auf {filename} im Ordner {foldername} erhalten.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} möchte Zugriff zum {permissions} auf {filename} in Ihrem Benutzerordner erhalten.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -121,5 +121,75 @@
     }
   },
   "homePromptErrorUnknownTitle": "Chuaigh rud éigin mícheart",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptTopLevelDirBody": "Ba mhaith le {snap} rochtain a fháil ar {permissions} ar an bhfillteán {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "Tá {snap} ag iarraidh rochtain a fháil ar {permissions} ar {filename} i d'fhillteán Baile.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "Ba mhaith le {snap} rochtain a fháil ar {permissions} ar {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "Tá {snap} ag iarraidh {permissions} rochtain a fháil ar {filename} san fhillteán {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "Tá {snap} ag iarraidh {permissions} a rochtain ar d'fhillteán Baile.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  }
 }
