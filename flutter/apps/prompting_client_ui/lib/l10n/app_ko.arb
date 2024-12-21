@@ -1,1 +1,32 @@
-{}
+{
+  "securityCenterInfo": "부여한 권한은 언재든지 <보안 센터>에서 변경할 수 있습니다",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "{snap} 에 대한 권한 설정:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "허용",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "항상 허용",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "거부",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionAllowOnce": "이번에만 허용",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDenyOnce": "이번에만 거부",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionForever": "항상",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "로그아웃하기 전까지",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "한 번만",
+  "@promptLifespanOptionSingle": {},
+  "promptSaveAndContinue": "저장하고 계속하기",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "보안 알림",
+  "@promptTitle": {}
+}
