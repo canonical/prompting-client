@@ -127,5 +127,19 @@
     }
   },
   "homePromptErrorUnknownTitle": "Quelque chose a mal tourné",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptTopLevelDirBody": "{snap} veut obtenir l'accès {permissions} au dossier {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  }
 }
