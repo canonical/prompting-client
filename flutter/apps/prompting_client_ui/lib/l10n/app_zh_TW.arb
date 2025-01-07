@@ -181,5 +181,11 @@
   "promptTitle": "安全性通知",
   "@promptTitle": {},
   "homePatternTypeHomeDirectory": "家目錄中的所有內容",
-  "@homePatternTypeHomeDirectory": {}
+  "@homePatternTypeHomeDirectory": {},
+  "securityCenterInfo": "您可以隨時在<安全中心>中變更這些權限",
+  "@securityCenterInfo": {},
+  "promptActionTitle": "執行",
+  "@promptActionTitle": {},
+  "promptLifespanOptionSingle": "一次",
+  "@promptLifespanOptionSingle": {}
 }
