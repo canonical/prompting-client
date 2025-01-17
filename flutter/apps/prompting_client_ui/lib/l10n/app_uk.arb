@@ -128,7 +128,7 @@
   "@homePromptPermissionsRead": {},
   "homePromptErrorUnknownTitle": "Щось пішло не за планом",
   "@homePromptErrorUnknownTitle": {},
-  "homePromptDefaultBody": "{snap} хоче отримати дозвіл {permissions} до {path}",
+  "homePromptDefaultBody": "{snap} хоче отримати дозвіл {permissions} на доступ до {path}",
   "@homePromptDefaultBody": {
     "placeholders": {
       "snap": {
@@ -142,7 +142,7 @@
       }
     }
   },
-  "homePromptTopLevelDirFileBody": "{snap} хоче отримати дозвіл {permissions} до {filename} у каталозі {foldername}.",
+  "homePromptTopLevelDirFileBody": "{snap} хоче отримати дозвіл {permissions} до {filename} у теці {foldername}.",
   "@homePromptTopLevelDirFileBody": {
     "placeholders": {
       "snap": {
@@ -159,7 +159,7 @@
       }
     }
   },
-  "homePromptHomeDirBody": "{snap} хоче отримати дозвіл {permissions} до Вашої домашньої теки.",
+  "homePromptHomeDirBody": "{snap} хоче отримати дозвіл {permissions} до вашої домашньої теки.",
   "@homePromptHomeDirBody": {
     "placeholders": {
       "snap": {
@@ -170,7 +170,7 @@
       }
     }
   },
-  "homePromptHomeDirFileBody": "{snap} хоче отримати доступ {permissions} до {filename} у Вашій домашній теці.",
+  "homePromptHomeDirFileBody": "{snap} хоче отримати доступ {permissions} до {filename} у вашій домашній теці.",
   "@homePromptHomeDirFileBody": {
     "placeholders": {
       "snap": {
@@ -184,7 +184,7 @@
       }
     }
   },
-  "homePromptTopLevelDirBody": "{snap} хоче отримати дозвіл {permissions} до каталогу {foldername}.",
+  "homePromptTopLevelDirBody": "{snap} хоче отримати дозвіл {permissions} до теки {foldername}.",
   "@homePromptTopLevelDirBody": {
     "placeholders": {
       "snap": {
