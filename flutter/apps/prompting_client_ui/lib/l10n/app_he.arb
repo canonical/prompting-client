@@ -127,5 +127,33 @@
   "homePromptMoreOptionsLabel": "אפשרויות נוספות…",
   "@homePromptMoreOptionsLabel": {},
   "homePromptErrorUnknownTitle": "משהו השתבש",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptDefaultBody": "{snap} רוצה לקבל גישת {permissions} אל {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} רוצה לקבל גישת {permissions} אל התיקייה {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  }
 }
