@@ -155,5 +155,47 @@
         "type": "String"
       }
     }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} רוצה לקבל גישת {permissions} אל הקובץ {filename} שבתיקייה {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} רוצה לקבל גישת {permissions} לתיקיית הבית שלך.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} רוצה לקבל גישת {permissions} אל הקובץ {filename} שבתיקיית הבית שלך.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
   }
 }
