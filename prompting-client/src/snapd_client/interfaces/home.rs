@@ -71,8 +71,8 @@ impl PatternOptions {
     ///
     /// Details of the cases and rationale behind how we handle this can be found here:
     ///   https://www.figma.com/board/1DIGbaCf4ZjTcShYjLiAIi/24.10-AppArmor-prompting---MVP-logic?node-id=0-1&t=4kUtDaqmQEvLA8v7-0
-    fn new(path: &str, home_dir: &str) -> Result<Self> {
-        let cpath = CategorisedPath::from_path(path, home_dir)?;
+    fn new(path: &str, home_dir: &str) -> Self {
+        let cpath = CategorisedPath::from_path(path, home_dir);
         let everything_in_home_pattern = TypedPathPattern::after_more_options(
             PatternType::HomeDirectory,
             format!("{home_dir}/**"),
@@ -94,6 +94,10 @@ impl PatternOptions {
                 cpath.requested_path_pattern(),
             ],
 
+            PathKind::OutsideOfHomeDir => {
+                vec![cpath.dir_contents_pattern(), cpath.requested_path_pattern()]
+            }
+
             PathKind::HomeDirFile => {
                 vec![everything_in_home_pattern, cpath.requested_path_pattern()]
             }
@@ -110,6 +114,11 @@ impl PatternOptions {
                 cpath.containing_dir_pattern(),
                 cpath.requested_path_pattern(),
             ],
+
+            PathKind::OutsideOfHomeFile => vec![
+                cpath.containing_dir_pattern(),
+                cpath.requested_path_pattern(),
+            ],
         };
 
         let enriched_path_kind = match cpath.kind {
@@ -117,7 +126,7 @@ impl PatternOptions {
             PathKind::TopLevelDir => EnrichedPathKind::TopLevelDir {
                 dirname: cpath.get_top_level_dir(),
             },
-            PathKind::SubDir => EnrichedPathKind::SubDir,
+            PathKind::SubDir | PathKind::OutsideOfHomeDir => EnrichedPathKind::SubDir,
             PathKind::HomeDirFile => EnrichedPathKind::HomeDirFile {
                 filename: cpath.get_file_name(),
             },
@@ -125,7 +134,7 @@ impl PatternOptions {
                 dirname: cpath.get_top_level_dir(),
                 filename: cpath.get_file_name(),
             },
-            PathKind::SubDirFile => EnrichedPathKind::SubDirFile,
+            PathKind::SubDirFile | PathKind::OutsideOfHomeFile => EnrichedPathKind::SubDirFile,
         };
 
         if !cpath.is_dir {
@@ -134,11 +143,11 @@ impl PatternOptions {
             }
         }
 
-        Ok(Self {
+        Self {
             enriched_path_kind,
             initial_pattern_option: 1,
             pattern_options: options,
-        })
+        }
     }
 }
 
@@ -149,7 +158,7 @@ fn home_dir_from_env() -> String {
 impl HomeInterface {
     fn ui_options(&self, prompt: &Prompt<Self>) -> Result<PatternOptions> {
         let path = &prompt.constraints.path;
-        PatternOptions::new(path, &home_dir_from_env())
+        Ok(PatternOptions::new(path, &home_dir_from_env()))
     }
 }
 
@@ -383,9 +392,11 @@ enum PathKind {
     HomeDir,
     TopLevelDir,
     SubDir,
+    OutsideOfHomeDir,
     HomeDirFile,
     TopLevelDirFile,
     SubDirFile,
+    OutsideOfHomeFile,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -398,17 +409,27 @@ struct CategorisedPath<'a> {
 }
 
 impl<'a> CategorisedPath<'a> {
-    fn from_path(raw_path: &'a str, home_dir: &'a str) -> Result<Self> {
+    fn from_path(raw_path: &'a str, home_dir: &'a str) -> Self {
         use PathKind::*;
 
         let is_dir = raw_path.ends_with('/');
-        let path = match PathBuf::from(raw_path).strip_prefix(home_dir) {
+        let path = PathBuf::from(raw_path);
+        let path = match path.strip_prefix(home_dir) {
             Ok(path) => path.to_path_buf(),
             Err(_) => {
-                return Err(Error::InvalidHomePromptPath {
-                    path: raw_path.to_string(),
-                    home: home_dir.to_string(),
-                })
+                let kind = if is_dir {
+                    OutsideOfHomeDir
+                } else {
+                    OutsideOfHomeFile
+                };
+
+                return Self {
+                    kind,
+                    raw_path,
+                    home_dir,
+                    path,
+                    is_dir,
+                };
             }
         };
 
@@ -422,13 +443,13 @@ impl<'a> CategorisedPath<'a> {
             (false, _) => SubDirFile,
         };
 
-        Ok(Self {
+        Self {
             kind,
             raw_path,
             home_dir,
             path,
             is_dir,
-        })
+        }
     }
 
     fn requested_path_pattern(&self) -> TypedPathPattern {
@@ -443,10 +464,6 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn top_level_dir_pattern(&self) -> TypedPathPattern {
-        debug_assert!(!matches!(
-            self.kind,
-            PathKind::HomeDir | PathKind::HomeDirFile
-        ));
         let top_level: PathBuf = self.path.iter().take(1).collect();
 
         TypedPathPattern::initial(
@@ -456,7 +473,6 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn containing_dir_pattern(&self) -> TypedPathPattern {
-        debug_assert!(matches!(self.kind, PathKind::SubDirFile));
         let mut segments: Vec<_> = self.path.iter().collect();
         segments.pop();
         let pb: PathBuf = segments.into_iter().collect();
@@ -468,8 +484,6 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn dir_contents_pattern(&self) -> TypedPathPattern {
-        debug_assert!(matches!(self.kind, PathKind::SubDir));
-
         TypedPathPattern::initial(
             PatternType::RequestedDirectoryContents,
             format!("{}**", self.raw_path),
@@ -491,19 +505,11 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn get_top_level_dir(&self) -> String {
-        debug_assert!(matches!(
-            self.kind,
-            PathKind::TopLevelDir | PathKind::TopLevelDirFile
-        ));
         let top_level: PathBuf = self.path.iter().take(1).collect();
         top_level.to_string_lossy().into_owned().to_string()
     }
 
     fn get_file_name(&self) -> String {
-        debug_assert!(matches!(
-            self.kind,
-            PathKind::HomeDirFile | PathKind::TopLevelDirFile
-        ));
         let file: PathBuf = self.path.iter().last().into_iter().collect();
         file.to_string_lossy().into_owned().to_string()
     }
@@ -580,7 +586,7 @@ mod tests {
     #[test]
     fn top_level_dir_pattern_works(home_dir: &str) {
         let full_path = format!("{home_dir}/Documents/notes/");
-        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let cpath = CategorisedPath::from_path(&full_path, home_dir);
         let patt = cpath.top_level_dir_pattern();
         assert_eq!(patt.path_pattern, format!("{home_dir}/Documents/**"));
     }
@@ -591,7 +597,7 @@ mod tests {
     #[test]
     fn containing_dir_pattern_works(home_dir: &str) {
         let full_path = format!("{home_dir}/Documents/notes/todo.md");
-        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let cpath = CategorisedPath::from_path(&full_path, home_dir);
         let patt = cpath.containing_dir_pattern();
         assert_eq!(patt.path_pattern, format!("{home_dir}/Documents/notes/**"));
     }
@@ -602,7 +608,7 @@ mod tests {
     #[test]
     fn dir_contents_pattern_works(home_dir: &str) {
         let full_path = format!("{home_dir}/Documents/notes/");
-        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let cpath = CategorisedPath::from_path(&full_path, home_dir);
         let patt = cpath.dir_contents_pattern();
         assert_eq!(patt.path_pattern, format!("{full_path}**"));
     }
@@ -613,7 +619,7 @@ mod tests {
     #[test]
     fn matching_extension_pattern_works(home_dir: &str) {
         let full_path = format!("{home_dir}/Documents/notes/todo.md");
-        let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+        let cpath = CategorisedPath::from_path(&full_path, home_dir);
         let patt = cpath.matching_extension_pattern().unwrap();
         assert_eq!(patt.path_pattern, format!("{home_dir}/**/*.md"));
     }
@@ -628,7 +634,7 @@ mod tests {
     fn kind_works(path: &str, expected: PathKind) {
         for home_dir in ["/home/user", "/mnt", "/non/standard/home/user"] {
             let full_path = format!("{home_dir}/{path}");
-            let cpath = CategorisedPath::from_path(&full_path, home_dir).unwrap();
+            let cpath = CategorisedPath::from_path(&full_path, home_dir);
             assert_eq!(cpath.kind, expected, "home is {home_dir}");
         }
     }
@@ -726,6 +732,34 @@ mod tests {
         ];
         "home folder"
     )]
+    #[test_case(
+        "/mnt/abcd/foo/",
+        1,
+        &[
+            (PatternType::RequestedDirectoryContents, true),
+            (PatternType::RequestedDirectory, true),
+        ];
+        "folder outside of home"
+    )]
+    #[test_case(
+        "/mnt/abcd/foo/bar.txt",
+        1,
+        &[
+            (PatternType::ContainingDirectory, true),
+            (PatternType::RequestedFile, true),
+            (PatternType::MatchingFileExtension, false)
+        ];
+        "file outside of home"
+    )]
+    #[test_case(
+        "/mnt/abcd/foo/bar",
+        1,
+        &[
+            (PatternType::ContainingDirectory, true),
+            (PatternType::RequestedFile, true),
+        ];
+        "file outside of home without extension"
+    )]
     #[test]
     fn building_options_works(
         path: &str,
@@ -736,7 +770,7 @@ mod tests {
             (path, "/home/user"),
             (&format!("/non/standard{path}"), "/non/standard/home/user"),
         ] {
-            let p = PatternOptions::new(full_path, home_dir).unwrap();
+            let p = PatternOptions::new(full_path, home_dir);
             assert_eq!(
                 p.initial_pattern_option, initial_pattern_option,
                 "initial pattern option with home_dir={home_dir}"

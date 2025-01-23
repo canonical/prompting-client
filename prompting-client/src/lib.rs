@@ -58,9 +58,6 @@ pub enum Error {
         available: Vec<String>,
     },
 
-    #[error("snapd provided a home interface prompt for a path outside of home: path={path:?} but home={home:?}")]
-    InvalidHomePromptPath { path: String, home: String },
-
     #[error("{version} is not supported recording version.")]
     InvalidRecordingVersion { version: u8 },
 
