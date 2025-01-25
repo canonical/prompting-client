@@ -127,5 +127,75 @@
   "homePromptPermissionsExecute": "Jalankan",
   "@homePromptPermissionsExecute": {},
   "homePromptErrorUnknownTitle": "Ada yang tidak beres",
-  "@homePromptErrorUnknownTitle": {}
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptDefaultBody": "{snap} ingin mendapatkan akses {permissions} ke {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} ingin mendapatkan akses {permissions} ke {filename} dalam folder {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} ingin mendapatkan akses {permissions} ke folder Rumah Anda.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} ingin mendapatkan akses {permissions} ke {filename} di folder Rumah Anda.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} ingin mendapatkan akses {permissions} ke folder {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  }
 }
