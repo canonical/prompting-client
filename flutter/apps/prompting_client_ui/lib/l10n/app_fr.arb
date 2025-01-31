@@ -186,5 +186,16 @@
         "type": "String"
       }
     }
+  },
+  "homePromptHomeDirBody": "{snap} souhaite obtenir un accès {permissions} à votre dossier personnel.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
   }
 }
