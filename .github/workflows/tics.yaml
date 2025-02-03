@@ -1,0 +1,37 @@
+name: TICS
+
+on:
+  push:
+    # branches:
+    #   - main
+  # pull_request:
+    # branches:
+    #   - main
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_LOG: info
+  RUST_BACKTRACE: 1
+
+jobs:
+  tics:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      - name: Install dependencies
+        run: |
+          sudo apt update && sudo apt install -y protobuf-compiler
+
+      - name: Run TICS analysis
+        if: github.event_name == 'push'
+        uses: tiobe/tics-github-action@v3
+        with:
+          mode: qserver
+          project: prompting-client
+          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
+          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
+          installTics: true
+          branchname: main
