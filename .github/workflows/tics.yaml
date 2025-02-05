@@ -28,6 +28,7 @@ jobs:
       - run: melos generate
       - run: melos gen-l10n
       - run: melos coverage
+      - run: melos build
 
       - name: Run TICS analysis
         if: github.event_name == 'push'
