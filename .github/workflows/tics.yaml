@@ -24,7 +24,7 @@ jobs:
       - uses: Atsumi3/actions-setup-fvm@0.0.3
       - uses: bluefireteam/melos-action@v3
       - name: Install dependencies
-        run: sudo apt update && sudo apt install -y protobuf-compiler lcov clang cmake curl libgtk-3-dev ninja-build pkg-config unzip
+        run: sudo apt update && sudo apt install -y protobuf-compiler lcov clang cmake curl libgtk-3-dev ninja-build pkg-config unzip libglib2.0-dev liblzma-dev xvfb
       - run: melos generate
       - run: melos gen-l10n
       - run: melos coverage
