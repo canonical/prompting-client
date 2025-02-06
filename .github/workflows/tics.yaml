@@ -1,0 +1,56 @@
+name: TICS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_LOG: info
+  RUST_BACKTRACE: 1
+
+jobs:
+  tics:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+      - uses: Atsumi3/actions-setup-fvm@0.0.3
+      - uses: bluefireteam/melos-action@v3
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y protobuf-compiler lcov clang cmake curl libgtk-3-dev ninja-build pkg-config unzip libglib2.0-dev liblzma-dev
+      - run: dart pub global activate cobertura
+      - run: melos generate
+      - run: melos gen-l10n
+      - run: melos coverage
+      - run: melos build
+      - run: |
+          mkdir .coverage
+          pushd flutter/packages/prompting_client
+          cobertura convert
+          sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
+          mv coverage/cobertura.xml ../../../.coverage/prompting_client.xml
+          popd
+
+          pushd flutter/apps/prompting_client_ui
+          cobertura convert
+          sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
+          mv coverage/cobertura.xml ../../../.coverage/prompting_client_ui.xml
+          popd
+
+      - name: Run TICS analysis
+        if: github.event_name == 'push'
+        uses: tiobe/tics-github-action@v3
+        with:
+          mode: qserver
+          project: prompting-client
+          viewerUrl: https://canonical.tiobe.com/tiobeweb/TICS/api/cfg?name=default
+          ticsAuthToken: ${{ secrets.TICSAUTHTOKEN }}
+          installTics: true
+          branchname: main
