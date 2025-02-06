@@ -80,6 +80,8 @@ class PromptDialog extends StatelessWidget {
       builder: (context, yaru, child) => MaterialApp(
         theme: yaru.theme?.customize(),
         darkTheme: yaru.darkTheme?.customize(),
+        highContrastTheme: yaruHighContrastLight.customize(),
+        highContrastDarkTheme: yaruHighContrastDark.customize(),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: localizationsDelegates,
         supportedLocales: supportedLocales,
