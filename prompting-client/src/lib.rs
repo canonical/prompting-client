@@ -83,9 +83,6 @@ pub enum Error {
         err: Box<SnapdError>,
     },
 
-    #[error(transparent)]
-    UnknownProstEnumValue(#[from] prost::UnknownEnumValue),
-
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },
 
