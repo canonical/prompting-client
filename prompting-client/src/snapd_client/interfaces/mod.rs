@@ -94,7 +94,6 @@ pub trait SnapInterface: fmt::Debug + Sized {
     ///
     /// This data structure is closely related (but not guaranteed to be identical) to the data
     /// structure received from Snapd under the `constraints` field of prompts for this interface.
-    ///
     type ReplyConstraints: fmt::Debug + Clone + Serialize;
 
     /// Serialization type for use with the scripted client in order to match on received prompts
