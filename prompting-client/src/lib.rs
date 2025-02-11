@@ -83,6 +83,9 @@ pub enum Error {
         err: Box<SnapdError>,
     },
 
+    #[error(transparent)]
+    UnknownProstEnumValue(#[from] prost::UnknownEnumValue),
+
     #[error("{interface} is not currently supported for apparmor prompting")]
     UnsupportedInterface { interface: String },
 
@@ -90,4 +93,5 @@ pub enum Error {
     UnableToUpdateLogFilter { reason: String },
 }
 
-pub type Result<T> = std::result::Result<T, Error>;
+/// Convenience Result type where E is an [Error] by default.
+pub type Result<T, E = Error> = std::result::Result<T, E>;

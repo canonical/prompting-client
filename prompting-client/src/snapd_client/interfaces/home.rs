@@ -1,9 +1,17 @@
 use crate::{
-    field_matches,
+    field_matches, map_enum,
     prompt_sequence::{MatchAttempt, MatchFailure},
+    protos::{
+        apparmor_prompting::{
+            home_prompt::PatternOption, EnrichedPathKind as ProtoEnrichedPathKind, HomePatternType,
+            HomePermission, HomePromptReply, MetaData,
+        },
+        HomePrompt as ProtoHomePrompt,
+    },
     snapd_client::{
         interfaces::{
-            ConstraintsFilter, Prompt, PromptReply, ReplyConstraintsOverrides, SnapInterface,
+            ConstraintsFilter, Prompt, PromptReply, ProtoPrompt, ReplyConstraintsOverrides,
+            SnapInterface,
         },
         prompt::UiInput,
         Action, Error, Lifespan, Result, SnapMeta,
@@ -13,6 +21,7 @@ use crate::{
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 use std::{env, path::PathBuf};
+use tonic::Status;
 
 impl Prompt<HomeInterface> {
     pub fn path(&self) -> &str {
@@ -156,7 +165,7 @@ fn home_dir_from_env() -> String {
 }
 
 impl HomeInterface {
-    fn ui_options(&self, prompt: &Prompt<Self>) -> Result<PatternOptions> {
+    fn ui_options(prompt: &Prompt<Self>) -> Result<PatternOptions> {
         let path = &prompt.constraints.path;
         Ok(PatternOptions::new(path, &home_dir_from_env()))
     }
@@ -172,7 +181,7 @@ impl SnapInterface for HomeInterface {
     type ReplyConstraintsOverrides = HomeReplyConstraintsOverrides;
 
     type UiInputData = HomeUiInputData;
-    type UiReply = HomeUiReply;
+    type UiReplyConstraints = HomePromptReply;
 
     fn prompt_to_reply(prompt: Prompt<Self>, action: Action) -> PromptReply<Self> {
         PromptReply {
@@ -187,12 +196,12 @@ impl SnapInterface for HomeInterface {
         }
     }
 
-    fn map_ui_input(&self, prompt: Prompt<Self>, meta: Option<SnapMeta>) -> Result<UiInput<Self>> {
+    fn ui_input_from_prompt(prompt: Prompt<Self>, meta: Option<SnapMeta>) -> Result<UiInput<Self>> {
         let PatternOptions {
             initial_pattern_option,
             pattern_options,
             enriched_path_kind,
-        } = self.ui_options(&prompt)?;
+        } = Self::ui_options(&prompt)?;
         let meta = meta.unwrap_or_else(|| SnapMeta {
             name: prompt.snap,
             updated_at: String::default(),
@@ -222,6 +231,113 @@ impl SnapInterface for HomeInterface {
                 enriched_path_kind,
             },
         })
+    }
+
+    fn proto_prompt_from_ui_input(input: UiInput<Self>) -> Result<ProtoPrompt, Status> {
+        let SnapMeta {
+            name,
+            updated_at,
+            store_url,
+            publisher,
+        } = input.meta;
+
+        let HomeUiInputData {
+            requested_path,
+            home_dir,
+            requested_permissions,
+            available_permissions,
+            suggested_permissions,
+            initial_pattern_option,
+            pattern_options,
+            enriched_path_kind,
+        } = input.data;
+
+        Ok(ProtoPrompt::HomePrompt(ProtoHomePrompt {
+            meta_data: Some(MetaData {
+                prompt_id: input.id.0,
+                snap_name: name,
+                store_url,
+                publisher,
+                updated_at,
+            }),
+            requested_path,
+            home_dir,
+            requested_permissions: map_permissions(requested_permissions)?,
+            suggested_permissions: map_permissions(suggested_permissions)?,
+            available_permissions: map_permissions(available_permissions)?,
+            initial_pattern_option: initial_pattern_option as i32,
+            pattern_options: pattern_options
+                .into_iter()
+                .map(map_pattern_option)
+                .collect(),
+            enriched_path_kind: Some(enriched_path_kind.into()),
+        }))
+    }
+
+    fn map_proto_reply_constraints(
+        &self,
+        raw_constraints: HomePromptReply,
+    ) -> Result<HomeReplyConstraints, String> {
+        let permissions = raw_constraints
+            .permissions
+            .into_iter()
+            .map(|id| {
+                let perm = HomePermission::try_from(id)
+                    .map_err(|_| format!("unknown permission id: {id}"))?;
+                let s = match perm {
+                    HomePermission::Read => "read".to_owned(),
+                    HomePermission::Write => "write".to_owned(),
+                    HomePermission::Execute => "execute".to_owned(),
+                };
+
+                Ok(s)
+            })
+            .collect::<std::result::Result<Vec<_>, String>>()?;
+
+        Ok(HomeReplyConstraints {
+            path_pattern: raw_constraints.path_pattern,
+            permissions,
+            available_permissions: Vec::new(),
+        })
+    }
+}
+
+fn map_permission(perm: &str) -> Result<i32, Status> {
+    match perm {
+        "read" => Ok(HomePermission::Read as i32),
+        "write" => Ok(HomePermission::Write as i32),
+        "execute" => Ok(HomePermission::Execute as i32),
+        _ => Err(Status::internal(format!(
+            "invalid permission for home interface: {perm}"
+        ))),
+    }
+}
+
+fn map_permissions(perms: Vec<String>) -> Result<Vec<i32>, Status> {
+    perms.iter().map(|s| map_permission(s)).collect()
+}
+
+fn map_pattern_option(
+    TypedPathPattern {
+        pattern_type,
+        path_pattern,
+        show_initially,
+    }: TypedPathPattern,
+) -> PatternOption {
+    let home_pattern_type = map_enum!(
+        PatternType => HomePatternType;
+        [
+            RequestedDirectory, RequestedFile, TopLevelDirectory,
+            HomeDirectory, MatchingFileExtension, ContainingDirectory,
+            RequestedDirectoryContents
+        ];
+        pattern_type;
+    );
+
+    PatternOption {
+        home_pattern_type: home_pattern_type as i32,
+        path_pattern,
+        show_initially,
     }
 }
 
@@ -280,15 +396,6 @@ impl TypedPathPattern {
     fn after_more_options(pattern_type: PatternType, path_pattern: impl Into<String>) -> Self {
         Self::new(pattern_type, path_pattern, false)
     }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct HomeUiReply {
-    action: Action,
-    lifespan: Lifespan,
-    path_pattern: String,
-    permissions: Vec<String>,
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
@@ -385,6 +492,36 @@ pub enum EnrichedPathKind {
     HomeDirFile { filename: String },
     TopLevelDirFile { dirname: String, filename: String },
     SubDirFile,
+}
+
+impl From<EnrichedPathKind> for ProtoEnrichedPathKind {
+    fn from(k: EnrichedPathKind) -> Self {
+        use crate::protos::apparmor_prompting::{
+            enriched_path_kind::Kind, HomeDir, HomeDirFile, SubDir, SubDirFile, TopLevelDir,
+            TopLevelDirFile,
+        };
+
+        match k {
+            EnrichedPathKind::HomeDir => Self {
+                kind: Some(Kind::HomeDir(HomeDir {})),
+            },
+            EnrichedPathKind::TopLevelDir { dirname } => Self {
+                kind: Some(Kind::TopLevelDir(TopLevelDir { dirname })),
+            },
+            EnrichedPathKind::SubDir => Self {
+                kind: Some(Kind::SubDir(SubDir {})),
+            },
+            EnrichedPathKind::HomeDirFile { filename } => Self {
+                kind: Some(Kind::HomeDirFile(HomeDirFile { filename })),
+            },
+            EnrichedPathKind::TopLevelDirFile { dirname, filename } => Self {
+                kind: Some(Kind::TopLevelDirFile(TopLevelDirFile { dirname, filename })),
+            },
+            EnrichedPathKind::SubDirFile => Self {
+                kind: Some(Kind::SubDirFile(SubDirFile {})),
+            },
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
