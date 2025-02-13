@@ -3,25 +3,11 @@ use crate::{
     daemon::{worker::ReadOnlyActivePrompt, ActionedPrompt, ReplyToPrompt},
     log_filter,
     protos::{
-        apparmor_prompting::{
-            self, enriched_path_kind, get_current_prompt_response::Prompt,
-            home_prompt::PatternOption, prompt_reply::PromptReply::HomePromptReply,
-            EnrichedPathKind as PbEnrichedPathKind, HomeDir, HomeDirFile, HomePatternType,
-            HomePermission, MetaData, PromptReply, SetLoggingFilterResponse, SubDir, SubDirFile,
-            TopLevelDir, TopLevelDirFile,
-        },
-        AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, HomePrompt,
-        PromptReplyResponse, ResolveHomePatternTypeResponse,
+        apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
+        AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, PromptReplyResponse,
+        ResolveHomePatternTypeResponse,
     },
-    snapd_client::{
-        self,
-        interfaces::home::{
-            EnrichedPathKind, HomeInterface, HomeReplyConstraints, HomeUiInputData, PatternType,
-            TypedPathPattern,
-        },
-        PromptId, PromptReply as SnapPromptReply, SnapMeta, SnapdError, TypedPromptReply,
-        TypedUiInput, UiInput,
-    },
+    snapd_client::{PromptId, SnapdError, TypedPromptReply},
     Error,
 };
 use std::sync::Arc;
@@ -29,24 +15,6 @@ use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
 use tonic::{async_trait, Code, Request, Response, Status};
 use tracing::{debug, info, warn};
 use tracing_subscriber::{reload::Handle, EnvFilter};
-
-macro_rules! map_enum {
-    ($from:ident => $to:ident; [$($variant:ident),+]; $val:expr;) => {
-        match $val {
-            $(
-                $from::$variant => $to::$variant,
-            )+
-        }
-    };
-
-    ($fmod:ident::$from:ident => $tmod:ident::$to:ident; [$($variant:ident),+]; $val:expr;) => {
-        match $val {
-            $(
-                $fmod::$from::$variant => $tmod::$to::$variant,
-            )+
-        }
-    };
-}
 
 pub fn new_server_and_listener<R, S>(
     client: R,
@@ -143,10 +111,11 @@ where
         _request: Request<()>,
     ) -> Result<Response<GetCurrentPromptResponse>, Status> {
         let prompt = match self.active_prompt.get() {
-            Some(TypedUiInput::Home(input)) => {
-                let id = &input.id.0;
+            Some(p) => {
+                let id = &p.id().0;
                 debug!(%id, "serving request for active prompt (id={id})");
-                Some(map_home_response(input)?)
+
+                Some(p.try_into()?)
             }
 
             None => {
@@ -168,8 +137,8 @@ where
         };
 
         let req = request.into_inner();
-        let reply = map_prompt_reply(req.clone())?;
         let id = PromptId(req.prompt_id.clone());
+        let reply: TypedPromptReply = req.try_into()?;
 
         debug!(id=%id.0, "replying to prompt id={}", id.0);
         let resp = match self.client.reply(&id, reply).await {
@@ -302,162 +271,30 @@ fn map_permissions(perms: Vec<String>) -> Result<Vec<i32>, Status> {
     perms.iter().map(|s| map_permission(s)).collect()
 }
 
-fn parse_permissions(ids: Vec<i32>) -> Result<Vec<String>, Status> {
-    ids.into_iter()
-        .map(|id| {
-            let perm = HomePermission::try_from(id)
-                .map_err(|_| Status::internal(format!("unknown permission id: {id}")))?;
-            let s = match perm {
-                HomePermission::Read => "read".to_owned(),
-                HomePermission::Write => "write".to_owned(),
-                HomePermission::Execute => "execute".to_owned(),
-            };
-
-            Ok(s)
-        })
-        .collect()
-}
-
-fn map_prompt_reply(mut reply: PromptReply) -> Result<TypedPromptReply, Status> {
-    let prompt_type = reply.prompt_reply.take().ok_or(Status::new(
-        Code::InvalidArgument,
-        "recieved empty prompt_reply",
-    ))?;
-
-    Ok(TypedPromptReply::Home(SnapPromptReply::<HomeInterface> {
-        action: map_enum!(
-            apparmor_prompting::Action => snapd_client::Action;
-            [Allow, Deny];
-            reply.action();
-        ),
-        lifespan: map_enum!(
-            apparmor_prompting::Lifespan => snapd_client::Lifespan;
-            [Single, Session, Forever];
-            reply.lifespan();
-        ),
-        duration: None, // we never use the Timespan variant
-        constraints: match prompt_type {
-            HomePromptReply(home_prompt_reply) => HomeReplyConstraints {
-                path_pattern: home_prompt_reply.path_pattern,
-                permissions: parse_permissions(home_prompt_reply.permissions)?,
-                available_permissions: Vec::new(),
-            },
-        },
-    }))
-}
-
-fn map_home_response(input: UiInput<HomeInterface>) -> Result<Prompt, Status> {
-    let SnapMeta {
-        name,
-        updated_at,
-        store_url,
-        publisher,
-    } = input.meta;
-
-    let HomeUiInputData {
-        requested_path,
-        home_dir,
-        requested_permissions,
-        available_permissions,
-        suggested_permissions,
-        initial_pattern_option,
-        pattern_options,
-        enriched_path_kind,
-    } = input.data;
-
-    Ok(Prompt::HomePrompt(HomePrompt {
-        meta_data: Some(MetaData {
-            prompt_id: input.id.0,
-            snap_name: name,
-            store_url,
-            publisher,
-            updated_at,
-        }),
-        requested_path,
-        home_dir,
-        requested_permissions: map_permissions(requested_permissions)?,
-        suggested_permissions: map_permissions(suggested_permissions)?,
-        available_permissions: map_permissions(available_permissions)?,
-        initial_pattern_option: initial_pattern_option as i32,
-        pattern_options: pattern_options
-            .into_iter()
-            .map(map_pattern_option)
-            .collect(),
-        enriched_path_kind: Some(enriched_path_kind.into()),
-    }))
-}
-
-fn map_pattern_option(
-    TypedPathPattern {
-        pattern_type,
-        path_pattern,
-        show_initially,
-    }: TypedPathPattern,
-) -> PatternOption {
-    let home_pattern_type = map_enum!(
-        PatternType => HomePatternType;
-        [
-            RequestedDirectory, RequestedFile, TopLevelDirectory,
-            HomeDirectory, MatchingFileExtension, ContainingDirectory,
-            RequestedDirectoryContents
-        ];
-        pattern_type;
-    );
-
-    PatternOption {
-        home_pattern_type: home_pattern_type as i32,
-        path_pattern,
-        show_initially,
-    }
-}
-
-impl From<EnrichedPathKind> for PbEnrichedPathKind {
-    fn from(k: EnrichedPathKind) -> Self {
-        match k {
-            EnrichedPathKind::HomeDir => Self {
-                kind: Some(enriched_path_kind::Kind::HomeDir(HomeDir {})),
-            },
-            EnrichedPathKind::TopLevelDir { dirname } => Self {
-                kind: Some(enriched_path_kind::Kind::TopLevelDir(TopLevelDir {
-                    dirname,
-                })),
-            },
-            EnrichedPathKind::SubDir => Self {
-                kind: Some(enriched_path_kind::Kind::SubDir(SubDir {})),
-            },
-            EnrichedPathKind::HomeDirFile { filename } => Self {
-                kind: Some(enriched_path_kind::Kind::HomeDirFile(HomeDirFile {
-                    filename,
-                })),
-            },
-            EnrichedPathKind::TopLevelDirFile { dirname, filename } => Self {
-                kind: Some(enriched_path_kind::Kind::TopLevelDirFile(TopLevelDirFile {
-                    dirname,
-                    filename,
-                })),
-            },
-            EnrichedPathKind::SubDirFile => Self {
-                kind: Some(enriched_path_kind::Kind::SubDirFile(SubDirFile {})),
-            },
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::{
         daemon::worker::ReadOnlyActivePrompt,
         protos::apparmor_prompting::{
-            app_armor_prompting_client::AppArmorPromptingClient, prompt_reply,
-            prompt_reply_response::PromptReplyType, Action, Lifespan,
+            self, app_armor_prompting_client::AppArmorPromptingClient, enriched_path_kind::Kind,
+            get_current_prompt_response::Prompt, prompt_reply,
+            prompt_reply::PromptReply::HomePromptReply, prompt_reply_response::PromptReplyType,
+            Action, EnrichedPathKind as ProtoEnrichedPathKind, HomeDir, HomePrompt, Lifespan,
+            MetaData,
         },
-        snapd_client::{interfaces::home::HomeUiInputData, PromptId, SnapMeta, TypedPromptReply},
+        snapd_client::{
+            self,
+            interfaces::home::{
+                EnrichedPathKind, HomeInterface, HomeReplyConstraints, HomeUiInputData,
+            },
+            PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPromptReply, TypedUiInput,
+            UiInput,
+        },
         Error,
     };
     use hyper_util::rt::TokioIo;
     use simple_test_case::test_case;
-    use snapd_client::interfaces::home::EnrichedPathKind;
     use std::{
         fs, io,
         ops::{Deref, DerefMut},
@@ -619,8 +456,8 @@ mod tests {
             suggested_permissions: Vec::new(),
             pattern_options: Vec::new(),
             initial_pattern_option: 0,
-            enriched_path_kind: Some(PbEnrichedPathKind {
-                kind: Some(enriched_path_kind::Kind::HomeDir(HomeDir {})),
+            enriched_path_kind: Some(ProtoEnrichedPathKind {
+                kind: Some(Kind::HomeDir(HomeDir {})),
             }),
         })
     }

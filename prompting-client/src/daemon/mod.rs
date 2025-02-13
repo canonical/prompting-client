@@ -34,7 +34,7 @@ impl ReplyToPrompt for SnapdSocketClient {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EnrichedPrompt {
     pub(crate) prompt: TypedPrompt,
-    meta: Option<SnapMeta>,
+    pub(crate) meta: Option<SnapMeta>,
 }
 
 #[allow(clippy::large_enum_variant)]

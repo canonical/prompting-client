@@ -13,10 +13,8 @@ pub mod interfaces;
 mod prompt;
 mod response;
 
-pub use prompt::{
-    Action, Lifespan, Prompt, PromptId, PromptNotice, PromptReply, TypedPrompt, TypedPromptReply,
-    TypedUiInput, UiInput,
-};
+pub use interfaces::{TypedPrompt, TypedPromptReply, TypedUiInput};
+pub use prompt::{Action, Lifespan, Prompt, PromptReply, UiInput};
 pub use response::{RuleConflict, SnapdError};
 
 const FEATURE_NAME: &str = "apparmor-prompting";
@@ -25,6 +23,15 @@ const NOTICE_TYPES: &str = "interfaces-requests-prompt";
 const SNAPD_BASE_URI: &str = "http://localhost/v2";
 const SNAPD_SOCKET: &str = "/run/snapd.socket";
 const SNAPD_SNAP_SOCKET: &str = "/run/snapd-snap.socket";
+
+#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
+pub struct PromptId(pub String);
+
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
+pub enum PromptNotice {
+    Update(PromptId),
+    Resolved(PromptId),
+}
 
 /// Abstraction layer to make swapping out the underlying client possible for
 /// testing.

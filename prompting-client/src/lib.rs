@@ -90,4 +90,5 @@ pub enum Error {
     UnableToUpdateLogFilter { reason: String },
 }
 
-pub type Result<T> = std::result::Result<T, Error>;
+/// Convenience Result type where E is an [Error] by default.
+pub type Result<T, E = Error> = std::result::Result<T, E>;

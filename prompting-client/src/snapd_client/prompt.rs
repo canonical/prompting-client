@@ -1,57 +1,28 @@
-//! Types for working with apparmor prompts
+//! Generic types for working with apparmor prompts.
+//!
+//! There are two sets of prompt types used in the prompting client:
+//!   - Types that are generic over [SnapInterface], provided by this module
+//!   - `Typed...` counterpart enums provided by the [interfaces][0] module
+//!
+//! The generic types are used within the interface specific logic written to support each Snapd
+//! interface, and the `Typed...` enums are used by the [daemon][crate::daemon] to handle the
+//! interface agnostic behaviour of the main daemon event loop. The enum types are kept in the
+//! interfaces module so that all of the per-interface specific code is co-located.
+//!
+//! See the documentation on [SnapInterface] for more details on how the different types relate to
+//! one another and the structure of the data pipeline used by the daemon.
+//!
+//!   [0]: crate::snapd_client::interfaces
 use crate::{
-    snapd_client::{
-        interfaces::{home::HomeInterface, SnapInterface},
-        SnapMeta,
-    },
-    Error, Result,
+    snapd_client::{interfaces::SnapInterface, PromptId, SnapMeta},
+    Result,
 };
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum TypedPrompt {
-    Home(Prompt<HomeInterface>),
-}
-
-impl TypedPrompt {
-    pub fn into_deny_once(self) -> TypedPromptReply {
-        let Self::Home(p) = self;
-        HomeInterface::prompt_to_reply(p, Action::Deny).into()
-    }
-
-    pub fn id(&self) -> &PromptId {
-        let Self::Home(p) = self;
-        &p.id
-    }
-
-    pub fn snap(&self) -> &str {
-        let Self::Home(p) = self;
-        &p.snap
-    }
-}
-
-impl TryFrom<RawPrompt> for TypedPrompt {
-    type Error = Error;
-
-    fn try_from(raw: RawPrompt) -> Result<Self> {
-        match raw.interface.as_str() {
-            "home" => Ok(TypedPrompt::Home(raw.try_into()?)),
-
-            interface => Err(Error::UnsupportedInterface {
-                interface: interface.to_string(),
-            }),
-        }
-    }
-}
-
-impl From<Prompt<HomeInterface>> for TypedPrompt {
-    fn from(value: Prompt<HomeInterface>) -> Self {
-        Self::Home(value)
-    }
-}
-
+/// Utility type for parsing the top level structure of the prompt JSON object received from
+/// Snapd. At this stage there are no guarantees about the structure of the `constraints` field,
+/// which needs to be parsed based on the value of the top level `interface` field.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct RawPrompt {
@@ -62,43 +33,7 @@ pub struct RawPrompt {
     pub(crate) constraints: serde_json::Value,
 }
 
-impl<I> TryFrom<RawPrompt> for Prompt<I>
-where
-    I: SnapInterface,
-{
-    type Error = Error;
-
-    fn try_from(
-        RawPrompt {
-            id,
-            timestamp,
-            snap,
-            interface,
-            constraints,
-        }: RawPrompt,
-    ) -> Result<Self> {
-        Ok(Prompt {
-            id,
-            timestamp,
-            snap,
-            interface,
-            constraints: serde_json::from_value(constraints)?,
-        })
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum TypedPromptReply {
-    Home(PromptReply<HomeInterface>),
-}
-
-impl From<PromptReply<HomeInterface>> for TypedPromptReply {
-    fn from(value: PromptReply<HomeInterface>) -> Self {
-        Self::Home(value)
-    }
-}
-
+/// A prompt that contains [SnapInterface] specific constraints.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Prompt<I>
@@ -131,8 +66,41 @@ where
     pub fn interface(&self) -> &str {
         &self.interface
     }
+
+    /// Attempt to deserialize the `constraints` field into structured data associated with a
+    /// particulart [SnapInterface].
+    ///
+    /// # Safety
+    ///
+    /// Calling this method on a [RawPrompt] that has constraints that parse correctly for the
+    /// given [SnapInterface], but not the correct interface name may result in malformed prompts
+    /// being presented to the user. On debug builds this will trigger an assert.
+    pub(crate) unsafe fn try_from_raw(
+        RawPrompt {
+            id,
+            timestamp,
+            snap,
+            interface,
+            constraints,
+        }: RawPrompt,
+    ) -> Result<Self> {
+        debug_assert_eq!(
+            interface,
+            I::NAME,
+            "Prompt::try_from called for for wrong interface"
+        );
+
+        Ok(Prompt {
+            id,
+            timestamp,
+            snap,
+            interface,
+            constraints: serde_json::from_value(constraints)?,
+        })
+    }
 }
 
+/// A reply to a prompt that contains [SnapInterface] specific reply-constraints.
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct PromptReply<I>
@@ -172,8 +140,8 @@ where
     }
 }
 
-#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
-#[serde(rename_all = "kebab-case")]
+/// [SnapInterface] specific data that can be serialized for sending to the Flutter UI.
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct UiInput<I>
 where
     I: SnapInterface,
@@ -181,34 +149,6 @@ where
     pub(crate) id: PromptId,
     pub(crate) meta: SnapMeta,
     pub(crate) data: I::UiInputData,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
-pub enum TypedUiInput {
-    Home(UiInput<HomeInterface>),
-}
-
-impl TypedUiInput {
-    pub fn id(&self) -> &PromptId {
-        let Self::Home(input) = self;
-        &input.id
-    }
-
-    pub fn try_from_prompt(prompt: TypedPrompt, meta: Option<SnapMeta>) -> Result<Self> {
-        let TypedPrompt::Home(p) = prompt;
-
-        Ok(Self::Home(HomeInterface.map_ui_input(p, meta)?))
-    }
-}
-
-#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
-pub struct PromptId(pub String);
-
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
-pub enum PromptNotice {
-    Update(PromptId),
-    Resolved(PromptId),
 }
 
 #[derive(
@@ -230,9 +170,9 @@ pub enum Action {
 pub enum Lifespan {
     #[default]
     Single,
-    Session,
+    Session, // part of the snapd API but not currently in use
     Forever,
-    Timespan,
+    Timespan, // supported in snapd but not currently used in the UI
 }
 
 #[cfg(test)]

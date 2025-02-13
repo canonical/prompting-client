@@ -222,11 +222,8 @@ where
         Ok(())
     }
 
-    fn update_active_prompt(
-        &mut self,
-        EnrichedPrompt { prompt, meta }: EnrichedPrompt,
-    ) -> Result<()> {
-        let input = TypedUiInput::try_from_prompt(prompt, meta)?;
+    fn update_active_prompt(&mut self, ep: EnrichedPrompt) -> Result<()> {
+        let input = TypedUiInput::try_from(ep)?;
         let mut guard = match self.active_prompt.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
