@@ -3,7 +3,7 @@
   "@securityCenterInfo": {},
   "homePatternTypeContainingDirectory": "文件夹内的所有内容",
   "@homePatternTypeContainingDirectory": {},
-  "homePromptHomeDirFileBody": "{snap} 想获取对您家目录中 {filename} 的 {permissions} 权限。",
+  "homePromptHomeDirFileBody": "{snap} 想获取对您主文件夹中 {filename} 的 {permissions} 权限。",
   "@homePromptHomeDirFileBody": {
     "placeholders": {
       "snap": {
@@ -72,7 +72,7 @@
       }
     }
   },
-  "homePromptHomeDirBody": "{snap} 想获取对您家目录的 {permissions} 访问权限。",
+  "homePromptHomeDirBody": "{snap} 想获取对您主文件夹的 {permissions} 访问权限。",
   "@homePromptHomeDirBody": {
     "placeholders": {
       "snap": {
@@ -132,7 +132,7 @@
   "@promptActionTitle": {},
   "homePatternTypeRequestedDirectoryContents": "文件夹内的所有内容",
   "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeHomeDirectory": "家目录中的所有内容",
+  "homePatternTypeHomeDirectory": "主文件夹中的所有内容",
   "@homePatternTypeHomeDirectory": {},
   "homePatternTypeRequestedFile": "仅请求的文件",
   "@homePatternTypeRequestedFile": {},
