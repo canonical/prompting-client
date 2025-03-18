@@ -40,5 +40,70 @@
   "homePromptPermissionsRead": "Lugemine",
   "@homePromptPermissionsRead": {},
   "homePromptPermissionsWrite": "Kirjutamine",
-  "@homePromptPermissionsWrite": {}
+  "@homePromptPermissionsWrite": {},
+  "promptAccessMoreOptionsTitle": "Luba „{snap}“ paketile ligipääs:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Anna „{snap}“ paketile „{permission}“ õigus asukohas:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Luba",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Luba alati",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "Luba üks kord",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "Keela",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Keela üks kord",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Tegevus",
+  "@promptActionTitle": {},
+  "promptLifespanOptionSession": "Kuni väljalogimiseni",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionForever": "Alatiseks",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSingle": "Vaid üheks korraks",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Kestus",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Salvesta ja jätka",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Andmeturbeteade",
+  "@promptTitle": {},
+  "homePatternInfo": "<Lisateave mustrite kohta>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "Sinu kirjeldatud asukohamuster",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Valid soovitud kaustas",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeHomeDirectory": "Kõik kodukaustas",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeRequestedFile": "Vaid soovitud faili osas",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "Kõik „{topLevelDir}“ kaustas",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "Kõik kaustas",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Kõik kaustas",
+  "@homePatternTypeContainingDirectory": {}
 }
