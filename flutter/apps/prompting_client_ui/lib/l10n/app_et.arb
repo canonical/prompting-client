@@ -1,1 +1,44 @@
-{}
+{
+  "homePromptPermissionsExecute": "Käivitamine",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "Midagi läks valesti",
+  "@homePromptErrorUnknownTitle": {},
+  "securityCenterInfo": "Sa võid alati neid õigusi muuta <Andmeturbekeskuses>",
+  "@securityCenterInfo": {},
+  "homePromptMetaDataTitle": "Selle rakenduse teave",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Avaldaja: {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Viimati uuendatud: {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Lisavalikud...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "Vaata andmeid Rakendustekeskuses",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptSuggestedPermission": "Luba ka „{permission}“ õigused",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Õigused",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "Lugemine",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Kirjutamine",
+  "@homePromptPermissionsWrite": {}
+}
