@@ -14,7 +14,7 @@ struct Args {
 #[tokio::main]
 async fn main() -> Result<()> {
     let Args { record } = Args::parse();
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     c.exit_if_prompting_not_enabled().await?;
 
     run_echo_loop(&mut c, record).await

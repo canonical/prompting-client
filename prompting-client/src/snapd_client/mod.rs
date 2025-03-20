@@ -7,7 +7,8 @@ use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
-use tracing::{debug, error, warn};
+use tokio::net::UnixStream;
+use tracing::{debug, error, info, warn};
 
 pub mod interfaces;
 mod prompt;
@@ -23,6 +24,7 @@ const NOTICE_TYPES: &str = "interfaces-requests-prompt";
 const SNAPD_BASE_URI: &str = "http://localhost/v2";
 const SNAPD_SOCKET: &str = "/run/snapd.socket";
 const SNAPD_SNAP_SOCKET: &str = "/run/snapd-snap.socket";
+const SNAPD_ABSTRACT_SNAP_SOCKET: &str = "\0/snapd/snapd-snap.socket";
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PromptId(pub String);
@@ -93,21 +95,25 @@ where
 
 pub type SnapdSocketClient = SnapdClient<UnixSocketClient>;
 
-impl Default for SnapdSocketClient {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 impl SnapdSocketClient {
-    pub fn new() -> Self {
-        Self::new_with_notices_after(Utc::now())
+    pub async fn new() -> Self {
+        Self::new_with_notices_after(Utc::now()).await
     }
 
-    pub fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
+    pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
         let socket = if env::var("SNAP_NAME").is_ok() {
-            SNAPD_SNAP_SOCKET
+            if UnixStream::connect(SNAPD_ABSTRACT_SNAP_SOCKET)
+                .await
+                .is_ok()
+            {
+                info!("using the abstract snapd snap socket at address: @{SNAPD_ABSTRACT_SNAP_SOCKET}");
+                SNAPD_ABSTRACT_SNAP_SOCKET
+            } else {
+                info!("using the snapd snap socket at address: {SNAPD_SNAP_SOCKET}");
+                SNAPD_SNAP_SOCKET
+            }
         } else {
+            info!("using the snapd socket at address: {SNAPD_SOCKET}");
             SNAPD_SOCKET
         };
 

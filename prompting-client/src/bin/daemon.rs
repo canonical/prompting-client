@@ -19,7 +19,7 @@ async fn main() -> Result<()> {
 
     set_global_default(subscriber).expect("unable to set a global tracing subscriber");
 
-    let c = SnapdSocketClient::default();
+    let c = SnapdSocketClient::new().await;
     c.exit_if_prompting_not_enabled().await?;
 
     // If we can't see a valid X11 or Wayland display then we need to exit 0 and wait for systemd
