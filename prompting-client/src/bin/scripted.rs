@@ -49,7 +49,7 @@ async fn main() -> Result<()> {
         set_global_default(subscriber).expect("unable to set a global tracing subscriber");
     }
 
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     c.exit_if_prompting_not_enabled().await?;
 
     let vars = parse_vars(&var)?;

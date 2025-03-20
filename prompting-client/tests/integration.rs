@@ -107,7 +107,7 @@ macro_rules! expect_single_prompt {
 // Included as a test to help with identifying when the VM hasn't been set up correctly
 #[tokio::test]
 async fn ensure_prompting_is_enabled() -> Result<()> {
-    let c = SnapdSocketClient::default();
+    let c = SnapdSocketClient::new().await;
     assert!(c.is_prompting_enabled().await?, "prompting is not enabled");
 
     Ok(())
@@ -122,7 +122,7 @@ async fn happy_path_read_single(
     expected_stdout: &str,
     expected_stderr: &str,
 ) -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
@@ -153,7 +153,7 @@ async fn happy_path_read_single(
 #[tokio::test]
 #[serial]
 async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let (prefix, dir_path) = setup_test_dir(None, &[])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
@@ -207,7 +207,7 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
     let _ = spawn_for_output("aa-prompting-test.create", vec![prefix.clone()]);
     sleep(Duration::from_millis(400)).await;
 
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
 
     let _rx = spawn_for_output(
         "aa-prompting-test.create-single",
@@ -257,7 +257,7 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
 #[tokio::test]
 #[serial]
 async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
-    let c = SnapdSocketClient::default();
+    let c = SnapdSocketClient::new().await;
     let res = c
         .prompt_details(&PromptId("0123456789ABCDEF".to_string()))
         .await;
@@ -278,7 +278,7 @@ async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
@@ -309,7 +309,7 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
 #[tokio::test]
 #[serial]
 async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &str) -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
@@ -339,7 +339,7 @@ async fn replying_multiple_times_errors(
     expected_stdout: &str,
     expected_stderr: &str,
 ) -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
@@ -384,7 +384,7 @@ async fn replying_multiple_times_errors(
 #[tokio::test]
 #[serial]
 async fn overwriting_a_file_works() -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let (prefix, dir_path) = setup_test_dir(None, &[])?;
 
     let rx = spawn_for_output(
@@ -423,7 +423,7 @@ async fn overwriting_a_file_works() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn scripted_client_works_with_simple_matching() -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_write_test.json");
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
@@ -455,7 +455,7 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_erroring_write_test.json");
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
@@ -488,7 +488,7 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_wrong_path_test.json");
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
@@ -517,7 +517,7 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!(
         "../resources/prompt-sequence-tests/e2e_unexpected_additional_prompt_test.json"
     );
@@ -542,7 +542,7 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
-    let mut c = SnapdSocketClient::default();
+    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!(
         "../resources/prompt-sequence-tests/e2e_unexpected_additional_prompt_test.json"
     );
