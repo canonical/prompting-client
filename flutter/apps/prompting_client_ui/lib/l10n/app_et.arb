@@ -1,1 +1,187 @@
-{}
+{
+  "homePromptPermissionsExecute": "Käivitamine",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "Midagi läks valesti",
+  "@homePromptErrorUnknownTitle": {},
+  "securityCenterInfo": "Sa võid alati neid õigusi muuta <Andmeturbekeskuses>",
+  "@securityCenterInfo": {},
+  "homePromptMetaDataTitle": "Selle rakenduse teave",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Avaldaja: {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Viimati uuendatud: {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Lisavalikud...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "Vaata andmeid Rakendustekeskuses",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptSuggestedPermission": "Luba ka „{permission}“ õigused",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Õigused",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "Lugemine",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Kirjutamine",
+  "@homePromptPermissionsWrite": {},
+  "promptAccessMoreOptionsTitle": "Luba „{snap}“ paketile ligipääs:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Anna „{snap}“ paketile „{permission}“ õigus asukohas:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Luba",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Luba alati",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "Luba üks kord",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "Keela",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Keela üks kord",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Tegevus",
+  "@promptActionTitle": {},
+  "promptLifespanOptionSession": "Kuni väljalogimiseni",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionForever": "Alatiseks",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSingle": "Vaid üheks korraks",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Kestus",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Salvesta ja jätka",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Andmeturbeteade",
+  "@promptTitle": {},
+  "homePatternInfo": "<Lisateave mustrite kohta>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "Sinu kirjeldatud asukohamuster",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Valid soovitud kaustas",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeHomeDirectory": "Kõik kodukaustas",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeRequestedFile": "Vaid soovitud faili osas",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "Kõik „{topLevelDir}“ kaustas",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "Kõik kaustas",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Kõik kaustas",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptDefaultBody": "„{snap}“ pakett soovib „{permissions}“ õigusi asukohas „{path}“",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "„{snap}“ pakett soovib „{permissions}“ õigusi ligipääsuks „{filename}“ failile „{foldername}“ kaustas.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "„{snap}“ pakett soovib „{permissions}“ õigusi sinu kodukaustas.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeMatchingFileExtension": "Kõik {fileExtension}-tüüpi failid",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "„{snap}“ pakett soovib „{permissions}“ õigusi kaustas „{foldername}“.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "„{snap}“ pakett soovib „{permissions}“ õigusi ligipääsuks „{filename}“ failile sinu kodukaustas.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
+}

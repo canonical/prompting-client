@@ -1,4 +1,187 @@
 {
-  "securityCenterInfo": "您可以随时在 <安全中心> 处更改这些权限",
-  "@securityCenterInfo": {}
+  "securityCenterInfo": "您随时可以在 <安全中心> 中更改这些权限",
+  "@securityCenterInfo": {},
+  "homePatternTypeContainingDirectory": "文件夹内的所有内容",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptHomeDirFileBody": "{snap} 想获取对您主文件夹中 {filename} 的 {permissions} 权限。",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeTopLevelDirectory": "{topLevelDir} 文件夹内的所有内容",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} 想获取对 {foldername} 的 {permissions} 权限。",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "promptLifespanOptionSession": "直到注销",
+  "@promptLifespanOptionSession": {},
+  "homePromptTopLevelDirFileBody": "{snap} 想获取对 {foldername} 文件夹中 {filename} 的 {permissions} 权限。",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} 想获取对 {path} 的 {permissions} 权限",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} 想获取对您主文件夹的 {permissions} 访问权限。",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsExecute": "执行",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "出现了一些问题",
+  "@homePromptErrorUnknownTitle": {},
+  "promptActionOptionAllow": "允许",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "总是允许",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "允许一次",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "拒绝",
+  "@promptActionOptionDeny": {},
+  "promptAccessTitle": "为 {snap} 授予 {permission} 权限：",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessMoreOptionsTitle": "将授予 {snap} 的权限应用于：",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionDenyOnce": "拒绝一次",
+  "@promptActionOptionDenyOnce": {},
+  "promptSaveAndContinue": "保存并继续",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "安全性通知",
+  "@promptTitle": {},
+  "homePatternInfo": "<了解路径样式>",
+  "@homePatternInfo": {},
+  "promptLifespanOptionSingle": "仅一次",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanOptionForever": "始终",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanTitle": "时效",
+  "@promptLifespanTitle": {},
+  "promptActionTitle": "动作",
+  "@promptActionTitle": {},
+  "homePatternTypeRequestedDirectoryContents": "文件夹内的所有内容",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeHomeDirectory": "主文件夹中的所有内容",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeRequestedFile": "仅请求的文件",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeCustomPath": "自定义路径",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "仅请求的文件夹",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePromptMetaDataPublishedBy": "由 {publisher} 发行",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeMatchingFileExtension": "所有 {fileExtension} 文件",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "关于此应用",
+  "@homePromptMetaDataTitle": {},
+  "homePromptSuggestedPermission": "同时授予 {permission} 权限",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "更多选项…",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptPermissionsTitle": "权限",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsWrite": "写入",
+  "@homePromptPermissionsWrite": {},
+  "homePromptMetaDataLastUpdated": "最后更新日期为 {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsRead": "读取",
+  "@homePromptPermissionsRead": {},
+  "homePromptMetaDataAppCenterLink": "访问应用中心页面",
+  "@homePromptMetaDataAppCenterLink": {}
 }
