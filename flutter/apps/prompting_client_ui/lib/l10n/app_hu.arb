@@ -125,5 +125,77 @@
   "homePromptMetaDataAppCenterLink": "Az alkalmazásközpont oldalának meglátogatása",
   "@homePromptMetaDataAppCenterLink": {},
   "homePromptPermissionsTitle": "Jogosultságok",
-  "@homePromptPermissionsTitle": {}
+  "@homePromptPermissionsTitle": {},
+  "homePromptErrorUnknownTitle": "Valami tönkre ment",
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptDefaultBody": "A(z) {snap} snap-csomag {permissions} hozzáférést szeretne kérni a(z) {path} útvonalra",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "A(z) {snap} snap-csomag {permissions} hozzáférést szeretne kérni a(z) {foldername} mappára.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "A(z) {snap} snap-csomag {permissions} hozzáférést szeretne kérni a(z) {foldername} mappában lévő {filename} fájlra.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "A(z) {snap} snap-csomag {permissions} hozzáférést szeretne kérni az Ön saját mappájára.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "A(z) {snap} snap-csomag {permissions} hozzáférést szeretne kérni az Ön saját mappájában lévő {filename} fájlra.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
 }

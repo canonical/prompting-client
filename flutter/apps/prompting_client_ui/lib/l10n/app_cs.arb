@@ -49,11 +49,11 @@
       }
     }
   },
-  "homePromptMoreOptionsLabel": "Více možností...",
+  "homePromptMoreOptionsLabel": "Více možností…",
   "@homePromptMoreOptionsLabel": {},
   "homePromptMetaDataAppCenterLink": "Navštivte stránku Centra aplikací",
   "@homePromptMetaDataAppCenterLink": {},
-  "promptActionTitle": "Akce",
+  "promptActionTitle": "Činnost",
   "@promptActionTitle": {},
   "promptAccessTitle": "Poskytnout {snap} {permission} přístup k:",
   "@promptAccessTitle": {
