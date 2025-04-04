@@ -31,17 +31,17 @@ jobs:
       - run: melos coverage
       - run: melos build
       - run: |
-          mkdir .coverage
+          mkdir coverage
           pushd flutter/packages/prompting_client
           cobertura convert
           sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
-          mv coverage/cobertura.xml ../../../.coverage/prompting_client.xml
+          mv coverage/cobertura.xml ../../../coverage/prompting_client.xml
           popd
 
           pushd flutter/apps/prompting_client_ui
           cobertura convert
           sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
-          mv coverage/cobertura.xml ../../../.coverage/prompting_client_ui.xml
+          mv coverage/cobertura.xml ../../../coverage/prompting_client_ui.xml
           popd
 
       - name: Run TICS analysis
