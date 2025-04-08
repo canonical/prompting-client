@@ -1,1 +1,187 @@
-{}
+{
+  "homePromptHomeDirBody": "{snap} wil {permissions} toegang krijgen tot jouw thuismap.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "securityCenterInfo": "Je kunt deze machtigingen altijd wijzigen in het <Beveiligingscentrum>",
+  "@securityCenterInfo": {},
+  "promptAccessTitle": "Geef {snap} {permission} toegang tot:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} wil {permissions} toegang krijgen tot {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsRead": "Lezen",
+  "@homePromptPermissionsRead": {},
+  "homePromptTopLevelDirBody": "{snap} wil {permissions} toegang krijgen tot de map {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} wil {permissions} toegang krijgen tot {filename} in de map {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} wil {permissions} toegang krijgen tot {filename} in jouw thuismap.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsTitle": "Machtigingen",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsWrite": "Schrijven",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Uitvoeren",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "Er is iets misgegaan",
+  "@homePromptErrorUnknownTitle": {},
+  "promptAccessMoreOptionsTitle": "Toegang voor {snap} instellen op:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Toestaan",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Altijd toestaan",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "Eenmaal toestaan",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "Weigeren",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Eenmaal weigeren",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Actie",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Altijd",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Tot afmelding",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Eenmaal",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Duur",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Opslaan en verdergaan",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Beveiligingsmededeling",
+  "@promptTitle": {},
+  "homePatternInfo": "<Meer informatie over padpatronen>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "Aangepast padpatroon",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "Alleen de gevraagde map",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Alleen het gevraagde bestand",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "Alles in de map {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "Alles in de map",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "Alles in de map",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Alles in de thuismap",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-bestanden",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataPublishedBy": "Uitgegeven door {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Laatst bijgewerkt op {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Meer opties…",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataTitle": "Over deze app",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataAppCenterLink": "Pagina met App-centrale bezoeken",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptSuggestedPermission": "Geef ook {permission} toegang",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  }
+}

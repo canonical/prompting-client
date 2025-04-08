@@ -184,8 +184,18 @@
   "@homePatternTypeHomeDirectory": {},
   "securityCenterInfo": "您可以隨時在<安全中心>中變更這些權限",
   "@securityCenterInfo": {},
-  "promptActionTitle": "執行",
+  "promptActionTitle": "動作",
   "@promptActionTitle": {},
   "promptLifespanOptionSingle": "一次",
-  "@promptLifespanOptionSingle": {}
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "持續時間",
+  "@promptLifespanTitle": {},
+  "homePatternInfo": "<了解路徑樣式>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "自訂路徑樣式",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "僅請求的資料夾",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "僅請求的檔案",
+  "@homePatternTypeRequestedFile": {}
 }

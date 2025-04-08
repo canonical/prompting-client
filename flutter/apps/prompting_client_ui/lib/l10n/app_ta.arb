@@ -1,1 +1,187 @@
-{}
+{
+  "homePatternTypeTopLevelDirectory": "{topLevelDir} கோப்புறையில் உள்ள அனைத்தும்",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "கோப்புறையில் உள்ள அனைத்தும்",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "கோப்புறையில் உள்ள அனைத்தும்",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "வீட்டு கோப்புறையில் உள்ள அனைத்தும்",
+  "@homePatternTypeHomeDirectory": {},
+  "homePatternTypeMatchingFileExtension": "அனைத்து {fileExtension} கோப்புகள்",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} {permissions} க்கு {filename} அணுகல் {foldername} கோப்புறையில் பெற விரும்புகிறது.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap} wants to get {permissions} access to {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} {permissions} அணுகல் {foldername} கோப்புறையைப் பெற விரும்புகிறது.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} உங்கள் வீட்டு கோப்புறையில் {permissions} அணுகலைப் பெற விரும்புகிறது.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to {filename} in your Home folder.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "இந்த பயன்பாடு பற்றி",
+  "@homePromptMetaDataTitle": {},
+  "homePromptPermissionsTitle": "அனுமதிகள்",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "படிக்க",
+  "@homePromptPermissionsRead": {},
+  "securityCenterInfo": "இந்த அனுமதிகளை நீங்கள் எப்போதும் <பாதுகாப்பு மையம்> இல் மாற்றலாம்",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "{snap} க்கு அணுகலை அமைக்கவும்:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "{snap} {permission} அணுகல் கொடுங்கள்:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "இசைவு",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "எப்போதும் அனுமதிக்கவும்",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "ஒரு முறை அனுமதிக்கவும்",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "மறுக்கவும்",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "ஒரு முறை மறுக்கவும்",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "செயல்",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "எப்போதும்",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "வெளியேறும் வரை",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "ஒருமுறை",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "காலம்",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "சேமித்து தொடரவும்",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "பாதுகாப்பு அறிவிப்பு",
+  "@promptTitle": {},
+  "homePatternInfo": "<பாதை வடிவங்களைப் பற்றி அறிந்து கொள்ளுங்கள்>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "தனிப்பயன் பாதை முறை",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "கோரப்பட்ட கோப்புறை மட்டுமே",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "கோரப்பட்ட கோப்பு மட்டுமே",
+  "@homePatternTypeRequestedFile": {},
+  "homePromptMoreOptionsLabel": "மேலும் விருப்பங்கள் ...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "பயன்பாட்டு மையப் பக்கத்தைப் பார்வையிடவும்",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptSuggestedPermission": "{permission} அணுகலையும் கொடுங்கள்",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataPublishedBy": "{publisher} ஆல் வெளியிடப்பட்டது",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "கடைசியாக {date} இல் புதுப்பிக்கப்பட்டது",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsWrite": "எழுதுங்கள்",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "செயல்படுத்தவும்",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "ஏதோ தவறு நடந்தது",
+  "@homePromptErrorUnknownTitle": {}
+}

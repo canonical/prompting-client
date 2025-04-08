@@ -115,5 +115,36 @@
         "type": "String"
       }
     }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} haluaa saada {permissions} pääsyn kohteeseen {filename} kohteessa {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} haluaa saada {permissions} pääsyn kohteeseen {filename} kotikansiossasi.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
   }
 }

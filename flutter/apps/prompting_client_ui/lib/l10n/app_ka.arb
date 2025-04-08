@@ -22,5 +22,166 @@
   "homePromptPermissionsRead": "წაკითხვა",
   "@homePromptPermissionsRead": {},
   "promptLifespanOptionSingle": "ერთხელ",
-  "@promptLifespanOptionSingle": {}
+  "@promptLifespanOptionSingle": {},
+  "homePatternTypeMatchingFileExtension": "ყველა {fileExtension} ფაილი",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap}-ს სჭირდება {permissions} წვდომა ფაილთან {filename} თქვენს საწყის საქაღალდეში.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptDefaultBody": "{snap}-ს სჭირდება {permissions} წვდომა ბილიკთან {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap}-ს სჭირდება {permissions} წვდომა საქაღალდესთან {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap}-ს სჭირდება წვდომა {permissions} ფაილტან {filename} საქაღალდეში {foldername}.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap}-ს სჭირდება წვდომა {permissions} თქვენს საწყის საქაღალდესთან.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "securityCenterInfo": "ამ წვდომების შეცვლა ყოველთვის შეგიძლიათ <უსაფრთხოების ცენტრიდან>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "წვდომები {snap}-სთვის:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "{snap}-სთვის {permission}-ის მინიჭება:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowOnce": "ერთხელ დაშვება",
+  "@promptActionOptionAllowOnce": {},
+  "promptLifespanOptionSession": "სისტემიდან გასვლამდე",
+  "@promptLifespanOptionSession": {},
+  "promptSaveAndContinue": "შენახვა და გაგრძელება",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "უსაფრთხოების გაფრთხილება",
+  "@promptTitle": {},
+  "homePatternInfo": "<გაიგეთ მეტი ბილიკის ნიმუშების შესახებ>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "მორგებული ბილიკის ნიმუში",
+  "@homePatternTypeCustomPath": {},
+  "homePatternTypeRequestedDirectory": "მხოლოდ მოთხოვნილი საქაღალდე",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "მხოლოდ მოთხოვნილი ფაილი",
+  "@homePatternTypeRequestedFile": {},
+  "homePatternTypeTopLevelDirectory": "ყველაფერი საქაღალდეში {topLevelDir}",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectoryContents": "ყველაფერი საქაღალდეში",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePatternTypeContainingDirectory": "ყველაფერი საქაღალდეში",
+  "@homePatternTypeContainingDirectory": {},
+  "homePromptMetaDataLastUpdated": "ბოლო განახლების დრო: {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeHomeDirectory": "ყველაფერი საწყის საქაღალდეში",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptMetaDataTitle": "ამ აპის შესახებ",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "გამომცემელი: {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "მეტი პარამეტრი...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "აპების ცენტრის გვერდზე გადასვლა",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptSuggestedPermission": "ასევე მიეცემა წვდომა {permission}",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptErrorUnknownTitle": "რაღაც არასწორია",
+  "@homePromptErrorUnknownTitle": {}
 }
