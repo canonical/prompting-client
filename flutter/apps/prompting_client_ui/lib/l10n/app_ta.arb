@@ -38,7 +38,7 @@
       }
     }
   },
-  "homePromptDefaultBody": "{snap} {permissions} அணுகல் {பாதைக்கு அணுகல் விரும்புகிறது",
+  "homePromptDefaultBody": "{snap} wants to get {permissions} access to {path}",
   "@homePromptDefaultBody": {
     "placeholders": {
       "snap": {
@@ -77,7 +77,7 @@
       }
     }
   },
-  "homePromptHomeDirFileBody": "{snap} உங்கள் வீட்டுக் கோப்புறையில் {கோப்பு பெயருக்கு {permissions} அணுகலைப் பெற விரும்புகிறது.",
+  "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to {filename} in your Home folder.",
   "@homePromptHomeDirFileBody": {
     "placeholders": {
       "snap": {
