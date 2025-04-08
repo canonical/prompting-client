@@ -647,7 +647,7 @@ impl<'a> CategorisedPath<'a> {
     }
 
     fn get_file_name(&self) -> String {
-        let file: PathBuf = self.path.iter().last().into_iter().collect();
+        let file: PathBuf = self.path.iter().next_back().into_iter().collect();
         file.to_string_lossy().into_owned().to_string()
     }
 }
