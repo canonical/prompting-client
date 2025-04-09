@@ -35,13 +35,19 @@ jobs:
           pushd flutter/packages/prompting_client
           cobertura convert
           sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
+          sed -i "s|lib/|$(pwd)/lib/|g" coverage/cobertura.xml
+          sed -i "s|lib/|$(pwd)/lib/|g" coverage/lcov.info
           mv coverage/cobertura.xml ../../../coverage/prompting_client.xml
+          mv coverage/lcov.info ../../../coverage/prompting_client.info
           popd
 
           pushd flutter/apps/prompting_client_ui
           cobertura convert
           sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
+          sed -i "s|lib/|$(pwd)/lib/|g" coverage/cobertura.xml
+          sed -i "s|lib/|$(pwd)/lib/|g" coverage/lcov.info
           mv coverage/cobertura.xml ../../../coverage/prompting_client_ui.xml
+          mv coverage/lcov.info ../../../coverage/prompting_client_ui.info
           popd
 
       - name: Run TICS analysis
