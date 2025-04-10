@@ -25,7 +25,6 @@ jobs:
       - uses: bluefireteam/melos-action@v3
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y protobuf-compiler lcov clang cmake curl libgtk-3-dev ninja-build pkg-config unzip libglib2.0-dev liblzma-dev
-      - run: dart pub global activate cobertura
       - run: melos generate
       - run: melos gen-l10n
       - run: melos coverage
@@ -33,20 +32,12 @@ jobs:
       - run: |
           mkdir coverage
           pushd flutter/packages/prompting_client
-          cobertura convert
-          sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
-          sed -i "s|lib/|$(pwd)/lib/|g" coverage/cobertura.xml
           sed -i "s|lib/|$(pwd)/lib/|g" coverage/lcov.info
-          mv coverage/cobertura.xml ../../../coverage/prompting_client.xml
           mv coverage/lcov.info ../../../coverage/prompting_client.info
           popd
 
           pushd flutter/apps/prompting_client_ui
-          cobertura convert
-          sed -i 's/branches-covered/decisions-covered/g' coverage/cobertura.xml
-          sed -i "s|lib/|$(pwd)/lib/|g" coverage/cobertura.xml
           sed -i "s|lib/|$(pwd)/lib/|g" coverage/lcov.info
-          mv coverage/cobertura.xml ../../../coverage/prompting_client_ui.xml
           mv coverage/lcov.info ../../../coverage/prompting_client_ui.info
           popd
 
