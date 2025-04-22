@@ -153,5 +153,31 @@
     }
   },
   "homePromptMetaDataTitle": "Σχετικά με την εφαρμογή",
-  "@homePromptMetaDataTitle": {}
+  "@homePromptMetaDataTitle": {},
+  "promptAccessMoreOptionsTitle": "Δώστε πρόσβαση στο {snap}:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectory": "Ο ζητούμενος φάκελος μόνο",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Το ζητούμενο αρχείο μόνο",
+  "@homePatternTypeRequestedFile": {},
+  "homePromptHomeDirFileBody": "Το {snap} θέλει να πάρει άδεια για έχει πρόσβαση στο {filename} μέσα στον Αρχικό φάκελο.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
 }
