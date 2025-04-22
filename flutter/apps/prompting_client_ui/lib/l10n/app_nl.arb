@@ -1,5 +1,5 @@
 {
-  "homePromptHomeDirBody": "{snap} wil {permissions} toegang krijgen tot jouw thuismap.",
+  "homePromptHomeDirBody": "{snap} wil {permissions} toegang krijgen tot uw thuismap.",
   "@homePromptHomeDirBody": {
     "placeholders": {
       "snap": {
@@ -70,7 +70,7 @@
       }
     }
   },
-  "homePromptHomeDirFileBody": "{snap} wil {permissions} toegang krijgen tot {filename} in jouw thuismap.",
+  "homePromptHomeDirFileBody": "{snap} wil {permissions} toegang krijgen tot {filename} in uw thuismap.",
   "@homePromptHomeDirFileBody": {
     "placeholders": {
       "snap": {
