@@ -13,6 +13,8 @@ dependencies:
   collection: ^1.18.0
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_markdown: ^0.7.3
   flutter_riverpod: ^2.5.1
   freezed_annotation: ^2.4.1
@@ -45,4 +47,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  generate: true
