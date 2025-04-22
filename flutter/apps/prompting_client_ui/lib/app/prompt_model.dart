@@ -6,5 +6,4 @@ import 'package:ubuntu_service/ubuntu_service.dart';
 part 'prompt_model.g.dart';
 
 @riverpod
-PromptDetails currentPrompt(Ref ref) =>
-    getService<PromptDetails>();
+PromptDetails currentPrompt(Ref ref) => getService<PromptDetails>();
