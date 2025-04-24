@@ -7,7 +7,7 @@ use crate::{
 use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use std::{collections::HashMap, env, str::FromStr};
+use std::{collections::HashMap, env, fmt::Debug, str::FromStr};
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
 
@@ -111,6 +111,16 @@ impl SnapdSocketClient {
     }
 
     pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
+        #[cfg(feature = "time_debugging")]
+        {
+            use std::time::SystemTime;
+
+            let id: PromptId = PromptId("snapd".to_string());
+            let now = SystemTime::now()
+                .duration_since(SystemTime::UNIX_EPOCH)
+                .unwrap();
+            info!(?id, ?now, "pulling prompt details from snapd");
+        }
         // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
         // the `socket` variable is not used in all code paths, which would otherwise cause a warning.
         #[allow(unused_variables)]
@@ -228,18 +238,44 @@ where
 
     /// Pull details for all pending prompts from snapd
     pub async fn all_pending_prompt_details(&self) -> Result<Vec<TypedPrompt>> {
+        #[cfg(feature = "time_debugging")]
+        debug!(
+            "PROMPTING: before getting all raw prompts from snapd @ {:?}",
+            std::time::Instant::now()
+        );
+
         let raw_prompts: Vec<RawPrompt> =
             self.client.get_json("interfaces/requests/prompts").await?;
+
+        #[cfg(feature = "time_debugging")]
+        debug!(
+            "PROMPTING: after getting all raw prompts from snapd @ {:?}",
+            std::time::Instant::now()
+        );
 
         raw_prompts.into_iter().map(|p| p.try_into()).collect()
     }
 
     /// Pull details for a specific prompt from snapd
     pub async fn prompt_details(&self, id: &PromptId) -> Result<TypedPrompt> {
+        #[cfg(feature = "time_debugging")]
+        debug!(
+            ?id,
+            "PROMPTING: before pulling prompt details from snapd @ {:?}",
+            std::time::Instant::now()
+        );
+
         let prompt: RawPrompt = self
             .client
             .get_json(&format!("interfaces/requests/prompts/{}", id.0))
             .await?;
+
+        #[cfg(feature = "time_debugging")]
+        debug!(
+            ?id,
+            "PROMPTING: after pulling prompt details from snapd @ {:?}",
+            std::time::Instant::now()
+        );
 
         prompt.try_into()
     }
@@ -250,10 +286,24 @@ where
         id: &PromptId,
         reply: TypedPromptReply,
     ) -> Result<Vec<PromptId>> {
+        #[cfg(feature = "time_debugging")]
+        debug!(
+            ?id,
+            "PROMPTING: before replying to snapd @ {:?}",
+            std::time::Instant::now()
+        );
+
         let resp: Option<Vec<PromptId>> = self
             .client
             .post_json(&format!("interfaces/requests/prompts/{}", id.0), reply)
             .await?;
+
+        #[cfg(feature = "time_debugging")]
+        debug!(
+            ?id,
+            "PROMPTING: after replying to snapd @ {:?}",
+            std::time::Instant::now()
+        );
 
         debug!(prompt = id.0, ?resp, "response from snapd");
 

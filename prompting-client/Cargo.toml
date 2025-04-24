@@ -4,12 +4,14 @@ version = "0.1.0"
 edition = "2021"
 default-run = "prompting-client-echo"
 
-[features]
-dry-run = []
-
 [profile.release]
 strip = true
 lto = true
+
+[features]
+dry-run = []
+time_debugging = []
+auto_answer = ["time_debugging"]
 
 [[bin]]
 name = "prompting-client-scripted"
