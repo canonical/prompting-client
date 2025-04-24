@@ -8,6 +8,10 @@ default-run = "prompting-client-echo"
 strip = true
 lto = true
 
+[features]
+time_debugging = []
+auto_answer = ["time_debugging"]
+
 [[bin]]
 name = "prompting-client-scripted"
 path = "src/bin/scripted.rs"
