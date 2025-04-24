@@ -179,6 +179,18 @@ impl TypedPrompt {
         }
     }
 
+    pub fn into_allow_once(self) -> TypedPromptReply {
+        match self {
+            Self::Home(p) => HomeInterface::prompt_to_reply(p, Action::Allow).into(),
+        }
+    }
+
+    pub fn into_allow_forever(self) -> TypedPromptReply {
+        match self {
+            Self::Home(p) => HomeInterface::prompt_to_reply(p, Action::Allow).for_forever().into(),
+        }
+    }
+
     pub fn id(&self) -> &PromptId {
         match self {
             Self::Home(p) => &p.id,
