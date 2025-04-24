@@ -1,10 +1,14 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
+#![cfg_attr(feature = "auto_reply", allow(unreachable_code))]
+
 use crate::{
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
     snapd_client::{Cgroup, PromptId, SnapdSocketClient, TypedUiInput},
     Result,
 };
 use futures::{stream::FuturesUnordered, FutureExt};
+#[cfg(feature = "auto_reply")]
+use std::sync::OnceLock;
 use std::{
     collections::{HashMap, VecDeque},
     env,
@@ -343,6 +347,28 @@ where
                 .clone()
         };
         let expected_id = enriched_prompt.prompt.id().clone();
+
+        #[cfg(feature = "auto_reply")]
+        {
+            static REPLY: OnceLock<String> = OnceLock::new();
+
+            let reply = REPLY.get_or_init(|| {
+                let env_var = env::var("PROMPTING_CLIENT_AUTO_REPLY")
+                    .unwrap_or_else(|_| "DENY_ONCE".to_string());
+                debug!("PROMPTING: auto_reply env value: {:?}", env_var);
+
+                env_var
+            });
+
+            let reply = match reply.as_str() {
+                "ALLOW_ONCE" => enriched_prompt.prompt.into_allow_once(),
+                "ALLOW_FOREVER" => enriched_prompt.prompt.into_allow_forever(),
+                _ => enriched_prompt.prompt.into_deny_once(),
+            };
+            self.client.reply(&expected_id, reply).await?;
+
+            return Ok(());
+        }
 
         loop {
             match self.wait_for_expected_prompt(&expected_id).await {

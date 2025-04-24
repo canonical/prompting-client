@@ -11,7 +11,7 @@ lto = true
 [features]
 dry-run = []
 time_debugging = []
-auto_answer = ["time_debugging"]
+auto_reply = ["time_debugging"]
 
 [[bin]]
 name = "prompting-client-scripted"
