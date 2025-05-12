@@ -146,5 +146,56 @@
         "type": "String"
       }
     }
-  }
+  },
+  "homePromptDefaultBody": "{snap} haluaa oikeudet {permissions} kohteeseen {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptErrorUnknownTitle": "Tapahtui virhe",
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptTopLevelDirBody": "{snap} haluaa oikeudet {permissions} kansioon {foldername}.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} haluaa oikeudet {permissions} kotikansioon.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessMoreOptionsTitle": "Aseta snap-paketin {snap} käyttöoikeuksiksi:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternInfo": "<Opi polkukaavoista>",
+  "@homePatternInfo": {}
 }
