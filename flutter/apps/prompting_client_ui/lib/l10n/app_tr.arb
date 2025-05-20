@@ -1,1 +1,24 @@
-{}
+{
+  "promptActionOptionAllowAlways": "Her zaman izin ver",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "Bir kez izin ver",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionAllow": "İzin ver",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionDeny": "Reddet",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Bir kez reddet",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Aksiyon",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Her zaman",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSingle": "Bir kez",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Süre",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Kaydet ve devam et",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Güvenlik bildirimleri",
+  "@promptTitle": {}
+}
