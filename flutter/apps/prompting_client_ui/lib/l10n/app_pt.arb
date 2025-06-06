@@ -1,4 +1,12 @@
 {
   "securityCenterInfo": "Você sempre pode alterar essas permissões na <Central de Segurança>",
-  "@securityCenterInfo": {}
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "Defina o acesso de {snap} para:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  }
 }
