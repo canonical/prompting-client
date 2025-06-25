@@ -9,6 +9,7 @@ issues: https://github.com/canonical/prompting-client/issues
 license: GPL-3.0
 grade: stable
 confinement: strict
+icon: snap/gui/prompting-client.png
 
 apps:
   scripted:
