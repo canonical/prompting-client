@@ -128,7 +128,7 @@
   },
   "homePromptErrorUnknownTitle": "Что-то пошло не так",
   "@homePromptErrorUnknownTitle": {},
-  "homePromptTopLevelDirBody": "{snap} запрашивает разрешение {permissions} на доступ к папке {foldername}.",
+  "homePromptTopLevelDirBody": "{snap} запрашивает разрешение на {permissions} папки {foldername}.",
   "@homePromptTopLevelDirBody": {
     "placeholders": {
       "snap": {
@@ -142,7 +142,7 @@
       }
     }
   },
-  "homePromptTopLevelDirFileBody": "{snap} запрашивает разрешение {permissions} на доступ к {filename} в папке {foldername}.",
+  "homePromptTopLevelDirFileBody": "{snap} запрашивает разрешение на {permissions} файла {filename} в папке {foldername}.",
   "@homePromptTopLevelDirFileBody": {
     "placeholders": {
       "snap": {
@@ -159,7 +159,7 @@
       }
     }
   },
-  "homePromptDefaultBody": "{snap} запрашивает разрешение {permissions} на доступ к {path}",
+  "homePromptDefaultBody": "{snap} запрашивает разрешение на {permissions} по пути {path}",
   "@homePromptDefaultBody": {
     "placeholders": {
       "snap": {
@@ -173,7 +173,7 @@
       }
     }
   },
-  "homePromptHomeDirBody": "{snap} запрашивает разрешение {permissions} на доступ к вашей «Домашней папке».",
+  "homePromptHomeDirBody": "{snap} запрашивает разрешение на {permissions} в вашей «Домашней папке».",
   "@homePromptHomeDirBody": {
     "placeholders": {
       "snap": {
@@ -184,7 +184,7 @@
       }
     }
   },
-  "homePromptHomeDirFileBody": "{snap} запрашивает разрешение {permissions} на доступ к файлу {filename}, расположенному в вашей домашней папке.",
+  "homePromptHomeDirFileBody": "{snap} запрашивает разрешение на {permissions} файла {filename}, расположенного в вашей «Домашней папке».",
   "@homePromptHomeDirFileBody": {
     "placeholders": {
       "snap": {
