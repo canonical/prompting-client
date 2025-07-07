@@ -326,8 +326,7 @@ mod tests {
             reply: TypedPromptReply,
         ) -> crate::Result<Vec<PromptId>> {
             if self.want_err {
-                return Err(Error::Io(io::Error::new(
-                    io::ErrorKind::Other,
+                return Err(Error::Io(io::Error::other(
                     "error requested of mock snapd client",
                 )));
             }

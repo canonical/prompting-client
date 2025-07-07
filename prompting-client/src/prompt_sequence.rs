@@ -296,7 +296,7 @@ mod tests {
     fn simple_serialize_works(path: &str, data: &str) {
         let res = serde_json::from_str::<'_, PromptFilter<HomeInterface>>(data);
 
-        assert!(res.is_ok(), "error parsing {path}: {:?}", res);
+        assert!(res.is_ok(), "error parsing {path}: {res:?}");
     }
 
     #[test]
@@ -304,7 +304,7 @@ mod tests {
         let data = include_str!("../resources/filter-serialize-tests/all_fields_home.json");
         let res = serde_json::from_str::<'_, PromptFilter<HomeInterface>>(data);
 
-        assert!(res.is_ok(), "error {:?}", res);
+        assert!(res.is_ok(), "error {res:?}");
 
         match res.unwrap() {
             PromptFilter {
@@ -407,6 +407,6 @@ mod tests {
     fn deserialize_prompt_sequence_works(path: &str, data: &str) {
         let res = PromptSequence::try_new_from_string(data, &[("BASE_PATH", "/home/foo")]);
 
-        assert!(res.is_ok(), "error parsing {path}: {:?}", res);
+        assert!(res.is_ok(), "error parsing {path}: {res:?}");
     }
 }

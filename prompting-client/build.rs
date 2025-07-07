@@ -3,7 +3,7 @@ use std::env;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = env::current_dir()?;
 
-    println!("Current directory: {:?}", current_dir);
+    println!("Current directory: {current_dir:?}");
 
     std::fs::create_dir_all("./src/protos")?;
 

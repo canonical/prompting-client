@@ -335,7 +335,7 @@ mod tests {
     #[dir_cases("resources/response-parsing-tests")]
     #[test]
     fn response_parsing_sanity_check(full_path: &str, contents: &str) {
-        let path = full_path.split('/').last().unwrap();
+        let path = full_path.split('/').next_back().unwrap();
 
         let parsed: SnapdResponse<String> = serde_json::from_str(contents).unwrap();
         let (_, err) = parsed.result.unwrap_err();
