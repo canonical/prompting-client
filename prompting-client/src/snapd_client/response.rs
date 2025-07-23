@@ -377,6 +377,7 @@ mod tests {
     "id": "00000000000000BE",
     "interface": "home",
     "snap": "aa-prompting-test",
+    "pid": 1234,
     "timestamp": "2024-08-15T13:28:17.077016791Z"
   },
   "status": "OK",
@@ -393,6 +394,7 @@ mod tests {
             id: PromptId("00000000000000BE".to_string()),
             timestamp: "2024-08-15T13:28:17.077016791Z".to_string(),
             snap: "aa-prompting-test".to_string(),
+            pid: 1234,
             interface: "home".to_string(),
             constraints: serde_json::json!({
                 "available-permissions": vec!["read", "write", "execute"],

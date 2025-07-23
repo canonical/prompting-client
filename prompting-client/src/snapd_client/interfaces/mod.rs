@@ -190,6 +190,12 @@ impl TypedPrompt {
             Self::Home(p) => &p.snap,
         }
     }
+
+    pub fn pid(&self) -> i64 {
+        match self {
+            Self::Home(p) => p.pid,
+        }
+    }
 }
 
 impl TryFrom<RawPrompt> for TypedPrompt {

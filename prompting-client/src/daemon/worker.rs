@@ -323,6 +323,7 @@ mod tests {
                 id: PromptId(id.to_string()),
                 timestamp: String::new(),
                 snap: "test".to_string(),
+                pid: 1234,
                 interface: "home".to_string(),
                 constraints: HomeConstraints::default(),
             }),
