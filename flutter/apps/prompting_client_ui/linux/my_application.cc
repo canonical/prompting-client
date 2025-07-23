@@ -1,7 +1,9 @@
 #include "my_application.h"
 
+#include <gdk/gdk.h>
 #include <glib.h>
 #include <flutter_linux/flutter_linux.h>
+#include <gtk/gtk.h>
 #include <unistd.h>
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
@@ -125,6 +127,14 @@ static void my_application_activate(GApplication* application) {
 
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
+
+  GdkWindow* gdk_window = gtk_widget_get_window(GTK_WIDGET(window));
+  if (gdk_window == NULL) {
+    g_warning("Failed to get gdk_window for setting skip flags.");
+  } else {
+    gdk_window_set_skip_taskbar_hint(gdk_window, TRUE);
+    gdk_window_set_skip_pager_hint(gdk_window, TRUE);
+  }
 
   gtk_widget_grab_focus(GTK_WIDGET(view));
 }
