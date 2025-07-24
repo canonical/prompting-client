@@ -20,8 +20,10 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
 // Signal the Shell about a permission prompting is in progress.
 void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
+
   // Ensure we are running in the ubuntu session which should have our extension.
-  if (!g_str_equal(g_environ_getenv(g_get_environ(), "GNOME_SHELL_SESSION_MODE"), "ubuntu")) {
+  const char* session_mode = g_environ_getenv(g_get_environ(), "GNOME_SHELL_SESSION_MODE");
+  if (session_mode == NULL || !g_str_equal(session_mode, "ubuntu")) {
     return;
   }
 
