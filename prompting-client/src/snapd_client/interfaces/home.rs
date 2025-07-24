@@ -674,6 +674,7 @@ mod tests {
       "id": "C7OUCCDWCE6CC===",
       "timestamp": "2024-06-28T19:15:37.321782305Z",
       "snap": "firefox",
+      "pid": 1234,
       "interface": "home",
       "constraints": {
         "path": "/home/ubuntu/Downloads/",

@@ -52,7 +52,7 @@ impl ReadOnlyActivePrompt {
 }
 
 pub trait SpawnUi {
-    async fn spawn(&mut self) -> Result<()>;
+    async fn spawn(&mut self, args: &[&str]) -> Result<()>;
 }
 
 pub struct FlutterUi {
@@ -60,8 +60,8 @@ pub struct FlutterUi {
 }
 
 impl SpawnUi for FlutterUi {
-    async fn spawn(&mut self) -> Result<()> {
-        Command::new(&self.cmd).spawn()?.wait().await?;
+    async fn spawn(&mut self, args: &[&str]) -> Result<()> {
+        Command::new(&self.cmd).args(args).spawn()?.wait().await?;
 
         Ok(())
     }
@@ -195,7 +195,9 @@ where
 
         // FIXME: the UI closing without replying or actioning multiple prompts gets tricky (when can we spawn the next UI?)
         debug!("spawning UI");
-        self.ui.spawn().await?;
+        self.ui
+            .spawn(&[prompt.snap(), &prompt.pid().to_string()])
+            .await?;
 
         loop {
             match self.wait_for_expected_prompt(&expected_id).await {
@@ -323,6 +325,7 @@ mod tests {
                 id: PromptId(id.to_string()),
                 timestamp: String::new(),
                 snap: "test".to_string(),
+                pid: 1234,
                 interface: "home".to_string(),
                 constraints: HomeConstraints::default(),
             }),
@@ -555,7 +558,7 @@ mod tests {
     }
 
     impl SpawnUi for TestUi {
-        async fn spawn(&mut self) -> Result<()> {
+        async fn spawn(&mut self, _: &[&str]) -> Result<()> {
             let Reply {
                 active_prompt,
                 sleep_ms,
@@ -644,7 +647,7 @@ mod tests {
     struct StubUi;
 
     impl SpawnUi for StubUi {
-        async fn spawn(&mut self) -> Result<()> {
+        async fn spawn(&mut self, _: &[&str]) -> Result<()> {
             Ok(())
         }
     }

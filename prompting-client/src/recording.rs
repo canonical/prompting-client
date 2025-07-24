@@ -141,6 +141,7 @@ mod tests {
         "id": "C7PLOQW54HGFM===",
         "timestamp": "2024-07-03T13:33:25.52039535Z",
         "snap": "prompting-client",
+        "pid": 1234,
         "interface": "home",
         "constraints": {
           "path": "/home/ubuntu/test.json",

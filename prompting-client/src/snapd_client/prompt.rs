@@ -29,6 +29,7 @@ pub struct RawPrompt {
     pub(crate) id: PromptId,
     pub(crate) timestamp: String,
     pub(crate) snap: String,
+    pub(crate) pid: i64,
     pub(crate) interface: String,
     pub(crate) constraints: serde_json::Value,
 }
@@ -43,6 +44,7 @@ where
     pub(crate) id: PromptId,
     pub(crate) timestamp: String,
     pub(crate) snap: String,
+    pub(crate) pid: i64,
     pub(crate) interface: String,
     pub(crate) constraints: I::Constraints,
 }
@@ -57,6 +59,10 @@ where
 
     pub fn snap(&self) -> &str {
         &self.snap
+    }
+
+    pub fn pid(&self) -> i64 {
+        self.pid
     }
 
     pub fn timestamp(&self) -> &str {
@@ -80,6 +86,7 @@ where
             id,
             timestamp,
             snap,
+            pid,
             interface,
             constraints,
         }: RawPrompt,
@@ -94,6 +101,7 @@ where
             id,
             timestamp,
             snap,
+            pid,
             interface,
             constraints: serde_json::from_value(constraints)?,
         })
@@ -183,6 +191,7 @@ mod tests {
   "id": "0000000000000002",
   "timestamp": "2024-08-14T07:28:22.694800024Z",
   "snap": "firefox",
+  "pid": 1234,
   "interface": "home",
   "constraints": {}
 }"#;
@@ -194,6 +203,7 @@ mod tests {
             id: PromptId("0000000000000002".to_string()),
             timestamp: "2024-08-14T07:28:22.694800024Z".to_string(),
             snap: "firefox".to_string(),
+            pid: 1234,
             interface: "home".to_string(),
             constraints: serde_json::json!({}),
         };

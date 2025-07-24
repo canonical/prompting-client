@@ -378,6 +378,7 @@ mod tests {
             interface: "home".to_string(),
             timestamp: "".to_string(),
             snap: "test".to_string(),
+            pid: 1234,
             constraints: HomeConstraints {
                 path: "/home/foo/bar".to_string(),
                 requested_permissions: vec!["read".to_string()],
