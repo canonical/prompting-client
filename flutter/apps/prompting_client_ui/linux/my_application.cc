@@ -1,6 +1,10 @@
 #include "my_application.h"
 
+#include <gdk/gdk.h>
+#include <glib.h>
 #include <flutter_linux/flutter_linux.h>
+#include <gtk/gtk.h>
+#include <unistd.h>
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
@@ -13,6 +17,47 @@ struct _MyApplication {
 };
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+
+// Signal the Shell about a permission prompting is in progress.
+void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
+
+  // Ensure we are running in the ubuntu session which should have our extension.
+  const char* session_mode = g_environ_getenv(g_get_environ(), "GNOME_SHELL_SESSION_MODE");
+  if (session_mode == NULL || !g_str_equal(session_mode, "ubuntu")) {
+    return;
+  }
+
+  // If snap_name or app_id is not set, we cannot signal the GNOME Shell.
+  if (snap_name == NULL || app_id == 0) {
+    g_warning("Failed to extract snap name or app ID from the arguments to signal it to GNOME Shell");
+    return;
+  }
+
+  g_autoptr(GDBusConnection) bus = NULL;
+  g_autoptr(GError) error = NULL;
+  bus = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &error);
+  if (!bus) {
+    g_warning("Failed to contact to the session bus: %s", error->message);
+    return;
+  }
+
+  g_dbus_connection_call_sync (bus,
+    "com.canonical.Shell.PermissionPrompting",
+    "/com/canonical/Shell/PermissionPrompting",
+    "com.canonical.Shell.PermissionPrompting",
+    "Prompt",
+    g_variant_new ("(st)", snap_name, app_id),
+    NULL,
+    G_DBUS_CALL_FLAGS_NONE,
+    -1,
+    NULL,
+    &error);
+  
+    if (error != NULL) {
+      g_warning("Failed to signal GNOME Shell about in progress prompting: %s", error->message);
+      return;
+    }
+}
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
@@ -56,8 +101,42 @@ static void my_application_activate(GApplication* application) {
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+
+  // Extract the first two arguments that don't have leading dashes from dart_entrypoint_arguments.
+  char *snap_name = NULL;
+  guint64 app_id = 0;
+  for (uint i = 0; self->dart_entrypoint_arguments[i] != NULL; i++) {
+    char *arg = self->dart_entrypoint_arguments[i];
+    if (g_str_has_prefix(arg, "-")) {
+      continue;
+    }
+
+    if (snap_name == NULL) {
+      snap_name = arg;
+      continue;
+    }
+
+    app_id = g_ascii_strtoull(arg, NULL, 10);
+    if (errno != 0 || app_id == 0) {
+      app_id = 0;
+      g_warning("failed to get PID from the application prompted for: %s is not a valid uint64", arg);
+    }
+
+    break;
+  }
+  
+  signal_prompting_to_gnome_shell(snap_name, app_id);
+
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
+
+  GdkWindow* gdk_window = gtk_widget_get_window(GTK_WIDGET(window));
+  if (gdk_window == NULL) {
+    g_warning("Failed to get gdk_window for setting skip flags.");
+  } else {
+    gdk_window_set_skip_taskbar_hint(gdk_window, TRUE);
+    gdk_window_set_skip_pager_hint(gdk_window, TRUE);
+  }
 
   gtk_widget_grab_focus(GTK_WIDGET(view));
 }
