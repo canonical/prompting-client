@@ -21,12 +21,6 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 // Signal the Shell about a permission prompting is in progress.
 void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
 
-  // Ensure we are running in the ubuntu session which should have our extension.
-  const char* session_mode = g_environ_getenv(g_get_environ(), "GNOME_SHELL_SESSION_MODE");
-  if (session_mode == NULL || !g_str_equal(session_mode, "ubuntu")) {
-    return;
-  }
-
   // If snap_name or app_id is not set, we cannot signal the GNOME Shell.
   if (snap_name == NULL || app_id == 0) {
     g_warning("Failed to extract snap name or app ID from the arguments to signal it to GNOME Shell");
@@ -107,7 +101,7 @@ static void my_application_activate(GApplication* application) {
   guint64 app_id = 0;
   for (uint i = 0; self->dart_entrypoint_arguments[i] != NULL; i++) {
     char *arg = self->dart_entrypoint_arguments[i];
-    if (g_str_has_prefix(arg, "-")) {
+    if (*arg == '-') {
       continue;
     }
 
@@ -130,15 +124,8 @@ static void my_application_activate(GApplication* application) {
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
 
-  GdkWindow* gdk_window = gtk_widget_get_window(GTK_WIDGET(window));
-  if (gdk_window == NULL) {
-    g_warning("Failed to get gdk_window for setting skip flags.");
-  } else {
-    gdk_window_set_skip_taskbar_hint(gdk_window, TRUE);
-    gdk_window_set_skip_pager_hint(gdk_window, TRUE);
-  }
-
-  gtk_widget_grab_focus(GTK_WIDGET(view));
+  gtk_window_set_skip_taskbar_hint(window, TRUE);
+  gtk_window_set_skip_pager_hint(window, TRUE);
 }
 
 // Implements GApplication::local_command_line.
