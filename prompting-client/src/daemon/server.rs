@@ -124,6 +124,19 @@ where
             }
         };
 
+        match self.active_prompt.get_context() {
+            Some(mut ctx) => {
+                tokio::spawn(async move {
+                    debug!("spawning stream");
+                    ctx.done().await;
+                    debug!("closing stream");
+                });
+            }
+            None => {
+                warn!("got request for current prompt but there is no context");
+            }
+        };
+
         Ok(Response::new(GetCurrentPromptResponse { prompt }))
     }
 
