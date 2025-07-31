@@ -15,6 +15,7 @@ use tokio::{
     sync::mpsc::{error::TryRecvError, UnboundedReceiver},
     time::timeout,
 };
+use tokio_context::context::{Context, Handle};
 use tracing::{debug, error, info, warn};
 
 const RECV_TIMEOUT: Duration = Duration::from_millis(200);
@@ -35,16 +36,17 @@ pub struct ActivePrompt {
     dialog_process: Child,
 }
 
-#[derive(Debug)]
 pub struct ReadOnlyActivePrompt {
     active_prompt: Arc<Mutex<Option<TypedUiInput>>>,
+    ui_handle: Arc<Mutex<Option<Handle>>>,
 }
 
 impl ReadOnlyActivePrompt {
     #[cfg(test)]
-    pub fn new(ui_input: Option<TypedUiInput>) -> Self {
+    pub fn new(ui_input: Option<TypedUiInput>, ui_handle: Option<Handle>) -> Self {
         Self {
             active_prompt: Arc::new(Mutex::new(ui_input)),
+            ui_handle: Arc::new(Mutex::new(ui_handle)),
         }
     }
 
@@ -54,6 +56,14 @@ impl ReadOnlyActivePrompt {
             Err(err) => err.into_inner(),
         };
         guard.clone()
+    }
+
+    pub fn get_context(&self) -> Option<Context> {
+        let mut guard = match self.ui_handle.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        guard.as_mut().map(|handle| handle.spawn_ctx())
     }
 }
 
@@ -71,7 +81,6 @@ impl SpawnUi for FlutterUi {
     }
 }
 
-#[derive(Debug)]
 pub struct Worker<S, R>
 where
     S: SpawnUi,
@@ -80,6 +89,7 @@ where
     rx_prompts: UnboundedReceiver<PromptUpdate>,
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
     active_prompt: Arc<Mutex<Option<TypedUiInput>>>,
+    ui_handle: Arc<Mutex<Option<Handle>>>,
     active_prompt2: Option<ActivePrompt>,
     pending_prompts: VecDeque<EnrichedPrompt>,
     dead_prompts: Vec<PromptId>,
@@ -102,6 +112,7 @@ impl Worker<FlutterUi, SnapdSocketClient> {
             rx_prompts,
             rx_actioned_prompts,
             active_prompt: Arc::new(Mutex::new(None)),
+            ui_handle: Arc::new(Mutex::new(None)),
             active_prompt2: None,
             pending_prompts: VecDeque::new(),
             dead_prompts: Vec::new(),
@@ -121,6 +132,7 @@ where
     pub fn read_only_active_prompt(&self) -> ReadOnlyActivePrompt {
         ReadOnlyActivePrompt {
             active_prompt: self.active_prompt.clone(),
+            ui_handle: self.ui_handle.clone(),
         }
     }
 
@@ -179,6 +191,12 @@ where
         if self.pending_prompts.len() < len {
             info!(id=%id.0, "dropping prompt as it has already been actioned");
         }
+
+        let mut guard = match self.ui_handle.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        guard.take();
     }
 
     fn process_update(&mut self, update: PromptUpdate) {
@@ -265,6 +283,8 @@ where
             .expect("grpc server panicked")
             .take();
 
+        self.ui_handle.lock().expect("grpc server panicked").take();
+
         Ok(())
     }
 
@@ -302,6 +322,13 @@ where
             Err(err) => err.into_inner(),
         };
         guard.replace(input);
+
+        let mut guard = match self.ui_handle.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        let (_, handle) = Context::new();
+        guard.replace(handle);
 
         Ok(())
     }
