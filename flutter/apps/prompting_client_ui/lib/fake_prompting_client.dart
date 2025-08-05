@@ -21,7 +21,7 @@ class FakeApparmorPromptingClient implements PromptingClient {
   void Function(PromptReply reply)? onReply;
 
   @override
-  Future<PromptDetails> getCurrentPrompt() async => currentPrompt;
+  Stream<PromptDetails> getCurrentPrompt() => Stream.value(currentPrompt);
 
   @override
   Future<PromptReplyResponse> replyToPrompt(PromptReply reply) async {
