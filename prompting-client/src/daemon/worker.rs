@@ -30,40 +30,37 @@ enum Recv {
     ChannelClosed,
 }
 
-#[derive(Debug)]
+pub struct RefActivePrompt(Arc<Mutex<Option<ActivePrompt>>>);
+
 pub struct ActivePrompt {
+    typed_ui_input: TypedUiInput,
     enriched_prompt: EnrichedPrompt,
-    dialog_process: Child,
+    ui_handle: Option<Handle>,
 }
 
-pub struct ReadOnlyActivePrompt {
-    active_prompt: Arc<Mutex<Option<TypedUiInput>>>,
-    ui_handle: Arc<Mutex<Option<Handle>>>,
-}
-
-impl ReadOnlyActivePrompt {
-    #[cfg(test)]
-    pub fn new(ui_input: Option<TypedUiInput>, ui_handle: Option<Handle>) -> Self {
-        Self {
-            active_prompt: Arc::new(Mutex::new(ui_input)),
-            ui_handle: Arc::new(Mutex::new(ui_handle)),
-        }
-    }
+impl RefActivePrompt {
+    // #[cfg(test)]
+    // pub fn new(ui_input: Option<TypedUiInput>, ui_handle: Option<Handle>) -> Self {
+    //     Self {
+    //         active_prompt: Arc::new(Mutex::new(ui_input)),
+    //         ui_handle: Arc::new(Mutex::new(ui_handle)),
+    //     }
+    // }
 
     pub fn get(&self) -> Option<TypedUiInput> {
-        let guard = match self.active_prompt.lock() {
+        let guard = match self.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        guard.clone()
+        Some(guard.as_ref()?.typed_ui_input.clone())
     }
 
     pub fn get_context(&self) -> Option<Context> {
-        let mut guard = match self.ui_handle.lock() {
+        let mut guard = match self.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        guard.as_mut().map(|handle| handle.spawn_ctx())
+        Some(guard.as_mut()?.ui_handle.as_mut()?.spawn_ctx())
     }
 }
 
@@ -88,9 +85,8 @@ where
 {
     rx_prompts: UnboundedReceiver<PromptUpdate>,
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
-    active_prompt: Arc<Mutex<Option<TypedUiInput>>>,
-    ui_handle: Arc<Mutex<Option<Handle>>>,
-    active_prompt2: Option<ActivePrompt>,
+    active_prompt: RefActivePrompt,
+    dialog_process: Option<Child>,
     pending_prompts: VecDeque<EnrichedPrompt>,
     dead_prompts: Vec<PromptId>,
     recv_timeout: Duration,
@@ -111,9 +107,8 @@ impl Worker<FlutterUi, SnapdSocketClient> {
         Self {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt: Arc::new(Mutex::new(None)),
-            ui_handle: Arc::new(Mutex::new(None)),
-            active_prompt2: None,
+            active_prompt: RefActivePrompt(Arc::new(Mutex::new(None))),
+            dialog_process: None,
             pending_prompts: VecDeque::new(),
             dead_prompts: Vec::new(),
             recv_timeout: RECV_TIMEOUT,
@@ -129,11 +124,8 @@ where
     S: SpawnUi,
     R: ReplyToPrompt,
 {
-    pub fn read_only_active_prompt(&self) -> ReadOnlyActivePrompt {
-        ReadOnlyActivePrompt {
-            active_prompt: self.active_prompt.clone(),
-            ui_handle: self.ui_handle.clone(),
-        }
+    pub fn read_only_active_prompt(&self) -> RefActivePrompt {
+        RefActivePrompt(self.active_prompt.0.clone())
     }
 
     pub async fn run(&mut self) -> Result<()> {
@@ -149,7 +141,7 @@ where
     async fn pull_updates(
         // &mut self,
         rx_prompts: &mut UnboundedReceiver<PromptUpdate>,
-        pending_prompts: &VecDeque<EnrichedPrompt>,
+        // pending_prompts: &VecDeque<EnrichedPrompt>,
     ) -> Option<Vec<PromptUpdate>> {
         let mut updates = vec![];
         // If there are currently no prompts pending in the channel and nothing in our internal
@@ -192,11 +184,16 @@ where
             info!(id=%id.0, "dropping prompt as it has already been actioned");
         }
 
-        let mut guard = match self.ui_handle.lock() {
+        let mut guard = match self.active_prompt.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        guard.take();
+
+        if let Some(active_prompt) = guard.as_mut() {
+            if active_prompt.typed_ui_input.id() == &id {
+                active_prompt.ui_handle.take();
+            }
+        }
     }
 
     fn process_update(&mut self, update: PromptUpdate) {
@@ -216,8 +213,8 @@ where
 
         debug!("got prompt: {enriched_prompt:?}");
 
-        debug!("updating active prompt");
-        if let Err(error) = self.update_active_prompt(enriched_prompt.clone()) {
+        let typed_ui_input = TypedUiInput::try_from(enriched_prompt.clone());
+        if let Err(error) = typed_ui_input {
             error!(%error, "failed to map prompt to UI input: replying with deny once");
             let reply = enriched_prompt.prompt.clone().into_deny_once();
             self.client
@@ -226,47 +223,55 @@ where
             return Ok(());
         }
 
-        // FIXME: the UI closing without replying or actioning multiple prompts gets tricky (when can we spawn the next UI?)
-        debug!("spawning UI");
-        let dialog_process = self
-            .ui
-            .spawn(&[prompt.snap(), &prompt.pid().to_string()])
-            .unwrap();
-
-        self.active_prompt2 = Some(ActivePrompt {
-            enriched_prompt,
-            dialog_process,
-        });
-
-        Ok(())
+        self.update_active_prompt(enriched_prompt, typed_ui_input?)
     }
 
     async fn wait_for_ui_reply(&mut self) -> Result<()> {
         debug!("waiting for ui reply");
-        self.active_prompt2
-            .as_mut()
-            .unwrap()
+        let exit_code = self
             .dialog_process
+            .take()
+            .expect("dialog process")
             .wait()
-            .await?;
+            .await?
+            .code()
+            .expect("exit code");
+        info!("UI exited with {exit_code}");
 
-        let prompt = self
-            .active_prompt2
-            .as_ref()
-            .unwrap()
-            .enriched_prompt
-            .prompt
-            .clone();
-
-        let expected_id = prompt.id().clone();
+        let enriched_prompt = {
+            let guard = match self.active_prompt.0.lock() {
+                Ok(guard) => guard,
+                Err(err) => err.into_inner(),
+            };
+            guard
+                .as_ref()
+                .expect("active prompt")
+                .enriched_prompt
+                .clone()
+        };
+        let expected_id = enriched_prompt.prompt.id().clone();
 
         loop {
             match self.wait_for_expected_prompt(&expected_id).await {
                 Recv::DeadPrompt | Recv::Unexpected => continue,
                 Recv::Success | Recv::Gone => break,
                 Recv::Timeout => {
-                    let reply = prompt.into_deny_once();
-                    self.client.reply(&expected_id, reply).await?;
+                    {
+                        let guard = match self.active_prompt.0.lock() {
+                            Ok(guard) => guard,
+                            Err(err) => err.into_inner(),
+                        };
+                        if guard.as_ref().expect("active prompt").ui_handle.is_none() {
+                            debug!("timeout for cancelled prompt");
+                            break;
+                        }
+                    };
+                    debug!("timeout waiting for reply from UI - sending deny once");
+                    let reply = enriched_prompt.prompt.into_deny_once();
+                    self.client
+                        .reply(&expected_id, reply)
+                        .await
+                        .inspect_err(|e| error!("could not send reply: {e:?}"))?;
                     break;
                 }
                 Recv::ChannelClosed => {
@@ -277,13 +282,11 @@ where
         }
 
         debug!("clearing active prompt");
-        self.active_prompt2.take();
-        self.active_prompt
-            .lock()
-            .expect("grpc server panicked")
-            .take();
-
-        self.ui_handle.lock().expect("grpc server panicked").take();
+        let mut guard = match self.active_prompt.0.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        guard.take();
 
         Ok(())
     }
@@ -292,7 +295,8 @@ where
         debug!("step");
 
         tokio::select! {
-            updates = Self::pull_updates(&mut self.rx_prompts, &self.pending_prompts) => {
+            // updates = Self::pull_updates(&mut self.rx_prompts, &self.pending_prompts) => {
+            updates = Self::pull_updates(&mut self.rx_prompts) => {
                 if let Some(updates) = updates {
                     for update in updates {
                         self.process_update(update);
@@ -300,40 +304,54 @@ where
                 }
             },
             _ = async {
-                if let Some(active_prompt) = self.active_prompt2.as_mut() {
-                    active_prompt.dialog_process.wait().await.expect("completes");
+                if let Some(dialog_process) = &mut self.dialog_process {
+                    dialog_process.wait().await.expect("completes");
                 }
-            }, if self.active_prompt2.is_some() => {
+            }, if self.dialog_process.is_some() => {
                 self.wait_for_ui_reply().await?;
             }
         };
 
-        if self.active_prompt2.is_none() {
+        if self.dialog_process.is_none() {
             self.process_next_pending_prompt().await?;
         }
 
         Ok(())
     }
 
-    fn update_active_prompt(&mut self, ep: EnrichedPrompt) -> Result<()> {
-        let input = TypedUiInput::try_from(ep)?;
-        let mut guard = match self.active_prompt.lock() {
-            Ok(guard) => guard,
-            Err(err) => err.into_inner(),
-        };
-        guard.replace(input);
+    fn update_active_prompt(
+        &mut self,
+        enriched_prompt: EnrichedPrompt,
+        typed_ui_input: TypedUiInput,
+    ) -> Result<()> {
+        debug!("spawning UI");
+        let dialog_process = self.ui.spawn(&[
+            enriched_prompt.prompt.snap(),
+            &enriched_prompt.prompt.pid().to_string(),
+        ])?;
 
-        let mut guard = match self.ui_handle.lock() {
+        let mut guard = match self.active_prompt.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        let (_, handle) = Context::new();
-        guard.replace(handle);
+
+        let (_, ui_handle) = Context::new();
+        let ui_handle = Some(ui_handle);
+
+        debug!("updating active prompt");
+        guard.replace(ActivePrompt {
+            typed_ui_input,
+            enriched_prompt,
+            ui_handle,
+        });
+        self.dialog_process.replace(dialog_process);
 
         Ok(())
     }
 
     async fn wait_for_expected_prompt(&mut self, expected_id: &PromptId) -> Recv {
+        let pending_actioned_prompts = self.rx_actioned_prompts.len();
+        info!("{pending_actioned_prompts} pending actioned prompts");
         match timeout(self.recv_timeout, self.rx_actioned_prompts.recv()).await {
             Ok(Some(ActionedPrompt::Actioned { id, others })) => {
                 debug!(recv_id=%id.0, "reply sent for prompt");
