@@ -440,7 +440,7 @@ pub mod app_armor_prompting_client {
             &mut self,
             request: impl tonic::IntoRequest<()>,
         ) -> std::result::Result<
-            tonic::Response<super::GetCurrentPromptResponse>,
+            tonic::Response<tonic::codec::Streaming<super::GetCurrentPromptResponse>>,
             tonic::Status,
         > {
             self.inner
@@ -463,7 +463,7 @@ pub mod app_armor_prompting_client {
                         "GetCurrentPrompt",
                     ),
                 );
-            self.inner.unary(req, path, codec).await
+            self.inner.server_streaming(req, path, codec).await
         }
         pub async fn reply_to_prompt(
             &mut self,
@@ -567,11 +567,20 @@ pub mod app_armor_prompting_server {
     /// Generated trait containing gRPC methods that should be implemented for use with AppArmorPromptingServer.
     #[async_trait]
     pub trait AppArmorPrompting: std::marker::Send + std::marker::Sync + 'static {
+        /// Server streaming response type for the GetCurrentPrompt method.
+        type GetCurrentPromptStream: tonic::codegen::tokio_stream::Stream<
+                Item = std::result::Result<
+                    super::GetCurrentPromptResponse,
+                    tonic::Status,
+                >,
+            >
+            + std::marker::Send
+            + 'static;
         async fn get_current_prompt(
             &self,
             request: tonic::Request<()>,
         ) -> std::result::Result<
-            tonic::Response<super::GetCurrentPromptResponse>,
+            tonic::Response<Self::GetCurrentPromptStream>,
             tonic::Status,
         >;
         async fn reply_to_prompt(
@@ -675,11 +684,12 @@ pub mod app_armor_prompting_server {
                 "/apparmor_prompting.AppArmorPrompting/GetCurrentPrompt" => {
                     #[allow(non_camel_case_types)]
                     struct GetCurrentPromptSvc<T: AppArmorPrompting>(pub Arc<T>);
-                    impl<T: AppArmorPrompting> tonic::server::UnaryService<()>
+                    impl<T: AppArmorPrompting> tonic::server::ServerStreamingService<()>
                     for GetCurrentPromptSvc<T> {
                         type Response = super::GetCurrentPromptResponse;
+                        type ResponseStream = T::GetCurrentPromptStream;
                         type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
+                            tonic::Response<Self::ResponseStream>,
                             tonic::Status,
                         >;
                         fn call(&mut self, request: tonic::Request<()>) -> Self::Future {
@@ -711,7 +721,7 @@ pub mod app_armor_prompting_server {
                                 max_decoding_message_size,
                                 max_encoding_message_size,
                             );
-                        let res = grpc.unary(method, req).await;
+                        let res = grpc.server_streaming(method, req).await;
                         Ok(res)
                     };
                     Box::pin(fut)
