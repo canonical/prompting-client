@@ -33,19 +33,21 @@ enum Recv {
 pub struct RefActivePrompt(Arc<Mutex<Option<ActivePrompt>>>);
 
 pub struct ActivePrompt {
-    typed_ui_input: TypedUiInput,
-    enriched_prompt: EnrichedPrompt,
-    ui_handle: Option<Handle>,
+    pub(crate) typed_ui_input: TypedUiInput,
+    pub(crate) enriched_prompt: EnrichedPrompt,
+    pub(crate) ui_handle: Option<Handle>,
 }
 
 impl RefActivePrompt {
-    // #[cfg(test)]
-    // pub fn new(ui_input: Option<TypedUiInput>, ui_handle: Option<Handle>) -> Self {
-    //     Self {
-    //         active_prompt: Arc::new(Mutex::new(ui_input)),
-    //         ui_handle: Arc::new(Mutex::new(ui_handle)),
-    //     }
-    // }
+    #[cfg(test)]
+    pub fn new(active_prompt: Option<ActivePrompt>) -> Self {
+        Self(Arc::new(Mutex::new(active_prompt)))
+    }
+
+    #[cfg(test)]
+    pub fn drop(&mut self) {
+        self.0.lock().unwrap().take();
+    }
 
     pub fn get(&self) -> Option<TypedUiInput> {
         let guard = match self.0.lock() {
@@ -61,6 +63,12 @@ impl RefActivePrompt {
             Err(err) => err.into_inner(),
         };
         Some(guard.as_mut()?.ui_handle.as_mut()?.spawn_ctx())
+    }
+}
+
+impl Clone for RefActivePrompt {
+    fn clone(&self) -> Self {
+        RefActivePrompt(self.0.clone())
     }
 }
 
@@ -125,7 +133,7 @@ where
     R: ReplyToPrompt,
 {
     pub fn read_only_active_prompt(&self) -> RefActivePrompt {
-        RefActivePrompt(self.active_prompt.0.clone())
+        self.active_prompt.clone()
     }
 
     pub async fn run(&mut self) -> Result<()> {
