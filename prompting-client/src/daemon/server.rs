@@ -1,6 +1,6 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
-    daemon::{worker::ReadOnlyActivePrompt, ActionedPrompt, ReplyToPrompt},
+    daemon::{worker::RefActivePrompt, ActionedPrompt, ReplyToPrompt},
     log_filter,
     protos::{
         apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
@@ -11,15 +11,19 @@ use crate::{
     Error,
 };
 use std::sync::Arc;
-use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
+use tokio::{
+    net::UnixListener,
+    sync::mpsc::{channel, UnboundedSender},
+};
+use tokio_stream::wrappers::ReceiverStream;
 use tonic::{async_trait, Code, Request, Response, Status};
-use tracing::{debug, info, warn};
+use tracing::{debug, error, info, warn};
 use tracing_subscriber::{reload::Handle, EnvFilter};
 
 pub fn new_server_and_listener<R, S>(
     client: R,
     reload_handle: S,
-    active_prompt: ReadOnlyActivePrompt,
+    active_prompt: RefActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     socket_path: String,
 ) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
@@ -70,7 +74,7 @@ where
 {
     client: R,
     reload_handle: S,
-    active_prompt: ReadOnlyActivePrompt,
+    active_prompt: RefActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
@@ -82,7 +86,7 @@ where
     pub fn new(
         client: R,
         reload_handle: S,
-        active_prompt: ReadOnlyActivePrompt,
+        active_prompt: RefActivePrompt,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
         Self {
@@ -106,10 +110,13 @@ where
     R: ReplyToPrompt,
     S: SetLogFilter,
 {
+    type GetCurrentPromptStream = ReceiverStream<Result<GetCurrentPromptResponse, Status>>;
     async fn get_current_prompt(
         &self,
         _request: Request<()>,
-    ) -> Result<Response<GetCurrentPromptResponse>, Status> {
+    ) -> Result<Response<Self::GetCurrentPromptStream>, Status> {
+        let (tx, rx) = channel(1);
+
         let prompt = match self.active_prompt.get() {
             Some(p) => {
                 let id = &p.id().0;
@@ -128,6 +135,13 @@ where
             Some(mut ctx) => {
                 tokio::spawn(async move {
                     debug!("spawning stream");
+                    if tx
+                        .send(Ok(GetCurrentPromptResponse { prompt }))
+                        .await
+                        .is_err()
+                    {
+                        error!("could not send prompt");
+                    }
                     ctx.done().await;
                     debug!("closing stream");
                 });
@@ -137,7 +151,7 @@ where
             }
         };
 
-        Ok(Response::new(GetCurrentPromptResponse { prompt }))
+        Ok(Response::new(ReceiverStream::new(rx)))
     }
 
     async fn reply_to_prompt(
@@ -288,7 +302,7 @@ fn map_permissions(perms: Vec<String>) -> Result<Vec<i32>, Status> {
 mod tests {
     use super::*;
     use crate::{
-        daemon::worker::ReadOnlyActivePrompt,
+        daemon::worker::RefActivePrompt,
         protos::apparmor_prompting::{
             self, app_armor_prompting_client::AppArmorPromptingClient, enriched_path_kind::Kind,
             get_current_prompt_response::Prompt, prompt_reply,
