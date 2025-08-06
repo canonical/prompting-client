@@ -147,18 +147,12 @@ where
     }
 
     async fn pull_updates(
-        // &mut self,
         rx_prompts: &mut UnboundedReceiver<PromptUpdate>,
-        // pending_prompts: &VecDeque<EnrichedPrompt>,
     ) -> Option<Vec<PromptUpdate>> {
         let mut updates = vec![];
-        // If there are currently no prompts pending in the channel and nothing in our internal
-        // pending_prompts buffer then we block until at least one prompt arrives rather than busy
-        // looping with try_recv below.
-        // if rx_prompts.is_empty() && pending_prompts.is_empty() {
+        // As we continue processing updates while a prompt is active, we only block once there are
+        // no more incoming prompt updates.
         if rx_prompts.is_empty() {
-            // needs to be adapted as `pending_prompts` isn't neccessarily empty
-            // for parallel prompts, we need to check for empty pending prompts, though
             match rx_prompts.recv().await {
                 Some(update) => updates.push(update),
                 None => {
@@ -303,7 +297,6 @@ where
         debug!("step");
 
         tokio::select! {
-            // updates = Self::pull_updates(&mut self.rx_prompts, &self.pending_prompts) => {
             updates = Self::pull_updates(&mut self.rx_prompts) => {
                 if let Some(updates) = updates {
                     for update in updates {
@@ -412,437 +405,406 @@ where
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use crate::snapd_client::{
-//         interfaces::home::{HomeConstraints, HomeReplyConstraints},
-//         Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
-//     };
-//     use simple_test_case::test_case;
-//     use std::{
-//         env,
-//         sync::{Arc, Mutex},
-//     };
-//     use tokio::{
-//         sync::mpsc::{unbounded_channel, UnboundedSender},
-//         time::sleep,
-//     };
-//     use tonic::async_trait;
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::snapd_client::{
+        interfaces::home::{HomeConstraints, HomeReplyConstraints},
+        Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
+    };
+    use simple_test_case::test_case;
+    use std::{
+        env,
+        sync::{Arc, Mutex},
+    };
+    use tokio::{
+        sync::mpsc::{unbounded_channel, UnboundedSender},
+        time::sleep,
+    };
+    use tonic::async_trait;
 
-//     struct StubClient;
+    struct StubClient;
 
-//     #[async_trait]
-//     impl ReplyToPrompt for StubClient {
-//         async fn reply(
-//             &self,
-//             _id: &PromptId,
-//             _reply: TypedPromptReply,
-//         ) -> crate::Result<Vec<PromptId>> {
-//             panic!("stub client called")
-//         }
-//     }
+    #[async_trait]
+    impl ReplyToPrompt for StubClient {
+        async fn reply(
+            &self,
+            _id: &PromptId,
+            _reply: TypedPromptReply,
+        ) -> crate::Result<Vec<PromptId>> {
+            panic!("stub client called")
+        }
+    }
 
-//     fn ep(id: &str) -> EnrichedPrompt {
-//         EnrichedPrompt {
-//             prompt: TypedPrompt::Home(Prompt {
-//                 id: PromptId(id.to_string()),
-//                 timestamp: String::new(),
-//                 snap: "test".to_string(),
-//                 pid: 1234,
-//                 interface: "home".to_string(),
-//                 constraints: HomeConstraints::default(),
-//             }),
-//             meta: None,
-//         }
-//     }
+    fn ep(id: &str) -> EnrichedPrompt {
+        EnrichedPrompt {
+            prompt: TypedPrompt::Home(Prompt {
+                id: PromptId(id.to_string()),
+                timestamp: String::new(),
+                snap: "test".to_string(),
+                pid: 1234,
+                interface: "home".to_string(),
+                constraints: HomeConstraints::default(),
+            }),
+            meta: None,
+        }
+    }
 
-//     fn add(id: &str) -> PromptUpdate {
-//         PromptUpdate::Add(ep(id))
-//     }
+    fn add(id: &str) -> PromptUpdate {
+        PromptUpdate::Add(ep(id))
+    }
 
-//     fn drop_id(id: &str) -> PromptUpdate {
-//         PromptUpdate::Drop(PromptId(id.to_string()))
-//     }
+    fn drop_id(id: &str) -> PromptUpdate {
+        PromptUpdate::Drop(PromptId(id.to_string()))
+    }
 
-//     #[tokio::test]
-//     async fn pull_updates_with_pending_prompts_doesnt_block() {
-//         // We need to keep the sender sides of these channels from dropping so that the channels
-//         // remain open. Without this the call to self.rx_prompts.recv() immediately returns None.
-//         let (_tx_prompts, rx_prompts) = unbounded_channel();
-//         let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+    #[test_case(add("1"), &[], &["1"]; "add new prompt")]
+    #[test_case(drop_id("1"), &["1"], &[]; "drop for pending prompt")]
+    #[test_case(drop_id("1"), &[], &[]; "drop prompt not seen yet")]
+    #[test]
+    fn process_update(update: PromptUpdate, current_pending: &[&str], expected_pending: &[&str]) {
+        let (_, rx_prompts) = unbounded_channel();
+        let (_, rx_actioned_prompts) = unbounded_channel();
+        let pending_prompts = current_pending.iter().map(|id| ep(id)).collect();
 
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt: Arc::new(Mutex::new(None)),
-//             active_prompt2: None,
-//             pending_prompts: [ep("1")].into_iter().collect(),
-//             dead_prompts: Vec::new(),
-//             recv_timeout: Duration::from_millis(100),
-//             ui: FlutterUi {
-//                 cmd: "".to_string(),
-//             },
-//             client: StubClient,
-//             running: true,
-//         };
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt: RefActivePrompt::new(None),
+            dialog_process: None,
+            pending_prompts,
+            dead_prompts: Vec::new(),
+            recv_timeout: Duration::from_millis(100),
+            ui: FlutterUi {
+                cmd: "".to_string(),
+            },
+            client: StubClient,
+            running: true,
+        };
 
-//         let res = timeout(Duration::from_millis(1000), w.pull_updates()).await;
+        w.process_update(update);
 
-//         assert!(w.running, "worker no longer runnning");
-//         assert!(
-//             res.is_ok(),
-//             "we blocked waiting for an update from the poll loop"
-//         );
-//     }
+        let pending: Vec<&str> = w
+            .pending_prompts
+            .iter()
+            .map(|ep| ep.prompt.id().0.as_str())
+            .collect();
 
-//     #[test_case(add("1"), &[], &["1"]; "add new prompt")]
-//     #[test_case(drop_id("1"), &["1"], &[]; "drop for pending prompt")]
-//     #[test_case(drop_id("1"), &[], &[]; "drop prompt not seen yet")]
-//     #[test]
-//     fn process_update(update: PromptUpdate, current_pending: &[&str], expected_pending: &[&str]) {
-//         let (_, rx_prompts) = unbounded_channel();
-//         let (_, rx_actioned_prompts) = unbounded_channel();
-//         let pending_prompts = current_pending.iter().map(|id| ep(id)).collect();
+        assert_eq!(pending, expected_pending);
+    }
 
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt: Arc::new(Mutex::new(None)),
-//             dialog_process: None,
-//             pending_prompts,
-//             dead_prompts: Vec::new(),
-//             recv_timeout: Duration::from_millis(100),
-//             ui: FlutterUi {
-//                 cmd: "".to_string(),
-//             },
-//             client: StubClient,
-//             running: true,
-//         };
+    #[test_case("1", "1", 10, Recv::Success, &["dead"]; "recv expected within timeout")]
+    #[test_case("2", "1", 10, Recv::Unexpected, &["dead"]; "recv unexpected within timeout")]
+    #[test_case("dead", "1", 10, Recv::DeadPrompt, &[]; "recv dead prompt")]
+    #[test_case("1", "1", 200, Recv::Timeout, &["dead", "1"]; "recv expected after timeout")]
+    #[tokio::test]
+    async fn wait_for_expected_prompt(
+        sent_id: &str,
+        expected_id: &str,
+        sleep_ms: u64,
+        expected_recv: Recv,
+        expected_dead_prompts: &[&str],
+    ) {
+        let (_, rx_prompts) = unbounded_channel();
+        let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
 
-//         w.process_update(update);
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt: RefActivePrompt::new(None),
+            dialog_process: None,
+            pending_prompts: VecDeque::new(),
+            dead_prompts: vec![PromptId("dead".to_string())],
+            recv_timeout: Duration::from_millis(100),
+            ui: FlutterUi {
+                cmd: "".to_string(),
+            },
+            client: StubClient,
+            running: true,
+        };
 
-//         let pending: Vec<&str> = w
-//             .pending_prompts
-//             .iter()
-//             .map(|ep| ep.prompt.id().0.as_str())
-//             .collect();
+        tokio::spawn(async move {
+            sleep(Duration::from_millis(sleep_ms)).await;
+            let _ = tx_actioned_prompts.send(ActionedPrompt::Actioned {
+                id: PromptId(sent_id.to_string()),
+                others: vec![PromptId("drop-me".to_string())],
+            });
+        });
 
-//         assert_eq!(pending, expected_pending);
-//     }
+        let recv = w
+            .wait_for_expected_prompt(&PromptId(expected_id.to_string()))
+            .await;
 
-//     #[test_case("1", "1", 10, Recv::Success, &["dead"]; "recv expected within timeout")]
-//     #[test_case("2", "1", 10, Recv::Unexpected, &["dead"]; "recv unexpected within timeout")]
-//     #[test_case("dead", "1", 10, Recv::DeadPrompt, &[]; "recv dead prompt")]
-//     #[test_case("1", "1", 200, Recv::Timeout, &["dead", "1"]; "recv expected after timeout")]
-//     #[tokio::test]
-//     async fn wait_for_expected_prompt(
-//         sent_id: &str,
-//         expected_id: &str,
-//         sleep_ms: u64,
-//         expected_recv: Recv,
-//         expected_dead_prompts: &[&str],
-//     ) {
-//         let (_, rx_prompts) = unbounded_channel();
-//         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        assert_eq!(recv, expected_recv);
+        assert_eq!(
+            w.dead_prompts,
+            Vec::from_iter(
+                expected_dead_prompts
+                    .iter()
+                    .map(|id| PromptId(id.to_string()))
+            )
+        );
+    }
 
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt: Arc::new(Mutex::new(None)),
-//             dialog_process: None,
-//             pending_prompts: VecDeque::new(),
-//             dead_prompts: vec![PromptId("dead".to_string())],
-//             recv_timeout: Duration::from_millis(100),
-//             ui: FlutterUi {
-//                 cmd: "".to_string(),
-//             },
-//             client: StubClient,
-//             running: true,
-//         };
+    #[test_case("1", "1", Recv::Gone, &["dead"]; "gone for expected prompt")]
+    #[test_case("2", "1", Recv::Unexpected, &["dead"]; "gone for unexpected prompt")]
+    #[test_case("dead", "dead", Recv::Gone, &[]; "gone for expected dead prompt")]
+    #[test_case("dead", "1", Recv::Unexpected, &[]; "gone for unexpected dead prompt")]
+    #[tokio::test]
+    async fn wait_for_expected_prompt_gone(
+        sent_id: &str,
+        expected_id: &str,
+        expected_recv: Recv,
+        expected_dead_prompts: &[&str],
+    ) {
+        let (_, rx_prompts) = unbounded_channel();
+        let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
 
-//         tokio::spawn(async move {
-//             sleep(Duration::from_millis(sleep_ms)).await;
-//             let _ = tx_actioned_prompts.send(ActionedPrompt::Actioned {
-//                 id: PromptId(sent_id.to_string()),
-//                 others: vec![PromptId("drop-me".to_string())],
-//             });
-//         });
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt: RefActivePrompt::new(None),
+            dialog_process: None,
+            pending_prompts: VecDeque::new(),
+            dead_prompts: vec![PromptId("dead".to_string())],
+            recv_timeout: Duration::from_millis(100),
+            ui: FlutterUi {
+                cmd: "".to_string(),
+            },
+            client: StubClient,
+            running: false,
+        };
 
-//         let recv = w
-//             .wait_for_expected_prompt(&PromptId(expected_id.to_string()))
-//             .await;
+        let _ = tx_actioned_prompts.send(ActionedPrompt::NotFound {
+            id: PromptId(sent_id.to_string()),
+        });
 
-//         assert_eq!(recv, expected_recv);
-//         assert_eq!(
-//             w.dead_prompts,
-//             Vec::from_iter(
-//                 expected_dead_prompts
-//                     .iter()
-//                     .map(|id| PromptId(id.to_string()))
-//             )
-//         );
-//     }
+        let recv = w
+            .wait_for_expected_prompt(&PromptId(expected_id.to_string()))
+            .await;
 
-//     #[test_case("1", "1", Recv::Gone, &["dead"]; "gone for expected prompt")]
-//     #[test_case("2", "1", Recv::Unexpected, &["dead"]; "gone for unexpected prompt")]
-//     #[test_case("dead", "dead", Recv::Gone, &[]; "gone for expected dead prompt")]
-//     #[test_case("dead", "1", Recv::Unexpected, &[]; "gone for unexpected dead prompt")]
-//     #[tokio::test]
-//     async fn wait_for_expected_prompt_gone(
-//         sent_id: &str,
-//         expected_id: &str,
-//         expected_recv: Recv,
-//         expected_dead_prompts: &[&str],
-//     ) {
-//         let (_, rx_prompts) = unbounded_channel();
-//         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        assert_eq!(recv, expected_recv);
+        assert_eq!(
+            w.dead_prompts,
+            Vec::from_iter(
+                expected_dead_prompts
+                    .iter()
+                    .map(|id| PromptId(id.to_string()))
+            )
+        );
+    }
 
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt: Arc::new(Mutex::new(None)),
-//             dialog_process: None,
-//             pending_prompts: VecDeque::new(),
-//             dead_prompts: vec![PromptId("dead".to_string())],
-//             recv_timeout: Duration::from_millis(100),
-//             ui: FlutterUi {
-//                 cmd: "".to_string(),
-//             },
-//             client: StubClient,
-//             running: false,
-//         };
+    #[tokio::test]
+    async fn wait_for_expected_prompt_closed_channel() {
+        let (_, rx_prompts) = unbounded_channel();
+        let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
 
-//         let _ = tx_actioned_prompts.send(ActionedPrompt::NotFound {
-//             id: PromptId(sent_id.to_string()),
-//         });
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt: RefActivePrompt::new(None),
+            dialog_process: None,
+            pending_prompts: VecDeque::new(),
+            dead_prompts: vec![PromptId("dead".to_string())],
+            recv_timeout: Duration::from_millis(100),
+            ui: FlutterUi {
+                cmd: "".to_string(),
+            },
+            client: StubClient,
+            running: false,
+        };
 
-//         let recv = w
-//             .wait_for_expected_prompt(&PromptId(expected_id.to_string()))
-//             .await;
+        drop(tx_actioned_prompts);
+        let recv = w.wait_for_expected_prompt(&PromptId("1".to_string())).await;
 
-//         assert_eq!(recv, expected_recv);
-//         assert_eq!(
-//             w.dead_prompts,
-//             Vec::from_iter(
-//                 expected_dead_prompts
-//                     .iter()
-//                     .map(|id| PromptId(id.to_string()))
-//             )
-//         );
-//     }
+        assert_eq!(recv, Recv::ChannelClosed);
+    }
 
-//     #[tokio::test]
-//     async fn wait_for_expected_prompt_closed_channel() {
-//         let (_, rx_prompts) = unbounded_channel();
-//         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+    // #[derive(Debug, Clone, Copy)]
+    // struct Reply {
+    //     active_prompt: &'static str,
+    //     sleep_ms: u64,
+    //     id: &'static str,
+    //     drop: &'static [&'static str],
+    // }
 
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt: Arc::new(Mutex::new(None)),
-//             dialog_process: None,
-//             pending_prompts: VecDeque::new(),
-//             dead_prompts: vec![PromptId("dead".to_string())],
-//             recv_timeout: Duration::from_millis(100),
-//             ui: FlutterUi {
-//                 cmd: "".to_string(),
-//             },
-//             client: StubClient,
-//             running: false,
-//         };
+    // fn rep(
+    //     active_prompt: &'static str,
+    //     sleep_ms: u64,
+    //     id: &'static str,
+    //     drop: &'static [&'static str],
+    // ) -> Reply {
+    //     Reply {
+    //         active_prompt,
+    //         sleep_ms,
+    //         id,
+    //         drop,
+    //     }
+    // }
 
-//         drop(tx_actioned_prompts);
-//         let recv = w.wait_for_expected_prompt(&PromptId("1".to_string())).await;
+    // struct TestUi {
+    //     replies: Vec<Reply>,
+    //     tx: UnboundedSender<ActionedPrompt>,
+    //     active_prompt: ReadOnlyActivePrompt,
+    // }
 
-//         assert_eq!(recv, Recv::ChannelClosed);
-//     }
+    // impl SpawnUi for TestUi {
+    //      fn spawn(&mut self, _: &[&str]) -> Result<()> {
+    //         let Reply {
+    //             active_prompt,
+    //             sleep_ms,
+    //             id,
+    //             drop,
+    //         } = self.replies.remove(0);
 
-//     #[derive(Debug, Clone, Copy)]
-//     struct Reply {
-//         active_prompt: &'static str,
-//         sleep_ms: u64,
-//         id: &'static str,
-//         drop: &'static [&'static str],
-//     }
+    //         let ap = &self.active_prompt.get().expect("active prompt");
+    //         assert_eq!(active_prompt, ap.id().0, "incorrect active prompt");
 
-//     fn rep(
-//         active_prompt: &'static str,
-//         sleep_ms: u64,
-//         id: &'static str,
-//         drop: &'static [&'static str],
-//     ) -> Reply {
-//         Reply {
-//             active_prompt,
-//             sleep_ms,
-//             id,
-//             drop,
-//         }
-//     }
+    //         let tx = self.tx.clone();
 
-//     struct TestUi {
-//         replies: Vec<Reply>,
-//         tx: UnboundedSender<ActionedPrompt>,
-//         active_prompt: ReadOnlyActivePrompt,
-//     }
+    //         // Send from a task so the Worker sees the UI "exit" and starts waiting for the reply
+    //         tokio::spawn(async move {
+    //             sleep(Duration::from_millis(sleep_ms)).await;
+    //             let _ = tx.send(ActionedPrompt::Actioned {
+    //                 id: PromptId(id.to_string()),
+    //                 others: drop.iter().map(|id| PromptId(id.to_string())).collect(),
+    //             });
+    //         });
 
-//     impl SpawnUi for TestUi {
-//         async fn spawn(&mut self, _: &[&str]) -> Result<()> {
-//             let Reply {
-//                 active_prompt,
-//                 sleep_ms,
-//                 id,
-//                 drop,
-//             } = self.replies.remove(0);
+    //         Ok(())
+    //     }
+    // }
 
-//             let ap = &self.active_prompt.get().expect("active prompt");
-//             assert_eq!(active_prompt, ap.id().0, "incorrect active prompt");
+    // #[test_case(vec![], &[]; "channel close without prompts")]
+    // #[test_case(vec![add("1")], &[rep("1", 10, "1", &[])]; "single")]
+    // #[test_case(
+    //     vec![add("1"), add("2"), add("3")],
+    //     &[rep("1", 10, "1", &[]), rep("2", 10, "2", &[]), rep("3", 10, "3", &[])];
+    //     "multiple"
+    // )]
+    // #[test_case(
+    //     vec![add("1"), add("2"), add("3")],
+    //     &[rep("1", 10, "1", &["2"]), rep("3", 10, "3", &[])];
+    //     "first reply actions second prompt as well"
+    // )]
+    // #[test_case(
+    //     vec![add("1"), add("2")],
+    //     &[rep("1", 200, "1", &[]), rep("2", 50, "2", &[])];
+    //     "delayed reply skips"
+    // )]
+    // #[test_case(
+    //     vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
+    //     &[rep("1", 10, "1", &[]), rep("3", 10, "3", &[]), rep("4", 10, "4", &[])];
+    //     "explicit drop of previous prompt"
+    // )]
+    // #[tokio::test]
+    // async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
+    //     let (tx_prompts, rx_prompts) = unbounded_channel();
+    //     let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+    //     let active_prompt = Arc::new(Mutex::new(None));
+    //     let ui = TestUi {
+    //         replies: replies.to_vec(),
+    //         tx: tx_actioned_prompts,
+    //         active_prompt: ReadOnlyActivePrompt {
+    //             active_prompt: active_prompt.clone(),
+    //         },
+    //     };
 
-//             let tx = self.tx.clone();
+    //     let mut w = Worker {
+    //         rx_prompts,
+    //         rx_actioned_prompts,
+    //         active_prompt,
+    //         dialog_process: None,
+    //         pending_prompts: VecDeque::new(),
+    //         dead_prompts: vec![],
+    //         recv_timeout: Duration::from_millis(100),
+    //         ui,
+    //         client: StubClient,
+    //         running: true,
+    //     };
 
-//             // Send from a task so the Worker sees the UI "exit" and starts waiting for the reply
-//             tokio::spawn(async move {
-//                 sleep(Duration::from_millis(sleep_ms)).await;
-//                 let _ = tx.send(ActionedPrompt::Actioned {
-//                     id: PromptId(id.to_string()),
-//                     others: drop.iter().map(|id| PromptId(id.to_string())).collect(),
-//                 });
-//             });
+    //     // We need this env var set to be able to generate the appropriate UI options
+    //     // for the home interface
+    //     env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
-//             Ok(())
-//         }
-//     }
+    //     for update in updates {
+    //         let _ = tx_prompts.send(update);
+    //     }
 
-//     #[test_case(vec![], &[]; "channel close without prompts")]
-//     #[test_case(vec![add("1")], &[rep("1", 10, "1", &[])]; "single")]
-//     #[test_case(
-//         vec![add("1"), add("2"), add("3")],
-//         &[rep("1", 10, "1", &[]), rep("2", 10, "2", &[]), rep("3", 10, "3", &[])];
-//         "multiple"
-//     )]
-//     #[test_case(
-//         vec![add("1"), add("2"), add("3")],
-//         &[rep("1", 10, "1", &["2"]), rep("3", 10, "3", &[])];
-//         "first reply actions second prompt as well"
-//     )]
-//     #[test_case(
-//         vec![add("1"), add("2")],
-//         &[rep("1", 200, "1", &[]), rep("2", 50, "2", &[])];
-//         "delayed reply skips"
-//     )]
-//     #[test_case(
-//         vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
-//         &[rep("1", 10, "1", &[]), rep("3", 10, "3", &[]), rep("4", 10, "4", &[])];
-//         "explicit drop of previous prompt"
-//     )]
-//     #[tokio::test]
-//     async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
-//         let (tx_prompts, rx_prompts) = unbounded_channel();
-//         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
-//         let active_prompt = Arc::new(Mutex::new(None));
-//         let ui = TestUi {
-//             replies: replies.to_vec(),
-//             tx: tx_actioned_prompts,
-//             active_prompt: ReadOnlyActivePrompt {
-//                 active_prompt: active_prompt.clone(),
-//             },
-//         };
+    //     drop(tx_prompts);
+    //     w.step().await.unwrap();
+    //     assert!(!w.running, "drop(tx_prompts) should shut down the worker");
+    // }
 
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt,
-//             dialog_process: None,
-//             pending_prompts: VecDeque::new(),
-//             dead_prompts: vec![],
-//             recv_timeout: Duration::from_millis(100),
-//             ui,
-//             client: StubClient,
-//             running: true,
-//         };
+    // struct StubUi;
 
-//         // We need this env var set to be able to generate the appropriate UI options
-//         // for the home interface
-//         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+    // impl SpawnUi for StubUi {
+    //     async fn spawn(&mut self) -> Result<()> {
+    //         Ok(())
+    //     }
+    // }
 
-//         for update in updates {
-//             let _ = tx_prompts.send(update);
-//         }
+    // #[derive(Default)]
+    // struct AckClient {
+    //     seen: Arc<Mutex<Vec<(PromptId, TypedPromptReply)>>>,
+    // }
 
-//         drop(tx_prompts);
-//         w.step().await.unwrap();
-//         assert!(!w.running, "drop(tx_prompts) should shut down the worker");
-//     }
+    // #[async_trait]
+    // impl ReplyToPrompt for AckClient {
+    //     async fn reply(
+    //         &self,
+    //         id: &PromptId,
+    //         reply: TypedPromptReply,
+    //     ) -> crate::Result<Vec<PromptId>> {
+    //         self.seen.lock().unwrap().push((id.clone(), reply));
 
-//     struct StubUi;
+    //         Ok(Vec::new())
+    //     }
+    // }
 
-//     impl SpawnUi for StubUi {
-//         fn spawn(&mut self, _: &[&str]) -> Result<()> {
-//             Ok(())
-//         }
-//     }
+    // #[tokio::test]
+    // async fn timeout_waiting_for_reply_denies_once() {
+    //     // We need to keep the sender sides of these channels from dropping so that the channels
+    //     // remain open. Without this calls to recv() immediately returns None.
+    //     let (_tx_prompts, rx_prompts) = unbounded_channel();
+    //     let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+    //     let active_prompt = Arc::new(Mutex::new(None));
 
-//     #[derive(Default)]
-//     struct AckClient {
-//         seen: Arc<Mutex<Vec<(PromptId, TypedPromptReply)>>>,
-//     }
+    //     let mut w = Worker {
+    //         rx_prompts,
+    //         rx_actioned_prompts,
+    //         active_prompt,
+    //         dialog_process: None,
+    //         pending_prompts: [ep("1")].into_iter().collect(),
+    //         dead_prompts: vec![],
+    //         recv_timeout: Duration::from_millis(100),
+    //         ui: StubUi,
+    //         client: AckClient::default(),
+    //         running: true,
+    //     };
 
-//     #[async_trait]
-//     impl ReplyToPrompt for AckClient {
-//         async fn reply(
-//             &self,
-//             id: &PromptId,
-//             reply: TypedPromptReply,
-//         ) -> crate::Result<Vec<PromptId>> {
-//             self.seen.lock().unwrap().push((id.clone(), reply));
+    //     // We need this env var set to be able to generate the appropriate UI options
+    //     // for the home interface
+    //     env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+    //     w.step().await.unwrap();
 
-//             Ok(Vec::new())
-//         }
-//     }
+    //     // Strip off the surrounding Arc and Mutex
+    //     let replies_seen = Arc::into_inner(w.client.seen)
+    //         .unwrap()
+    //         .into_inner()
+    //         .unwrap();
 
-//     #[tokio::test]
-//     async fn timeout_waiting_for_reply_denies_once() {
-//         // We need to keep the sender sides of these channels from dropping so that the channels
-//         // remain open. Without this calls to recv() immediately returns None.
-//         let (_tx_prompts, rx_prompts) = unbounded_channel();
-//         let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
-//         let active_prompt = Arc::new(Mutex::new(None));
-
-//         let mut w = Worker {
-//             rx_prompts,
-//             rx_actioned_prompts,
-//             active_prompt,
-//             dialog_process: None,
-//             pending_prompts: [ep("1")].into_iter().collect(),
-//             dead_prompts: vec![],
-//             recv_timeout: Duration::from_millis(100),
-//             ui: StubUi,
-//             client: AckClient::default(),
-//             running: true,
-//         };
-
-//         // We need this env var set to be able to generate the appropriate UI options
-//         // for the home interface
-//         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
-//         w.step().await.unwrap();
-
-//         // Strip off the surrounding Arc and Mutex
-//         let replies_seen = Arc::into_inner(w.client.seen)
-//             .unwrap()
-//             .into_inner()
-//             .unwrap();
-
-//         assert_eq!(
-//             replies_seen,
-//             vec![(
-//                 PromptId("1".to_string()),
-//                 TypedPromptReply::Home(PromptReply {
-//                     action: Action::Deny,
-//                     lifespan: Lifespan::Single,
-//                     duration: None,
-//                     constraints: HomeReplyConstraints::default(),
-//                 })
-//             )]
-//         );
-//     }
-// }
+    //     assert_eq!(
+    //         replies_seen,
+    //         vec![(
+    //             PromptId("1".to_string()),
+    //             TypedPromptReply::Home(PromptReply {
+    //                 action: Action::Deny,
+    //                 lifespan: Lifespan::Single,
+    //                 duration: None,
+    //                 constraints: HomeReplyConstraints::default(),
+    //             })
+    //         )]
+    //     );
+    // }
+}
