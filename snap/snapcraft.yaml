@@ -79,8 +79,8 @@ parts:
     build-packages:
       - libssl-dev
       - pkg-config
-    build-snaps:
-      - protobuf
+      - protobuf-compiler      
+      - libprotobuf-dev
 
   prompting-client-ui:
     after: [fvm]
