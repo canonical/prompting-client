@@ -7,6 +7,7 @@ use crate::{
 use std::{
     collections::VecDeque,
     env,
+    process::ExitStatus,
     sync::{Arc, Mutex},
     time::Duration,
 };
@@ -72,8 +73,21 @@ impl Clone for RefActivePrompt {
     }
 }
 
+pub trait DialogHandle {
+    async fn wait(&mut self) -> Result<ExitStatus>;
+}
+
+pub struct DialogProcess(Child);
+
+impl DialogHandle for DialogProcess {
+    async fn wait(&mut self) -> Result<ExitStatus> {
+        Ok(self.0.wait().await?)
+    }
+}
+
 pub trait SpawnUi {
-    fn spawn(&mut self, args: &[&str]) -> Result<Child>;
+    type Handle;
+    fn spawn(&mut self, args: &[&str]) -> Result<Self::Handle>;
 }
 
 pub struct FlutterUi {
@@ -81,20 +95,22 @@ pub struct FlutterUi {
 }
 
 impl SpawnUi for FlutterUi {
-    fn spawn(&mut self, args: &[&str]) -> Result<Child> {
-        Ok(Command::new(&self.cmd).args(args).spawn()?)
+    type Handle = DialogProcess;
+    fn spawn(&mut self, args: &[&str]) -> Result<Self::Handle> {
+        Ok(DialogProcess(Command::new(&self.cmd).args(args).spawn()?))
     }
 }
 
-pub struct Worker<S, R>
+pub struct Worker<S, R, D>
 where
     S: SpawnUi,
     R: ReplyToPrompt,
+    D: DialogHandle,
 {
     rx_prompts: UnboundedReceiver<PromptUpdate>,
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
     active_prompt: RefActivePrompt,
-    dialog_process: Option<Child>,
+    dialog_process: Option<D>,
     pending_prompts: VecDeque<EnrichedPrompt>,
     dead_prompts: Vec<PromptId>,
     recv_timeout: Duration,
@@ -103,7 +119,7 @@ where
     running: bool,
 }
 
-impl Worker<FlutterUi, SnapdSocketClient> {
+impl Worker<FlutterUi, SnapdSocketClient, DialogProcess> {
     pub fn new(
         rx_prompts: UnboundedReceiver<PromptUpdate>,
         rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
@@ -127,10 +143,11 @@ impl Worker<FlutterUi, SnapdSocketClient> {
     }
 }
 
-impl<S, R> Worker<S, R>
+impl<S, R, D> Worker<S, R, D>
 where
-    S: SpawnUi,
+    S: SpawnUi<Handle = D>,
     R: ReplyToPrompt,
+    D: DialogHandle,
 {
     pub fn read_only_active_prompt(&self) -> RefActivePrompt {
         self.active_prompt.clone()
