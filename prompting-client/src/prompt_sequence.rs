@@ -1,6 +1,7 @@
 use crate::snapd_client::{
     interfaces::{
-        home::HomeInterface, ConstraintsFilter, ReplyConstraintsOverrides, SnapInterface,
+        camera::CameraInterface, home::HomeInterface, ConstraintsFilter, ReplyConstraintsOverrides,
+        SnapInterface,
     },
     Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
 };
@@ -58,6 +59,24 @@ impl PromptSequence {
 
                 res
             }
+            (TypedPromptCase::Camera(case), TypedPrompt::Camera(p)) => {
+                let res = case
+                    .into_reply_or_error(p, self.index)
+                    .map(|res| res.map(TypedPromptReply::Camera));
+                self.index += 1;
+
+                res
+            }
+            (case, p) => Err(MatchError::WrongInterface {
+                expected: match case {
+                    TypedPromptCase::Home(_) => "home".to_string(),
+                    TypedPromptCase::Camera(_) => "camera".to_string(),
+                },
+                seen: match p {
+                    TypedPrompt::Home(_) => "home".to_string(),
+                    TypedPrompt::Camera(_) => "camera".to_string(),
+                },
+            }),
         }
     }
 
@@ -83,18 +102,22 @@ fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
 #[serde(untagged)]
 enum TypedPromptCase {
     Home(PromptCase<HomeInterface>),
+    Camera(PromptCase<CameraInterface>),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
 enum TypedPromptFilter {
     Home(PromptFilter<HomeInterface>),
+    Camera(PromptFilter<CameraInterface>),
 }
 
 impl TypedPromptFilter {
     pub fn matches(&self, prompt: &TypedPrompt) -> bool {
         match (self, prompt) {
             (Self::Home(f), TypedPrompt::Home(p)) => f.matches(p).is_success(),
+            (Self::Camera(f), TypedPrompt::Camera(p)) => f.matches(p).is_success(),
+            _ => false,
         }
     }
 }

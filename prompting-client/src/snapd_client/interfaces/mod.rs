@@ -26,8 +26,10 @@ use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::fmt;
 use tonic::{Code, Status};
 
+pub mod camera;
 pub mod home;
 
+use camera::CameraInterface;
 use home::HomeInterface;
 
 #[macro_export]
@@ -170,30 +172,35 @@ pub trait ReplyConstraintsOverrides:
 #[serde(untagged)]
 pub enum TypedPrompt {
     Home(Prompt<HomeInterface>),
+    Camera(Prompt<CameraInterface>),
 }
 
 impl TypedPrompt {
     pub fn into_deny_once(self) -> TypedPromptReply {
         match self {
             Self::Home(p) => HomeInterface::prompt_to_reply(p, Action::Deny).into(),
+            Self::Camera(p) => CameraInterface::prompt_to_reply(p, Action::Deny).into(),
         }
     }
 
     pub fn id(&self) -> &PromptId {
         match self {
             Self::Home(p) => &p.id,
+            Self::Camera(p) => &p.id,
         }
     }
 
     pub fn snap(&self) -> &str {
         match self {
             Self::Home(p) => &p.snap,
+            Self::Camera(p) => &p.snap,
         }
     }
 
     pub fn pid(&self) -> i64 {
         match self {
             Self::Home(p) => p.pid,
+            Self::Camera(p) => p.pid,
         }
     }
 }
@@ -205,12 +212,12 @@ impl TryFrom<RawPrompt> for TypedPrompt {
         // SAFETY: we are only deserializing the prompt constraints data after checking the value
         //         of raw.interface is correct for the SnapInterface we are using.
         unsafe {
-            if raw.interface == HomeInterface::NAME {
-                Ok(TypedPrompt::Home(Prompt::try_from_raw(raw)?))
-            } else {
-                Err(Error::UnsupportedInterface {
+            match raw.interface.as_str() {
+                HomeInterface::NAME => Ok(TypedPrompt::Home(Prompt::try_from_raw(raw)?)),
+                CameraInterface::NAME => Ok(TypedPrompt::Camera(Prompt::try_from_raw(raw)?)),
+                _ => Err(Error::UnsupportedInterface {
                     interface: raw.interface,
-                })
+                }),
             }
         }
     }
@@ -220,12 +227,14 @@ impl TryFrom<RawPrompt> for TypedPrompt {
 #[derive(Debug, Clone)]
 pub enum TypedUiInput {
     Home(UiInput<HomeInterface>),
+    Camera(UiInput<CameraInterface>),
 }
 
 impl TypedUiInput {
     pub fn id(&self) -> &PromptId {
         match self {
             Self::Home(input) => &input.id,
+            Self::Camera(input) => &input.id,
         }
     }
 }
@@ -236,6 +245,9 @@ impl TryFrom<EnrichedPrompt> for TypedUiInput {
     fn try_from(ep: EnrichedPrompt) -> Result<Self, Self::Error> {
         let typed_prompt = match ep.prompt {
             TypedPrompt::Home(p) => Self::Home(HomeInterface::ui_input_from_prompt(p, ep.meta)?),
+            TypedPrompt::Camera(p) => {
+                Self::Camera(CameraInterface::ui_input_from_prompt(p, ep.meta)?)
+            }
         };
 
         Ok(typed_prompt)
@@ -248,6 +260,7 @@ impl TryFrom<TypedUiInput> for ProtoPrompt {
     fn try_from(ui_input: TypedUiInput) -> Result<Self, Status> {
         let proto = match ui_input {
             TypedUiInput::Home(input) => HomeInterface::proto_prompt_from_ui_input(input)?,
+            TypedUiInput::Camera(input) => CameraInterface::proto_prompt_from_ui_input(input)?,
         };
 
         Ok(proto)
@@ -259,6 +272,7 @@ impl TryFrom<TypedUiInput> for ProtoPrompt {
 #[serde(untagged)]
 pub enum TypedPromptReply {
     Home(PromptReply<HomeInterface>),
+    Camera(PromptReply<CameraInterface>),
 }
 
 impl TryFrom<ProtoPromptReply> for TypedPromptReply {
@@ -270,35 +284,61 @@ impl TryFrom<ProtoPromptReply> for TypedPromptReply {
             "recieved empty prompt_reply",
         ))?;
 
-        let (interface, raw_constraints) = match data {
-            ProtoConstraints::HomePromptReply(r) => (HomeInterface, r),
+        let reply = match data {
+            ProtoConstraints::HomePromptReply(r) => {
+                let constraints = HomeInterface
+                    .map_proto_reply_constraints(r)
+                    .map_err(Status::internal)?;
+
+                TypedPromptReply::Home(PromptReply {
+                    action: map_enum!(
+                        apparmor_prompting::Action => snapd_client::Action;
+                        [Allow, Deny];
+                        raw_reply.action();
+                    ),
+                    lifespan: map_enum!(
+                        apparmor_prompting::Lifespan => snapd_client::Lifespan;
+                        [Single, Session, Forever];
+                        raw_reply.lifespan();
+                    ),
+                    duration: None, // we don't currently use the Timespan variant for `lifespan`
+                    constraints,
+                })
+            }
+            ProtoConstraints::CameraPromptReply(r) => {
+                let constraints = CameraInterface
+                    .map_proto_reply_constraints(r)
+                    .map_err(Status::internal)?;
+
+                TypedPromptReply::Camera(PromptReply {
+                    action: map_enum!(
+                        apparmor_prompting::Action => snapd_client::Action;
+                        [Allow, Deny];
+                        raw_reply.action();
+                    ),
+                    lifespan: map_enum!(
+                        apparmor_prompting::Lifespan => snapd_client::Lifespan;
+                        [Single, Session, Forever];
+                        raw_reply.lifespan();
+                    ),
+                    duration: None, // we don't currently use the Timespan variant for `lifespan`
+                    constraints,
+                })
+            }
         };
 
-        let constraints = interface
-            .map_proto_reply_constraints(raw_constraints)
-            .map_err(Status::internal)?;
-
-        let reply = PromptReply {
-            action: map_enum!(
-                apparmor_prompting::Action => snapd_client::Action;
-                [Allow, Deny];
-                raw_reply.action();
-            ),
-            lifespan: map_enum!(
-                apparmor_prompting::Lifespan => snapd_client::Lifespan;
-                [Single, Session, Forever];
-                raw_reply.lifespan();
-            ),
-            duration: None, // we don't currently use the Timespan variant for `lifespan`
-            constraints,
-        };
-
-        Ok(TypedPromptReply::from(reply))
+        Ok(reply)
     }
 }
 
 impl From<PromptReply<HomeInterface>> for TypedPromptReply {
     fn from(value: PromptReply<HomeInterface>) -> Self {
         Self::Home(value)
+    }
+}
+
+impl From<PromptReply<CameraInterface>> for TypedPromptReply {
+    fn from(value: PromptReply<CameraInterface>) -> Self {
+        Self::Camera(value)
     }
 }

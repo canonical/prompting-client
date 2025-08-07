@@ -7,7 +7,7 @@ pub struct PromptReply {
     pub action: i32,
     #[prost(enumeration = "Lifespan", tag = "3")]
     pub lifespan: i32,
-    #[prost(oneof = "prompt_reply::PromptReply", tags = "4")]
+    #[prost(oneof = "prompt_reply::PromptReply", tags = "4, 5")]
     pub prompt_reply: ::core::option::Option<prompt_reply::PromptReply>,
 }
 /// Nested message and enum types in `PromptReply`.
@@ -16,6 +16,8 @@ pub mod prompt_reply {
     pub enum PromptReply {
         #[prost(message, tag = "4")]
         HomePromptReply(super::HomePromptReply),
+        #[prost(message, tag = "5")]
+        CameraPromptReply(super::CameraPromptReply),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -100,7 +102,7 @@ pub mod prompt_reply_response {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurrentPromptResponse {
-    #[prost(oneof = "get_current_prompt_response::Prompt", tags = "1")]
+    #[prost(oneof = "get_current_prompt_response::Prompt", tags = "1, 2")]
     pub prompt: ::core::option::Option<get_current_prompt_response::Prompt>,
 }
 /// Nested message and enum types in `GetCurrentPromptResponse`.
@@ -109,6 +111,8 @@ pub mod get_current_prompt_response {
     pub enum Prompt {
         #[prost(message, tag = "1")]
         HomePrompt(super::HomePrompt),
+        #[prost(message, tag = "2")]
+        CameraPrompt(super::CameraPrompt),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -118,6 +122,8 @@ pub struct HomePromptReply {
     #[prost(enumeration = "HomePermission", repeated, tag = "2")]
     pub permissions: ::prost::alloc::vec::Vec<i32>,
 }
+#[derive(Clone, Copy, PartialEq, ::prost::Message)]
+pub struct CameraPromptReply {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HomePrompt {
     #[prost(message, optional, tag = "1")]
@@ -150,6 +156,11 @@ pub mod home_prompt {
         #[prost(bool, tag = "3")]
         pub show_initially: bool,
     }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CameraPrompt {
+    #[prost(message, optional, tag = "1")]
+    pub meta_data: ::core::option::Option<MetaData>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetaData {

@@ -702,7 +702,7 @@ mod tests {
     #[test_case(&["read"], &["write"]; "none in available")]
     #[test]
     fn invalid_reply_permissions_error(available: &[&str], requested: &[&str]) {
-        let reply = PromptReply {
+        let reply: PromptReply<HomeInterface> = PromptReply {
             constraints: HomeReplyConstraints {
                 available_permissions: available.iter().map(|&s| s.into()).collect(),
                 ..Default::default()
