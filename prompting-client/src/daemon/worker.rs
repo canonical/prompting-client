@@ -196,7 +196,7 @@ where
         // FIXME: the UI closing without replying or actioning multiple prompts gets tricky (when can we spawn the next UI?)
         debug!("spawning UI");
         self.ui
-            .spawn(&[prompt.snap(), &prompt.pid().to_string()])
+            .spawn(&["--snap", prompt.snap(), "--app-id", &prompt.pid().to_string()])
             .await?;
 
         loop {
