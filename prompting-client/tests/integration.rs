@@ -92,6 +92,9 @@ macro_rules! expect_single_prompt {
             let id = pending.remove(0);
             let p = match $c.prompt_details(&id).await {
                 Ok(TypedPrompt::Home(p)) => p,
+                Ok(TypedPrompt::Camera(_)) => {
+                    panic!("unexpected camera prompt in home interface test")
+                }
                 Err(e) => panic!("error pulling prompt details: {e}"),
             };
 
