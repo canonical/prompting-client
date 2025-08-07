@@ -6,7 +6,7 @@ use crate::{
 use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use std::{collections::HashMap, env, str::FromStr};
+use std::{collections::HashMap, env, process::exit, str::FromStr};
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
 
@@ -140,7 +140,7 @@ where
     pub async fn exit_if_prompting_not_enabled(&self) -> Result<()> {
         if !self.is_prompting_enabled().await? {
             warn!("the prompting feature is not enabled: exiting");
-            return Err(Error::NotEnabled);
+            exit(0);
         }
 
         Ok(())
