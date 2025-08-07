@@ -165,6 +165,7 @@ where
 
     async fn pull_updates(
         rx_prompts: &mut UnboundedReceiver<PromptUpdate>,
+        running: &mut bool,
     ) -> Option<Vec<PromptUpdate>> {
         let mut updates = vec![];
         // As we continue processing updates while a prompt is active, we only block once there are
@@ -173,6 +174,7 @@ where
             match rx_prompts.recv().await {
                 Some(update) => updates.push(update),
                 None => {
+                    *running = false;
                     return None;
                 }
             }
@@ -186,6 +188,7 @@ where
                 Ok(update) => updates.push(update),
                 Err(TryRecvError::Empty) => break,
                 Err(TryRecvError::Disconnected) => {
+                    *running = false;
                     return None;
                 }
             }
@@ -314,7 +317,7 @@ where
         debug!("step");
 
         tokio::select! {
-            updates = Self::pull_updates(&mut self.rx_prompts) => {
+            updates = Self::pull_updates(&mut self.rx_prompts, &mut self.running) => {
                 if let Some(updates) = updates {
                     for update in updates {
                         self.process_update(update);
@@ -637,121 +640,134 @@ mod tests {
         assert_eq!(recv, Recv::ChannelClosed);
     }
 
-    // #[derive(Debug, Clone, Copy)]
-    // struct Reply {
-    //     active_prompt: &'static str,
-    //     sleep_ms: u64,
-    //     id: &'static str,
-    //     drop: &'static [&'static str],
-    // }
+    #[derive(Debug, Clone, Copy)]
+    struct Reply {
+        active_prompt: &'static str,
+        sleep_ms: u64,
+        id: &'static str,
+        drop: &'static [&'static str],
+    }
 
-    // fn rep(
-    //     active_prompt: &'static str,
-    //     sleep_ms: u64,
-    //     id: &'static str,
-    //     drop: &'static [&'static str],
-    // ) -> Reply {
-    //     Reply {
-    //         active_prompt,
-    //         sleep_ms,
-    //         id,
-    //         drop,
-    //     }
-    // }
+    fn rep(
+        active_prompt: &'static str,
+        sleep_ms: u64,
+        id: &'static str,
+        drop: &'static [&'static str],
+    ) -> Reply {
+        Reply {
+            active_prompt,
+            sleep_ms,
+            id,
+            drop,
+        }
+    }
 
-    // struct TestUi {
-    //     replies: Vec<Reply>,
-    //     tx: UnboundedSender<ActionedPrompt>,
-    //     active_prompt: ReadOnlyActivePrompt,
-    // }
+    struct TestUi {
+        replies: Vec<Reply>,
+        tx: UnboundedSender<ActionedPrompt>,
+        active_prompt: RefActivePrompt,
+    }
 
-    // impl SpawnUi for TestUi {
-    //      fn spawn(&mut self, _: &[&str]) -> Result<()> {
-    //         let Reply {
-    //             active_prompt,
-    //             sleep_ms,
-    //             id,
-    //             drop,
-    //         } = self.replies.remove(0);
+    impl SpawnUi for TestUi {
+        type Handle = TestDialogHandle;
+        fn spawn(&mut self, _: &[&str]) -> Result<Self::Handle> {
+            Ok(TestDialogHandle {
+                reply: self.replies.remove(0),
+                tx: self.tx.clone(),
+                active_prompt: self.active_prompt.clone(),
+            })
+        }
+    }
 
-    //         let ap = &self.active_prompt.get().expect("active prompt");
-    //         assert_eq!(active_prompt, ap.id().0, "incorrect active prompt");
+    struct TestDialogHandle {
+        reply: Reply,
+        tx: UnboundedSender<ActionedPrompt>,
+        active_prompt: RefActivePrompt,
+    }
 
-    //         let tx = self.tx.clone();
+    impl DialogHandle for TestDialogHandle {
+        async fn wait(&mut self) -> Result<ExitStatus> {
+            debug!("test dialog handle wait");
+            let ap = &self.active_prompt.get().expect("active prompt");
+            assert_eq!(
+                self.reply.active_prompt,
+                ap.id().0,
+                "incorrect active prompt"
+            );
 
-    //         // Send from a task so the Worker sees the UI "exit" and starts waiting for the reply
-    //         tokio::spawn(async move {
-    //             sleep(Duration::from_millis(sleep_ms)).await;
-    //             let _ = tx.send(ActionedPrompt::Actioned {
-    //                 id: PromptId(id.to_string()),
-    //                 others: drop.iter().map(|id| PromptId(id.to_string())).collect(),
-    //             });
-    //         });
+            sleep(Duration::from_millis(self.reply.sleep_ms)).await;
+            let _ = self.tx.send(ActionedPrompt::Actioned {
+                id: PromptId(self.reply.id.to_string()),
+                others: self
+                    .reply
+                    .drop
+                    .iter()
+                    .map(|id| PromptId(id.to_string()))
+                    .collect(),
+            });
 
-    //         Ok(())
-    //     }
-    // }
+            Ok(ExitStatus::default())
+        }
+    }
 
-    // #[test_case(vec![], &[]; "channel close without prompts")]
-    // #[test_case(vec![add("1")], &[rep("1", 10, "1", &[])]; "single")]
-    // #[test_case(
-    //     vec![add("1"), add("2"), add("3")],
-    //     &[rep("1", 10, "1", &[]), rep("2", 10, "2", &[]), rep("3", 10, "3", &[])];
-    //     "multiple"
-    // )]
-    // #[test_case(
-    //     vec![add("1"), add("2"), add("3")],
-    //     &[rep("1", 10, "1", &["2"]), rep("3", 10, "3", &[])];
-    //     "first reply actions second prompt as well"
-    // )]
-    // #[test_case(
-    //     vec![add("1"), add("2")],
-    //     &[rep("1", 200, "1", &[]), rep("2", 50, "2", &[])];
-    //     "delayed reply skips"
-    // )]
-    // #[test_case(
-    //     vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
-    //     &[rep("1", 10, "1", &[]), rep("3", 10, "3", &[]), rep("4", 10, "4", &[])];
-    //     "explicit drop of previous prompt"
-    // )]
-    // #[tokio::test]
-    // async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
-    //     let (tx_prompts, rx_prompts) = unbounded_channel();
-    //     let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
-    //     let active_prompt = Arc::new(Mutex::new(None));
-    //     let ui = TestUi {
-    //         replies: replies.to_vec(),
-    //         tx: tx_actioned_prompts,
-    //         active_prompt: ReadOnlyActivePrompt {
-    //             active_prompt: active_prompt.clone(),
-    //         },
-    //     };
+    #[test_case(vec![], &[]; "channel close without prompts")]
+    #[test_case(vec![add("1")], &[rep("1", 10, "1", &[])]; "single")]
+    #[test_case(
+        vec![add("1"), add("2"), add("3")],
+        &[rep("1", 10, "1", &[]), rep("2", 10, "2", &[]), rep("3", 10, "3", &[])];
+        "multiple"
+    )]
+    #[test_case(
+        vec![add("1"), add("2"), add("3")],
+        &[rep("1", 10, "1", &["2"]), rep("3", 10, "3", &[])];
+        "first reply actions second prompt as well"
+    )]
+    #[test_case(
+        vec![add("1"), add("2")],
+        &[rep("1", 200, "1", &[]), rep("2", 50, "2", &[])];
+        "delayed reply skips"
+    )]
+    #[test_case(
+        vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
+        &[rep("1", 10, "1", &[]), rep("3", 10, "3", &[]), rep("4", 10, "4", &[])];
+        "explicit drop of previous prompt"
+    )]
+    #[tokio::test]
+    async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
+        let (tx_prompts, rx_prompts) = unbounded_channel();
+        let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        let active_prompt = RefActivePrompt::new(None);
+        let ui = TestUi {
+            replies: replies.to_vec(),
+            tx: tx_actioned_prompts,
+            active_prompt: active_prompt.clone(),
+        };
 
-    //     let mut w = Worker {
-    //         rx_prompts,
-    //         rx_actioned_prompts,
-    //         active_prompt,
-    //         dialog_process: None,
-    //         pending_prompts: VecDeque::new(),
-    //         dead_prompts: vec![],
-    //         recv_timeout: Duration::from_millis(100),
-    //         ui,
-    //         client: StubClient,
-    //         running: true,
-    //     };
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt,
+            dialog_process: None,
+            pending_prompts: VecDeque::new(),
+            dead_prompts: vec![],
+            recv_timeout: Duration::from_millis(100),
+            ui,
+            client: StubClient,
+            running: true,
+        };
 
-    //     // We need this env var set to be able to generate the appropriate UI options
-    //     // for the home interface
-    //     env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        // We need this env var set to be able to generate the appropriate UI options
+        // for the home interface
+        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
-    //     for update in updates {
-    //         let _ = tx_prompts.send(update);
-    //     }
+        for update in updates {
+            let _ = tx_prompts.send(update);
+        }
 
-    //     drop(tx_prompts);
-    //     w.step().await.unwrap();
-    //     assert!(!w.running, "drop(tx_prompts) should shut down the worker");
-    // }
+        drop(tx_prompts);
+        w.step().await.unwrap();
+        assert!(!w.running, "drop(tx_prompts) should shut down the worker");
+    }
 
     // struct StubUi;
 
