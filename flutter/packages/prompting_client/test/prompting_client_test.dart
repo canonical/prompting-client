@@ -86,11 +86,14 @@ void main() {
           ),
         );
 
-        final promptDetailsFuture = client.getCurrentPrompt();
+        final promptDetailsStream = client.getCurrentPrompt();
         if (testCase.expectError) {
-          await expectLater(promptDetailsFuture, throwsArgumentError);
+          await expectLater(promptDetailsStream, throwsArgumentError);
         } else {
-          expect(await promptDetailsFuture, equals(testCase.expectedDetails));
+          await expectLater(
+            promptDetailsStream,
+            emits(testCase.expectedDetails),
+          );
         }
       });
     }
@@ -220,8 +223,8 @@ pb.AppArmorPromptingClient createMockClient({
 }) {
   final mockClient = MockAppArmorPromptingClient();
   when(mockClient.getCurrentPrompt(Empty())).thenAnswer(
-    (_) => MockResponseFuture(
-      currentPromptResponse ?? pb.GetCurrentPromptResponse(),
+    (_) => MockResponseStream(
+      Stream.value(currentPromptResponse ?? pb.GetCurrentPromptResponse()),
     ),
   );
   when(mockClient.replyToPrompt(any)).thenAnswer(
@@ -240,4 +243,12 @@ class MockResponseFuture<T> extends Mock implements ResponseFuture<T> {
         onValue,
         onError: onError,
       );
+}
+
+class MockResponseStream<T> extends Mock implements ResponseStream<T> {
+  MockResponseStream(this.stream);
+  final Stream<T> stream;
+
+  @override
+  Stream<S> map<S>(S Function(T event) convert) => stream.map(convert);
 }

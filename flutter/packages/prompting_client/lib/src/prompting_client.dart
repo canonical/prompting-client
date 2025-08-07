@@ -25,9 +25,8 @@ class PromptingClient {
 
   final pb.AppArmorPromptingClient _client;
 
-  Future<PromptDetails> getCurrentPrompt() => _client
-      .getCurrentPrompt(Empty())
-      .then(PrompteDetailsConversion.fromProto);
+  Stream<PromptDetails> getCurrentPrompt() =>
+      _client.getCurrentPrompt(Empty()).map(PrompteDetailsConversion.fromProto);
 
   Future<PromptReplyResponse> replyToPrompt(PromptReply reply) => _client
       .replyToPrompt(reply.toProto())
