@@ -50,6 +50,7 @@ Future<void> main(List<String> args) async {
     }
     registerService<PromptingClient>(
       () => FakeApparmorPromptingClient.fromFile(fileName),
+      dispose: (service) => (service as FakeApparmorPromptingClient).dispose(),
     );
   } else {
     final socketPath = Platform.environment[envVarSocketPath];
