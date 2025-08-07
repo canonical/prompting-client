@@ -18,6 +18,7 @@ message PromptReply {
     Lifespan lifespan = 3;
     oneof prompt_reply {
         HomePromptReply home_prompt_reply = 4;
+        CameraPromptReply camera_prompt_reply = 5;
     }
 }
 
@@ -87,6 +88,7 @@ enum HomePermission {
 message GetCurrentPromptResponse {
     oneof prompt {
         HomePrompt home_prompt = 1;
+        CameraPrompt camera_prompt = 2;
     }
 }
 
@@ -94,6 +96,8 @@ message HomePromptReply {
    string path_pattern = 1;
    repeated HomePermission permissions = 2;
 }
+
+message CameraPromptReply {}
 
 message HomePrompt {
     MetaData meta_data = 1;
@@ -110,6 +114,10 @@ message HomePrompt {
         bool show_initially = 3;
     };
     EnrichedPathKind enriched_path_kind = 9;
+}
+
+message CameraPrompt {
+    MetaData meta_data = 1;
 }
 
 enum HomePatternType {
