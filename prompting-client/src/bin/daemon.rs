@@ -5,7 +5,7 @@ use prompting_client::{
 };
 use std::{env, io::stdout};
 use tracing::subscriber::set_global_default;
-use tracing_subscriber::{layer::SubscriberExt, FmtSubscriber};
+use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main]
 async fn main() -> Result<()> {

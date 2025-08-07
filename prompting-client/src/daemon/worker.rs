@@ -429,14 +429,10 @@ where
 mod tests {
     use super::*;
     use crate::snapd_client::{
-        interfaces::home::{HomeConstraints, HomeReplyConstraints},
-        Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
+        interfaces::home::HomeConstraints, Prompt, TypedPrompt, TypedPromptReply,
     };
     use simple_test_case::test_case;
-    use std::{
-        env,
-        sync::{Arc, Mutex},
-    };
+    use std::env;
     use tokio::{
         sync::mpsc::{unbounded_channel, UnboundedSender},
         time::sleep,
