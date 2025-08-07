@@ -109,14 +109,21 @@ $ sudo apt install -y git gcc libssl-dev pkg-config protobuf-compiler
 #### Flutter
 
 [Install Flutter](https://flutter.dev/docs/get-started/install/linux) - the
-currently used version is specified in `.tool-versions`. If you're using
-[asdf](https://asdf-vm.com/) to manage your Flutter SDK, you can simply run
-`asdf install` to install the required version.
+currently used version is specified in `.fvmrc`. If you're using
+[fvm](https://fvm.app) to manage your Flutter SDK, you can simply run `fvm
+install` to install the required version.
 
-Install the [Flutter Linux prerequisites](https://docs.flutter.dev/get-started/install/linux#linux-prerequisites)
+Install the [Flutter Linux
+prerequisites](https://docs.flutter.dev/get-started/install/linux#linux-prerequisites)
 
-We provide a [Melos](https://docs.page/invertase/melos) configuration to make
-it straightforward to execute common tasks.
+We provide a [Melos](https://docs.page/invertase/melos) configuration to make it
+straightforward to execute common tasks.
+
+Install fvm (you can also install it from the scripts directory in the
+repository):
+```bash
+$ curl -fsSL https://fvm.app/install.sh | bash
+```
 
 Install Melos:
 ```bash
