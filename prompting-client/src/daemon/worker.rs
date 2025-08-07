@@ -319,6 +319,7 @@ where
         Ok(())
     }
 
+<<<<<<< HEAD
     async fn wait_for_ui_reply(&mut self, cgroup: &Cgroup) -> Result<()> {
         debug!("waiting for ui reply");
         let exit_code = self
@@ -500,8 +501,11 @@ where
 
         debug!("spawning UI");
         let dialog_process = self.ui.spawn(&[
+            "--snap",
             enriched_prompt.prompt.snap(),
+            "--app-id",
             &enriched_prompt.prompt.pid().to_string(),
+            "--cgroup",
             &enriched_prompt.prompt.cgroup().0,
         ])?;
         self.dialog_processes.insert(cgroup.clone(), dialog_process);

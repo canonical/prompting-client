@@ -1,7 +1,5 @@
 #include "my_application.h"
 
-#include <gdk/gdk.h>
-#include <glib.h>
 #include <flutter_linux/flutter_linux.h>
 #include <gtk/gtk.h>
 #include <unistd.h>
@@ -20,7 +18,6 @@ G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
 // Signal the Shell about a permission prompting is in progress.
 void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
-
   // If snap_name or app_id is not set, we cannot signal the GNOME Shell.
   if (snap_name == NULL || app_id == 0) {
     g_warning("Failed to extract snap name or app ID from the arguments to signal it to GNOME Shell");
@@ -35,22 +32,21 @@ void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
     return;
   }
 
-  g_dbus_connection_call_sync (bus,
-    "com.canonical.Shell.PermissionPrompting",
-    "/com/canonical/Shell/PermissionPrompting",
-    "com.canonical.Shell.PermissionPrompting",
-    "Prompt",
-    g_variant_new ("(st)", snap_name, app_id),
-    NULL,
-    G_DBUS_CALL_FLAGS_NONE,
-    -1,
-    NULL,
-    &error);
-  
-    if (error != NULL) {
-      g_warning("Failed to signal GNOME Shell about in progress prompting: %s", error->message);
+  if (!g_dbus_connection_call_sync (bus,
+                                    "com.canonical.Shell.PermissionPrompting",
+                                    "/com/canonical/Shell/PermissionPrompting",
+                                    "com.canonical.Shell.PermissionPrompting",
+                                    "Prompt",
+                                    g_variant_new ("(st)", snap_name, app_id),
+                                    NULL,
+                                    G_DBUS_CALL_FLAGS_NONE,
+                                    -1,
+                                    NULL,
+                                    &error)) {
+      g_warning("Failed to signal GNOME Shell about in progress prompting: %s",
+                  error->message);
       return;
-    }
+  }
 }
 
 // Implements GApplication::activate.
@@ -96,29 +92,10 @@ static void my_application_activate(GApplication* application) {
 
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
 
-  // Extract the first two arguments that don't have leading dashes from dart_entrypoint_arguments.
-  char *snap_name = NULL;
-  guint64 app_id = 0;
-  for (uint i = 0; self->dart_entrypoint_arguments[i] != NULL; i++) {
-    char *arg = self->dart_entrypoint_arguments[i];
-    if (*arg == '-') {
-      continue;
-    }
+  // Retrieve parsed arguments
+  char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
+  guint64 app_id = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_id"));
 
-    if (snap_name == NULL) {
-      snap_name = arg;
-      continue;
-    }
-
-    app_id = g_ascii_strtoull(arg, NULL, 10);
-    if (errno != 0 || app_id == 0) {
-      app_id = 0;
-      g_warning("failed to get PID from the application prompted for: %s is not a valid uint64", arg);
-    }
-
-    break;
-  }
-  
   signal_prompting_to_gnome_shell(snap_name, app_id);
 
   gtk_widget_show(GTK_WIDGET(window));
@@ -131,8 +108,32 @@ static void my_application_activate(GApplication* application) {
 // Implements GApplication::local_command_line.
 static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
   MyApplication* self = MY_APPLICATION(application);
+  // Parse command line arguments
+  char *snap_name = NULL;
+  guint64 app_id = 0;
+
+  GOptionEntry entries[] = {
+    { "snap", 0, 0, G_OPTION_ARG_STRING, &snap_name, "Snap name", NULL },
+    { "app-id", 0, 0, G_OPTION_ARG_INT64, &app_id, "Application ID", NULL },
+    { NULL }
+  };
+
+  g_autoptr(GOptionContext) context = g_option_context_new(NULL);
+  g_option_context_add_main_entries(context, entries, NULL);
+
+  // This will strip out the named arguments, which the Flutter application cannot parse
+  if (!g_option_context_parse_strv(context, arguments, NULL)) {
+    g_warning("Failed to parse arguments");
+    *exit_status = 1;
+    return TRUE;
+  }
+
   // Strip out the first argument as it is the binary name.
   self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
+
+  // Store parsed values for activate callback
+  g_object_set_data_full(G_OBJECT(application), "snap_name", g_strdup(snap_name), g_free);
+  g_object_set_data(G_OBJECT(application), "app_id", GUINT_TO_POINTER(app_id));
 
   g_autoptr(GError) error = nullptr;
   if (!g_application_register(application, nullptr, &error)) {
