@@ -32,6 +32,14 @@ Future<void> main(List<String> args) async {
       'test-prompt',
       help: 'Path to a JSON file containing the test prompt',
       defaultsTo: 'test/test_prompts/test_home_prompt_details.json',
+    )
+    ..addOption(
+      'snap',
+      help: 'Snap name',
+    )
+    ..addOption(
+      'app-pid',
+      help: 'Application PID',
     );
 
   final ArgResults argResults;
@@ -40,6 +48,14 @@ Future<void> main(List<String> args) async {
   } on FormatException catch (_) {
     stdout.writeln(parser.usage);
     exit(2);
+  }
+
+  // Log parsed arguments for debugging
+  if (argResults['snap'] != null) {
+    log.debug('Snap name: ${argResults['snap']}');
+  }
+  if (argResults['app-pid'] != null) {
+    log.debug('App PID: ${argResults['app-pid']}');
   }
 
   if (argResults.flag('dry-run')) {
