@@ -140,6 +140,7 @@ where
     pub async fn exit_if_prompting_not_enabled(&self) -> Result<()> {
         if !self.is_prompting_enabled().await? {
             warn!("the prompting feature is not enabled: exiting");
+            // TODO: use a different exit code when support for `SuccessExitStatus=` is added in snapcraft
             exit(0);
         }
 
