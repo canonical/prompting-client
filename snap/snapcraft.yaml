@@ -24,6 +24,7 @@ apps:
       - audio-playback
       - audio-record
       - snap-interfaces-requests-control
+      - gnome-shell-permission-prompting
 
   echo:
     command: bin/prompting-client-echo
@@ -51,6 +52,10 @@ apps:
 plugs:
   snap-interfaces-requests-control:
     handler-service: daemon
+  gnome-shell-permission-prompting:
+    interface: dbus
+    bus: session
+    name: com.canonical.Shell.PermissionPrompting
 
 parts:
   fvm:
