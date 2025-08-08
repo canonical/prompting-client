@@ -319,7 +319,6 @@ where
         Ok(())
     }
 
-<<<<<<< HEAD
     async fn wait_for_ui_reply(&mut self, cgroup: &Cgroup) -> Result<()> {
         debug!("waiting for ui reply");
         let exit_code = self
