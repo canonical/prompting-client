@@ -37,7 +37,7 @@ apps:
     daemon: simple
     passthrough: # TODO: Remove once daemon-scope lands in snapcraft
       daemon-scope: user
-    restart-condition: on-success
+    restart-condition: on-failure
     restart-delay: 2s
 
   # Doesn't need access to home or snapd
