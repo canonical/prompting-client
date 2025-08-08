@@ -199,7 +199,7 @@ where
             .spawn(&[
                 "--snap",
                 prompt.snap(),
-                "--app-id",
+                "--app-pid",
                 &prompt.pid().to_string(),
             ])
             .await?;

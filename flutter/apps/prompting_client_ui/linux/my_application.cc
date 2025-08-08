@@ -17,10 +17,10 @@ struct _MyApplication {
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
 
 // Signal the Shell about a permission prompting is in progress.
-void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
-  // If snap_name or app_id is not set, we cannot signal the GNOME Shell.
-  if (snap_name == NULL || app_id == 0) {
-    g_warning("Failed to extract snap name or app ID from the arguments to signal it to GNOME Shell");
+void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_pid) {
+  // If snap_name or app_pid is not set, we cannot signal the GNOME Shell.
+  if (snap_name == NULL || app_pid == 0) {
+    g_warning("Failed to extract snap name or app PID from the arguments to signal it to GNOME Shell");
     return;
   }
 
@@ -37,7 +37,7 @@ void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_id) {
                                     "/com/canonical/Shell/PermissionPrompting",
                                     "com.canonical.Shell.PermissionPrompting",
                                     "Prompt",
-                                    g_variant_new ("(st)", snap_name, app_id),
+                                    g_variant_new ("(st)", snap_name, app_pid),
                                     NULL,
                                     G_DBUS_CALL_FLAGS_NONE,
                                     -1,
@@ -94,9 +94,9 @@ static void my_application_activate(GApplication* application) {
 
   // Retrieve parsed arguments
   char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
-  guint64 app_id = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_id"));
+  guint64 app_pid = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_pid"));
 
-  signal_prompting_to_gnome_shell(snap_name, app_id);
+  signal_prompting_to_gnome_shell(snap_name, app_pid);
 
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
@@ -108,32 +108,36 @@ static void my_application_activate(GApplication* application) {
 // Implements GApplication::local_command_line.
 static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
   MyApplication* self = MY_APPLICATION(application);
+  
+  // Make a copy of arguments for GOption parsing (which mutates the array)
+  g_auto(GStrv) args_copy = g_strdupv(*arguments);
+  
   // Parse command line arguments
   char *snap_name = NULL;
-  guint64 app_id = 0;
+  guint64 app_pid = 0;
 
   GOptionEntry entries[] = {
     { "snap", 0, 0, G_OPTION_ARG_STRING, &snap_name, "Snap name", NULL },
-    { "app-id", 0, 0, G_OPTION_ARG_INT64, &app_id, "Application ID", NULL },
+    { "app-pid", 0, 0, G_OPTION_ARG_INT64, &app_pid, "Application PID", NULL },
     { NULL }
   };
 
   g_autoptr(GOptionContext) context = g_option_context_new(NULL);
   g_option_context_add_main_entries(context, entries, NULL);
 
-  // This will strip out the named arguments, which the Flutter application cannot parse
-  if (!g_option_context_parse_strv(context, arguments, NULL)) {
+  // Parse the copied arguments (this will mutate args_copy)
+  if (!g_option_context_parse_strv(context, &args_copy, NULL)) {
     g_warning("Failed to parse arguments");
     *exit_status = 1;
     return TRUE;
   }
 
-  // Strip out the first argument as it is the binary name.
+  // Pass the original arguments to Flutter (strip out the first argument as it is the binary name)
   self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
 
   // Store parsed values for activate callback
   g_object_set_data_full(G_OBJECT(application), "snap_name", g_strdup(snap_name), g_free);
-  g_object_set_data(G_OBJECT(application), "app_id", GUINT_TO_POINTER(app_id));
+  g_object_set_data(G_OBJECT(application), "app_pid", GUINT_TO_POINTER(app_pid));
 
   g_autoptr(GError) error = nullptr;
   if (!g_application_register(application, nullptr, &error)) {
