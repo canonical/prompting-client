@@ -92,3 +92,21 @@ pub enum Error {
 
 /// Convenience Result type where E is an [Error] by default.
 pub type Result<T, E = Error> = std::result::Result<T, E>;
+
+// TODO: use a 1 for `PromptingDisabled` when support for `SuccessExitStatus=` is added in snapcraft
+/// Represents the possible exit statuses for the prompting client.
+#[derive(Debug, Clone, Copy)]
+pub enum ExitStatus {
+    /// Success - prompting disabled
+    PromptingDisabled = 0,
+    /// Error - no display environment available
+    NoDisplayEnvironment = 2,
+    /// Error - snapd permission denied
+    PermissionDenied = 3,
+    /// Error - long poll failed
+    LongPollFail = 4,
+}
+
+pub fn exit_with(status: ExitStatus) -> ! {
+    std::process::exit(status as i32);
+}
