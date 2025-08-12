@@ -102,7 +102,10 @@ impl SnapdSocketClient {
     }
 
     pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
-        let socket = if env::var("SNAP_NAME").is_ok() {
+        let socket = if let Ok(socket_override) = env::var("SNAPD_SOCKET_OVERRIDE") {
+            info!("using override for the snap socket at address: {socket_override}");
+            &socket_override.clone()
+        } else if env::var("SNAP_NAME").is_ok() {
             if UnixStream::connect(SNAPD_ABSTRACT_SNAP_SOCKET)
                 .await
                 .is_ok()
