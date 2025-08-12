@@ -101,6 +101,6 @@ parts:
 
   desktop-files:
     plugin: dump
-    source: .
+    source: snap/gui
     organize:
-      snap/gui/prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
+      prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
