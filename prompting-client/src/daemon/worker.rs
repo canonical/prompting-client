@@ -434,7 +434,10 @@ mod tests {
     use simple_test_case::test_case;
     use std::env;
     use tokio::{
-        sync::mpsc::{unbounded_channel, UnboundedSender},
+        sync::{
+            mpsc::{unbounded_channel, UnboundedSender},
+            oneshot,
+        },
         time::sleep,
     };
     use tonic::async_trait;
@@ -662,15 +665,29 @@ mod tests {
         replies: Vec<Reply>,
         tx: UnboundedSender<ActionedPrompt>,
         active_prompt: RefActivePrompt,
+        tx_done: Option<oneshot::Sender<()>>,
     }
 
     impl SpawnUi for TestUi {
         type Handle = TestDialogHandle;
         fn spawn(&mut self, _: &[&str]) -> Result<Self::Handle> {
+            debug!("spawning test ui");
+            let reply = self.replies.remove(0);
+            let tx = self.tx.clone();
+            let active_prompt = self.active_prompt.clone();
+            let reply_sent = false;
+            let tx_done = self
+                .replies
+                .is_empty()
+                .then(|| self.tx_done.take())
+                .flatten();
+
             Ok(TestDialogHandle {
-                reply: self.replies.remove(0),
-                tx: self.tx.clone(),
-                active_prompt: self.active_prompt.clone(),
+                reply,
+                tx,
+                active_prompt,
+                reply_sent,
+                tx_done,
             })
         }
     }
@@ -679,11 +696,18 @@ mod tests {
         reply: Reply,
         tx: UnboundedSender<ActionedPrompt>,
         active_prompt: RefActivePrompt,
+        reply_sent: bool,
+        tx_done: Option<oneshot::Sender<()>>,
     }
 
     impl DialogHandle for TestDialogHandle {
         async fn wait(&mut self) -> Result<ExitStatus> {
             debug!("test dialog handle wait");
+
+            if self.reply_sent {
+                return Ok(ExitStatus::default());
+            }
+
             let ap = &self.active_prompt.get().expect("active prompt");
             assert_eq!(
                 self.reply.active_prompt,
@@ -701,6 +725,11 @@ mod tests {
                     .map(|id| PromptId(id.to_string()))
                     .collect(),
             });
+
+            self.reply_sent = true;
+            if let Some(tx_done) = self.tx_done.take() {
+                tx_done.send(()).expect("to send");
+            }
 
             Ok(ExitStatus::default())
         }
@@ -732,11 +761,13 @@ mod tests {
     async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
         let (tx_prompts, rx_prompts) = unbounded_channel();
         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        let (tx_done, rx_done) = oneshot::channel();
         let active_prompt = RefActivePrompt::new(None);
         let ui = TestUi {
             replies: replies.to_vec(),
             tx: tx_actioned_prompts,
             active_prompt: active_prompt.clone(),
+            tx_done: Some(tx_done),
         };
 
         let mut w = Worker {
@@ -760,9 +791,17 @@ mod tests {
             let _ = tx_prompts.send(update);
         }
 
+        let handle = tokio::spawn(async move {
+            w.run().await.unwrap();
+            assert!(!w.running, "drop(tx_prompts) should shut down the worker");
+        });
+
+        // wait for the Test UI to signal that all prompts have been handled
+        rx_done.await.expect("done");
+
+        // drop the channel to stop the worker
         drop(tx_prompts);
-        w.step().await.unwrap();
-        assert!(!w.running, "drop(tx_prompts) should shut down the worker");
+        handle.await.expect("worker shuts down");
     }
 
     // struct StubUi;
