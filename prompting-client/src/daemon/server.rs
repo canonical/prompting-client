@@ -342,7 +342,7 @@ mod tests {
     };
     use uuid::Uuid;
 
-    #[derive(Clone)]
+    #[derive(Debug, Clone)]
     struct MockClient {
         want_err: bool,
         expected_reply: Option<TypedPromptReply>,

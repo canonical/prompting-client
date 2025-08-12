@@ -7,6 +7,7 @@ use crate::{
 use std::{
     collections::VecDeque,
     env,
+    fmt::Debug,
     process::ExitStatus,
     sync::{Arc, Mutex},
     time::Duration,
@@ -31,12 +32,19 @@ enum Recv {
     ChannelClosed,
 }
 
+#[derive(Debug)]
 pub struct RefActivePrompt(Arc<Mutex<Option<ActivePrompt>>>);
 
 pub struct ActivePrompt {
     pub(crate) typed_ui_input: TypedUiInput,
     pub(crate) enriched_prompt: EnrichedPrompt,
     pub(crate) ui_handle: Option<Handle>,
+}
+
+impl Debug for ActivePrompt {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "some active prompt")
+    }
 }
 
 impl RefActivePrompt {
@@ -73,10 +81,11 @@ impl Clone for RefActivePrompt {
     }
 }
 
-pub trait DialogHandle {
+pub trait DialogHandle: Debug {
     async fn wait(&mut self) -> Result<ExitStatus>;
 }
 
+#[derive(Debug)]
 pub struct DialogProcess(Child);
 
 impl DialogHandle for DialogProcess {
@@ -85,11 +94,12 @@ impl DialogHandle for DialogProcess {
     }
 }
 
-pub trait SpawnUi {
+pub trait SpawnUi: Debug {
     type Handle;
     fn spawn(&mut self, args: &[&str]) -> Result<Self::Handle>;
 }
 
+#[derive(Debug)]
 pub struct FlutterUi {
     cmd: String,
 }
@@ -101,6 +111,7 @@ impl SpawnUi for FlutterUi {
     }
 }
 
+#[derive(Debug)]
 pub struct Worker<S, R, D>
 where
     S: SpawnUi,
@@ -442,6 +453,7 @@ mod tests {
     };
     use tonic::async_trait;
 
+    #[derive(Debug)]
     struct StubClient;
 
     #[async_trait]
@@ -661,6 +673,7 @@ mod tests {
         }
     }
 
+    #[derive(Debug)]
     struct TestUi {
         replies: Vec<Reply>,
         tx: UnboundedSender<ActionedPrompt>,
@@ -692,6 +705,7 @@ mod tests {
         }
     }
 
+    #[derive(Debug)]
     struct TestDialogHandle {
         reply: Reply,
         tx: UnboundedSender<ActionedPrompt>,
