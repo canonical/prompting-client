@@ -3,7 +3,7 @@ use crate::{
     Result, SOCKET_ENV_VAR,
 };
 use serde::{Deserialize, Serialize};
-use std::{env, fs, sync::Arc};
+use std::{env, fmt::Debug, fs, sync::Arc};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio_stream::wrappers::UnixListenerStream;
 use tonic::{async_trait, transport::Server};
@@ -19,7 +19,7 @@ use server::new_server_and_listener;
 use worker::Worker;
 
 #[async_trait]
-pub trait ReplyToPrompt: Send + Sync + 'static {
+pub trait ReplyToPrompt: Debug + Send + Sync + 'static {
     async fn reply(&self, id: &PromptId, reply: TypedPromptReply) -> crate::Result<Vec<PromptId>>;
 }
 
