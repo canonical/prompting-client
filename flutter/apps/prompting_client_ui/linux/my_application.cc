@@ -44,8 +44,7 @@ void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_pid) {
                                     NULL,
                                     &error)) {
       g_warning("Failed to signal GNOME Shell about in progress prompting: %s",
-                  error->message);
-      return;
+                error->message);
   }
 }
 
@@ -96,7 +95,9 @@ static void my_application_activate(GApplication* application) {
   char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
   guint64 app_pid = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_pid"));
 
-  signal_prompting_to_gnome_shell(snap_name, app_pid);
+  const char *session = g_getenv ("XDG_CURRENT_DESKTOP");
+  if (session && strstr (session, "GNOME"))
+      signal_prompting_to_gnome_shell(snap_name, app_pid);
 
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
@@ -113,10 +114,10 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   g_auto(GStrv) args_copy = g_strdupv(*arguments);
   
   // Parse command line arguments
-  char *snap_name = NULL;
+  g_autofree char *snap_name = NULL;
   guint64 app_pid = 0;
 
-  GOptionEntry entries[] = {
+  static const GOptionEntry entries[] = {
     { "snap", 0, 0, G_OPTION_ARG_STRING, &snap_name, "Snap name", NULL },
     { "app-pid", 0, 0, G_OPTION_ARG_INT64, &app_pid, "Application PID", NULL },
     { NULL }
@@ -136,7 +137,7 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
 
   // Store parsed values for activate callback
-  g_object_set_data_full(G_OBJECT(application), "snap_name", g_strdup(snap_name), g_free);
+  g_object_set_data_full(G_OBJECT(application), "snap_name", g_steal_pointer(&snap_name), g_free);
   g_object_set_data(G_OBJECT(application), "app_pid", GUINT_TO_POINTER(app_pid));
 
   g_autoptr(GError) error = nullptr;
