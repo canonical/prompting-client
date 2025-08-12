@@ -79,7 +79,7 @@ parts:
     build-packages:
       - libssl-dev
       - pkg-config
-      - protobuf-compiler      
+      - protobuf-compiler
       - libprotobuf-dev
 
   prompting-client-ui:
