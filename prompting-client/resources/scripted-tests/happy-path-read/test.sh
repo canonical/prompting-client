@@ -4,7 +4,7 @@
 # file be present in the output directory.
 
 PREFIX="$1"
-TEST_DIR="/home/ubuntu/test/$PREFIX"
+TEST_DIR="$HOME/test/$PREFIX"
 
 prompting-client.scripted \
   --script="$TEST_DIR/prompt-sequence.json" \
