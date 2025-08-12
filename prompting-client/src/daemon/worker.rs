@@ -801,7 +801,7 @@ mod tests {
         // for the home interface
         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
-        for update in updates {
+        for update in updates.clone() {
             let _ = tx_prompts.send(update);
         }
 
@@ -811,7 +811,9 @@ mod tests {
         });
 
         // wait for the Test UI to signal that all prompts have been handled
-        rx_done.await.expect("done");
+        if !updates.is_empty() {
+            rx_done.await.expect("done");
+        }
 
         // drop the channel to stop the worker
         drop(tx_prompts);
