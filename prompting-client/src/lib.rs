@@ -92,3 +92,15 @@ pub enum Error {
 
 /// Convenience Result type where E is an [Error] by default.
 pub type Result<T, E = Error> = std::result::Result<T, E>;
+
+/// Represents the possible exit statuses for the prompting client.
+#[derive(Debug, Clone, Copy)]
+pub enum ExitStatus {
+    Success = 0,
+    Failure = 1,
+    PromptingDisabled = 8,
+}
+
+pub fn exit_with(status: ExitStatus) -> ! {
+    std::process::exit(status as i32);
+}

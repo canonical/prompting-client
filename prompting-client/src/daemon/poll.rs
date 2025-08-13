@@ -6,12 +6,13 @@
 //! mapping into the data required for the prompt UI.
 use crate::{
     daemon::{EnrichedPrompt, PromptUpdate},
+    exit_with,
     snapd_client::{PromptId, PromptNotice, SnapMeta, SnapdSocketClient, TypedPrompt},
-    Error,
+    Error, ExitStatus,
 };
 use cached::proc_macro::cached;
 use hyper::StatusCode;
-use std::{process::exit, time::Duration};
+use std::time::Duration;
 use tokio::{sync::mpsc::UnboundedSender, time::sleep};
 use tracing::{debug, error, info, warn};
 
@@ -77,7 +78,7 @@ impl PollLoop {
                     // then we trigger a restart with snapd so that our startup checks can run
                     // again and we avoid spinning if snapd is now reporting that prompting is not
                     // enabled / supported.
-                    exit(0);
+                    exit_with(ExitStatus::Failure);
                 }
 
                 Err(error) if retries < MAX_POLL_RETRIES => {
@@ -89,7 +90,7 @@ impl PollLoop {
 
                 Err(error) => {
                     error!(%error, "retries exceeded trying to establish notices long poll: exiting");
-                    exit(0);
+                    exit_with(ExitStatus::Failure);
                 }
             };
 

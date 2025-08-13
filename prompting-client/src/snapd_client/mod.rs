@@ -1,7 +1,8 @@
 use crate::{
+    exit_with,
     snapd_client::{prompt::RawPrompt, response::parse_response},
     socket_client::UnixSocketClient,
-    Error, Result,
+    Error, ExitStatus, Result,
 };
 use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
@@ -135,12 +136,13 @@ where
         info.prompting_enabled()
     }
 
-    /// If prompting is not currently enabled then we exit non-0 to ensure that systemd does not
-    /// restart us. Instead, snapd will ensure that we are started when the flag is enabled.
+    /// If prompting is not currently enabled then we exit with code 0 to avoid systemd marking
+    /// the service as failed. Instead, snapd will ensure that we are started when the flag is enabled.
     pub async fn exit_if_prompting_not_enabled(&self) -> Result<()> {
         if !self.is_prompting_enabled().await? {
             warn!("the prompting feature is not enabled: exiting");
-            return Err(Error::NotEnabled);
+            // TODO: use `ExitStatus::PromptingDisabled` code when support for `SuccessExitStatus=` lands in snapcraft: https://github.com/canonical/snapcraft/issues/5692
+            exit_with(ExitStatus::Success);
         }
 
         Ok(())
