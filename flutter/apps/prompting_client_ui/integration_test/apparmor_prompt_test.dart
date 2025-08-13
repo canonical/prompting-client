@@ -11,7 +11,6 @@ import 'package:yaru_test/yaru_test.dart';
 import '../test/test_utils.dart';
 
 void main() {
-  tearDown(resetAllServices);
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   YaruTestWindow.ensureInitialized();
 
