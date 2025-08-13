@@ -106,7 +106,7 @@ pub struct FlutterUi {
 
 impl SpawnUi for FlutterUi {
     type Handle = DialogProcess;
-    fn spawn(&mut self, args: &[&str]) -> Result<Self::Handle> {
+    fn spawn(&mut self, args: &[&str]) -> Result<DialogProcess> {
         Ok(DialogProcess(Command::new(&self.cmd).args(args).spawn()?))
     }
 }
@@ -683,7 +683,7 @@ mod tests {
 
     impl SpawnUi for TestUi {
         type Handle = TestDialogHandle;
-        fn spawn(&mut self, _: &[&str]) -> Result<Self::Handle> {
+        fn spawn(&mut self, _: &[&str]) -> Result<TestDialogHandle> {
             debug!("spawning test ui");
             let reply = self.replies.remove(0);
             let tx = self.tx.clone();
