@@ -224,6 +224,7 @@ where
 
         if let Some(active_prompt) = guard.as_mut() {
             if active_prompt.typed_ui_input.id() == &id {
+                debug!("dropping UI handle for {:?}", &id);
                 active_prompt.ui_handle.take();
             }
         }
@@ -356,12 +357,6 @@ where
         enriched_prompt: EnrichedPrompt,
         typed_ui_input: TypedUiInput,
     ) -> Result<()> {
-        debug!("spawning UI");
-        let dialog_process = self.ui.spawn(&[
-            enriched_prompt.prompt.snap(),
-            &enriched_prompt.prompt.pid().to_string(),
-        ])?;
-
         let mut guard = match self.active_prompt.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
@@ -373,9 +368,16 @@ where
         debug!("updating active prompt");
         guard.replace(ActivePrompt {
             typed_ui_input,
-            enriched_prompt,
+            enriched_prompt: enriched_prompt.clone(),
             ui_handle,
         });
+        drop(guard);
+
+        debug!("spawning UI");
+        let dialog_process = self.ui.spawn(&[
+            enriched_prompt.prompt.snap(),
+            &enriched_prompt.prompt.pid().to_string(),
+        ])?;
         self.dialog_process.replace(dialog_process);
 
         Ok(())
@@ -468,7 +470,7 @@ mod tests {
         }
     }
 
-    fn ep(id: &str) -> EnrichedPrompt {
+    fn enriched_prompt(id: &str) -> EnrichedPrompt {
         EnrichedPrompt {
             prompt: TypedPrompt::Home(Prompt {
                 id: PromptId(id.to_string()),
@@ -483,7 +485,7 @@ mod tests {
     }
 
     fn add(id: &str) -> PromptUpdate {
-        PromptUpdate::Add(ep(id))
+        PromptUpdate::Add(enriched_prompt(id))
     }
 
     fn drop_id(id: &str) -> PromptUpdate {
@@ -497,7 +499,10 @@ mod tests {
     fn process_update(update: PromptUpdate, current_pending: &[&str], expected_pending: &[&str]) {
         let (_, rx_prompts) = unbounded_channel();
         let (_, rx_actioned_prompts) = unbounded_channel();
-        let pending_prompts = current_pending.iter().map(|id| ep(id)).collect();
+        let pending_prompts = current_pending
+            .iter()
+            .map(|id| enriched_prompt(id))
+            .collect();
 
         let mut w = Worker {
             rx_prompts,
@@ -654,20 +659,20 @@ mod tests {
 
     #[derive(Debug, Clone, Copy)]
     struct Reply {
-        active_prompt: &'static str,
+        active_prompt_id: &'static str,
         sleep_ms: u64,
         id: &'static str,
         drop: &'static [&'static str],
     }
 
-    fn rep(
-        active_prompt: &'static str,
+    fn reply(
+        active_prompt_id: &'static str,
         sleep_ms: u64,
         id: &'static str,
         drop: &'static [&'static str],
     ) -> Reply {
         Reply {
-            active_prompt,
+            active_prompt_id,
             sleep_ms,
             id,
             drop,
@@ -695,81 +700,98 @@ mod tests {
                 .is_empty()
                 .then(|| self.tx_done.take())
                 .flatten();
+            let context = self.active_prompt.get_context().expect("to get a context");
 
             Ok(TestDialogHandle {
                 reply,
                 tx,
                 active_prompt,
-                reply_sent,
+                context,
+                closed: reply_sent,
                 tx_done,
             })
         }
     }
 
-    #[derive(Debug)]
     struct TestDialogHandle {
         reply: Reply,
         tx: UnboundedSender<ActionedPrompt>,
         active_prompt: RefActivePrompt,
-        reply_sent: bool,
+        context: Context,
+        closed: bool,
         tx_done: Option<oneshot::Sender<()>>,
+    }
+
+    impl Debug for TestDialogHandle {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "TestDialogHandle")
+        }
     }
 
     impl DialogHandle for TestDialogHandle {
         async fn wait(&mut self) -> Result<ExitStatus> {
             debug!("test dialog handle wait");
 
-            if self.reply_sent {
+            if self.closed {
+                debug!("dialog already closed");
                 return Ok(ExitStatus::default());
             }
 
-            let ap = &self.active_prompt.get().expect("active prompt");
+            let active_prompt = &self.active_prompt.get().expect("active prompt");
             assert_eq!(
-                self.reply.active_prompt,
-                ap.id().0,
+                self.reply.active_prompt_id,
+                active_prompt.id().0,
                 "incorrect active prompt"
             );
 
-            sleep(Duration::from_millis(self.reply.sleep_ms)).await;
-            let _ = self.tx.send(ActionedPrompt::Actioned {
-                id: PromptId(self.reply.id.to_string()),
-                others: self
-                    .reply
-                    .drop
-                    .iter()
-                    .map(|id| PromptId(id.to_string()))
-                    .collect(),
-            });
+            tokio::select! {
+                _ = self.context.done() => {
+                    debug!("test UI got closed before sending a reply");
+                },
+                _ = sleep(Duration::from_millis(self.reply.sleep_ms)) => {
+                    let _ = self.tx.send(ActionedPrompt::Actioned {
+                        id: PromptId(self.reply.id.to_string()),
+                        others: self
+                            .reply
+                            .drop
+                            .iter()
+                            .map(|id| PromptId(id.to_string()))
+                            .collect(),
+                    });
 
-            self.reply_sent = true;
+
+                },
+            };
+
             if let Some(tx_done) = self.tx_done.take() {
                 tx_done.send(()).expect("to send");
             }
+            self.closed = true;
 
             Ok(ExitStatus::default())
         }
     }
 
     #[test_case(vec![], &[]; "channel close without prompts")]
-    #[test_case(vec![add("1")], &[rep("1", 10, "1", &[])]; "single")]
+    #[test_case(vec![add("1")], &[reply("1", 10, "1", &[])]; "single")]
     #[test_case(
         vec![add("1"), add("2"), add("3")],
-        &[rep("1", 10, "1", &[]), rep("2", 10, "2", &[]), rep("3", 10, "3", &[])];
+        &[reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])];
         "multiple"
     )]
     #[test_case(
         vec![add("1"), add("2"), add("3")],
-        &[rep("1", 10, "1", &["2"]), rep("3", 10, "3", &[])];
+        &[reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])];
         "first reply actions second prompt as well"
     )]
     #[test_case(
         vec![add("1"), add("2")],
-        &[rep("1", 200, "1", &[]), rep("2", 50, "2", &[])];
+        &[reply("1", 200, "1", &[]), reply("2", 50, "2", &[])];
         "delayed reply skips"
     )]
     #[test_case(
         vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
-        &[rep("1", 10, "1", &[]), rep("3", 10, "3", &[]), rep("4", 10, "4", &[])];
+        &[reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("4", 10, "4", &[])];
         "explicit drop of previous prompt"
     )]
     #[tokio::test]
@@ -803,7 +825,7 @@ mod tests {
         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
         for update in updates.clone() {
-            let _ = tx_prompts.send(update);
+            tx_prompts.send(update).expect("to send an update");
         }
 
         let handle = tokio::spawn(async move {
@@ -871,7 +893,7 @@ mod tests {
             rx_actioned_prompts,
             active_prompt,
             dialog_process: None,
-            pending_prompts: [ep("1")].into_iter().collect(),
+            pending_prompts: [enriched_prompt("1")].into_iter().collect(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui: StubUi,
@@ -902,5 +924,52 @@ mod tests {
                 })
             )]
         );
+    }
+
+    #[tokio::test]
+    async fn cancel_active_prompt() {
+        let (tx_prompts, rx_prompts) = unbounded_channel();
+        let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        let (tx_done, rx_done) = oneshot::channel();
+        let id = "testId";
+        let active_prompt = RefActivePrompt::new(None);
+        let ui = TestUi {
+            replies: vec![reply(id, u64::MAX, id, &[])],
+            tx: tx_actioned_prompts,
+            active_prompt: active_prompt.clone(),
+            tx_done: Some(tx_done),
+        };
+
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt,
+            dialog_process: None,
+            pending_prompts: VecDeque::new(),
+            dead_prompts: vec![],
+            recv_timeout: Duration::from_millis(100),
+            ui,
+            client: StubClient,
+            running: true,
+        };
+
+        // We need this env var set to be able to generate the appropriate UI options
+        // for the home interface
+        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+
+        tx_prompts.send(add(id)).expect("to send update");
+        w.step().await.expect("step");
+
+        tx_prompts.send(drop_id(id)).expect("to send update");
+
+        let handle = tokio::spawn(async move {
+            w.run().await.expect("run");
+            assert!(w.active_prompt.get().is_none());
+        });
+
+        rx_done.await.expect("done");
+        drop(tx_prompts);
+
+        handle.await.expect("worker finishes");
     }
 }
