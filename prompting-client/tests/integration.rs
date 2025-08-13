@@ -596,8 +596,9 @@ async fn scripted_client_test_allow() -> Result<()> {
         .wait()
         .await;
 
-    if let Err(e) = res {
-        panic!("test failed: {e}");
+    let exit_status = res.expect("process to exit");
+    if !exit_status.success() {
+        panic!("test failed: {exit_status}");
     }
 
     Ok(())
