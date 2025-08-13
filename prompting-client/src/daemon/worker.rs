@@ -327,6 +327,10 @@ where
     async fn step(&mut self) -> Result<()> {
         debug!("step");
 
+        if self.dialog_process.is_none() {
+            self.process_next_pending_prompt().await?;
+        }
+
         tokio::select! {
             updates = Self::pull_updates(&mut self.rx_prompts, &mut self.running) => {
                 if let Some(updates) = updates {
@@ -343,10 +347,6 @@ where
                 self.wait_for_ui_reply().await?;
             }
         };
-
-        if self.dialog_process.is_none() {
-            self.process_next_pending_prompt().await?;
-        }
 
         Ok(())
     }
@@ -440,7 +440,8 @@ where
 mod tests {
     use super::*;
     use crate::snapd_client::{
-        interfaces::home::HomeConstraints, Prompt, TypedPrompt, TypedPromptReply,
+        interfaces::home::{HomeConstraints, HomeReplyConstraints},
+        Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
     };
     use simple_test_case::test_case;
     use std::env;
@@ -820,75 +821,86 @@ mod tests {
         handle.await.expect("worker shuts down");
     }
 
-    // struct StubUi;
+    #[derive(Debug)]
+    struct StubUi;
 
-    // impl SpawnUi for StubUi {
-    //     async fn spawn(&mut self) -> Result<()> {
-    //         Ok(())
-    //     }
-    // }
+    impl SpawnUi for StubUi {
+        type Handle = StubDialogHandle;
+        fn spawn(&mut self, _: &[&str]) -> Result<StubDialogHandle> {
+            Ok(StubDialogHandle)
+        }
+    }
 
-    // #[derive(Default)]
-    // struct AckClient {
-    //     seen: Arc<Mutex<Vec<(PromptId, TypedPromptReply)>>>,
-    // }
+    #[derive(Debug)]
+    struct StubDialogHandle;
 
-    // #[async_trait]
-    // impl ReplyToPrompt for AckClient {
-    //     async fn reply(
-    //         &self,
-    //         id: &PromptId,
-    //         reply: TypedPromptReply,
-    //     ) -> crate::Result<Vec<PromptId>> {
-    //         self.seen.lock().unwrap().push((id.clone(), reply));
+    impl DialogHandle for StubDialogHandle {
+        async fn wait(&mut self) -> Result<ExitStatus> {
+            Ok(ExitStatus::default())
+        }
+    }
 
-    //         Ok(Vec::new())
-    //     }
-    // }
+    #[derive(Debug, Default)]
+    struct AckClient {
+        seen: Arc<Mutex<Vec<(PromptId, TypedPromptReply)>>>,
+    }
 
-    // #[tokio::test]
-    // async fn timeout_waiting_for_reply_denies_once() {
-    //     // We need to keep the sender sides of these channels from dropping so that the channels
-    //     // remain open. Without this calls to recv() immediately returns None.
-    //     let (_tx_prompts, rx_prompts) = unbounded_channel();
-    //     let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
-    //     let active_prompt = Arc::new(Mutex::new(None));
+    #[async_trait]
+    impl ReplyToPrompt for AckClient {
+        async fn reply(
+            &self,
+            id: &PromptId,
+            reply: TypedPromptReply,
+        ) -> crate::Result<Vec<PromptId>> {
+            self.seen.lock().unwrap().push((id.clone(), reply));
 
-    //     let mut w = Worker {
-    //         rx_prompts,
-    //         rx_actioned_prompts,
-    //         active_prompt,
-    //         dialog_process: None,
-    //         pending_prompts: [ep("1")].into_iter().collect(),
-    //         dead_prompts: vec![],
-    //         recv_timeout: Duration::from_millis(100),
-    //         ui: StubUi,
-    //         client: AckClient::default(),
-    //         running: true,
-    //     };
+            Ok(Vec::new())
+        }
+    }
 
-    //     // We need this env var set to be able to generate the appropriate UI options
-    //     // for the home interface
-    //     env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
-    //     w.step().await.unwrap();
+    #[tokio::test]
+    async fn timeout_waiting_for_reply_denies_once() {
+        // We need to keep the sender sides of these channels from dropping so that the channels
+        // remain open. Without this calls to recv() immediately returns None.
+        let (_tx_prompts, rx_prompts) = unbounded_channel();
+        let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
+        let active_prompt = RefActivePrompt::new(None);
 
-    //     // Strip off the surrounding Arc and Mutex
-    //     let replies_seen = Arc::into_inner(w.client.seen)
-    //         .unwrap()
-    //         .into_inner()
-    //         .unwrap();
+        let mut w = Worker {
+            rx_prompts,
+            rx_actioned_prompts,
+            active_prompt,
+            dialog_process: None,
+            pending_prompts: [ep("1")].into_iter().collect(),
+            dead_prompts: vec![],
+            recv_timeout: Duration::from_millis(100),
+            ui: StubUi,
+            client: AckClient::default(),
+            running: true,
+        };
 
-    //     assert_eq!(
-    //         replies_seen,
-    //         vec![(
-    //             PromptId("1".to_string()),
-    //             TypedPromptReply::Home(PromptReply {
-    //                 action: Action::Deny,
-    //                 lifespan: Lifespan::Single,
-    //                 duration: None,
-    //                 constraints: HomeReplyConstraints::default(),
-    //             })
-    //         )]
-    //     );
-    // }
+        // We need this env var set to be able to generate the appropriate UI options
+        // for the home interface
+        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        w.step().await.unwrap();
+
+        // Strip off the surrounding Arc and Mutex
+        let replies_seen = Arc::into_inner(w.client.seen)
+            .unwrap()
+            .into_inner()
+            .unwrap();
+
+        assert_eq!(
+            replies_seen,
+            vec![(
+                PromptId("1".to_string()),
+                TypedPromptReply::Home(PromptReply {
+                    action: Action::Deny,
+                    lifespan: Lifespan::Single,
+                    duration: None,
+                    constraints: HomeReplyConstraints::default(),
+                })
+            )]
+        );
+    }
 }
