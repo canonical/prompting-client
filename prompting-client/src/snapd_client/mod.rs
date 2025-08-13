@@ -136,13 +136,13 @@ where
         info.prompting_enabled()
     }
 
-    // TODO: use a different exit code when support for `SuccessExitStatus=` is added in snapcraft
     /// If prompting is not currently enabled then we exit with code 0 to avoid systemd marking
     /// the service as failed. Instead, snapd will ensure that we are started when the flag is enabled.
     pub async fn exit_if_prompting_not_enabled(&self) -> Result<()> {
         if !self.is_prompting_enabled().await? {
             warn!("the prompting feature is not enabled: exiting");
-            exit_with(ExitStatus::PromptingDisabled);
+            // TODO: use `ExitStatus::PromptingDisabled` code when support for `SuccessExitStatus=` lands in snapcraft: https://github.com/canonical/snapcraft/issues/5692
+            exit_with(ExitStatus::Success);
         }
 
         Ok(())

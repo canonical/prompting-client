@@ -78,7 +78,7 @@ impl PollLoop {
                     // then we trigger a restart with snapd so that our startup checks can run
                     // again and we avoid spinning if snapd is now reporting that prompting is not
                     // enabled / supported.
-                    exit_with(ExitStatus::PermissionDenied);
+                    exit_with(ExitStatus::Failure);
                 }
 
                 Err(error) if retries < MAX_POLL_RETRIES => {
@@ -90,7 +90,7 @@ impl PollLoop {
 
                 Err(error) => {
                     error!(%error, "retries exceeded trying to establish notices long poll: exiting");
-                    exit_with(ExitStatus::LongPollFail);
+                    exit_with(ExitStatus::Failure);
                 }
             };
 

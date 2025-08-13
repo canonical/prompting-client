@@ -29,7 +29,7 @@ async fn main() -> Result<()> {
     // display environment variable to be set.
     let have_display = env::vars().any(|(k, _)| k == "DISPLAY" || k == "WAYLAND_DISPLAY");
     if !have_display {
-        exit_with(ExitStatus::NoDisplayEnvironment);
+        exit_with(ExitStatus::Failure);
     }
 
     run_daemon(c, reload_handle).await
