@@ -15,7 +15,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'apparmor-prompting.pbenum.dart';
-import 'google/protobuf/empty.pb.dart' as $0;
+import 'google/protobuf/empty.pb.dart' as $2;
 
 export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
@@ -596,10 +596,10 @@ enum PromptReplyResponse_PromptReplyType {
 class PromptReplyResponse extends $pb.GeneratedMessage {
   factory PromptReplyResponse({
     $core.String? message,
-    $0.Empty? success,
-    $0.Empty? raw,
-    $0.Empty? promptNotFound,
-    $0.Empty? ruleNotFound,
+    $2.Empty? success,
+    $2.Empty? raw,
+    $2.Empty? promptNotFound,
+    $2.Empty? ruleNotFound,
     PromptReplyResponse_HomeRuleConflicts? ruleConflicts,
     PromptReplyResponse_InvalidHomePermissions? invalidPermissions,
     PromptReplyResponse_InvalidPathPattern? invalidPathPattern,
@@ -651,14 +651,14 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
       createEmptyInstance: create)
     ..oo(0, [2, 3, 4, 5, 6, 7, 8, 9, 10])
     ..aOS(1, _omitFieldNames ? '' : 'message')
-    ..aOM<$0.Empty>(2, _omitFieldNames ? '' : 'success',
-        subBuilder: $0.Empty.create)
-    ..aOM<$0.Empty>(3, _omitFieldNames ? '' : 'raw',
-        subBuilder: $0.Empty.create)
-    ..aOM<$0.Empty>(4, _omitFieldNames ? '' : 'promptNotFound',
-        subBuilder: $0.Empty.create)
-    ..aOM<$0.Empty>(5, _omitFieldNames ? '' : 'ruleNotFound',
-        subBuilder: $0.Empty.create)
+    ..aOM<$2.Empty>(2, _omitFieldNames ? '' : 'success',
+        subBuilder: $2.Empty.create)
+    ..aOM<$2.Empty>(3, _omitFieldNames ? '' : 'raw',
+        subBuilder: $2.Empty.create)
+    ..aOM<$2.Empty>(4, _omitFieldNames ? '' : 'promptNotFound',
+        subBuilder: $2.Empty.create)
+    ..aOM<$2.Empty>(5, _omitFieldNames ? '' : 'ruleNotFound',
+        subBuilder: $2.Empty.create)
     ..aOM<PromptReplyResponse_HomeRuleConflicts>(
         6, _omitFieldNames ? '' : 'ruleConflicts',
         subBuilder: PromptReplyResponse_HomeRuleConflicts.create)
@@ -711,48 +711,48 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
   void clearMessage() => $_clearField(1);
 
   @$pb.TagNumber(2)
-  $0.Empty get success => $_getN(1);
+  $2.Empty get success => $_getN(1);
   @$pb.TagNumber(2)
-  set success($0.Empty value) => $_setField(2, value);
+  set success($2.Empty value) => $_setField(2, value);
   @$pb.TagNumber(2)
   $core.bool hasSuccess() => $_has(1);
   @$pb.TagNumber(2)
   void clearSuccess() => $_clearField(2);
   @$pb.TagNumber(2)
-  $0.Empty ensureSuccess() => $_ensure(1);
+  $2.Empty ensureSuccess() => $_ensure(1);
 
   @$pb.TagNumber(3)
-  $0.Empty get raw => $_getN(2);
+  $2.Empty get raw => $_getN(2);
   @$pb.TagNumber(3)
-  set raw($0.Empty value) => $_setField(3, value);
+  set raw($2.Empty value) => $_setField(3, value);
   @$pb.TagNumber(3)
   $core.bool hasRaw() => $_has(2);
   @$pb.TagNumber(3)
   void clearRaw() => $_clearField(3);
   @$pb.TagNumber(3)
-  $0.Empty ensureRaw() => $_ensure(2);
+  $2.Empty ensureRaw() => $_ensure(2);
 
   @$pb.TagNumber(4)
-  $0.Empty get promptNotFound => $_getN(3);
+  $2.Empty get promptNotFound => $_getN(3);
   @$pb.TagNumber(4)
-  set promptNotFound($0.Empty value) => $_setField(4, value);
+  set promptNotFound($2.Empty value) => $_setField(4, value);
   @$pb.TagNumber(4)
   $core.bool hasPromptNotFound() => $_has(3);
   @$pb.TagNumber(4)
   void clearPromptNotFound() => $_clearField(4);
   @$pb.TagNumber(4)
-  $0.Empty ensurePromptNotFound() => $_ensure(3);
+  $2.Empty ensurePromptNotFound() => $_ensure(3);
 
   @$pb.TagNumber(5)
-  $0.Empty get ruleNotFound => $_getN(4);
+  $2.Empty get ruleNotFound => $_getN(4);
   @$pb.TagNumber(5)
-  set ruleNotFound($0.Empty value) => $_setField(5, value);
+  set ruleNotFound($2.Empty value) => $_setField(5, value);
   @$pb.TagNumber(5)
   $core.bool hasRuleNotFound() => $_has(4);
   @$pb.TagNumber(5)
   void clearRuleNotFound() => $_clearField(5);
   @$pb.TagNumber(5)
-  $0.Empty ensureRuleNotFound() => $_ensure(4);
+  $2.Empty ensureRuleNotFound() => $_ensure(4);
 
   @$pb.TagNumber(6)
   PromptReplyResponse_HomeRuleConflicts get ruleConflicts => $_getN(5);
