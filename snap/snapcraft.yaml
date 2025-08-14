@@ -66,7 +66,7 @@ parts:
       - unzip
       - xz-utils
       - zip
-    override-prime: ''
+    override-prime: ""
 
   prompting-client:
     plugin: rust
@@ -76,7 +76,7 @@ parts:
       cp -r $CRAFT_PROJECT_DIR/prompting-client/src $CRAFT_PART_SRC/
       cp $CRAFT_PROJECT_DIR/prompting-client/Cargo.toml $CRAFT_PART_SRC/
       cp $CRAFT_PROJECT_DIR/prompting-client/Cargo.lock $CRAFT_PART_SRC/
-      cp $CRAFT_PROJECT_DIR/prompting-client/build.rs $CRAFT_PART_SRC/ 
+      cp $CRAFT_PROJECT_DIR/prompting-client/build.rs $CRAFT_PART_SRC/
     override-build: |
       set -e
       rustup default stable
@@ -86,7 +86,7 @@ parts:
     build-packages:
       - libssl-dev
       - pkg-config
-      - protobuf-compiler      
+      - protobuf-compiler
       - libprotobuf-dev
 
   prompting-client-ui:
@@ -95,8 +95,8 @@ parts:
     plugin: nil
     override-pull: |
       mkdir -p $CRAFT_PART_SRC
-      cp $CRAFT_PROJECT_DIR/melos.yaml $CRAFT_PART_SRC/ 
-      cp $CRAFT_PROJECT_DIR/pubspec.yaml $CRAFT_PART_SRC/      
+      cp $CRAFT_PROJECT_DIR/melos.yaml $CRAFT_PART_SRC/
+      cp $CRAFT_PROJECT_DIR/pubspec.yaml $CRAFT_PART_SRC/
       cp $CRAFT_PROJECT_DIR/.fvmrc $CRAFT_PART_SRC/
       cp -r $CRAFT_PROJECT_DIR/flutter $CRAFT_PART_SRC/
     override-build: |
