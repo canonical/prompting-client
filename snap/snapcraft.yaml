@@ -66,26 +66,39 @@ parts:
       - unzip
       - xz-utils
       - zip
-    override-prime: ''
+    override-prime: ""
 
   prompting-client:
     plugin: rust
     source: prompting-client
+    override-pull: |
+      mkdir -p $CRAFT_PART_SRC
+      cp -r $CRAFT_PROJECT_DIR/prompting-client/src $CRAFT_PART_SRC/
+      cp $CRAFT_PROJECT_DIR/prompting-client/Cargo.toml $CRAFT_PART_SRC/
+      cp $CRAFT_PROJECT_DIR/prompting-client/Cargo.lock $CRAFT_PART_SRC/
+      cp $CRAFT_PROJECT_DIR/prompting-client/build.rs $CRAFT_PART_SRC/
     override-build: |
       set -e
+      rustup default stable
       mkdir -p $(dirname $CRAFT_PART_SRC)/protos
       cp $CRAFT_PROJECT_DIR/protos/* $(dirname $CRAFT_PART_SRC)/protos/
       craftctl default
     build-packages:
       - libssl-dev
       - pkg-config
-      - protobuf-compiler      
+      - protobuf-compiler
       - libprotobuf-dev
 
   prompting-client-ui:
     after: [fvm]
     source: .
     plugin: nil
+    override-pull: |
+      mkdir -p $CRAFT_PART_SRC
+      cp $CRAFT_PROJECT_DIR/melos.yaml $CRAFT_PART_SRC/
+      cp $CRAFT_PROJECT_DIR/pubspec.yaml $CRAFT_PART_SRC/
+      cp $CRAFT_PROJECT_DIR/.fvmrc $CRAFT_PART_SRC/
+      cp -r $CRAFT_PROJECT_DIR/flutter $CRAFT_PART_SRC/
     override-build: |
       set -eux
       fvm install
@@ -101,6 +114,6 @@ parts:
 
   desktop-files:
     plugin: dump
-    source: .
+    source: snap/gui
     organize:
-      snap/gui/prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
+      prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
