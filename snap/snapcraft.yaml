@@ -79,6 +79,7 @@ parts:
       cp $CRAFT_PROJECT_DIR/prompting-client/build.rs $CRAFT_PART_SRC/ 
     override-build: |
       set -e
+      rustup default stable
       mkdir -p $(dirname $CRAFT_PART_SRC)/protos
       cp $CRAFT_PROJECT_DIR/protos/* $(dirname $CRAFT_PART_SRC)/protos/
       craftctl default
