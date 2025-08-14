@@ -174,7 +174,7 @@ local-install-client:
 	rm -rf flutter_packages/prompting_client_ui/build ; \
 	OLD=$(wildcard $(SNAP_NAME)_*) ; \
 	rm $$OLD ; \
-	snapcraft ; \
+	snapcraft pack ; \
 	FILE_NAME=$$(ls | grep -E '$(SNAP_NAME)_' | head -n1) ; \
 	echo ":: Installing $(SNAP_NAME)..." ; \
 	snap install --dangerous $$FILE_NAME ; \
