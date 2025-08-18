@@ -26,7 +26,7 @@ use snapd_client::SnapdError;
 
 pub(crate) const SNAP_NAME: &str = "prompting-client";
 pub const SOCKET_ENV_VAR: &str = "PROMPTING_CLIENT_SOCKET";
-pub const DEFAULT_LOG_LEVEL: &str = "debug";
+pub const DEFAULT_LOG_LEVEL: &str = "info";
 
 pub fn log_filter(filter: &str) -> String {
     format!("{filter},hyper=error,h2=error")
