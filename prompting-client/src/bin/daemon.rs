@@ -15,8 +15,6 @@ async fn main() -> Result<()> {
         .with_filter_reloading();
 
     let reload_handle = builder.reload_handle();
-    // let journald_layer = tracing_journald::layer().expect("unable to open journald socket");
-    // let subscriber = builder.finish().with(journald_layer);
     let subscriber = builder.finish();
 
     set_global_default(subscriber).expect("unable to set a global tracing subscriber");
