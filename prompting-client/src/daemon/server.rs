@@ -127,7 +127,7 @@ where
 
             None => {
                 warn!("got request for current prompt but there is no active prompt");
-                None
+                return Err(Status::internal("active prompt not found"));
             }
         };
 
@@ -135,12 +135,8 @@ where
             Some(mut ctx) => {
                 tokio::spawn(async move {
                     debug!("spawning stream");
-                    if tx
-                        .send(Ok(GetCurrentPromptResponse { prompt }))
-                        .await
-                        .is_err()
-                    {
-                        error!("could not send prompt");
+                    if let Err(e) = tx.send(Ok(GetCurrentPromptResponse { prompt })).await {
+                        error!("could not send prompt: {}", e);
                     }
                     ctx.done().await;
                     debug!("closing stream");
@@ -148,6 +144,7 @@ where
             }
             None => {
                 warn!("got request for current prompt but there is no context");
+                return Err(Status::internal("context not found"));
             }
         };
 

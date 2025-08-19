@@ -76,6 +76,10 @@ Future<void> main(List<String> args) async {
       log.info('stream closed - exiting');
       exit(3);
     },
+    onError: (e) {
+      log.error('Caught grpc error $e - exiting');
+      exit(4);
+    },
   );
   await completer.future;
 
