@@ -577,7 +577,7 @@ mod tests {
         assert_eq!(resp, expected);
 
         if expected.is_some() {
-            active_prompt.drop();
+            active_prompt.drop_prompt();
         }
         let next = stream.message().await.unwrap();
         assert_eq!(next, None);

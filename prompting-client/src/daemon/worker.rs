@@ -54,7 +54,7 @@ impl RefActivePrompt {
     }
 
     #[cfg(test)]
-    pub fn drop(&mut self) {
+    pub fn drop_prompt(&mut self) {
         self.0.lock().unwrap().take();
     }
 
