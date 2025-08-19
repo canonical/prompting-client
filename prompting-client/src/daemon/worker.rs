@@ -295,6 +295,11 @@ where
                             Ok(guard) => guard,
                             Err(err) => err.into_inner(),
                         };
+                        // If we receive a timeout but the UI handle has been dropped already, that
+                        // means we've explicitly closed the UI after receiving a 'Drop' update
+                        // from snapd. We expect no reply from the UI in this case and also don't
+                        // need to send a reply to snapd manually, as the prompt has already become
+                        // invalid.
                         if guard.as_ref().expect("active prompt").ui_handle.is_none() {
                             debug!("timeout for cancelled prompt");
                             break;
@@ -325,6 +330,21 @@ where
         Ok(())
     }
 
+    /// The step function is the core of the worker and processes incoming prompts as follows:
+    /// * If there's no currently active prompt, take the next pending prompt from the queue and
+    ///   process it. That includes spawning the UI and storing the active prompt, UI process and
+    ///   dialog handle.
+    /// * Afterwards, concurrently wait for one of two possible events and handle the one that
+    ///   happens first:
+    ///   - The worker receives new updates in `rx_prompts`: Process those updates and drop the UI
+    ///     handle in case the active prompt got dropped by snapd. The remaining cleanup (dropping
+    ///     the active prompt from the internal state) will happen in the next `step` after the UI
+    ///     terminates.
+    ///   - The process for the current dialog terminates (this branch is only active if there is
+    ///     an active process): In this case we wait for an answer sent by the dialog. If nothing
+    ///     is received, that either means the UI crashed and a "deny once" is sent, or the UI
+    ///     handle as been dropped explicitly (see previous item) and all that's left to do is
+    ///     clean up the active prompt.
     async fn step(&mut self) -> Result<()> {
         debug!("step");
 
