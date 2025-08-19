@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -49,6 +50,7 @@ Future<void> main(List<String> args) async {
     }
     registerService<PromptingClient>(
       () => FakeApparmorPromptingClient.fromFile(fileName),
+      dispose: (service) => (service as FakeApparmorPromptingClient).dispose(),
     );
   } else {
     final socketPath = Platform.environment[envVarSocketPath];
@@ -63,8 +65,23 @@ Future<void> main(List<String> args) async {
     );
   }
 
-  final currentPrompt = await getService<PromptingClient>().getCurrentPrompt();
-  registerServiceInstance<PromptDetails>(currentPrompt);
+  final completer = Completer();
+  final currentPromptStream = getService<PromptingClient>().getCurrentPrompt();
+  currentPromptStream.listen(
+    (promptDetails) {
+      registerServiceInstance<PromptDetails>(promptDetails);
+      completer.complete();
+    },
+    onDone: () {
+      log.info('stream closed - exiting');
+      exit(3);
+    },
+    onError: (e) {
+      log.error('Caught grpc error $e - exiting');
+      exit(4);
+    },
+  );
+  await completer.future;
 
   await initDefaultLocale();
 

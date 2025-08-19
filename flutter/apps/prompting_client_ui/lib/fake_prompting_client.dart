@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,7 +9,11 @@ import 'package:ubuntu_logger/ubuntu_logger.dart';
 final _log = Logger('fake_prompting_client');
 
 class FakeApparmorPromptingClient implements PromptingClient {
-  FakeApparmorPromptingClient({required this.currentPrompt});
+  FakeApparmorPromptingClient({required this.currentPrompt}) {
+    _streamController = StreamController.broadcast(
+      onListen: () => _streamController.add(currentPrompt),
+    );
+  }
   factory FakeApparmorPromptingClient.fromFile(String path) {
     final currentPrompt = PromptDetails.fromJson(
       jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>,
@@ -16,12 +21,15 @@ class FakeApparmorPromptingClient implements PromptingClient {
     return FakeApparmorPromptingClient(currentPrompt: currentPrompt);
   }
   final PromptDetails currentPrompt;
+  late final StreamController<PromptDetails> _streamController;
+
+  void dispose() => _streamController.close();
 
   @visibleForTesting
   void Function(PromptReply reply)? onReply;
 
   @override
-  Future<PromptDetails> getCurrentPrompt() async => currentPrompt;
+  Stream<PromptDetails> getCurrentPrompt() => _streamController.stream;
 
   @override
   Future<PromptReplyResponse> replyToPrompt(PromptReply reply) async {

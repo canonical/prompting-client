@@ -1,13 +1,14 @@
+// This is a generated file - do not edit.
 //
-//  Generated code. Do not modify.
-//  source: apparmor-prompting.proto
-//
-// @dart = 2.12
+// Generated from apparmor-prompting.proto.
+
+// @dart = 3.3
 
 // ignore_for_file: annotate_overrides, camel_case_types, comment_references
-// ignore_for_file: constant_identifier_names, library_prefixes
-// ignore_for_file: non_constant_identifier_names, prefer_final_fields
-// ignore_for_file: unnecessary_import, unnecessary_this, unused_import
+// ignore_for_file: constant_identifier_names
+// ignore_for_file: curly_braces_in_flow_control_structures
+// ignore_for_file: deprecated_member_use_from_same_package, library_prefixes
+// ignore_for_file: non_constant_identifier_names, unused_import
 
 import 'dart:convert' as $convert;
 import 'dart:core' as $core;
@@ -23,8 +24,8 @@ const Action$json = {
 };
 
 /// Descriptor for `Action`. Decode as a `google.protobuf.EnumDescriptorProto`.
-final $typed_data.Uint8List actionDescriptor = $convert.base64Decode(
-    'CgZBY3Rpb24SCQoFQUxMT1cQABIICgRERU5ZEAE=');
+final $typed_data.Uint8List actionDescriptor =
+    $convert.base64Decode('CgZBY3Rpb24SCQoFQUxMT1cQABIICgRERU5ZEAE=');
 
 @$core.Deprecated('Use lifespanDescriptor instead')
 const Lifespan$json = {
@@ -80,9 +81,31 @@ const PromptReply$json = {
   '1': 'PromptReply',
   '2': [
     {'1': 'prompt_id', '3': 1, '4': 1, '5': 9, '10': 'promptId'},
-    {'1': 'action', '3': 2, '4': 1, '5': 14, '6': '.apparmor_prompting.Action', '10': 'action'},
-    {'1': 'lifespan', '3': 3, '4': 1, '5': 14, '6': '.apparmor_prompting.Lifespan', '10': 'lifespan'},
-    {'1': 'home_prompt_reply', '3': 4, '4': 1, '5': 11, '6': '.apparmor_prompting.HomePromptReply', '9': 0, '10': 'homePromptReply'},
+    {
+      '1': 'action',
+      '3': 2,
+      '4': 1,
+      '5': 14,
+      '6': '.apparmor_prompting.Action',
+      '10': 'action'
+    },
+    {
+      '1': 'lifespan',
+      '3': 3,
+      '4': 1,
+      '5': 14,
+      '6': '.apparmor_prompting.Lifespan',
+      '10': 'lifespan'
+    },
+    {
+      '1': 'home_prompt_reply',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.HomePromptReply',
+      '9': 0,
+      '10': 'homePromptReply'
+    },
   ],
   '8': [
     {'1': 'prompt_reply'},
@@ -102,17 +125,96 @@ const PromptReplyResponse$json = {
   '1': 'PromptReplyResponse',
   '2': [
     {'1': 'message', '3': 1, '4': 1, '5': 9, '10': 'message'},
-    {'1': 'success', '3': 2, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'success'},
-    {'1': 'raw', '3': 3, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'raw'},
-    {'1': 'prompt_not_found', '3': 4, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'promptNotFound'},
-    {'1': 'rule_not_found', '3': 5, '4': 1, '5': 11, '6': '.google.protobuf.Empty', '9': 0, '10': 'ruleNotFound'},
-    {'1': 'rule_conflicts', '3': 6, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.HomeRuleConflicts', '9': 0, '10': 'ruleConflicts'},
-    {'1': 'invalid_permissions', '3': 7, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.InvalidHomePermissions', '9': 0, '10': 'invalidPermissions'},
-    {'1': 'invalid_path_pattern', '3': 8, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.InvalidPathPattern', '9': 0, '10': 'invalidPathPattern'},
-    {'1': 'parse_error', '3': 9, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.ParseError', '9': 0, '10': 'parseError'},
-    {'1': 'unsupported_value', '3': 10, '4': 1, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.UnsupportedValue', '9': 0, '10': 'unsupportedValue'},
+    {
+      '1': 'success',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Empty',
+      '9': 0,
+      '10': 'success'
+    },
+    {
+      '1': 'raw',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Empty',
+      '9': 0,
+      '10': 'raw'
+    },
+    {
+      '1': 'prompt_not_found',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Empty',
+      '9': 0,
+      '10': 'promptNotFound'
+    },
+    {
+      '1': 'rule_not_found',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.google.protobuf.Empty',
+      '9': 0,
+      '10': 'ruleNotFound'
+    },
+    {
+      '1': 'rule_conflicts',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.PromptReplyResponse.HomeRuleConflicts',
+      '9': 0,
+      '10': 'ruleConflicts'
+    },
+    {
+      '1': 'invalid_permissions',
+      '3': 7,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.PromptReplyResponse.InvalidHomePermissions',
+      '9': 0,
+      '10': 'invalidPermissions'
+    },
+    {
+      '1': 'invalid_path_pattern',
+      '3': 8,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.PromptReplyResponse.InvalidPathPattern',
+      '9': 0,
+      '10': 'invalidPathPattern'
+    },
+    {
+      '1': 'parse_error',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.PromptReplyResponse.ParseError',
+      '9': 0,
+      '10': 'parseError'
+    },
+    {
+      '1': 'unsupported_value',
+      '3': 10,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.PromptReplyResponse.UnsupportedValue',
+      '9': 0,
+      '10': 'unsupportedValue'
+    },
   ],
-  '3': [PromptReplyResponse_HomeRuleConflicts$json, PromptReplyResponse_HomeRuleConflict$json, PromptReplyResponse_InvalidHomePermissions$json, PromptReplyResponse_InvalidPathPattern$json, PromptReplyResponse_ParseError$json, PromptReplyResponse_UnsupportedValue$json],
+  '3': [
+    PromptReplyResponse_HomeRuleConflicts$json,
+    PromptReplyResponse_HomeRuleConflict$json,
+    PromptReplyResponse_InvalidHomePermissions$json,
+    PromptReplyResponse_InvalidPathPattern$json,
+    PromptReplyResponse_ParseError$json,
+    PromptReplyResponse_UnsupportedValue$json
+  ],
   '8': [
     {'1': 'prompt_reply_type'},
   ],
@@ -122,7 +224,14 @@ const PromptReplyResponse$json = {
 const PromptReplyResponse_HomeRuleConflicts$json = {
   '1': 'HomeRuleConflicts',
   '2': [
-    {'1': 'conflicts', '3': 1, '4': 3, '5': 11, '6': '.apparmor_prompting.PromptReplyResponse.HomeRuleConflict', '10': 'conflicts'},
+    {
+      '1': 'conflicts',
+      '3': 1,
+      '4': 3,
+      '5': 11,
+      '6': '.apparmor_prompting.PromptReplyResponse.HomeRuleConflict',
+      '10': 'conflicts'
+    },
   ],
 };
 
@@ -130,7 +239,14 @@ const PromptReplyResponse_HomeRuleConflicts$json = {
 const PromptReplyResponse_HomeRuleConflict$json = {
   '1': 'HomeRuleConflict',
   '2': [
-    {'1': 'permission', '3': 1, '4': 1, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'permission'},
+    {
+      '1': 'permission',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'permission'
+    },
     {'1': 'variant', '3': 2, '4': 1, '5': 9, '10': 'variant'},
     {'1': 'conflicting_id', '3': 3, '4': 1, '5': 9, '10': 'conflictingId'},
   ],
@@ -140,8 +256,22 @@ const PromptReplyResponse_HomeRuleConflict$json = {
 const PromptReplyResponse_InvalidHomePermissions$json = {
   '1': 'InvalidHomePermissions',
   '2': [
-    {'1': 'requested', '3': 1, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'requested'},
-    {'1': 'replied', '3': 2, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'replied'},
+    {
+      '1': 'requested',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'requested'
+    },
+    {
+      '1': 'replied',
+      '3': 2,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'replied'
+    },
   ],
 };
 
@@ -207,7 +337,15 @@ final $typed_data.Uint8List promptReplyResponseDescriptor = $convert.base64Decod
 const GetCurrentPromptResponse$json = {
   '1': 'GetCurrentPromptResponse',
   '2': [
-    {'1': 'home_prompt', '3': 1, '4': 1, '5': 11, '6': '.apparmor_prompting.HomePrompt', '9': 0, '10': 'homePrompt'},
+    {
+      '1': 'home_prompt',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.HomePrompt',
+      '9': 0,
+      '10': 'homePrompt'
+    },
   ],
   '8': [
     {'1': 'prompt'},
@@ -215,16 +353,24 @@ const GetCurrentPromptResponse$json = {
 };
 
 /// Descriptor for `GetCurrentPromptResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getCurrentPromptResponseDescriptor = $convert.base64Decode(
-    'ChhHZXRDdXJyZW50UHJvbXB0UmVzcG9uc2USQQoLaG9tZV9wcm9tcHQYASABKAsyHi5hcHBhcm'
-    '1vcl9wcm9tcHRpbmcuSG9tZVByb21wdEgAUgpob21lUHJvbXB0QggKBnByb21wdA==');
+final $typed_data.Uint8List getCurrentPromptResponseDescriptor =
+    $convert.base64Decode(
+        'ChhHZXRDdXJyZW50UHJvbXB0UmVzcG9uc2USQQoLaG9tZV9wcm9tcHQYASABKAsyHi5hcHBhcm'
+        '1vcl9wcm9tcHRpbmcuSG9tZVByb21wdEgAUgpob21lUHJvbXB0QggKBnByb21wdA==');
 
 @$core.Deprecated('Use homePromptReplyDescriptor instead')
 const HomePromptReply$json = {
   '1': 'HomePromptReply',
   '2': [
     {'1': 'path_pattern', '3': 1, '4': 1, '5': 9, '10': 'pathPattern'},
-    {'1': 'permissions', '3': 2, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'permissions'},
+    {
+      '1': 'permissions',
+      '3': 2,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'permissions'
+    },
   ],
 };
 
@@ -238,15 +384,63 @@ final $typed_data.Uint8List homePromptReplyDescriptor = $convert.base64Decode(
 const HomePrompt$json = {
   '1': 'HomePrompt',
   '2': [
-    {'1': 'meta_data', '3': 1, '4': 1, '5': 11, '6': '.apparmor_prompting.MetaData', '10': 'metaData'},
+    {
+      '1': 'meta_data',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.MetaData',
+      '10': 'metaData'
+    },
     {'1': 'requested_path', '3': 2, '4': 1, '5': 9, '10': 'requestedPath'},
     {'1': 'home_dir', '3': 3, '4': 1, '5': 9, '10': 'homeDir'},
-    {'1': 'requested_permissions', '3': 4, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'requestedPermissions'},
-    {'1': 'available_permissions', '3': 5, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'availablePermissions'},
-    {'1': 'suggested_permissions', '3': 6, '4': 3, '5': 14, '6': '.apparmor_prompting.HomePermission', '10': 'suggestedPermissions'},
-    {'1': 'pattern_options', '3': 7, '4': 3, '5': 11, '6': '.apparmor_prompting.HomePrompt.PatternOption', '10': 'patternOptions'},
-    {'1': 'initial_pattern_option', '3': 8, '4': 1, '5': 5, '10': 'initialPatternOption'},
-    {'1': 'enriched_path_kind', '3': 9, '4': 1, '5': 11, '6': '.apparmor_prompting.EnrichedPathKind', '10': 'enrichedPathKind'},
+    {
+      '1': 'requested_permissions',
+      '3': 4,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'requestedPermissions'
+    },
+    {
+      '1': 'available_permissions',
+      '3': 5,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'availablePermissions'
+    },
+    {
+      '1': 'suggested_permissions',
+      '3': 6,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePermission',
+      '10': 'suggestedPermissions'
+    },
+    {
+      '1': 'pattern_options',
+      '3': 7,
+      '4': 3,
+      '5': 11,
+      '6': '.apparmor_prompting.HomePrompt.PatternOption',
+      '10': 'patternOptions'
+    },
+    {
+      '1': 'initial_pattern_option',
+      '3': 8,
+      '4': 1,
+      '5': 5,
+      '10': 'initialPatternOption'
+    },
+    {
+      '1': 'enriched_path_kind',
+      '3': 9,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.EnrichedPathKind',
+      '10': 'enrichedPathKind'
+    },
   ],
   '3': [HomePrompt_PatternOption$json],
 };
@@ -255,7 +449,14 @@ const HomePrompt$json = {
 const HomePrompt_PatternOption$json = {
   '1': 'PatternOption',
   '2': [
-    {'1': 'home_pattern_type', '3': 1, '4': 1, '5': 14, '6': '.apparmor_prompting.HomePatternType', '10': 'homePatternType'},
+    {
+      '1': 'home_pattern_type',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePatternType',
+      '10': 'homePatternType'
+    },
     {'1': 'path_pattern', '3': 2, '4': 1, '5': 9, '10': 'pathPattern'},
     {'1': 'show_initially', '3': 3, '4': 1, '5': 8, '10': 'showInitially'},
   ],
@@ -301,15 +502,23 @@ final $typed_data.Uint8List metaDataDescriptor = $convert.base64Decode(
 const ResolveHomePatternTypeResponse$json = {
   '1': 'ResolveHomePatternTypeResponse',
   '2': [
-    {'1': 'home_pattern_type', '3': 1, '4': 1, '5': 14, '6': '.apparmor_prompting.HomePatternType', '10': 'homePatternType'},
+    {
+      '1': 'home_pattern_type',
+      '3': 1,
+      '4': 1,
+      '5': 14,
+      '6': '.apparmor_prompting.HomePatternType',
+      '10': 'homePatternType'
+    },
   ],
 };
 
 /// Descriptor for `ResolveHomePatternTypeResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List resolveHomePatternTypeResponseDescriptor = $convert.base64Decode(
-    'Ch5SZXNvbHZlSG9tZVBhdHRlcm5UeXBlUmVzcG9uc2USTwoRaG9tZV9wYXR0ZXJuX3R5cGUYAS'
-    'ABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5'
-    'cGU=');
+final $typed_data.Uint8List resolveHomePatternTypeResponseDescriptor =
+    $convert.base64Decode(
+        'Ch5SZXNvbHZlSG9tZVBhdHRlcm5UeXBlUmVzcG9uc2USTwoRaG9tZV9wYXR0ZXJuX3R5cGUYAS'
+        'ABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dGVyblR5'
+        'cGU=');
 
 @$core.Deprecated('Use setLoggingFilterResponseDescriptor instead')
 const SetLoggingFilterResponse$json = {
@@ -320,19 +529,68 @@ const SetLoggingFilterResponse$json = {
 };
 
 /// Descriptor for `SetLoggingFilterResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List setLoggingFilterResponseDescriptor = $convert.base64Decode(
-    'ChhTZXRMb2dnaW5nRmlsdGVyUmVzcG9uc2USGAoHY3VycmVudBgBIAEoCVIHY3VycmVudA==');
+final $typed_data.Uint8List setLoggingFilterResponseDescriptor =
+    $convert.base64Decode(
+        'ChhTZXRMb2dnaW5nRmlsdGVyUmVzcG9uc2USGAoHY3VycmVudBgBIAEoCVIHY3VycmVudA==');
 
 @$core.Deprecated('Use enrichedPathKindDescriptor instead')
 const EnrichedPathKind$json = {
   '1': 'EnrichedPathKind',
   '2': [
-    {'1': 'home_dir', '3': 1, '4': 1, '5': 11, '6': '.apparmor_prompting.HomeDir', '9': 0, '10': 'homeDir'},
-    {'1': 'top_level_dir', '3': 2, '4': 1, '5': 11, '6': '.apparmor_prompting.TopLevelDir', '9': 0, '10': 'topLevelDir'},
-    {'1': 'sub_dir', '3': 3, '4': 1, '5': 11, '6': '.apparmor_prompting.SubDir', '9': 0, '10': 'subDir'},
-    {'1': 'home_dir_file', '3': 4, '4': 1, '5': 11, '6': '.apparmor_prompting.HomeDirFile', '9': 0, '10': 'homeDirFile'},
-    {'1': 'top_level_dir_file', '3': 5, '4': 1, '5': 11, '6': '.apparmor_prompting.TopLevelDirFile', '9': 0, '10': 'topLevelDirFile'},
-    {'1': 'sub_dir_file', '3': 6, '4': 1, '5': 11, '6': '.apparmor_prompting.SubDirFile', '9': 0, '10': 'subDirFile'},
+    {
+      '1': 'home_dir',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.HomeDir',
+      '9': 0,
+      '10': 'homeDir'
+    },
+    {
+      '1': 'top_level_dir',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.TopLevelDir',
+      '9': 0,
+      '10': 'topLevelDir'
+    },
+    {
+      '1': 'sub_dir',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.SubDir',
+      '9': 0,
+      '10': 'subDir'
+    },
+    {
+      '1': 'home_dir_file',
+      '3': 4,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.HomeDirFile',
+      '9': 0,
+      '10': 'homeDirFile'
+    },
+    {
+      '1': 'top_level_dir_file',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.TopLevelDirFile',
+      '9': 0,
+      '10': 'topLevelDirFile'
+    },
+    {
+      '1': 'sub_dir_file',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.SubDirFile',
+      '9': 0,
+      '10': 'subDirFile'
+    },
   ],
   '8': [
     {'1': 'kind'},
@@ -356,8 +614,8 @@ const HomeDir$json = {
 };
 
 /// Descriptor for `HomeDir`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List homeDirDescriptor = $convert.base64Decode(
-    'CgdIb21lRGly');
+final $typed_data.Uint8List homeDirDescriptor =
+    $convert.base64Decode('CgdIb21lRGly');
 
 @$core.Deprecated('Use topLevelDirDescriptor instead')
 const TopLevelDir$json = {
@@ -368,8 +626,8 @@ const TopLevelDir$json = {
 };
 
 /// Descriptor for `TopLevelDir`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List topLevelDirDescriptor = $convert.base64Decode(
-    'CgtUb3BMZXZlbERpchIYCgdkaXJuYW1lGAEgASgJUgdkaXJuYW1l');
+final $typed_data.Uint8List topLevelDirDescriptor = $convert
+    .base64Decode('CgtUb3BMZXZlbERpchIYCgdkaXJuYW1lGAEgASgJUgdkaXJuYW1l');
 
 @$core.Deprecated('Use subDirDescriptor instead')
 const SubDir$json = {
@@ -377,8 +635,8 @@ const SubDir$json = {
 };
 
 /// Descriptor for `SubDir`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List subDirDescriptor = $convert.base64Decode(
-    'CgZTdWJEaXI=');
+final $typed_data.Uint8List subDirDescriptor =
+    $convert.base64Decode('CgZTdWJEaXI=');
 
 @$core.Deprecated('Use homeDirFileDescriptor instead')
 const HomeDirFile$json = {
@@ -389,8 +647,8 @@ const HomeDirFile$json = {
 };
 
 /// Descriptor for `HomeDirFile`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List homeDirFileDescriptor = $convert.base64Decode(
-    'CgtIb21lRGlyRmlsZRIaCghmaWxlbmFtZRgBIAEoCVIIZmlsZW5hbWU=');
+final $typed_data.Uint8List homeDirFileDescriptor = $convert
+    .base64Decode('CgtIb21lRGlyRmlsZRIaCghmaWxlbmFtZRgBIAEoCVIIZmlsZW5hbWU=');
 
 @$core.Deprecated('Use topLevelDirFileDescriptor instead')
 const TopLevelDirFile$json = {
@@ -412,6 +670,5 @@ const SubDirFile$json = {
 };
 
 /// Descriptor for `SubDirFile`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List subDirFileDescriptor = $convert.base64Decode(
-    'CgpTdWJEaXJGaWxl');
-
+final $typed_data.Uint8List subDirFileDescriptor =
+    $convert.base64Decode('CgpTdWJEaXJGaWxl');

@@ -1,6 +1,6 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
-    daemon::{worker::ReadOnlyActivePrompt, ActionedPrompt, ReplyToPrompt},
+    daemon::{worker::RefActivePrompt, ActionedPrompt, ReplyToPrompt},
     log_filter,
     protos::{
         apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
@@ -11,15 +11,19 @@ use crate::{
     Error,
 };
 use std::sync::Arc;
-use tokio::{net::UnixListener, sync::mpsc::UnboundedSender};
+use tokio::{
+    net::UnixListener,
+    sync::mpsc::{channel, UnboundedSender},
+};
+use tokio_stream::wrappers::ReceiverStream;
 use tonic::{async_trait, Code, Request, Response, Status};
-use tracing::{debug, info, warn};
+use tracing::{debug, error, info, warn};
 use tracing_subscriber::{reload::Handle, EnvFilter};
 
 pub fn new_server_and_listener<R, S>(
     client: R,
     reload_handle: S,
-    active_prompt: ReadOnlyActivePrompt,
+    active_prompt: RefActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     socket_path: String,
 ) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
@@ -70,7 +74,7 @@ where
 {
     client: R,
     reload_handle: S,
-    active_prompt: ReadOnlyActivePrompt,
+    active_prompt: RefActivePrompt,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
@@ -82,7 +86,7 @@ where
     pub fn new(
         client: R,
         reload_handle: S,
-        active_prompt: ReadOnlyActivePrompt,
+        active_prompt: RefActivePrompt,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
         Self {
@@ -106,10 +110,13 @@ where
     R: ReplyToPrompt,
     S: SetLogFilter,
 {
+    type GetCurrentPromptStream = ReceiverStream<Result<GetCurrentPromptResponse, Status>>;
     async fn get_current_prompt(
         &self,
         _request: Request<()>,
-    ) -> Result<Response<GetCurrentPromptResponse>, Status> {
+    ) -> Result<Response<Self::GetCurrentPromptStream>, Status> {
+        let (tx, rx) = channel(1);
+
         let prompt = match self.active_prompt.get() {
             Some(p) => {
                 let id = &p.id().0;
@@ -120,11 +127,28 @@ where
 
             None => {
                 warn!("got request for current prompt but there is no active prompt");
-                None
+                return Err(Status::internal("active prompt not found"));
             }
         };
 
-        Ok(Response::new(GetCurrentPromptResponse { prompt }))
+        match self.active_prompt.get_context() {
+            Some(mut ctx) => {
+                tokio::spawn(async move {
+                    debug!("spawning stream");
+                    if let Err(e) = tx.send(Ok(GetCurrentPromptResponse { prompt })).await {
+                        error!("could not send prompt: {}", e);
+                    }
+                    ctx.done().await;
+                    debug!("closing stream");
+                });
+            }
+            None => {
+                warn!("got request for current prompt but there is no context");
+                return Err(Status::internal("context not found"));
+            }
+        };
+
+        Ok(Response::new(ReceiverStream::new(rx)))
     }
 
     async fn reply_to_prompt(
@@ -275,44 +299,47 @@ fn map_permissions(perms: Vec<String>) -> Result<Vec<i32>, Status> {
 mod tests {
     use super::*;
     use crate::{
-        daemon::worker::ReadOnlyActivePrompt,
+        daemon::{
+            worker::{ActivePrompt, RefActivePrompt},
+            EnrichedPrompt,
+        },
         protos::apparmor_prompting::{
-            self, app_armor_prompting_client::AppArmorPromptingClient, enriched_path_kind::Kind,
-            get_current_prompt_response::Prompt, prompt_reply,
-            prompt_reply::PromptReply::HomePromptReply, prompt_reply_response::PromptReplyType,
+            self,
+            app_armor_prompting_client::AppArmorPromptingClient,
+            enriched_path_kind::Kind,
+            get_current_prompt_response::Prompt,
+            prompt_reply::{self, PromptReply::HomePromptReply},
+            prompt_reply_response::PromptReplyType,
             Action, EnrichedPathKind as ProtoEnrichedPathKind, HomeDir, HomePrompt, Lifespan,
             MetaData,
         },
         snapd_client::{
             self,
             interfaces::home::{
-                EnrichedPathKind, HomeInterface, HomeReplyConstraints, HomeUiInputData,
+                EnrichedPathKind, HomeConstraints, HomeInterface, HomeReplyConstraints,
+                HomeUiInputData,
             },
-            PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPromptReply, TypedUiInput,
-            UiInput,
+            Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPrompt,
+            TypedPromptReply, TypedUiInput, UiInput,
         },
         Error,
     };
-    use hyper_util::rt::TokioIo;
     use simple_test_case::test_case;
     use std::{
         fs, io,
         ops::{Deref, DerefMut},
     };
-    use tokio::{
-        net::UnixStream,
-        sync::mpsc::{unbounded_channel, UnboundedSender},
-    };
+    use tokio::sync::mpsc::{unbounded_channel, UnboundedSender};
+    use tokio_context::context::Context;
     use tokio_stream::wrappers::UnixListenerStream;
     use tonic::{
         async_trait,
-        transport::{Channel, Endpoint, Server, Uri},
+        transport::{Channel, Server},
         Request,
     };
-    use tower::service_fn;
     use uuid::Uuid;
 
-    #[derive(Clone)]
+    #[derive(Debug, Clone)]
     struct MockClient {
         want_err: bool,
         expected_reply: Option<TypedPromptReply>,
@@ -378,7 +405,7 @@ mod tests {
 
     async fn setup_server_and_client(
         mock_client: MockClient,
-        active_prompt: ReadOnlyActivePrompt,
+        active_prompt: RefActivePrompt,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> SelfCleaningClient {
         let test_name = Uuid::new_v4().to_string();
@@ -402,18 +429,41 @@ mod tests {
         });
 
         let path = socket_path.clone();
-        // See https://github.com/hyperium/tonic/blob/master/examples/src/uds/client.rs
-        let channel = Endpoint::from_static("https://not-used.com")
-            .connect_with_connector(service_fn(move |_: Uri| {
-                let path = path.clone();
-                async { Ok::<_, io::Error>(TokioIo::new(UnixStream::connect(path).await?)) }
-            }))
+        let inner = AppArmorPromptingClient::connect(format!("unix://{path}"))
             .await
             .unwrap();
+        SelfCleaningClient { inner, socket_path }
+    }
 
-        SelfCleaningClient {
-            inner: AppArmorPromptingClient::new(channel),
-            socket_path,
+    fn active_prompt() -> ActivePrompt {
+        let (_, ui_handle) = Context::new();
+        ActivePrompt {
+            typed_ui_input: ui_input(),
+            enriched_prompt: enriched_prompt(),
+            ui_handle: Some(ui_handle),
+        }
+    }
+
+    fn enriched_prompt() -> EnrichedPrompt {
+        EnrichedPrompt {
+            prompt: TypedPrompt::Home(SnapPrompt {
+                id: PromptId("1".to_string()),
+                timestamp: "0".to_string(),
+                snap: "2".to_string(),
+                pid: 1234,
+                interface: "home".to_string(),
+                constraints: HomeConstraints {
+                    path: "6".to_string(),
+                    requested_permissions: Vec::new(),
+                    available_permissions: Vec::new(),
+                },
+            }),
+            meta: Some(SnapMeta {
+                name: "2".to_string(),
+                updated_at: "3".to_string(),
+                store_url: "4".to_string(),
+                publisher: "5".to_string(),
+            }),
         }
     }
 
@@ -497,26 +547,42 @@ mod tests {
     }
 
     #[test_case(None, None; "empty prompt")]
-    #[test_case(Some(ui_input()), Some(prompt()); "non-empty prompt")]
+    #[test_case(Some(active_prompt()), Some(prompt()); "non-empty prompt")]
     #[tokio::test]
-    async fn test_get_current_prompt(ui_input: Option<TypedUiInput>, expected: Option<Prompt>) {
+    async fn test_get_current_prompt(
+        active_prompt: Option<ActivePrompt>,
+        expected: Option<Prompt>,
+    ) {
         let mock_client = MockClient {
             want_err: false,
             expected_reply: None,
         };
         let (tx_actioned_prompts, _rx_actioned_prompts) = unbounded_channel();
-        let active_prompt = ReadOnlyActivePrompt::new(ui_input);
+        let mut active_prompt = RefActivePrompt::new(active_prompt);
         let mut client =
-            setup_server_and_client(mock_client, active_prompt, tx_actioned_prompts).await;
+            setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
 
-        let resp = client
-            .get_current_prompt(Request::new(()))
+        let response = client.get_current_prompt(Request::new(())).await;
+        if expected.is_none() {
+            assert!(response.is_err());
+            return;
+        }
+
+        let mut stream = response.unwrap().into_inner();
+
+        let resp = stream
+            .message()
             .await
             .unwrap()
-            .into_inner()
-            .prompt;
+            .and_then(|response| response.prompt);
 
         assert_eq!(resp, expected);
+
+        if expected.is_some() {
+            active_prompt.drop_prompt();
+        }
+        let next = stream.message().await.unwrap();
+        assert_eq!(next, None);
     }
 
     #[test_case(prompt_reply(None), ExpectedErrors{snapd_err: false, tx_err: false, want_err: true}; "Error when map_prompt_reply fails")]
@@ -534,7 +600,7 @@ mod tests {
         if expected_errors.tx_err {
             rx_actioned_prompts = None;
         }
-        let active_prompt = ReadOnlyActivePrompt::new(None);
+        let active_prompt = RefActivePrompt::new(None);
         let mut client =
             setup_server_and_client(mock_client, active_prompt, tx_actioned_prompts).await;
 
