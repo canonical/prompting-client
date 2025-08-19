@@ -562,11 +562,13 @@ mod tests {
         let mut client =
             setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
 
-        let mut stream = client
-            .get_current_prompt(Request::new(()))
-            .await
-            .unwrap()
-            .into_inner();
+        let response = client.get_current_prompt(Request::new(())).await;
+        if expected.is_none() {
+            assert!(response.is_err());
+            return;
+        }
+
+        let mut stream = response.unwrap().into_inner();
 
         let resp = stream
             .message()
