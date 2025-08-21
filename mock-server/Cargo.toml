@@ -5,6 +5,10 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.98"
-axum = "0.8.4"
-clap = "4.5.43"
+axum = { version = "0.8", features = ["macros"] }
+libc = "0.2.175"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.143"
 tokio = { version = "1.47.1", features = ["full"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter", "fmt"] }

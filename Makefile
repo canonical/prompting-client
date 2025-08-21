@@ -179,3 +179,21 @@ local-install-client:
 	echo ":: Installing $(SNAP_NAME)..." ; \
 	snap install --dangerous $$FILE_NAME ; \
 	snap connect $(SNAP_NAME):snap-interfaces-requests-control ;
+
+# ==== MOCK SERVER ====
+
+PIPE=/tmp/pipe
+SOCKET=/tmp/mock.sock
+.PHONY: dev-mock-server
+dev-mock-server:
+	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) cargo watch -cqx run ; cd ..;
+
+.PHONY: start-mock-server
+start-mock-server:
+	cd mock-server; cargo build --release; cd ..;
+	PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) mock-server/target/release/mock-server
+
+.PHONY: send-mock-server
+send-mock-server:
+	echo ...  > $(PIPE)
+
