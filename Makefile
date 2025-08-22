@@ -184,14 +184,22 @@ local-install-client:
 
 PIPE=/tmp/pipe
 SOCKET=/tmp/mock.sock
+LOG_LEVEL=debug
+FLUTTER_UI=/snap/prompting-client/current/bin/prompting_client_ui
+CLIENT_SOCKET=/tmp/test.sock
+
 .PHONY: dev-mock-server
 dev-mock-server:
-	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) cargo watch -cqx run ; cd ..;
+	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx run ; cd .. ;
 
 .PHONY: start-mock-server
 start-mock-server:
-	cd mock-server; cargo build --release; cd ..;
-	PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) mock-server/target/release/mock-server
+	cd mock-server; cargo build --release; cd .. ;
+	PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) mock-server/target/release/mock-server
+
+.PHONY: start-mock-prompt
+start-mock-prompt:
+	cd prompting-client ; FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) SNAPD_SOCKET_OVERRIDE=$(SOCKET) SNAP_REAL_HOME=$(HOME) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx "run --bin=prompting-client-daemon" ; cd .. ;
 
 .PHONY: send-mock-server
 send-mock-server:

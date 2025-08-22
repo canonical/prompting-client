@@ -8,8 +8,10 @@ use tokio::{
     io::{AsyncReadExt, BufReader},
     sync::{Mutex, broadcast},
 };
+use tracing::info;
+use tracing_subscriber::EnvFilter;
 
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::HashMap, sync::Arc, time::Duration};
 
 use anyhow::Result;
 
@@ -17,8 +19,15 @@ use crate::routes::*;
 use crate::{pipe::Pipe, prompts::Prompts, socket::Socket};
 
 struct AppState {
-    tx: broadcast::Sender<Value>,
-    prompts: Mutex<HashMap<u64, Value>>,
+    tx: broadcast::Sender<(Value, Action)>,
+    prompts: Mutex<HashMap<String, Value>>,
+    notices: Mutex<HashMap<String, Value>>,
+}
+
+#[derive(Clone, Copy)]
+pub enum Action {
+    New,
+    Update,
 }
 
 mod pipe;
@@ -28,6 +37,11 @@ mod socket;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    tracing_subscriber::fmt()
+        .compact()
+        .with_env_filter(EnvFilter::from_default_env())
+        .init();
+
     let pipe_path = std::env::var("PIPE_PATH")?;
     let socket_path = std::env::var("SOCKET_PATH")?;
 
@@ -35,24 +49,41 @@ async fn main() -> Result<()> {
     // multiple receivers to subscribe and receive all messages sent through the channel.
     // This is useful for our long polling api where the same data needs to be sent
     // to multiple independent consumers.
-    let (tx, _) = broadcast::channel::<Value>(16);
+    let (tx, _) = broadcast::channel::<(Value, Action)>(16);
+
+    let prompts = Prompts::read_initial_state("prompts");
+    let mut notices = HashMap::new();
+    for (k, _) in &prompts {
+        let value = Prompts::make_notice(k.parse::<u64>()?, k);
+
+        notices.insert(k.clone(), value);
+    }
 
     let data = Arc::new(AppState {
         tx: tx.clone(),
-        prompts: Mutex::new(Prompts::read_initial_state("prompts")),
+        prompts: Mutex::new(prompts),
+        notices: Mutex::new(notices),
     });
 
     let app = Router::new()
-        .route("/v2/notices", get(notices))
+        .route("/v2/notices", get(poll_notices))
         .route("/v2/interfaces/requests/prompts", get(list_prompts))
-        .route("/v2/interfaces/requests/prompts/{id}", get(prompt))
-        .route("/v2/interfaces/requests/prompts/{id}", post(post_prompt))
+        .route(
+            "/v2/interfaces/requests/prompts/{id:[0-9a-fA-F]+}",
+            get(prompt),
+        )
+        .route(
+            "/v2/interfaces/requests/prompts/{id:[0-9a-fA-F]+}",
+            post(post_prompt),
+        )
         .route("/v2/snaps/{snapname}", get(metadata))
         .route("/v2/system-info", get(system_info))
         .fallback(handler_500)
         .with_state(data.clone());
 
     tokio::spawn(async move {
+        info!("Initializing pipe");
+
         let pipe = Pipe::create(&pipe_path).await.unwrap();
         let mut reader = BufReader::new(pipe);
 
@@ -61,10 +92,15 @@ async fn main() -> Result<()> {
             reader.read_to_string(&mut buf).await.unwrap();
 
             if let Ok(json) = serde_json::from_str::<serde_json::Value>(&buf) {
-                let _ = tx.send(json);
+                info!("Sending data into the pipe: {json}");
+                let _ = tx.send((json, Action::New));
             }
+
+            tokio::time::sleep(Duration::from_millis(100)).await;
         }
     });
+
+    info!("Starting mock-server");
 
     let listener = Socket::create(&socket_path).await?;
 
