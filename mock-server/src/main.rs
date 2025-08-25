@@ -19,9 +19,10 @@ use crate::routes::*;
 use crate::{pipe::Pipe, prompts::Prompts, socket::Socket};
 
 struct AppState {
-    tx: broadcast::Sender<(Value, Action)>,
-    prompts: Mutex<HashMap<String, Value>>,
+    last_prompt_id: Mutex<u64>,
     notices: Mutex<HashMap<String, Value>>,
+    prompts: Mutex<HashMap<String, Value>>,
+    tx: broadcast::Sender<(Value, Action)>,
 }
 
 #[derive(Clone, Copy)]
@@ -60,9 +61,10 @@ async fn main() -> Result<()> {
     }
 
     let data = Arc::new(AppState {
-        tx: tx.clone(),
-        prompts: Mutex::new(prompts),
+        last_prompt_id: Mutex::new(prompts.len() as u64),
         notices: Mutex::new(notices),
+        prompts: Mutex::new(prompts),
+        tx: tx.clone(),
     });
 
     let app = Router::new()
@@ -79,7 +81,7 @@ async fn main() -> Result<()> {
         .route("/v2/snaps/{snapname}", get(metadata))
         .route("/v2/system-info", get(system_info))
         .fallback(handler_500)
-        .with_state(data.clone());
+        .with_state(data);
 
     tokio::spawn(async move {
         info!("Initializing pipe");

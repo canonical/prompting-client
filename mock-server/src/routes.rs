@@ -43,6 +43,8 @@ pub async fn poll_notices(
     State(data): State<Arc<AppState>>,
     Query(query): Query<PollNotices>,
 ) -> Response {
+    let mut rx = data.tx.subscribe();
+
     info!(
         "New listener to the long polling api [total listener {}]",
         data.tx.receiver_count()
@@ -50,20 +52,15 @@ pub async fn poll_notices(
 
     let duration = parse_timeout(&query.timeout);
 
-    let mut rx = data.tx.subscribe();
     match timeout(duration, rx.recv()).await {
         Ok(Ok((mut prompt, Action::New))) => {
             let (id, key) = {
                 let mut hm = data.prompts.lock().await;
+                let mut id = data.last_prompt_id.lock().await;
 
-                // progressive id based on the current state of the prompts
-                let id = hm
-                    .keys()
-                    .map(|k| u64::from_str_radix(k, 16).unwrap())
-                    .max()
-                    .unwrap_or(0)
-                    + 1;
-                let key = format!("{id:016}");
+                *id += 1;
+
+                let key = format!("{:016x}", *id);
                 let timestamp = Utc::now().format("%Y-%m-%dT%H:%M:%S.%fZ").to_string();
 
                 prompt["id"] = json!(key);
@@ -71,7 +68,7 @@ pub async fn poll_notices(
 
                 hm.insert(key.clone(), prompt.clone());
 
-                (id, key)
+                (*id, key)
             };
 
             let notice = {
@@ -121,17 +118,17 @@ pub async fn prompt(State(data): State<Arc<AppState>>, Path(id): Path<String>) -
     }
 }
 
-// struct PromptReply {}
-
 pub async fn post_prompt(
     State(data): State<Arc<AppState>>,
     Path(id): Path<String>,
-    // Json(payload): Json<PromptReply>,
+    Json(payload): Json<Value>,
 ) -> Response {
-    let id = u64::from_str_radix(&id.to_lowercase(), 16).unwrap();
-    let key = format!("{id:016}");
+    let key = match u64::from_str_radix(&id.to_lowercase(), 16) {
+        Ok(id) => format!("{id:016x}"),
+        _ => return make_not_found().into_response(),
+    };
 
-    info!("Reply to prompt {id}");
+    info!("Reply to prompt {key} with payload: {payload}");
 
     let mut hm = data.prompts.lock().await;
     match hm.remove(&key) {

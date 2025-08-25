@@ -6,6 +6,7 @@ pub struct Prompts;
 
 impl Prompts {
     pub fn read_initial_state(path: &str) -> HashMap<String, Value> {
+        let mut id = 0;
         let mut results = HashMap::new();
 
         if let Ok(entries) = fs::read_dir(path) {
@@ -14,10 +15,13 @@ impl Prompts {
 
                 if path.is_file() && path.extension().and_then(|s| s.to_str()) == Some("json") {
                     if let Ok(content) = fs::read_to_string(&path) {
-                        if let Ok(value) = serde_json::from_str::<Value>(&content) {
-                            let id = value.get("id").and_then(|v| v.as_str()).unwrap();
+                        if let Ok(mut value) = serde_json::from_str::<Value>(&content) {
+                            id += 1;
 
-                            results.insert(id.to_string(), value);
+                            let key = format!("{id:016x}");
+                            value["id"] = json!(key);
+
+                            results.insert(key, value);
                         }
                     }
                 }
