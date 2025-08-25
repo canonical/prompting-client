@@ -1,0 +1,18 @@
+{
+    "id": "0000000000000000",
+    "timestamp": "2025-08-20T14:32:06.330766685+02:00",
+    "snap": "yq",
+    "pid": 91995,
+    "interface": "home",
+    "constraints": {
+        "path": "/home/foo.yaml",
+        "requested-permissions": [
+            "read"
+        ],
+        "available-permissions": [
+            "read",
+            "write",
+            "execute"
+        ]
+    }
+}

@@ -179,3 +179,29 @@ local-install-client:
 	echo ":: Installing $(SNAP_NAME)..." ; \
 	snap install --dangerous $$FILE_NAME ; \
 	snap connect $(SNAP_NAME):snap-interfaces-requests-control ;
+
+# ==== MOCK SERVER ====
+
+PIPE=/tmp/pipe
+SOCKET=/tmp/mock.sock
+LOG_LEVEL=debug
+FLUTTER_UI=/snap/prompting-client/current/bin/prompting_client_ui
+CLIENT_SOCKET=/tmp/test.sock
+
+.PHONY: dev-mock-server
+dev-mock-server:
+	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx run ; cd .. ;
+
+.PHONY: start-mock-server
+start-mock-server:
+	cd mock-server; cargo build --release; cd .. ;
+	PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) mock-server/target/release/mock-server
+
+.PHONY: start-mock-prompt
+start-mock-prompt:
+	cd prompting-client ; FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) SNAPD_SOCKET_OVERRIDE=$(SOCKET) SNAP_REAL_HOME=$(HOME) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx "run --bin=prompting-client-daemon" ; cd .. ;
+
+.PHONY: send-mock-server
+send-mock-server:
+	echo ...  > $(PIPE)
+
