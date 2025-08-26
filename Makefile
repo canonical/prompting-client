@@ -3,6 +3,7 @@ SNAP_NAME = prompting-client
 SHORT_HASH = $(shell git rev-parse --short HEAD)
 SNAP_FILE_NAME = $(SNAP_NAME)_0+git.$(SHORT_HASH)_amd64.snap
 TEST_SNAP_NAME = aa-prompting-test
+PROJECT_DIR = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: install-local-tooling
 install-local-tooling:
@@ -182,26 +183,21 @@ local-install-client:
 
 # ==== MOCK SERVER ====
 
-PIPE=/tmp/pipe
-SOCKET=/tmp/mock.sock
-LOG_LEVEL=debug
-FLUTTER_UI=/snap/prompting-client/current/bin/prompting_client_ui
-CLIENT_SOCKET=/tmp/test.sock
+LOG_LEVEL = debug
+PIPE = /tmp/pipe
+SOCKET = /tmp/mock.sock
+CLIENT_SOCKET = /tmp/test.sock
+FLUTTER_UI = $(shell find $(PROJECT_DIR) -type f -executable -path '*/bundle/prompting_client_ui' | head -n1)
+
+.PHONY: start-mock-server
+start-mock-server:
+	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) cargo run --release; cd .. ;
 
 .PHONY: dev-mock-server
 dev-mock-server:
 	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx run ; cd .. ;
 
-.PHONY: start-mock-server
-start-mock-server:
-	cd mock-server; cargo build --release; cd .. ;
-	PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) mock-server/target/release/mock-server
-
-.PHONY: start-mock-prompt
-start-mock-prompt:
+.PHONY: dev-prompting-client
+dev-prompting-client:
 	cd prompting-client ; FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) SNAPD_SOCKET_OVERRIDE=$(SOCKET) SNAP_REAL_HOME=$(HOME) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx "run --bin=prompting-client-daemon" ; cd .. ;
-
-.PHONY: send-mock-server
-send-mock-server:
-	echo ...  > $(PIPE)
 

@@ -11,7 +11,7 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{sync::Arc, time::Duration};
 use tokio::time::timeout;
-use tracing::info;
+use tracing::{error, info, warn};
 
 #[derive(Debug, Deserialize)]
 pub struct PollNotices {
@@ -55,6 +55,8 @@ pub async fn poll_notices(
     match timeout(duration, rx.recv()).await {
         Ok(Ok((mut prompt, Action::New))) => {
             let (id, key) = {
+                info!("Add new pending prompt");
+
                 let mut hm = data.prompts.lock().await;
                 let mut id = data.last_prompt_id.lock().await;
 
@@ -70,6 +72,8 @@ pub async fn poll_notices(
 
                 (*id, key)
             };
+
+            info!("Make notice for new pending prompt");
 
             let notice = {
                 let mut hm = data.notices.lock().await;
@@ -87,6 +91,8 @@ pub async fn poll_notices(
             let id = prompt["id"].as_str().unwrap();
             let notice = hm.get_mut(id).unwrap();
 
+            info!("Update notice for prompt: {id}");
+
             if let Some(obj) = notice.as_array_mut().and_then(|arr| arr.get_mut(0)) {
                 obj["last-data"] = json!({"resolved": "replied"});
             }
@@ -94,13 +100,19 @@ pub async fn poll_notices(
             make_success(notice.clone()).into_response()
         }
 
-        Ok(_) => Json(json!("Receiving error")).into_response(),
-        _ => Json(json!([])).into_response(),
+        Ok(_) => {
+            error!("Receing wrong data from pipe");
+            Json(json!("Receiving error")).into_response()
+        }
+        _ => {
+            warn!("Timeout expired");
+            Json(json!([])).into_response()
+        }
     }
 }
 
 pub async fn list_prompts(State(data): State<Arc<AppState>>) -> impl IntoResponse {
-    info!("list_prompts api");
+    info!("Get current pending prompts");
 
     let hm = data.prompts.lock().await;
     let prompts = hm.values().collect::<Vec<_>>();
@@ -109,10 +121,15 @@ pub async fn list_prompts(State(data): State<Arc<AppState>>) -> impl IntoRespons
 }
 
 pub async fn prompt(State(data): State<Arc<AppState>>, Path(id): Path<String>) -> Response {
-    info!("prompt api");
+    let key = match u64::from_str_radix(&id.to_lowercase(), 16) {
+        Ok(id) => format!("{id:016x}"),
+        _ => return make_not_found().into_response(),
+    };
+
+    info!("Get pending prompt: {key}");
 
     let hm = data.prompts.lock().await;
-    match hm.get(&id) {
+    match hm.get(&key) {
         Some(value) => make_success(value.clone()).into_response(),
         _ => make_not_found().into_response(),
     }
@@ -142,7 +159,9 @@ pub async fn post_prompt(
     }
 }
 
-pub async fn metadata(Path(_): Path<String>) -> impl IntoResponse {
+pub async fn metadata(Path(snapname): Path<String>) -> impl IntoResponse {
+    info!("Get metadata for {snapname}");
+
     make_success(json!({
         "install-date": "2025-08-08T09:15:01.505417578+02:00",
         "publisher": {
@@ -152,6 +171,8 @@ pub async fn metadata(Path(_): Path<String>) -> impl IntoResponse {
 }
 
 pub async fn system_info() -> impl IntoResponse {
+    info!("Get system info");
+
     make_success(json!({
         "features": {
             "apparmor-prompting": {
@@ -184,6 +205,8 @@ fn make_success(result: Value) -> impl IntoResponse {
 }
 
 fn make_not_found() -> impl IntoResponse {
+    error!("Prompt not found");
+
     Json(json!({
         "type": "error",
         "status-code": 404,
