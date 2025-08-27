@@ -187,6 +187,8 @@ LOG_LEVEL = debug
 CLIENT_SOCKET = $(shell mktemp -u)
 PIPE ?= $(shell mktemp -u -t pipe.XXXXXX)
 SOCKET ?= $(shell mktemp -u -t mock.sock.XXXXXX)
+
+# Use 'sort -r' sorting in reverse order, ensuring that release artifacts appear before debug or other variants.
 FLUTTER_UI ?= $(shell find $(PROJECT_DIR) -type f -executable -path '*/bundle/prompting_client_ui' | sort -r | head -n1)
 
 .PHONY: start-mock-server

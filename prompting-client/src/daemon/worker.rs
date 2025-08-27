@@ -8,6 +8,7 @@ use std::{
     collections::VecDeque,
     env,
     fmt::Debug,
+    path::Path,
     process::ExitStatus,
     sync::{Arc, Mutex},
     time::Duration,
@@ -136,20 +137,32 @@ impl Worker<FlutterUi, SnapdSocketClient, DialogProcess> {
         rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
         client: SnapdSocketClient,
     ) -> Self {
-        #[cfg(feature = "dry-run")]
         let cmd = {
-            let ui_override =
-                env::var("FLUTTER_UI_OVERRIDE").expect("FLUTTER_UI_OVERRIDE env var to be set");
-            info!("using override command for the flutter UI: {ui_override}");
+            // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
+            // the `cmd` variable is not used in all code paths, which would otherwise cause a warning.
+            #[allow(unused_variables)]
+            let cmd = if let Ok(snap) = env::var("SNAP") {
+                format!("{snap}/bin/prompting_client_ui")
+            } else {
+                info!("SNAP env var is not setted");
+                String::new()
+            };
 
-            ui_override
+            #[cfg(feature = "dry-run")]
+            let cmd = if let Ok(override_cmd) = env::var("FLUTTER_UI_OVERRIDE") {
+                info!("using override command for the flutter UI: {override_cmd}");
+                override_cmd
+            } else {
+                info!("FLUTTER_UI_OVERRIDE env var is not setted");
+                String::new()
+            };
+
+            cmd
         };
 
-        #[cfg(not(feature = "dry-run"))]
-        let cmd = {
-            let snap = env::var("SNAP").expect("SNAP env var to be set");
-            format!("{snap}/bin/prompting_client_ui")
-        };
+        if !Path::new(&cmd).exists() {
+            panic!("UI executable not found at path: '{cmd}'")
+        }
 
         Self {
             rx_prompts,

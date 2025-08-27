@@ -8,7 +8,6 @@ use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
-#[cfg(not(feature = "dry-run"))]
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
 
@@ -24,11 +23,8 @@ const FEATURE_NAME: &str = "apparmor-prompting";
 const LONG_POLL_TIMEOUT: &str = "1h";
 const NOTICE_TYPES: &str = "interfaces-requests-prompt";
 const SNAPD_BASE_URI: &str = "http://localhost/v2";
-#[cfg(not(feature = "dry-run"))]
 const SNAPD_SOCKET: &str = "/run/snapd.socket";
-#[cfg(not(feature = "dry-run"))]
 const SNAPD_SNAP_SOCKET: &str = "/run/snapd-snap.socket";
-#[cfg(not(feature = "dry-run"))]
 const SNAPD_ABSTRACT_SNAP_SOCKET: &str = "\0/snapd/snapd-snap.socket";
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
@@ -106,16 +102,9 @@ impl SnapdSocketClient {
     }
 
     pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
-        #[cfg(feature = "dry-run")]
-        let socket = {
-            let snapd_override =
-                env::var("SNAPD_SOCKET_OVERRIDE").expect("SNAPD_SOCKET_OVERRIDE env var to be set");
-            info!("using override for the snap socket at address: {snapd_override}");
-
-            snapd_override
-        };
-
-        #[cfg(not(feature = "dry-run"))]
+        // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
+        // the `socket` variable is not used in all code paths, which would otherwise cause a warning.
+        #[allow(unused_variables)]
         let socket = if env::var("SNAP_NAME").is_ok() {
             if UnixStream::connect(SNAPD_ABSTRACT_SNAP_SOCKET)
                 .await
@@ -130,6 +119,15 @@ impl SnapdSocketClient {
         } else {
             info!("using the snapd socket at address: {SNAPD_SOCKET}");
             SNAPD_SOCKET
+        };
+
+        #[cfg(feature = "dry-run")]
+        let socket = {
+            let snapd_override =
+                env::var("SNAPD_SOCKET_OVERRIDE").expect("SNAPD_SOCKET_OVERRIDE env var to be set");
+            info!("using override for the snap socket at address: {snapd_override}");
+
+            snapd_override
         };
 
         Self {
