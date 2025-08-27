@@ -182,7 +182,7 @@ The `SOCKET_PATH` must match the value passed to the prompting-client instance y
 
 ```sh
 cd prompting-client
-FLUTTER_UI_OVERRIDE=/path/to/ui/bin PROMPTING_CLIENT_SOCKET=/tmp/test.sock SNAPD_SOCKET_OVERRIDE=/tmp/mock.sock SNAP_REAL_HOME=/path/to/home cargo run --bin=prompting-client-daemon
+FLUTTER_UI_OVERRIDE=/path/to/ui/bin PROMPTING_CLIENT_SOCKET=/tmp/test.sock SNAPD_SOCKET_OVERRIDE=/tmp/mock.sock SNAP_REAL_HOME=/path/to/home cargo run --bin prompting-client-daemon --features dry-run
 ```
 
 `FLUTTER_UI_OVERRIDE` can point to the production UI snap at `/snap/prompting-client/current/bin/prompting_client_ui` or to the one built in the `flutter/build` folder.

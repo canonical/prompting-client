@@ -184,10 +184,10 @@ local-install-client:
 # ==== MOCK SERVER ====
 
 LOG_LEVEL = debug
-PIPE = /tmp/pipe
-SOCKET = /tmp/mock.sock
-CLIENT_SOCKET = /tmp/test.sock
-FLUTTER_UI = $(shell find $(PROJECT_DIR) -type f -executable -path '*/bundle/prompting_client_ui' | head -n1)
+CLIENT_SOCKET = $(shell mktemp -u)
+PIPE ?= $(shell mktemp -u -t pipe.XXXXXX)
+SOCKET ?= $(shell mktemp -u -t mock.sock.XXXXXX)
+FLUTTER_UI ?= $(shell find $(PROJECT_DIR) -type f -executable -path '*/bundle/prompting_client_ui' | sort -r | head -n1)
 
 .PHONY: start-mock-server
 start-mock-server:
@@ -199,5 +199,12 @@ dev-mock-server:
 
 .PHONY: dev-prompting-client
 dev-prompting-client:
-	cd prompting-client ; FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) SNAPD_SOCKET_OVERRIDE=$(SOCKET) SNAP_REAL_HOME=$(HOME) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx "run --bin prompting-client-daemon --features dry-run" ; cd .. ;
+	cd prompting-client ; \
+	RUST_LOG=$(LOG_LEVEL) \
+	SNAP_REAL_HOME=$(HOME) \
+	SNAPD_SOCKET_OVERRIDE=$(SOCKET) \
+	FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) \
+	PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) \
+	cargo watch -cqx "run --bin prompting-client-daemon --features dry-run" ; \
+	cd .. ;
 

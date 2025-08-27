@@ -84,7 +84,7 @@ async fn main() -> Result<()> {
         .with_state(data);
 
     tokio::spawn(async move {
-        info!("Initializing pipe");
+        info!("Initializing pipe at address: {pipe_path}");
 
         let pipe = Pipe::create(&pipe_path).await.unwrap();
         let mut reader = BufReader::new(pipe);
@@ -102,7 +102,7 @@ async fn main() -> Result<()> {
         }
     });
 
-    info!("Starting mock-server");
+    info!("Starting mock-server socket at address: {socket_path}");
 
     let listener = Socket::create(&socket_path).await?;
 
