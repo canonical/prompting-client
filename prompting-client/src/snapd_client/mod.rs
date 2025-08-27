@@ -8,6 +8,7 @@ use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
+#[cfg(not(feature = "dry-run"))]
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
 
@@ -23,8 +24,11 @@ const FEATURE_NAME: &str = "apparmor-prompting";
 const LONG_POLL_TIMEOUT: &str = "1h";
 const NOTICE_TYPES: &str = "interfaces-requests-prompt";
 const SNAPD_BASE_URI: &str = "http://localhost/v2";
+#[cfg(not(feature = "dry-run"))]
 const SNAPD_SOCKET: &str = "/run/snapd.socket";
+#[cfg(not(feature = "dry-run"))]
 const SNAPD_SNAP_SOCKET: &str = "/run/snapd-snap.socket";
+#[cfg(not(feature = "dry-run"))]
 const SNAPD_ABSTRACT_SNAP_SOCKET: &str = "\0/snapd/snapd-snap.socket";
 
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
@@ -102,10 +106,17 @@ impl SnapdSocketClient {
     }
 
     pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
-        let socket = if let Ok(socket_override) = env::var("SNAPD_SOCKET_OVERRIDE") {
-            info!("using override for the snap socket at address: {socket_override}");
-            &socket_override.clone()
-        } else if env::var("SNAP_NAME").is_ok() {
+        #[cfg(feature = "dry-run")]
+        let socket = {
+            let snapd_override =
+                env::var("SNAPD_SOCKET_OVERRIDE").expect("SNAPD_SOCKET_OVERRIDE env var to be set");
+            info!("using override for the snap socket at address: {snapd_override}");
+
+            snapd_override
+        };
+
+        #[cfg(not(feature = "dry-run"))]
+        let socket = if env::var("SNAP_NAME").is_ok() {
             if UnixStream::connect(SNAPD_ABSTRACT_SNAP_SOCKET)
                 .await
                 .is_ok()

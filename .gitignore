@@ -20,8 +20,5 @@ pubspec_overrides.yaml
 *.iml
 *.idea
 
-# Vscode related
-.vscode
-
 # FVM Version Cache
 .fvm/

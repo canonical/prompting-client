@@ -79,7 +79,7 @@ parts:
     build-packages:
       - libssl-dev
       - pkg-config
-      - protobuf-compiler
+      - protobuf-compiler      
       - libprotobuf-dev
 
   prompting-client-ui:
@@ -101,6 +101,6 @@ parts:
 
   desktop-files:
     plugin: dump
-    source: snap/gui
+    source: .
     organize:
-      prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
+      snap/gui/prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop

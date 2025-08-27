@@ -136,10 +136,17 @@ impl Worker<FlutterUi, SnapdSocketClient, DialogProcess> {
         rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
         client: SnapdSocketClient,
     ) -> Self {
-        let cmd = if let Ok(override_cmd) = env::var("FLUTTER_UI_OVERRIDE") {
-            info!("using override command for the flutter UI: {override_cmd}");
-            override_cmd
-        } else {
+        #[cfg(feature = "dry-run")]
+        let cmd = {
+            let ui_override =
+                env::var("FLUTTER_UI_OVERRIDE").expect("FLUTTER_UI_OVERRIDE env var to be set");
+            info!("using override command for the flutter UI: {ui_override}");
+
+            ui_override
+        };
+
+        #[cfg(not(feature = "dry-run"))]
+        let cmd = {
             let snap = env::var("SNAP").expect("SNAP env var to be set");
             format!("{snap}/bin/prompting_client_ui")
         };

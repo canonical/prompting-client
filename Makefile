@@ -199,5 +199,5 @@ dev-mock-server:
 
 .PHONY: dev-prompting-client
 dev-prompting-client:
-	cd prompting-client ; FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) SNAPD_SOCKET_OVERRIDE=$(SOCKET) SNAP_REAL_HOME=$(HOME) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx "run --bin=prompting-client-daemon" ; cd .. ;
+	cd prompting-client ; FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) SNAPD_SOCKET_OVERRIDE=$(SOCKET) SNAP_REAL_HOME=$(HOME) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx "run --bin prompting-client-daemon --features dry-run" ; cd .. ;
 
