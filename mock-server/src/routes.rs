@@ -1,17 +1,17 @@
+use crate::errors::NotFoundError;
 use crate::{Action, AppState, prompts::Prompts};
 
+use anyhow::{Context, anyhow};
 use axum::extract::Query;
 use axum::{
     extract::{Json, Path, State},
-    http::StatusCode,
-    response::{IntoResponse, Response},
+    response::IntoResponse,
 };
-use chrono::Utc;
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{sync::Arc, time::Duration};
 use tokio::time::timeout;
-use tracing::{error, info, warn};
+use tracing::{info, warn};
 
 #[derive(Debug, Deserialize)]
 pub struct PollNotices {
@@ -24,6 +24,14 @@ pub struct PollNotices {
     _after: Option<String>,
 }
 
+/// Parses the timeout string from the query parameters and returns a `Duration`.
+///
+/// Supported formats:
+/// - "10s" for 10 seconds
+/// - "5m" for 5 minutes
+/// - "1h" for 1 hour
+///
+/// Defaults to 1 hour if parsing fails or is not provided.
 fn parse_timeout(timeout: &Option<String>) -> Duration {
     if let Some(t) = timeout {
         let number = t[..t.len() - 1].parse::<u64>();
@@ -32,7 +40,7 @@ fn parse_timeout(timeout: &Option<String>) -> Duration {
             (Ok(n), Some('h')) => return Duration::from_secs(n * 3600),
             (Ok(n), Some('m')) => return Duration::from_secs(n * 60),
             (Ok(n), Some('s')) => return Duration::from_secs(n),
-            _ => return Duration::from_secs(3600),
+            _ => (),
         }
     }
 
@@ -42,7 +50,7 @@ fn parse_timeout(timeout: &Option<String>) -> Duration {
 pub async fn poll_notices(
     State(data): State<Arc<AppState>>,
     Query(query): Query<PollNotices>,
-) -> Response {
+) -> Result<impl IntoResponse, NotFoundError> {
     let mut rx = data.tx.subscribe();
 
     info!(
@@ -55,7 +63,7 @@ pub async fn poll_notices(
     match timeout(duration, rx.recv()).await {
         Ok(Ok((mut prompt, Action::New))) => {
             let (id, key) = {
-                info!("Add new pending prompt");
+                info!("Add a new pending prompt");
 
                 let mut hm = data.prompts.lock().await;
                 let mut id = data.last_prompt_id.lock().await;
@@ -63,7 +71,7 @@ pub async fn poll_notices(
                 *id += 1;
 
                 let key = format!("{:016x}", *id);
-                let timestamp = Utc::now().format("%Y-%m-%dT%H:%M:%S.%fZ").to_string();
+                let timestamp = Prompts::timestamp();
 
                 prompt["id"] = json!(key);
                 prompt["timestamp"] = json!(timestamp);
@@ -73,7 +81,7 @@ pub async fn poll_notices(
                 (*id, key)
             };
 
-            info!("Make notice for new pending prompt");
+            info!("Make a notice for the new pending prompt");
 
             let notice = {
                 let mut hm = data.notices.lock().await;
@@ -83,30 +91,32 @@ pub async fn poll_notices(
                 notice
             };
 
-            make_success(notice).into_response()
+            Ok(make_success(notice))
         }
 
         Ok(Ok((prompt, Action::Update))) => {
             let mut hm = data.notices.lock().await;
-            let id = prompt["id"].as_str().unwrap();
-            let notice = hm.get_mut(id).unwrap();
+            let id = prompt["id"]
+                .as_str()
+                .context("no `id` field found in prompt")?;
+            let notice = hm
+                .get_mut(id)
+                .context(format!("`{id}` is not a valid notice id"))?;
 
-            info!("Update notice for prompt: {id}");
+            info!("Update the notice for prompt: {id}");
 
             if let Some(obj) = notice.as_array_mut().and_then(|arr| arr.get_mut(0)) {
                 obj["last-data"] = json!({"resolved": "replied"});
             }
 
-            make_success(notice.clone()).into_response()
+            Ok(make_success(notice.clone()))
         }
 
-        Ok(_) => {
-            error!("Receing wrong data from pipe");
-            Json(json!("Receiving error")).into_response()
-        }
+        Ok(Err(err)) => Err(NotFoundError(anyhow!("Error receiving from pipe: {err}"))),
+
         _ => {
-            warn!("Timeout expired");
-            Json(json!([])).into_response()
+            warn!("Timeout expired after {}s", duration.as_secs());
+            Ok(make_success(json!([])))
         }
     }
 }
@@ -120,43 +130,45 @@ pub async fn list_prompts(State(data): State<Arc<AppState>>) -> impl IntoRespons
     make_success(json!(prompts))
 }
 
-pub async fn prompt(State(data): State<Arc<AppState>>, Path(id): Path<String>) -> Response {
-    let key = match u64::from_str_radix(&id.to_lowercase(), 16) {
-        Ok(id) => format!("{id:016x}"),
-        _ => return make_not_found().into_response(),
-    };
+pub async fn prompt(
+    State(data): State<Arc<AppState>>,
+    Path(id): Path<String>,
+) -> Result<impl IntoResponse, NotFoundError> {
+    let id = u64::from_str_radix(&id.to_lowercase(), 16)
+        .context(format!("`{id}` is not a valid hex string"))?;
+    let key = format!("{id:016x}");
 
     info!("Get pending prompt: {key}");
 
     let hm = data.prompts.lock().await;
-    match hm.get(&key) {
-        Some(value) => make_success(value.clone()).into_response(),
-        _ => make_not_found().into_response(),
-    }
+    let value = hm
+        .get(&key)
+        .cloned()
+        .context(format!("`{key}` is not a valid prompt key"))?;
+
+    Ok(make_success(value))
 }
 
 pub async fn post_prompt(
     State(data): State<Arc<AppState>>,
     Path(id): Path<String>,
     Json(payload): Json<Value>,
-) -> Response {
-    let key = match u64::from_str_radix(&id.to_lowercase(), 16) {
-        Ok(id) => format!("{id:016x}"),
-        _ => return make_not_found().into_response(),
-    };
+) -> Result<impl IntoResponse, NotFoundError> {
+    let id = u64::from_str_radix(&id.to_lowercase(), 16)
+        .context(format!("`{id}` is not a valid hex string"))?;
+    let key = format!("{id:016x}");
 
     info!("Reply to prompt {key} with payload: {payload}");
 
     let mut hm = data.prompts.lock().await;
-    match hm.remove(&key) {
-        Some(prompt) => {
-            let tx = data.tx.clone();
-            let _ = tx.send((prompt, Action::Update));
+    let prompt = hm
+        .remove(&key)
+        .context(format!("`{key}` is not a valid prompt key"))?;
 
-            make_success(json!(vec![key])).into_response()
-        }
-        _ => make_not_found().into_response(),
-    }
+    let tx = data.tx.clone();
+    let _ = tx.send((prompt, Action::Update));
+
+    Ok(make_success(json!(vec![key])))
 }
 
 pub async fn metadata(Path(snapname): Path<String>) -> impl IntoResponse {
@@ -183,16 +195,6 @@ pub async fn system_info() -> impl IntoResponse {
     }))
 }
 
-pub async fn handler_500() -> impl IntoResponse {
-    let body = json!({
-        "type": "error",
-        "status-code": 500,
-        "status": "Internal Server Error",
-    });
-
-    (StatusCode::INTERNAL_SERVER_ERROR, Json(body))
-}
-
 fn make_success(result: Value) -> impl IntoResponse {
     Json(json!({
         "type": "sync",
@@ -201,19 +203,5 @@ fn make_success(result: Value) -> impl IntoResponse {
         "result": result,
         "warning-timestamp": "2025-08-06T06:44:48.070480685Z",
         "warning-count": 1
-    }))
-}
-
-fn make_not_found() -> impl IntoResponse {
-    error!("Prompt not found");
-
-    Json(json!({
-        "type": "error",
-        "status-code": 404,
-        "status": "NotFound",
-        "result": {
-            "message": "cannot find prompt with the given ID for the given user",
-            "kind": "interfaces-requests-prompt-not-found"
-        },
     }))
 }

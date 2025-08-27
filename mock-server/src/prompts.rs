@@ -32,18 +32,22 @@ impl Prompts {
     }
 
     pub fn make_notice(id: u64, key: &str) -> Value {
-        let timestamp = Utc::now().format("%Y-%m-%dT%H:%M:%S.%fZ");
+        let timestamp = Self::timestamp();
 
         json!([{
             "id": id.to_string(),
             "user-id": 1000,
             "type": "interfaces-requests-prompt",
             "key": key,
-            "first-occurred": timestamp.to_string(),
-            "last-occurred": timestamp.to_string(),
-            "last-repeated": timestamp.to_string(),
+            "first-occurred": timestamp,
+            "last-occurred": timestamp,
+            "last-repeated": timestamp,
             "occurrences": 1,
             "expire-after": "168h0m0s"
         }])
+    }
+
+    pub fn timestamp() -> String {
+        Utc::now().format("%Y-%m-%dT%H:%M:%S.%fZ").to_string()
     }
 }

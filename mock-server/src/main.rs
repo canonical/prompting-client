@@ -31,6 +31,7 @@ pub enum Action {
     Update,
 }
 
+mod errors;
 mod pipe;
 mod prompts;
 mod routes;
@@ -80,7 +81,7 @@ async fn main() -> Result<()> {
         )
         .route("/v2/snaps/{snapname}", get(metadata))
         .route("/v2/system-info", get(system_info))
-        .fallback(handler_500)
+        .fallback(errors::not_found)
         .with_state(data);
 
     tokio::spawn(async move {
