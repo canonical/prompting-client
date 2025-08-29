@@ -3,6 +3,7 @@ SNAP_NAME = prompting-client
 SHORT_HASH = $(shell git rev-parse --short HEAD)
 SNAP_FILE_NAME = $(SNAP_NAME)_0+git.$(SHORT_HASH)_amd64.snap
 TEST_SNAP_NAME = aa-prompting-test
+PROJECT_DIR = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: install-local-tooling
 install-local-tooling:
@@ -179,3 +180,33 @@ local-install-client:
 	echo ":: Installing $(SNAP_NAME)..." ; \
 	snap install --dangerous $$FILE_NAME ; \
 	snap connect $(SNAP_NAME):snap-interfaces-requests-control ;
+
+# ==== MOCK SERVER ====
+
+LOG_LEVEL = debug
+CLIENT_SOCKET = $(shell mktemp -u)
+PIPE ?= $(shell mktemp -u -t pipe.XXXXXX)
+SOCKET ?= $(shell mktemp -u -t mock.sock.XXXXXX)
+
+# Use 'sort -r' sorting in reverse order, ensuring that release artifacts appear before debug or other variants.
+FLUTTER_UI ?= $(shell find $(PROJECT_DIR) -type f -executable -path '*/bundle/prompting_client_ui' | sort -r | head -n1)
+
+.PHONY: start-mock-server
+start-mock-server:
+	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) cargo run --release; cd .. ;
+
+.PHONY: dev-mock-server
+dev-mock-server:
+	cd mock-server; PIPE_PATH=$(PIPE) SOCKET_PATH=$(SOCKET) RUST_LOG=$(LOG_LEVEL) cargo watch -cqx run ; cd .. ;
+
+.PHONY: dev-prompting-client
+dev-prompting-client:
+	cd prompting-client ; \
+	RUST_LOG=$(LOG_LEVEL) \
+	SNAP_REAL_HOME=$(HOME) \
+	SNAPD_SOCKET_OVERRIDE=$(SOCKET) \
+	FLUTTER_UI_OVERRIDE=$(FLUTTER_UI) \
+	PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) \
+	cargo watch -cqx "run --bin prompting-client-daemon --features dry-run" ; \
+	cd .. ;
+

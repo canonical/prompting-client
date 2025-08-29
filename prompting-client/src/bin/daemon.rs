@@ -9,8 +9,10 @@ use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let log_level = std::env::var("RUST_LOG").unwrap_or(DEFAULT_LOG_LEVEL.to_string());
+
     let builder = FmtSubscriber::builder()
-        .with_env_filter(log_filter(DEFAULT_LOG_LEVEL))
+        .with_env_filter(log_filter(&log_level))
         .with_writer(stdout)
         .with_filter_reloading();
 

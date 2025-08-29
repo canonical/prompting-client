@@ -102,6 +102,9 @@ impl SnapdSocketClient {
     }
 
     pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
+        // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
+        // the `socket` variable is not used in all code paths, which would otherwise cause a warning.
+        #[allow(unused_variables)]
         let socket = if env::var("SNAP_NAME").is_ok() {
             if UnixStream::connect(SNAPD_ABSTRACT_SNAP_SOCKET)
                 .await
@@ -116,6 +119,15 @@ impl SnapdSocketClient {
         } else {
             info!("using the snapd socket at address: {SNAPD_SOCKET}");
             SNAPD_SOCKET
+        };
+
+        #[cfg(feature = "dry-run")]
+        let socket = {
+            let snapd_override =
+                env::var("SNAPD_SOCKET_OVERRIDE").expect("SNAPD_SOCKET_OVERRIDE env var to be set");
+            info!("using override for the snap socket at address: {snapd_override}");
+
+            snapd_override
         };
 
         Self {

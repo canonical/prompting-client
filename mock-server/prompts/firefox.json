@@ -1,0 +1,18 @@
+{
+    "id": "0000000000000000",
+    "timestamp": "2025-08-20T16:17:44.28198468+02:00",
+    "snap": "firefox",
+    "pid": 136211,
+    "interface": "home",
+    "constraints": {
+        "path": "/home/foo.yaml",
+        "requested-permissions": [
+            "write"
+        ],
+        "available-permissions": [
+            "read",
+            "write",
+            "execute"
+        ]
+    }
+}
