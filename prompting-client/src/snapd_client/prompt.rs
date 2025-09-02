@@ -178,7 +178,7 @@ pub enum Action {
 pub enum Lifespan {
     #[default]
     Single,
-    Session, // part of the snapd API but not currently in use
+    Session,
     Forever,
     Timespan, // supported in snapd but not currently used in the UI
 }
