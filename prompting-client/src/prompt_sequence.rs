@@ -101,8 +101,8 @@ fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(untagged)]
 enum TypedPromptCase {
-    Camera(PromptCase<CameraInterface>),
     Home(PromptCase<HomeInterface>),
+    Camera(PromptCase<CameraInterface>),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
