@@ -91,16 +91,20 @@ macro_rules! expect_single_prompt {
 
             let id = pending.remove(0);
             let p = match $c.prompt_details(&id).await {
-                Ok(TypedPrompt::Home(p)) => p,
-                Ok(TypedPrompt::Camera(_)) => {
-                    panic!("unexpected camera prompt in home interface test")
-                }
+                Ok(p) => p,
                 Err(e) => panic!("error pulling prompt details: {e}"),
             };
 
-            assert_eq!(p.snap(), TEST_SNAP);
-            assert_eq!(p.path(), $expected_path);
-            assert_eq!(p.requested_permissions(), $expected_permissions);
+            match &p {
+                TypedPrompt::Camera(p) => {
+                    assert_eq!(p.snap(), TEST_SNAP);
+                }
+                TypedPrompt::Home(p) => {
+                    assert_eq!(p.snap(), TEST_SNAP);
+                    assert_eq!(p.path(), $expected_path);
+                    assert_eq!(p.requested_permissions(), $expected_permissions);
+                }
+            }
 
             (id, p)
         }
@@ -131,8 +135,11 @@ async fn happy_path_read_single(
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
     let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
 
-    c.reply_to_prompt(&id, HomeInterface::prompt_to_reply(p, action).into())
-        .await?;
+    c.reply_to_prompt(
+        &id,
+        HomeInterface::prompt_to_reply(p.try_into().expect("Expected home prompt"), action).into(),
+    )
+    .await?;
     let output = rx.recv().expect("to be able recv");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
@@ -163,7 +170,8 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
     let path = format!("{dir_path}/test-1.txt");
     let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
     let mut reply =
-        HomeInterface::prompt_to_reply(p, action).with_custom_path_pattern(format!("{dir_path}/*"));
+        HomeInterface::prompt_to_reply(p.try_into().expect("Expected home prompt"), action)
+            .with_custom_path_pattern(format!("{dir_path}/*"));
 
     reply = match lifespan {
         Lifespan::Timespan => reply.for_timespan("1s"),
@@ -220,7 +228,8 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
     let path = format!("{dir_path}/test.txt");
     let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
     let mut reply =
-        HomeInterface::prompt_to_reply(p, action).with_custom_path_pattern(format!("{dir_path}/*"));
+        HomeInterface::prompt_to_reply(p.try_into().expect("Expected home prompt"), action)
+            .with_custom_path_pattern(format!("{dir_path}/*"));
 
     reply = match lifespan {
         Lifespan::Timespan => reply.for_timespan("1s"),
@@ -286,9 +295,10 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
     let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
-    let reply = HomeInterface::prompt_to_reply(p, Action::Allow)
-        .with_custom_path_pattern(reply_path)
-        .into();
+    let reply =
+        HomeInterface::prompt_to_reply(p.try_into().expect("Expected home prompt"), Action::Allow)
+            .with_custom_path_pattern(reply_path)
+            .into();
 
     match c.reply_to_prompt(&id, reply).await {
         Err(Error::SnapdError { message, .. }) => assert!(
@@ -317,9 +327,10 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
     let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
-    let reply = HomeInterface::prompt_to_reply(p, Action::Allow)
-        .for_timespan(timespan)
-        .into();
+    let reply =
+        HomeInterface::prompt_to_reply(p.try_into().expect("Expected home prompt"), Action::Allow)
+            .for_timespan(timespan)
+            .into();
 
     match c.reply_to_prompt(&id, reply).await {
         Err(Error::SnapdError { message, .. }) => assert!(
@@ -347,6 +358,9 @@ async fn replying_multiple_times_errors(
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
     let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+
+    let p: prompting_client::snapd_client::Prompt<HomeInterface> =
+        p.try_into().expect("Expected home prompt");
 
     // first reply should work fine
     c.reply_to_prompt(
@@ -395,10 +409,10 @@ async fn overwriting_a_file_works() -> Result<()> {
         vec![prefix.clone(), "before".to_string()],
     );
     let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["write"]).await;
-
-    let reply = HomeInterface::prompt_to_reply(p, Action::Allow)
-        .for_forever()
-        .into();
+    let reply =
+        HomeInterface::prompt_to_reply(p.try_into().expect("Expected home prompt"), Action::Allow)
+            .for_forever()
+            .into();
     c.reply_to_prompt(&id, reply).await?;
     sleep(Duration::from_millis(50)).await;
 

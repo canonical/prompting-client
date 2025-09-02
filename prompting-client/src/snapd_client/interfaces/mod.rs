@@ -342,3 +342,29 @@ impl From<PromptReply<HomeInterface>> for TypedPromptReply {
         Self::Home(value)
     }
 }
+
+impl TryFrom<TypedPrompt> for Prompt<CameraInterface> {
+    type Error = Error;
+
+    fn try_from(typed_prompt: TypedPrompt) -> Result<Self, Self::Error> {
+        match typed_prompt {
+            TypedPrompt::Camera(p) => Ok(p),
+            _ => Err(Error::PromptConversionError {
+                interface: CameraInterface::NAME.to_string(),
+            }),
+        }
+    }
+}
+
+impl TryFrom<TypedPrompt> for Prompt<HomeInterface> {
+    type Error = Error;
+
+    fn try_from(typed_prompt: TypedPrompt) -> Result<Self, Self::Error> {
+        match typed_prompt {
+            TypedPrompt::Home(p) => Ok(p),
+            _ => Err(Error::PromptConversionError {
+                interface: HomeInterface::NAME.to_string(),
+            }),
+        }
+    }
+}
