@@ -144,8 +144,8 @@ async fn happy_path_read_single(
     Ok(())
 }
 
-//#[test_case(Action::Allow, Lifespan::Session; "allow session")]
-//#[test_case(Action::Deny, Lifespan::Session; "deny session")]
+#[test_case(Action::Allow, Lifespan::Session; "allow session")]
+#[test_case(Action::Deny, Lifespan::Session; "deny session")]
 #[test_case(Action::Allow, Lifespan::Timespan; "allow timespan")]
 #[test_case(Action::Allow, Lifespan::Forever; "allow forever")]
 #[test_case(Action::Deny, Lifespan::Timespan; "deny timespan")]
