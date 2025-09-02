@@ -122,6 +122,11 @@ impl PollLoop {
                 return;
             }
 
+            Err(Error::UnsupportedInterface { interface }) => {
+                warn!(?id, %interface, "unsupported interface from snapd; ignoring prompt");
+                return;
+            }
+
             Err(e) => {
                 warn!(%e, "unable to pull prompt");
                 return;
