@@ -66,25 +66,29 @@ parts:
       - unzip
       - xz-utils
       - zip
-    override-prime: ''
+    override-prime: ""
 
   prompting-client:
     plugin: rust
-    source: prompting-client
+    source: .
+    source-type: git
+    source-subdir: prompting-client
     override-build: |
       set -e
+      rustup default stable
       mkdir -p $(dirname $CRAFT_PART_SRC)/protos
       cp $CRAFT_PROJECT_DIR/protos/* $(dirname $CRAFT_PART_SRC)/protos/
       craftctl default
     build-packages:
       - libssl-dev
       - pkg-config
-      - protobuf-compiler      
+      - protobuf-compiler
       - libprotobuf-dev
 
   prompting-client-ui:
     after: [fvm]
     source: .
+    source-type: git
     plugin: nil
     override-build: |
       set -eux
@@ -101,6 +105,6 @@ parts:
 
   desktop-files:
     plugin: dump
-    source: .
+    source: snap/gui
     organize:
-      snap/gui/prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop
+      prompting-client.desktop: usr/share/applications/prompting-client-daemon.desktop

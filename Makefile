@@ -89,7 +89,7 @@ ensure-client-in-vm:
 		rm -rf flutter_packages/prompting_client_ui/build ; \
 		OLD=$(wildcard $(SNAP_NAME)_*) ; \
 		[ -n "$$OLD" ] && rm $$OLD ; \
-		snapcraft ; \
+		snapcraft pack ; \
 		FILE_NAME=$$(ls | grep -E '$(SNAP_NAME)_' | head -n1) ; \
 		echo ":: Installing $(SNAP_NAME) in $(VM_NAME)..." ; \
 		[ -n "$$OLD" ] && lxc exec $(VM_NAME) -- rm /home/ubuntu/$$OLD ; \
@@ -112,7 +112,7 @@ ensure-test-snap:
 	@if ! lxc exec $(VM_NAME) -- snap list | grep $(TEST_SNAP_NAME) > /dev/null ; then \
 		echo ":: Building $(TEST_SNAP_NAME) via snapcraft..." ; \
 		cd testing-snap ; \
-		snapcraft ; \
+		snapcraft pack ; \
 		echo ":: Installing $(TEST_SNAP_NAME) in $(VM_NAME)..." ; \
 		lxc file push $(TEST_SNAP_NAME)_0.1_amd64.snap $(VM_NAME)/home/ubuntu/ ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$(TEST_SNAP_NAME)_0.1_amd64.snap ; \
@@ -174,7 +174,7 @@ local-install-client:
 	rm -rf flutter_packages/prompting_client_ui/build ; \
 	OLD=$(wildcard $(SNAP_NAME)_*) ; \
 	rm $$OLD ; \
-	snapcraft ; \
+	snapcraft pack ; \
 	FILE_NAME=$$(ls | grep -E '$(SNAP_NAME)_' | head -n1) ; \
 	echo ":: Installing $(SNAP_NAME)..." ; \
 	snap install --dangerous $$FILE_NAME ; \
