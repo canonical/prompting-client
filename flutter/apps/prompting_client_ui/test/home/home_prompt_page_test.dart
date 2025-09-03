@@ -505,11 +505,11 @@ void main() {
         ),
       ),
       (
-        name: 'allow once',
-        label: (l10) => l10.promptActionOptionAllowOnce,
+        name: 'allow until logout',
+        label: (l10) => l10.promptActionOptionAllowUntilLogout,
         expectedReply: replyTemplate.copyWith(
           action: Action.allow,
-          lifespan: Lifespan.single,
+          lifespan: Lifespan.session,
         ),
       ),
       (
