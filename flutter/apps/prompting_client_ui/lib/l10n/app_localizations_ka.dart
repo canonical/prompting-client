@@ -37,6 +37,9 @@ class AppLocalizationsKa extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'ერთხელ აკრძალვა';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'ქმედება';
 
   @override

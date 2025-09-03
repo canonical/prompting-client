@@ -37,6 +37,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Nægt denne gang';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Handling';
 
   @override

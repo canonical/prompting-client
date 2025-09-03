@@ -37,6 +37,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get promptActionOptionDenyOnce => '拒绝一次';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => '动作';
 
   @override

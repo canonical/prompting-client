@@ -217,7 +217,7 @@ class ActionButtons extends ConsumerWidget {
           ]
         : const [
             ActionButton(action: Action.allow, lifespan: Lifespan.forever),
-            ActionButton(action: Action.allow, lifespan: Lifespan.single),
+            ActionButton(action: Action.allow, lifespan: Lifespan.session),
             ActionButton(action: Action.deny, lifespan: Lifespan.single),
           ];
     return Column(
@@ -266,6 +266,8 @@ class ActionButton extends ConsumerWidget {
           (Action.allow, Lifespan.forever) =>
             l10n.promptActionOptionAllowAlways,
           (Action.allow, Lifespan.single) => l10n.promptActionOptionAllowOnce,
+          (Action.allow, Lifespan.session) =>
+            l10n.promptActionOptionAllowUntilLogout,
           (Action.deny, Lifespan.single) => l10n.promptActionOptionDenyOnce,
           (final action, final Lifespan lifespan) =>
             '${action.localize(l10n)} (${lifespan.name})',

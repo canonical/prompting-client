@@ -37,6 +37,9 @@ class AppLocalizationsEo extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Malpermesi unu fojon';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Ago';
 
   @override

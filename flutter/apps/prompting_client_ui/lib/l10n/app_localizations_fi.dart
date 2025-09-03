@@ -37,6 +37,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Estä kerran';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Toiminto';
 
   @override

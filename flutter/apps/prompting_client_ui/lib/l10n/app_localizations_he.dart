@@ -37,6 +37,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'לדחות חד־פעמית';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'פעולה';
 
   @override
