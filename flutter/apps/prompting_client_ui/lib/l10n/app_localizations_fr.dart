@@ -9,7 +9,8 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Vous pouvez toujours modifier ces permissions dans le <Centre de sécurité>';
+  String get securityCenterInfo =>
+      'Vous pouvez toujours modifier ces permissions dans le <Centre de sécurité>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -64,7 +65,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Modèle de pattern personnalisé';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'Le dossier demandé seulement';
+  String get homePatternTypeRequestedDirectory =>
+      'Le dossier demandé seulement';
 
   @override
   String get homePatternTypeRequestedFile => 'Le fichier demandé seulement';
@@ -75,7 +77,8 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Tout dans le dossier';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Tout dans le dossier';
 
   @override
   String get homePatternTypeContainingDirectory => 'Tout dans le dossier';
@@ -94,12 +97,14 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap veut obtenir l\'accès $permissions au dossier $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap souhaite obtenir un accès $permissions à $filename dans le dossier $foldername.';
   }
 
@@ -109,7 +114,8 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap souhaite obtenir un accès $permissions à $filename dans votre dossier personnel.';
   }
 
@@ -130,7 +136,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Plus d’options…';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visiter la page du Centre des applications';
+  String get homePromptMetaDataAppCenterLink =>
+      'Visiter la page du Centre des applications';
 
   @override
   String homePromptSuggestedPermission(String permission) {

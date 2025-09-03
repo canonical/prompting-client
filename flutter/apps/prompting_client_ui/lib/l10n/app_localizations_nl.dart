@@ -9,7 +9,8 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Je kunt deze machtigingen altijd wijzigen in het <Beveiligingscentrum>';
+  String get securityCenterInfo =>
+      'Je kunt deze machtigingen altijd wijzigen in het <Beveiligingscentrum>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -94,12 +95,14 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap wil $permissions toegang krijgen tot de map $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap wil $permissions toegang krijgen tot $filename in de map $foldername.';
   }
 
@@ -109,7 +112,8 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap wil $permissions toegang krijgen tot $filename in jouw thuismap.';
   }
 
@@ -130,7 +134,8 @@ class AppLocalizationsNl extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Meer opties…';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Pagina met App-centrale bezoeken';
+  String get homePromptMetaDataAppCenterLink =>
+      'Pagina met App-centrale bezoeken';
 
   @override
   String homePromptSuggestedPermission(String permission) {

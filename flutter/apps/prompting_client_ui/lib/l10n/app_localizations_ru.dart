@@ -9,7 +9,8 @@ class AppLocalizationsRu extends AppLocalizations {
   AppLocalizationsRu([String locale = 'ru']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Вы всегда можете изменить эти разрешения в приложении <Центр безопасности>';
+  String get securityCenterInfo =>
+      'Вы всегда можете изменить эти разрешения в приложении <Центр безопасности>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -75,7 +76,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Всё содержимое в папке';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Всё содержимое в папке';
 
   @override
   String get homePatternTypeContainingDirectory => 'Всё содержимое в папке';
@@ -94,12 +96,14 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap запрашивает разрешение $permissions на доступ к папке $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap запрашивает разрешение $permissions на доступ к $filename в папке $foldername.';
   }
 
@@ -109,7 +113,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap запрашивает разрешение $permissions на доступ к файлу $filename, расположенному в вашей домашней папке.';
   }
 
@@ -130,7 +135,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Больше опций…';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Открыть страницу в Центре приложений';
+  String get homePromptMetaDataAppCenterLink =>
+      'Открыть страницу в Центре приложений';
 
   @override
   String homePromptSuggestedPermission(String permission) {

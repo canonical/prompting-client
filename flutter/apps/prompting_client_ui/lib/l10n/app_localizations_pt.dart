@@ -9,7 +9,8 @@ class AppLocalizationsPt extends AppLocalizations {
   AppLocalizationsPt([String locale = 'pt']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Você sempre pode alterar essas permissões na <Central de Segurança>';
+  String get securityCenterInfo =>
+      'Você sempre pode alterar essas permissões na <Central de Segurança>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -75,7 +76,8 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Everything in the folder';
 
   @override
   String get homePatternTypeContainingDirectory => 'Everything in the folder';
@@ -94,12 +96,14 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap wants to get $permissions access to the $foldername folder.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap wants to get $permissions access to $filename in the $foldername folder.';
   }
 
@@ -109,7 +113,8 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap wants to get $permissions access to $filename in your Home folder.';
   }
 
@@ -155,7 +160,5 @@ class AppLocalizationsPt extends AppLocalizations {
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
 class AppLocalizationsPtBr extends AppLocalizationsPt {
-  AppLocalizationsPtBr(): super('pt_BR');
-
-
+  AppLocalizationsPtBr() : super('pt_BR');
 }

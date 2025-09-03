@@ -9,7 +9,8 @@ class AppLocalizationsBs extends AppLocalizations {
   AppLocalizationsBs([String locale = 'bs']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'You can always change these permissions in the <Security Center>';
+  String get securityCenterInfo =>
+      'You can always change these permissions in the <Security Center>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -75,7 +76,8 @@ class AppLocalizationsBs extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Everything in the folder';
 
   @override
   String get homePatternTypeContainingDirectory => 'Everything in the folder';
@@ -94,12 +96,14 @@ class AppLocalizationsBs extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap wants to get $permissions access to the $foldername folder.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap wants to get $permissions access to $filename in the $foldername folder.';
   }
 
@@ -109,7 +113,8 @@ class AppLocalizationsBs extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap wants to get $permissions access to $filename in your Home folder.';
   }
 

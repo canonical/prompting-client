@@ -9,7 +9,8 @@ class AppLocalizationsEo extends AppLocalizations {
   AppLocalizationsEo([String locale = 'eo']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Vi povas iam ajn ŝanĝi tiujn permesojn en la «Sekureca Centro»';
+  String get securityCenterInfo =>
+      'Vi povas iam ajn ŝanĝi tiujn permesojn en la «Sekureca Centro»';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -94,12 +95,14 @@ class AppLocalizationsEo extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap volas havi permeson $permissions la dosierujon $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap volas havi permeson $permissions la dosieron $filename en la dosierujo $foldername.';
   }
 
@@ -109,7 +112,8 @@ class AppLocalizationsEo extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap volas havi permeson $permissions la dosieron $filename en via hejma dosierujo.';
   }
 

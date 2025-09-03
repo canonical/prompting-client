@@ -94,12 +94,14 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap 想获取对 $foldername 的 $permissions 权限。';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap 想获取对 $foldername 文件夹中 $filename 的 $permissions 权限。';
   }
 
@@ -109,7 +111,8 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap 想获取对您主文件夹中 $filename 的 $permissions 权限。';
   }
 
@@ -155,7 +158,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).
 class AppLocalizationsZhTw extends AppLocalizationsZh {
-  AppLocalizationsZhTw(): super('zh_TW');
+  AppLocalizationsZhTw() : super('zh_TW');
 
   @override
   String get securityCenterInfo => '您可以隨時在<安全中心>中變更這些權限';
@@ -243,12 +246,14 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap 想要取得 $foldername 資料夾的 $permissions 存取權限。';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap 想要取得 $foldername 資料夾中 $filename 的 $permissions 存取權限。';
   }
 
@@ -258,7 +263,8 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap 想要取得您家目錄中 $filename 的 $permissions 存取權限。';
   }
 

@@ -9,7 +9,8 @@ class AppLocalizationsSk extends AppLocalizations {
   AppLocalizationsSk([String locale = 'sk']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>';
+  String get securityCenterInfo =>
+      'Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -94,12 +95,14 @@ class AppLocalizationsSk extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap chce získať na $permissions prístup k priečinku $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap chce získať na $permissions prístup k $filename v priečinku $foldername.';
   }
 
@@ -109,7 +112,8 @@ class AppLocalizationsSk extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap chce získať na $permissions prístup k $filename v priečinku Domov.';
   }
 
@@ -130,7 +134,8 @@ class AppLocalizationsSk extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Viac možností...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Navštíviť stránku Centra aplikácií';
+  String get homePromptMetaDataAppCenterLink =>
+      'Navštíviť stránku Centra aplikácií';
 
   @override
   String homePromptSuggestedPermission(String permission) {
