@@ -37,6 +37,9 @@ class AppLocalizationsSk extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Raz odmietnuť';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Akcia';
 
   @override

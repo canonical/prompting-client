@@ -37,6 +37,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Odmów raz';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Działanie';
 
   @override

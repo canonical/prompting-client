@@ -37,6 +37,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Отказать один раз';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Действие';
 
   @override

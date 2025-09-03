@@ -37,6 +37,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'ஒரு முறை மறுக்கவும்';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'செயல்';
 
   @override

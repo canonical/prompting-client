@@ -31,6 +31,8 @@
     "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Deny once",
     "@promptActionOptionDenyOnce": {},
+    "promptActionOptionAllowUntilLogout": "Allow until logout",
+    "@promptActionOptionAllowUntilLogout": {},
     "promptActionTitle": "Action",
     "@promptActionTitle": {},
     "promptLifespanOptionForever": "Always",

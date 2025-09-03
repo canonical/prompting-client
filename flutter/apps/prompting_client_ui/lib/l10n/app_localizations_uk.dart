@@ -37,6 +37,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Відмовити один раз';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Дія';
 
   @override

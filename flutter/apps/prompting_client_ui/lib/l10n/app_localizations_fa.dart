@@ -37,6 +37,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'رد کردن برای یک بار';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'کنش';
 
   @override

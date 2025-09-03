@@ -37,6 +37,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Jednou zamítnout';
 
   @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
   String get promptActionTitle => 'Činnost';
 
   @override
