@@ -9,7 +9,8 @@ class AppLocalizationsFi extends AppLocalizations {
   AppLocalizationsFi([String locale = 'fi']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Voit muuttaa käyttöoikeuksia <Tietoturvakeskuksessa>';
+  String get securityCenterInfo =>
+      'Voit muuttaa käyttöoikeuksia <Tietoturvakeskuksessa>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap wants to get $permissions access to the $foldername folder.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap haluaa saada $permissions pääsyn kohteeseen $filename kohteessa $foldername.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap haluaa saada $permissions pääsyn kohteeseen $filename kotikansiossasi.';
   }
 

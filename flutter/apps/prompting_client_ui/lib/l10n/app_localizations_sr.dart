@@ -9,7 +9,8 @@ class AppLocalizationsSr extends AppLocalizations {
   AppLocalizationsSr([String locale = 'sr']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Увек можете променити ова овлашћења у <Security Center>';
+  String get securityCenterInfo =>
+      'Увек можете променити ова овлашћења у <Security Center>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsSr extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap жели да добије $permissions приступ до фасцикле $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap жели да добије $permissions приступ до $filename у фасцикли $foldername.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsSr extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap жели да добије $permissions приступ до $filename у вашој почетној фасцикли.';
   }
 
@@ -133,7 +137,8 @@ class AppLocalizationsSr extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Више опција...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Посетите страницу App Center-а';
+  String get homePromptMetaDataAppCenterLink =>
+      'Посетите страницу App Center-а';
 
   @override
   String homePromptSuggestedPermission(String permission) {

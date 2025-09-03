@@ -9,7 +9,8 @@ class AppLocalizationsGa extends AppLocalizations {
   AppLocalizationsGa([String locale = 'ga']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Is féidir leat na ceadanna seo a athrú i gcónaí sa <Lárionad Slándála>';
+  String get securityCenterInfo =>
+      'Is féidir leat na ceadanna seo a athrú i gcónaí sa <Lárionad Slándála>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -78,7 +79,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Gach rud san fhillteán';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Gach rud san fhillteán';
 
   @override
   String get homePatternTypeContainingDirectory => 'Gach rud san fhillteán';
@@ -97,12 +99,14 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return 'Ba mhaith le $snap rochtain a fháil ar $permissions ar an bhfillteán $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return 'Tá $snap ag iarraidh $permissions rochtain a fháil ar $filename san fhillteán $foldername.';
   }
 
@@ -112,7 +116,8 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return 'Tá $snap ag iarraidh rochtain a fháil ar $permissions ar $filename i d\'fhillteán Baile.';
   }
 
@@ -133,7 +138,8 @@ class AppLocalizationsGa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Tuilleadh roghanna...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Tabhair cuairt ar leathanach App Centre';
+  String get homePromptMetaDataAppCenterLink =>
+      'Tabhair cuairt ar leathanach App Centre';
 
   @override
   String homePromptSuggestedPermission(String permission) {

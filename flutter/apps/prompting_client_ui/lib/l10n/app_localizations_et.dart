@@ -9,7 +9,8 @@ class AppLocalizationsEt extends AppLocalizations {
   AppLocalizationsEt([String locale = 'et']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Sa võid alati neid õigusi muuta <Andmeturbekeskuses>';
+  String get securityCenterInfo =>
+      'Sa võid alati neid õigusi muuta <Andmeturbekeskuses>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '„$snap“ pakett soovib „$permissions“ õigusi kaustas „$foldername“.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '„$snap“ pakett soovib „$permissions“ õigusi ligipääsuks „$filename“ failile „$foldername“ kaustas.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '„$snap“ pakett soovib „$permissions“ õigusi ligipääsuks „$filename“ failile sinu kodukaustas.';
   }
 
@@ -133,7 +137,8 @@ class AppLocalizationsEt extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Lisavalikud...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Vaata andmeid Rakendustekeskuses';
+  String get homePromptMetaDataAppCenterLink =>
+      'Vaata andmeid Rakendustekeskuses';
 
   @override
   String homePromptSuggestedPermission(String permission) {

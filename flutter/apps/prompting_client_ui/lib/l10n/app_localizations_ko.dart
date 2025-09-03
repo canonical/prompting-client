@@ -97,12 +97,14 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap이(가) $foldername 폴더에 대한 $permissions 접근 권한을 요청합니다.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap이 $foldername 폴더의 $filename에 대한 $permissions 접근 권한을 요청합니다.';
   }
 
@@ -112,7 +114,8 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap이 홈 폴더의 $filename에 대한 $permissions 접근 권한을 요청합니다.';
   }
 

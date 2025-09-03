@@ -9,7 +9,8 @@ class AppLocalizationsUk extends AppLocalizations {
   AppLocalizationsUk([String locale = 'uk']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Ви завжди можете змінити ці дозволи в <Центрі безпеки>';
+  String get securityCenterInfo =>
+      'Ви завжди можете змінити ці дозволи в <Центрі безпеки>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap хоче отримати дозвіл $permissions до теки $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap хоче отримати дозвіл $permissions до $filename у теці $foldername.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap хоче отримати доступ $permissions до $filename у вашій домашній теці.';
   }
 
@@ -133,7 +137,8 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Інші опції...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Відвідати сторінку Центру програмного забезпечення';
+  String get homePromptMetaDataAppCenterLink =>
+      'Відвідати сторінку Центру програмного забезпечення';
 
   @override
   String homePromptSuggestedPermission(String permission) {

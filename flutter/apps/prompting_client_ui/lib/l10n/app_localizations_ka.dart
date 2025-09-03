@@ -9,7 +9,8 @@ class AppLocalizationsKa extends AppLocalizations {
   AppLocalizationsKa([String locale = 'ka']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'ამ წვდომების შეცვლა ყოველთვის შეგიძლიათ <უსაფრთხოების ცენტრიდან>';
+  String get securityCenterInfo =>
+      'ამ წვდომების შეცვლა ყოველთვის შეგიძლიათ <უსაფრთხოების ცენტრიდან>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -78,7 +79,8 @@ class AppLocalizationsKa extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'ყველაფერი საქაღალდეში';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'ყველაფერი საქაღალდეში';
 
   @override
   String get homePatternTypeContainingDirectory => 'ყველაფერი საქაღალდეში';
@@ -97,12 +99,14 @@ class AppLocalizationsKa extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap-ს სჭირდება $permissions წვდომა საქაღალდესთან $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap-ს სჭირდება წვდომა $permissions ფაილტან $filename საქაღალდეში $foldername.';
   }
 
@@ -112,7 +116,8 @@ class AppLocalizationsKa extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap-ს სჭირდება $permissions წვდომა ფაილთან $filename თქვენს საწყის საქაღალდეში.';
   }
 
@@ -133,7 +138,8 @@ class AppLocalizationsKa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'მეტი პარამეტრი...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'აპების ცენტრის გვერდზე გადასვლა';
+  String get homePromptMetaDataAppCenterLink =>
+      'აპების ცენტრის გვერდზე გადასვლა';
 
   @override
   String homePromptSuggestedPermission(String permission) {

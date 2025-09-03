@@ -9,7 +9,8 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Te uprawnienia możesz zawsze zmienić w <Centrum zabezpieczeń>';
+  String get securityCenterInfo =>
+      'Te uprawnienia możesz zawsze zmienić w <Centrum zabezpieczeń>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap chce uzyskać dostęp na poziomie $permissions do katalogu $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap chce uzyskać dostęp na poziomie $permissions do $filename w katalogu $foldername.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap chce uzyskać dostęp na poziomie $permissions do $filename w Twoim folderze domowym.';
   }
 
@@ -133,7 +137,8 @@ class AppLocalizationsPl extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Więcej opcji...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Odwiedź stronę Centrum oprogramowania';
+  String get homePromptMetaDataAppCenterLink =>
+      'Odwiedź stronę Centrum oprogramowania';
 
   @override
   String homePromptSuggestedPermission(String permission) {

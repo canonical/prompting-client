@@ -9,7 +9,8 @@ class AppLocalizationsTa extends AppLocalizations {
   AppLocalizationsTa([String locale = 'ta']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'இந்த அனுமதிகளை நீங்கள் எப்போதும் <பாதுகாப்பு மையம்> இல் மாற்றலாம்';
+  String get securityCenterInfo =>
+      'இந்த அனுமதிகளை நீங்கள் எப்போதும் <பாதுகாப்பு மையம்> இல் மாற்றலாம்';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -78,13 +79,16 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'கோப்புறையில் உள்ள அனைத்தும்';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'கோப்புறையில் உள்ள அனைத்தும்';
 
   @override
-  String get homePatternTypeContainingDirectory => 'கோப்புறையில் உள்ள அனைத்தும்';
+  String get homePatternTypeContainingDirectory =>
+      'கோப்புறையில் உள்ள அனைத்தும்';
 
   @override
-  String get homePatternTypeHomeDirectory => 'வீட்டு கோப்புறையில் உள்ள அனைத்தும்';
+  String get homePatternTypeHomeDirectory =>
+      'வீட்டு கோப்புறையில் உள்ள அனைத்தும்';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
@@ -97,12 +101,14 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap $permissions அணுகல் $foldername கோப்புறையைப் பெற விரும்புகிறது.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap $permissions க்கு $filename அணுகல் $foldername கோப்புறையில் பெற விரும்புகிறது.';
   }
 
@@ -112,7 +118,8 @@ class AppLocalizationsTa extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap wants to get $permissions access to $filename in your Home folder.';
   }
 
@@ -133,7 +140,8 @@ class AppLocalizationsTa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'மேலும் விருப்பங்கள் ...';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'பயன்பாட்டு மையப் பக்கத்தைப் பார்வையிடவும்';
+  String get homePromptMetaDataAppCenterLink =>
+      'பயன்பாட்டு மையப் பக்கத்தைப் பார்வையிடவும்';
 
   @override
   String homePromptSuggestedPermission(String permission) {

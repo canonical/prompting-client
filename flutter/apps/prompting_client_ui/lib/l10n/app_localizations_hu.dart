@@ -9,7 +9,8 @@ class AppLocalizationsHu extends AppLocalizations {
   AppLocalizationsHu([String locale = 'hu']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Ezeket a jogosultságokat bármikor megváltoztathatja a <Biztonsági központban>';
+  String get securityCenterInfo =>
+      'Ezeket a jogosultságokat bármikor megváltoztathatja a <Biztonsági központban>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return 'A(z) $snap snap-csomag $permissions hozzáférést szeretne kérni a(z) $foldername mappára.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return 'A(z) $snap snap-csomag $permissions hozzáférést szeretne kérni a(z) $foldername mappában lévő $filename fájlra.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return 'A(z) $snap snap-csomag $permissions hozzáférést szeretne kérni az Ön saját mappájában lévő $filename fájlra.';
   }
 
@@ -133,7 +137,8 @@ class AppLocalizationsHu extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'További beállítások…';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Az alkalmazásközpont oldalának meglátogatása';
+  String get homePromptMetaDataAppCenterLink =>
+      'Az alkalmazásközpont oldalának meglátogatása';
 
   @override
   String homePromptSuggestedPermission(String permission) {

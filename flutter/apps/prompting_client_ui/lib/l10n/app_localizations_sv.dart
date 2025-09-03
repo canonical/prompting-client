@@ -9,7 +9,8 @@ class AppLocalizationsSv extends AppLocalizations {
   AppLocalizationsSv([String locale = 'sv']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Du kan alltid ändra dessa behörigheter i <Säkerhetscenter>';
+  String get securityCenterInfo =>
+      'Du kan alltid ändra dessa behörigheter i <Säkerhetscenter>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap vill få $permissions tillgång till $foldername mapp.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap vill få $permissions åtkomst till $filename i $foldername mappen.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap vill få $permissions åtkomst till $filename i din hemmapp.';
   }
 

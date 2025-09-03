@@ -9,7 +9,8 @@ class AppLocalizationsId extends AppLocalizations {
   AppLocalizationsId([String locale = 'id']) : super(locale);
 
   @override
-  String get securityCenterInfo => 'Anda selalu dapat mengubah izin ini di <Security Center>';
+  String get securityCenterInfo =>
+      'Anda selalu dapat mengubah izin ini di <Security Center>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -97,12 +98,14 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String homePromptTopLevelDirBody(String snap, String permissions, String foldername) {
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
     return '$snap ingin mendapatkan akses $permissions ke folder $foldername.';
   }
 
   @override
-  String homePromptTopLevelDirFileBody(String snap, String permissions, String filename, String foldername) {
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
     return '$snap ingin mendapatkan akses $permissions ke $filename dalam folder $foldername.';
   }
 
@@ -112,7 +115,8 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String homePromptHomeDirFileBody(String snap, String permissions, String filename) {
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
     return '$snap ingin mendapatkan akses $permissions ke $filename di folder Rumah Anda.';
   }
 
