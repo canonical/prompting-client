@@ -1064,14 +1064,15 @@ mod tests {
         // remain open. Without this calls to recv() immediately returns None.
         let (_tx_prompts, rx_prompts) = unbounded_channel();
         let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
-        let active_prompt = RefActivePrompts::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
+        let pending_prompts = HashMap::from([(0, vec![enriched_prompt("1", 0)].into())]);
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
             active_prompts,
-            dialog_processes: None,
-            pending_prompts: [enriched_prompt("1")].into_iter().collect(),
+            dialog_processes: HashMap::new(),
+            pending_prompts,
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui: StubUi,
@@ -1110,11 +1111,11 @@ mod tests {
         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
         let (tx_done, rx_done) = oneshot::channel();
         let id = "testId";
-        let active_prompt = RefActivePrompts::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let ui = TestUi {
-            replies: vec![reply(id, u64::MAX, id, &[])],
+            replies: HashMap::new(),
             tx: tx_actioned_prompts,
-            active_prompt: active_prompt.clone(),
+            active_prompts: active_prompts.clone(),
             tx_done: Some(tx_done),
         };
 
@@ -1122,8 +1123,8 @@ mod tests {
             rx_prompts,
             rx_actioned_prompts,
             active_prompts,
-            dialog_processes: None,
-            pending_prompts: VecDeque::new(),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui,
@@ -1135,14 +1136,14 @@ mod tests {
         // for the home interface
         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
-        tx_prompts.send(add(id)).expect("to send update");
+        tx_prompts.send(add(id, 0)).expect("to send update");
         w.step().await.expect("step");
 
         tx_prompts.send(drop_id(id)).expect("to send update");
 
         let handle = tokio::spawn(async move {
             w.run().await.expect("run");
-            assert!(w.active_prompts.get().is_none());
+            assert!(w.active_prompts.get(0).is_none());
         });
 
         rx_done.await.expect("done");
