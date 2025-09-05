@@ -20,6 +20,7 @@ apps:
       TOKIO_WORKER_THREADS: 2
     plugs: &plugs
       - home
+      - camera
       - snap-interfaces-requests-control
 
   echo:
