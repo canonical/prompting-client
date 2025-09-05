@@ -654,10 +654,18 @@ mod tests {
 
         w.process_update(update);
 
-        let pending: Vec<&str> = w
+        let pending: HashMap<i64, Vec<&str>> = w
             .pending_prompts
             .iter()
-            .map(|ep| ep.prompt.id().0.as_str())
+            .map(|(pid, prompts)| {
+                (
+                    *pid,
+                    prompts
+                        .iter()
+                        .map(|prompt| prompt.prompt.id().0.as_str())
+                        .collect(),
+                )
+            })
             .collect();
 
         assert_eq!(pending, expected_pending);
@@ -681,9 +689,9 @@ mod tests {
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompts: RefActivePrompts::new(None),
-            dialog_processes: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -733,9 +741,9 @@ mod tests {
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompts: RefActivePrompts::new(None),
-            dialog_processes: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -772,9 +780,9 @@ mod tests {
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompts: RefActivePrompts::new(None),
-            dialog_processes: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
