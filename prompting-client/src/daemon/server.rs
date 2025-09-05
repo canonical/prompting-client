@@ -362,6 +362,10 @@ mod tests {
                     (TypedPromptReply::Home(reply), TypedPromptReply::Home(expected_reply)) => {
                         assert_eq!(reply, expected_reply, "Replies did not match");
                     }
+                    (TypedPromptReply::Camera(reply), TypedPromptReply::Camera(expected_reply)) => {
+                        assert_eq!(reply, expected_reply, "Replies did not match");
+                    }
+                    _ => panic!("unexpected reply of different prompt"),
                 }
             }
 

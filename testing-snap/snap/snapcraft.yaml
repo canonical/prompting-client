@@ -1,6 +1,6 @@
 name: aa-prompting-test
 base: core22
-version: '0.1'
+version: "0.1"
 summary: A simple helper for testing out apparmor prompting
 description: |
   Just a wrapper around a handful of commands to help with testing the
@@ -13,6 +13,10 @@ parts:
   scripts:
     plugin: dump
     source: scripts/
+  gstreamer:
+    plugin: nil
+    stage-packages:
+      - v4l-utils
 
 apps:
   read:
@@ -27,3 +31,8 @@ apps:
     command: ./create-single.sh
     plugs:
       - home
+
+  camera:
+    command: ./camera.sh
+    plugs:
+      - camera
