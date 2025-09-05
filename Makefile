@@ -98,6 +98,7 @@ ensure-client-in-vm:
 		lxc exec $(VM_NAME) -- snap set system experimental.user-daemons=true ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$$FILE_NAME ; \
 		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):snap-interfaces-requests-control ; \
+		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):camera ; \
 	fi
 
 .PHONY: update-client-in-vm
@@ -117,6 +118,10 @@ ensure-test-snap:
 		echo ":: Installing $(TEST_SNAP_NAME) in $(VM_NAME)..." ; \
 		lxc file push $(TEST_SNAP_NAME)_0.1_amd64.snap $(VM_NAME)/home/ubuntu/ ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$(TEST_SNAP_NAME)_0.1_amd64.snap ; \
+		echo ":: Connecting camera interface..." ; \
+		lxc exec $(VM_NAME) -- snap connect $(TEST_SNAP_NAME):camera ; \
+		lxc exec $(VM_NAME) -- apt install -y linux-modules-extra-$$(lxc exec $(VM_NAME) -- uname -r) v4l-utils ; \
+		lxc exec $(VM_NAME) -- modprobe v4l2loopback ; \
 	fi
 
 .PHONY: update-test-snap
@@ -179,7 +184,8 @@ local-install-client:
 	FILE_NAME=$$(ls | grep -E '$(SNAP_NAME)_' | head -n1) ; \
 	echo ":: Installing $(SNAP_NAME)..." ; \
 	snap install --dangerous $$FILE_NAME ; \
-	snap connect $(SNAP_NAME):snap-interfaces-requests-control ;
+	snap connect $(SNAP_NAME):snap-interfaces-requests-control ; \
+	snap connect $(SNAP_NAME):camera ;
 
 # ==== MOCK SERVER ====
 
