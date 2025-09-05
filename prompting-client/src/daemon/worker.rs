@@ -822,45 +822,52 @@ mod tests {
 
     #[derive(Debug)]
     struct TestUi {
-        replies: Vec<Reply>,
+        replies: HashMap<i64, Vec<Reply>>,
         tx: UnboundedSender<ActionedPrompt>,
-        active_prompt: RefActivePrompts,
+        active_prompts: RefActivePrompts,
         tx_done: Option<oneshot::Sender<()>>,
     }
 
     impl SpawnUi for TestUi {
         type Handle = TestDialogHandle;
-        fn spawn(&mut self, _: &[&str]) -> Result<TestDialogHandle> {
+        fn spawn(&mut self, args: &[&str]) -> Result<TestDialogHandle> {
             debug!("spawning test ui");
-            let reply = self.replies.remove(0);
+            let pid = args.get(1).expect("a pid").parse().expect("a numeric pid");
+            let reply = self.replies.get_mut(&pid).map(|replies| replies.remove(0));
+            self.replies.retain(|_, replies| !replies.is_empty());
             let tx = self.tx.clone();
-            let active_prompt = self.active_prompt.clone();
+            let active_prompt = self.active_prompts.clone();
             let reply_sent = false;
             let tx_done = self
                 .replies
                 .is_empty()
                 .then(|| self.tx_done.take())
                 .flatten();
-            let context = self.active_prompt.get_context().expect("to get a context");
+            let context = self
+                .active_prompts
+                .get_context(pid)
+                .expect("to get a context");
 
             Ok(TestDialogHandle {
                 reply,
                 tx,
-                active_prompt,
+                active_prompts: active_prompt,
                 context,
                 closed: reply_sent,
                 tx_done,
+                pid,
             })
         }
     }
 
     struct TestDialogHandle {
-        reply: Reply,
+        reply: Option<Reply>,
         tx: UnboundedSender<ActionedPrompt>,
-        active_prompt: RefActivePrompts,
+        active_prompts: RefActivePrompts,
         context: Context,
         closed: bool,
         tx_done: Option<oneshot::Sender<()>>,
+        pid: i64,
     }
 
     impl Debug for TestDialogHandle {
@@ -878,22 +885,25 @@ mod tests {
                 return Ok(ExitStatus::default());
             }
 
-            let active_prompt = &self.active_prompt.get().expect("active prompt");
-            assert_eq!(
-                self.reply.active_prompt_id,
-                active_prompt.id().0,
-                "incorrect active prompt"
-            );
+            let active_prompt = &self.active_prompts.get(self.pid).expect("active prompt");
+            if let Some(reply) = self.reply {
+                assert_eq!(
+                    reply.active_prompt_id,
+                    active_prompt.id().0,
+                    "incorrect active prompt"
+                );
+            }
 
             tokio::select! {
                 _ = self.context.done() => {
                     debug!("test UI got closed before sending a reply");
                 },
-                _ = sleep(Duration::from_millis(self.reply.sleep_ms)) => {
+                _ = sleep(Duration::from_millis(self.reply.map(|r|r.sleep_ms).unwrap_or(u64::MAX))),
+                if self.reply.is_some() => {
+                    let reply = self.reply.expect("a reply");
                     let _ = self.tx.send(ActionedPrompt::Actioned {
-                        id: PromptId(self.reply.id.to_string()),
-                        others: self
-                            .reply
+                        id: PromptId(reply.id.to_string()),
+                        others: reply
                             .drop
                             .iter()
                             .map(|id| PromptId(id.to_string()))
@@ -913,38 +923,65 @@ mod tests {
         }
     }
 
-    #[test_case(vec![], &[]; "channel close without prompts")]
-    #[test_case(vec![add("1")], &[reply("1", 10, "1", &[])]; "single")]
+    #[test_case(vec![], [].into(); "channel close without prompts")]
     #[test_case(
-        vec![add("1"), add("2"), add("3")],
-        &[reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])];
+        vec![add("1", 0)], [(0, vec![reply("1", 10, "1", &[])])].into();
+        "single"
+    )]
+    #[test_case(
+        vec![add("1", 0), add("2", 1)],
+        [
+            (0, vec![reply("1", 10, "1", &[])]),
+            (1, vec![reply("2", 10, "2", &[])])
+        ].into();
+        "single in parallel"
+    )]
+    #[test_case(
+        vec![add("1", 0), add("2", 0), add("3", 0)],
+        [(0, vec![reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])])].into();
         "multiple"
     )]
     #[test_case(
-        vec![add("1"), add("2"), add("3")],
-        &[reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])];
+        vec![add("1", 0), add("2", 1), add("3", 0), add("4", 1), add("5", 0)],
+        [
+            (0, vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("5", 10, "5", &[])]),
+            (1, vec![reply("2", 10, "2", &[]), reply("4", 10, "4", &[])])
+        ].into();
+        "multiple in parallel"
+    )]
+    #[test_case(
+        vec![add("1", 0), add("2", 0), add("3", 0)],
+        [(0, vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
         "first reply actions second prompt as well"
     )]
     #[test_case(
-        vec![add("1"), add("2")],
-        &[reply("1", 200, "1", &[]), reply("2", 50, "2", &[])];
+        vec![add("1", 0), add("2", 1), add("3", 0)],
+        [(0, vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
+        "first reply actions parallel prompt"
+    )]
+    #[test_case(
+        vec![add("1", 0), add("2", 0)],
+        [(0, vec![reply("1", 200, "1", &[]), reply("2", 50, "2", &[])])].into();
         "delayed reply skips"
     )]
     #[test_case(
-        vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
-        &[reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("4", 10, "4", &[])];
+        vec![add("1", 0), add("2", 0), add("3", 0), drop_id("2"), add("4", 0)],
+        [(
+            0,
+            vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("4", 10, "4", &[])]
+        )].into();
         "explicit drop of previous prompt"
     )]
     #[tokio::test]
-    async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
+    async fn sequence(updates: Vec<PromptUpdate>, replies: HashMap<i64, Vec<Reply>>) {
         let (tx_prompts, rx_prompts) = unbounded_channel();
         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
         let (tx_done, rx_done) = oneshot::channel();
-        let active_prompt = RefActivePrompts::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let ui = TestUi {
-            replies: replies.to_vec(),
+            replies,
             tx: tx_actioned_prompts,
-            active_prompt: active_prompt.clone(),
+            active_prompts: active_prompts.clone(),
             tx_done: Some(tx_done),
         };
 
@@ -952,8 +989,8 @@ mod tests {
             rx_prompts,
             rx_actioned_prompts,
             active_prompts,
-            dialog_processes: None,
-            pending_prompts: VecDeque::new(),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui,
