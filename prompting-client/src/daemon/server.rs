@@ -327,6 +327,7 @@ mod tests {
     };
     use simple_test_case::test_case;
     use std::{
+        collections::HashMap,
         fs, io,
         ops::{Deref, DerefMut},
     };
@@ -547,11 +548,19 @@ mod tests {
         want_err: bool,
     }
 
-    #[test_case(None, None; "empty prompt")]
-    #[test_case(Some(active_prompt()), Some(prompt()); "non-empty prompt")]
+    #[test_case(HashMap::new(), 0, None; "empty prompt")]
+    #[test_case(
+        HashMap::from([(0, active_prompt())]), 0, Some(prompt());
+        "non-empty prompt"
+    )]
+    #[test_case(
+        HashMap::from([(0, active_prompt())]), 1, None;
+        "non-empty prompt for different pid"
+    )]
     #[tokio::test]
     async fn test_get_current_prompt(
-        active_prompt: Option<ActivePrompt>,
+        active_prompts: HashMap<i64, ActivePrompt>,
+        pid: i64,
         expected: Option<Prompt>,
     ) {
         let mock_client = MockClient {
@@ -559,11 +568,11 @@ mod tests {
             expected_reply: None,
         };
         let (tx_actioned_prompts, _rx_actioned_prompts) = unbounded_channel();
-        let mut active_prompt = RefActivePrompts::new(active_prompt);
+        let mut active_prompt = RefActivePrompts::new(active_prompts);
         let mut client =
             setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
 
-        let response = client.get_current_prompt(Request::new(())).await;
+        let response = client.get_current_prompt(Request::new(pid)).await;
         if expected.is_none() {
             assert!(response.is_err());
             return;
@@ -580,7 +589,7 @@ mod tests {
         assert_eq!(resp, expected);
 
         if expected.is_some() {
-            active_prompt.drop_prompt();
+            active_prompt.drop_prompt(pid);
         }
         let next = stream.message().await.unwrap();
         assert_eq!(next, None);
@@ -601,9 +610,9 @@ mod tests {
         if expected_errors.tx_err {
             rx_actioned_prompts = None;
         }
-        let active_prompt = RefActivePrompts::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let mut client =
-            setup_server_and_client(mock_client, active_prompt, tx_actioned_prompts).await;
+            setup_server_and_client(mock_client, active_prompts, tx_actioned_prompts).await;
 
         let resp = client.reply_to_prompt(Request::new(prompt_reply)).await;
 

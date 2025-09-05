@@ -52,13 +52,17 @@ impl Debug for ActivePrompt {
 
 impl RefActivePrompts {
     #[cfg(test)]
-    pub fn new(active_prompt: Option<ActivePrompt>) -> Self {
-        Self(Arc::new(Mutex::new(active_prompt)))
+    pub fn new(active_prompts: HashMap<i64, ActivePrompt>) -> Self {
+        Self(Arc::new(Mutex::new(active_prompts)))
     }
 
     #[cfg(test)]
-    pub fn drop_prompt(&mut self) {
-        self.0.lock().unwrap().take();
+    pub fn drop_prompt(&mut self, pid: i64) {
+        let mut guard = match self.0.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        guard.remove(&pid);
     }
 
     pub fn get(&self, pid: i64) -> Option<TypedUiInput> {
