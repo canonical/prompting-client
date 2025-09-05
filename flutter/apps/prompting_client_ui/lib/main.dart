@@ -66,7 +66,8 @@ Future<void> main(List<String> args) async {
   }
 
   final completer = Completer();
-  final currentPromptStream = getService<PromptingClient>().getCurrentPrompt();
+  final currentPromptStream = getService<PromptingClient>()
+      .getCurrentPrompt(int.parse(argResults.arguments[1]));
   currentPromptStream.listen(
     (promptDetails) {
       registerServiceInstance<PromptDetails>(promptDetails);

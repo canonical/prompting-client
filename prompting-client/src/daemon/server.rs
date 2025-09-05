@@ -1,6 +1,6 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
-    daemon::{worker::RefActivePrompt, ActionedPrompt, ReplyToPrompt},
+    daemon::{worker::RefActivePrompts, ActionedPrompt, ReplyToPrompt},
     log_filter,
     protos::{
         apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
@@ -23,7 +23,7 @@ use tracing_subscriber::{reload::Handle, EnvFilter};
 pub fn new_server_and_listener<R, S>(
     client: R,
     reload_handle: S,
-    active_prompt: RefActivePrompt,
+    active_prompt: RefActivePrompts,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     socket_path: String,
 ) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
@@ -74,7 +74,7 @@ where
 {
     client: R,
     reload_handle: S,
-    active_prompt: RefActivePrompt,
+    active_prompt: RefActivePrompts,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
@@ -86,7 +86,7 @@ where
     pub fn new(
         client: R,
         reload_handle: S,
-        active_prompt: RefActivePrompt,
+        active_prompt: RefActivePrompts,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
         Self {
@@ -113,11 +113,12 @@ where
     type GetCurrentPromptStream = ReceiverStream<Result<GetCurrentPromptResponse, Status>>;
     async fn get_current_prompt(
         &self,
-        _request: Request<()>,
+        request: Request<i64>,
     ) -> Result<Response<Self::GetCurrentPromptStream>, Status> {
+        let pid = request.into_inner();
         let (tx, rx) = channel(1);
 
-        let prompt = match self.active_prompt.get() {
+        let prompt = match self.active_prompt.get(pid) {
             Some(p) => {
                 let id = &p.id().0;
                 debug!(%id, "serving request for active prompt (id={id})");
@@ -131,7 +132,7 @@ where
             }
         };
 
-        match self.active_prompt.get_context() {
+        match self.active_prompt.get_context(pid) {
             Some(mut ctx) => {
                 tokio::spawn(async move {
                     debug!("spawning stream");
@@ -300,7 +301,7 @@ mod tests {
     use super::*;
     use crate::{
         daemon::{
-            worker::{ActivePrompt, RefActivePrompt},
+            worker::{ActivePrompt, RefActivePrompts},
             EnrichedPrompt,
         },
         protos::apparmor_prompting::{
@@ -326,6 +327,7 @@ mod tests {
     };
     use simple_test_case::test_case;
     use std::{
+        collections::HashMap,
         fs, io,
         ops::{Deref, DerefMut},
     };
@@ -405,7 +407,7 @@ mod tests {
 
     async fn setup_server_and_client(
         mock_client: MockClient,
-        active_prompt: RefActivePrompt,
+        active_prompt: RefActivePrompts,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> SelfCleaningClient {
         let test_name = Uuid::new_v4().to_string();
@@ -546,11 +548,19 @@ mod tests {
         want_err: bool,
     }
 
-    #[test_case(None, None; "empty prompt")]
-    #[test_case(Some(active_prompt()), Some(prompt()); "non-empty prompt")]
+    #[test_case(HashMap::new(), 0, None; "empty prompt")]
+    #[test_case(
+        HashMap::from([(0, active_prompt())]), 0, Some(prompt());
+        "non-empty prompt"
+    )]
+    #[test_case(
+        HashMap::from([(0, active_prompt())]), 1, None;
+        "non-empty prompt for different pid"
+    )]
     #[tokio::test]
     async fn test_get_current_prompt(
-        active_prompt: Option<ActivePrompt>,
+        active_prompts: HashMap<i64, ActivePrompt>,
+        pid: i64,
         expected: Option<Prompt>,
     ) {
         let mock_client = MockClient {
@@ -558,11 +568,11 @@ mod tests {
             expected_reply: None,
         };
         let (tx_actioned_prompts, _rx_actioned_prompts) = unbounded_channel();
-        let mut active_prompt = RefActivePrompt::new(active_prompt);
+        let mut active_prompt = RefActivePrompts::new(active_prompts);
         let mut client =
             setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
 
-        let response = client.get_current_prompt(Request::new(())).await;
+        let response = client.get_current_prompt(Request::new(pid)).await;
         if expected.is_none() {
             assert!(response.is_err());
             return;
@@ -579,7 +589,7 @@ mod tests {
         assert_eq!(resp, expected);
 
         if expected.is_some() {
-            active_prompt.drop_prompt();
+            active_prompt.drop_prompt(pid);
         }
         let next = stream.message().await.unwrap();
         assert_eq!(next, None);
@@ -600,9 +610,9 @@ mod tests {
         if expected_errors.tx_err {
             rx_actioned_prompts = None;
         }
-        let active_prompt = RefActivePrompt::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let mut client =
-            setup_server_and_client(mock_client, active_prompt, tx_actioned_prompts).await;
+            setup_server_and_client(mock_client, active_prompts, tx_actioned_prompts).await;
 
         let resp = client.reply_to_prompt(Request::new(prompt_reply)).await;
 
