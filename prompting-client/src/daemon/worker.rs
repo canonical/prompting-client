@@ -572,13 +572,13 @@ mod tests {
         }
     }
 
-    fn enriched_prompt(id: &str) -> EnrichedPrompt {
+    fn enriched_prompt(id: &str, pid: i64) -> EnrichedPrompt {
         EnrichedPrompt {
             prompt: TypedPrompt::Home(Prompt {
                 id: PromptId(id.to_string()),
                 timestamp: String::new(),
                 snap: "test".to_string(),
-                pid: 1234,
+                pid,
                 interface: "home".to_string(),
                 constraints: HomeConstraints::default(),
             }),
@@ -586,31 +586,62 @@ mod tests {
         }
     }
 
-    fn add(id: &str) -> PromptUpdate {
-        PromptUpdate::Add(enriched_prompt(id))
+    fn add(id: &str, pid: i64) -> PromptUpdate {
+        PromptUpdate::Add(enriched_prompt(id, pid))
     }
 
     fn drop_id(id: &str) -> PromptUpdate {
         PromptUpdate::Drop(PromptId(id.to_string()))
     }
 
-    #[test_case(add("1"), &[], &["1"]; "add new prompt")]
-    #[test_case(drop_id("1"), &["1"], &[]; "drop for pending prompt")]
-    #[test_case(drop_id("1"), &[], &[]; "drop prompt not seen yet")]
+    #[test_case(
+        add("1", 0), [].into(), [(0, vec!["1"])].into();
+        "add new prompt"
+    )]
+    #[test_case(
+        add("2", 1), [(0, vec!["1"])].into(), [(0, vec!["1"]), (1, vec!["2"])].into();
+        "add new prompt to new queue"
+    )]
+    #[test_case(
+        add("2", 0), [(0, vec!["1"])].into(), [(0, vec!["1", "2"])].into();
+        "add new prompt to existing queue"
+    )]
+    #[test_case(
+        drop_id("1"), [(0, vec!["1"])].into(), [].into();
+        "drop last pending prompt"
+    )]
+    #[test_case(
+        drop_id("1"), [(0, vec!["1", "2"])].into(), [(0, vec!["2"])].into();
+        "drop with single queue"
+    )]
+    #[test_case(
+        drop_id("1"), [(0, vec!["1"]), (1, vec!["2"])].into(), [(1, vec!["2"])].into();
+        "drop with multiple queues"
+    )]
+    #[test_case(drop_id("1"), [].into(), [].into(); "drop prompt not seen yet")]
     #[test]
-    fn process_update(update: PromptUpdate, current_pending: &[&str], expected_pending: &[&str]) {
+    fn process_update(
+        update: PromptUpdate,
+        current_pending: HashMap<i64, Vec<&str>>,
+        expected_pending: HashMap<i64, Vec<&str>>,
+    ) {
         let (_, rx_prompts) = unbounded_channel();
         let (_, rx_actioned_prompts) = unbounded_channel();
         let pending_prompts = current_pending
-            .iter()
-            .map(|id| enriched_prompt(id))
+            .into_iter()
+            .map(|(pid, ids)| {
+                (
+                    pid,
+                    ids.into_iter().map(|id| enriched_prompt(id, pid)).collect(),
+                )
+            })
             .collect();
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompts: RefActivePrompts::new(None),
-            dialog_processes: None,
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
             pending_prompts,
             dead_prompts: Vec::new(),
             recv_timeout: Duration::from_millis(100),
