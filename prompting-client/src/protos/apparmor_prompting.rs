@@ -122,8 +122,11 @@ pub struct HomePromptReply {
     #[prost(enumeration = "HomePermission", repeated, tag = "2")]
     pub permissions: ::prost::alloc::vec::Vec<i32>,
 }
-#[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct CameraPromptReply {}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CameraPromptReply {
+    #[prost(enumeration = "DevicePermission", repeated, tag = "1")]
+    pub permissions: ::prost::alloc::vec::Vec<i32>,
+}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HomePrompt {
     #[prost(message, optional, tag = "1")]
@@ -311,6 +314,29 @@ impl HomePermission {
             "READ" => Some(Self::Read),
             "WRITE" => Some(Self::Write),
             "EXECUTE" => Some(Self::Execute),
+            _ => None,
+        }
+    }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DevicePermission {
+    Access = 0,
+}
+impl DevicePermission {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            Self::Access => "ACCESS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACCESS" => Some(Self::Access),
             _ => None,
         }
     }

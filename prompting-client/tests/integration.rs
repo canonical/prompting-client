@@ -98,6 +98,7 @@ macro_rules! expect_single_prompt {
             match &p {
                 TypedPrompt::Camera(p) => {
                     assert_eq!(p.snap(), TEST_SNAP);
+                    assert_eq!(p.requested_permissions(), $expected_permissions);
                 }
                 TypedPrompt::Home(p) => {
                     assert_eq!(p.snap(), TEST_SNAP);
@@ -123,7 +124,7 @@ async fn ensure_prompting_is_enabled() -> Result<()> {
 // TODO: remove ignore when support for `camera` interface lands on snapd https://github.com/canonical/snapd/pull/15372
 #[ignore = "snapd doesn't have support for camera prompt"]
 #[test_case(Action::Allow, "Allow access to camera\n", ""; "allow")]
-#[test_case(Action::Deny, "Deny access to camera\n", "Failed to open /dev/video0: Permission denied\n"; "deny")]
+#[test_case(Action::Deny, "Deny access to camera\n", "Failed to open <DEVICE>: Permission denied\n"; "deny")]
 #[tokio::test]
 #[serial]
 async fn camera_interface_connected(
@@ -132,19 +133,25 @@ async fn camera_interface_connected(
     expected_stderr: &str,
 ) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
+    let device = "/dev/video0";
 
-    let rx = spawn_for_output("aa-prompting-test.camera", vec![]);
-    let (id, p) = expect_single_prompt!(&mut c, "", &[""]).await;
+    let rx = spawn_for_output("aa-prompting-test.camera", vec![device.into()]);
+    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
         &id,
         CameraInterface::prompt_to_reply(p.try_into()?, action).into(),
     )
     .await?;
+
     let output = rx.recv().expect("to be able to recv");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
-    assert_eq!(output.stderr, expected_stderr, "stderr");
+    assert_eq!(
+        output.stderr,
+        expected_stderr.replace("<DEVICE>", &device),
+        "stderr"
+    );
 
     Ok(())
 }

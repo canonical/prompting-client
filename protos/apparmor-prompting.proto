@@ -85,6 +85,10 @@ enum HomePermission {
     EXECUTE = 2;
 }
 
+enum DevicePermission {
+    ACCESS = 0;
+}
+
 message GetCurrentPromptResponse {
     oneof prompt {
         HomePrompt home_prompt = 1;
@@ -97,7 +101,9 @@ message HomePromptReply {
    repeated HomePermission permissions = 2;
 }
 
-message CameraPromptReply {}
+message CameraPromptReply {
+   repeated DevicePermission permissions = 1;
+}
 
 message HomePrompt {
     MetaData meta_data = 1;

@@ -13,8 +13,6 @@ parts:
   scripts:
     plugin: dump
     source: scripts/
-  gstreamer:
-    plugin: nil
     stage-packages:
       - v4l-utils
 
