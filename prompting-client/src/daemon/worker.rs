@@ -284,19 +284,24 @@ where
     }
 
     async fn process_next_pending_prompts(&mut self) -> Result<()> {
-        let mut new_prompts = HashMap::new();
+        let prompts_to_process: Vec<_> = self
+            .pending_prompts
+            .iter_mut()
+            .filter(|(cgroup, _)| !self.dialog_processes.contains_key(cgroup))
+            .filter_map(|(cgroup, pending_prompts)| {
+                let enriched_prompt = match pending_prompts.pop_front() {
+                    Some(ep) => ep,
+                    None => return None,
+                };
+                if !self.running {
+                    return None;
+                }
+                Some((cgroup.clone(), enriched_prompt))
+            })
+            .collect();
 
-        for (cgroup, pending_prompts) in self.pending_prompts.iter_mut() {
-            if self.dialog_processes.contains_key(cgroup) {
-                continue;
-            }
-            let enriched_prompt = match pending_prompts.pop_front() {
-                Some(ep) if self.running => ep,
-                _ => continue,
-            };
-
+        for (cgroup, enriched_prompt) in prompts_to_process {
             debug!("got prompt: {enriched_prompt:?}");
-
             match TypedUiInput::try_from(enriched_prompt.clone()) {
                 Err(error) => {
                     error!(%error, "failed to map prompt to UI input: replying with deny once");
@@ -304,18 +309,12 @@ where
                     self.client
                         .reply(&enriched_prompt.prompt.id().clone(), reply)
                         .await?;
-                    continue;
                 }
                 Ok(typed_ui_input) => {
-                    new_prompts.insert(cgroup.clone(), (enriched_prompt, typed_ui_input));
+                    self.update_active_prompt(&cgroup, enriched_prompt, typed_ui_input)?;
                 }
             }
         }
-
-        for (cgroup, (enriched_prompt, typed_ui_input)) in new_prompts.into_iter() {
-            self.update_active_prompt(&cgroup, enriched_prompt, typed_ui_input)?;
-        }
-
         Ok(())
     }
 
