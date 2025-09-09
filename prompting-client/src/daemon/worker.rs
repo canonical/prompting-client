@@ -242,15 +242,13 @@ where
     }
 
     fn drop_prompt(&mut self, id: PromptId) {
-        self.pending_prompts
-            .iter_mut()
-            .for_each(|(cgroup, pending_prompts)| {
-                let len = pending_prompts.len();
-                pending_prompts.retain(|enriched_prompt| enriched_prompt.prompt.id() != &id);
-                if pending_prompts.len() < len {
-                    info!(id=%id.0, cgroup=%cgroup.0, "dropping prompt as it has already been actioned");
-                }
-            });
+        for (cgroup, pending_prompts) in self.pending_prompts.iter_mut() {
+            let len = pending_prompts.len();
+            pending_prompts.retain(|enriched_prompt| enriched_prompt.prompt.id() != &id);
+            if pending_prompts.len() < len {
+                info!(id=%id.0, cgroup=%cgroup.0, "dropping prompt as it has already been actioned");
+            }
+        }
         self.pending_prompts
             .retain(|_, pending_prompts| !pending_prompts.is_empty());
 
@@ -259,12 +257,12 @@ where
             Err(err) => err.into_inner(),
         };
 
-        guard
+        for (_, active_prompt) in guard
             .iter_mut()
             .filter(|(_, active_prompt)| active_prompt.typed_ui_input.id() == &id)
-            .for_each(|(_, active_prompt)| {
-                active_prompt.ui_handle.take();
-            });
+        {
+            active_prompt.ui_handle.take();
+        }
     }
 
     fn process_update(&mut self, update: PromptUpdate) {
