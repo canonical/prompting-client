@@ -272,7 +272,7 @@ mod tests {
     use super::*;
     use crate::snapd_client::{
         interfaces::home::{HomeConstraints, HomeConstraintsFilter},
-        PromptId,
+        Cgroup, PromptId,
     };
     use simple_test_case::{dir_cases, test_case};
 
@@ -379,6 +379,9 @@ mod tests {
             timestamp: "".to_string(),
             snap: "test".to_string(),
             pid: 1234,
+            cgroup: Cgroup(
+                "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope".to_string(),
+            ),
             constraints: HomeConstraints {
                 path: "/home/foo/bar".to_string(),
                 requested_permissions: vec!["read".to_string()],

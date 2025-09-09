@@ -327,7 +327,7 @@ struct PermissionsError {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::snapd_client::{PromptId, RawPrompt};
+    use crate::snapd_client::{Cgroup, PromptId, RawPrompt};
     use simple_test_case::dir_cases;
 
     // Files within this directory need to have a prefix that matches one of the assertion branches
@@ -378,6 +378,7 @@ mod tests {
     "interface": "home",
     "snap": "aa-prompting-test",
     "pid": 1234,
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope",
     "timestamp": "2024-08-15T13:28:17.077016791Z"
   },
   "status": "OK",
@@ -395,6 +396,9 @@ mod tests {
             timestamp: "2024-08-15T13:28:17.077016791Z".to_string(),
             snap: "aa-prompting-test".to_string(),
             pid: 1234,
+            cgroup: Cgroup(
+                "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope".to_string(),
+            ),
             interface: "home".to_string(),
             constraints: serde_json::json!({
                 "available-permissions": vec!["read", "write", "execute"],

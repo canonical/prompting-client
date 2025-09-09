@@ -14,7 +14,7 @@
 //!
 //!   [0]: crate::snapd_client::interfaces
 use crate::{
-    snapd_client::{interfaces::SnapInterface, PromptId, SnapMeta},
+    snapd_client::{interfaces::SnapInterface, Cgroup, PromptId, SnapMeta},
     Result,
 };
 use serde::{Deserialize, Serialize};
@@ -30,6 +30,7 @@ pub struct RawPrompt {
     pub(crate) timestamp: String,
     pub(crate) snap: String,
     pub(crate) pid: i64,
+    pub(crate) cgroup: Cgroup,
     pub(crate) interface: String,
     pub(crate) constraints: serde_json::Value,
 }
@@ -45,6 +46,7 @@ where
     pub(crate) timestamp: String,
     pub(crate) snap: String,
     pub(crate) pid: i64,
+    pub(crate) cgroup: Cgroup,
     pub(crate) interface: String,
     pub(crate) constraints: I::Constraints,
 }
@@ -63,6 +65,10 @@ where
 
     pub fn pid(&self) -> i64 {
         self.pid
+    }
+
+    pub fn cgroup(&self) -> &Cgroup {
+        &self.cgroup
     }
 
     pub fn timestamp(&self) -> &str {
@@ -87,6 +93,7 @@ where
             timestamp,
             snap,
             pid,
+            cgroup,
             interface,
             constraints,
         }: RawPrompt,
@@ -102,6 +109,7 @@ where
             timestamp,
             snap,
             pid,
+            cgroup,
             interface,
             constraints: serde_json::from_value(constraints)?,
         })
@@ -192,6 +200,7 @@ mod tests {
   "timestamp": "2024-08-14T07:28:22.694800024Z",
   "snap": "firefox",
   "pid": 1234,
+  "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope",
   "interface": "home",
   "constraints": {}
 }"#;
@@ -204,6 +213,9 @@ mod tests {
             timestamp: "2024-08-14T07:28:22.694800024Z".to_string(),
             snap: "firefox".to_string(),
             pid: 1234,
+            cgroup: Cgroup(
+                "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope".to_string(),
+            ),
             interface: "home".to_string(),
             constraints: serde_json::json!({}),
         };

@@ -7,7 +7,7 @@ use crate::{
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, PromptReplyResponse,
         ResolveHomePatternTypeResponse,
     },
-    snapd_client::{PromptId, SnapdError, TypedPromptReply},
+    snapd_client::{Cgroup, PromptId, SnapdError, TypedPromptReply},
     Error,
 };
 use std::sync::Arc;
@@ -113,12 +113,12 @@ where
     type GetCurrentPromptStream = ReceiverStream<Result<GetCurrentPromptResponse, Status>>;
     async fn get_current_prompt(
         &self,
-        request: Request<i64>,
+        request: Request<String>,
     ) -> Result<Response<Self::GetCurrentPromptStream>, Status> {
-        let pid = request.into_inner();
+        let cgroup = Cgroup(request.into_inner());
         let (tx, rx) = channel(1);
 
-        let prompt = match self.active_prompt.get(pid) {
+        let prompt = match self.active_prompt.get(&cgroup) {
             Some(p) => {
                 let id = &p.id().0;
                 debug!(%id, "serving request for active prompt (id={id})");
@@ -132,7 +132,7 @@ where
             }
         };
 
-        match self.active_prompt.get_context(pid) {
+        match self.active_prompt.get_context(&cgroup) {
             Some(mut ctx) => {
                 tokio::spawn(async move {
                     debug!("spawning stream");
@@ -320,8 +320,8 @@ mod tests {
                 EnrichedPathKind, HomeConstraints, HomeInterface, HomeReplyConstraints,
                 HomeUiInputData,
             },
-            Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPrompt,
-            TypedPromptReply, TypedUiInput, UiInput,
+            Cgroup, Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapMeta,
+            TypedPrompt, TypedPromptReply, TypedUiInput, UiInput,
         },
         Error,
     };
@@ -453,6 +453,10 @@ mod tests {
                 timestamp: "0".to_string(),
                 snap: "2".to_string(),
                 pid: 1234,
+                cgroup: Cgroup(
+                    "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope"
+                        .to_string(),
+                ),
                 interface: "home".to_string(),
                 constraints: HomeConstraints {
                     path: "6".to_string(),
@@ -548,19 +552,19 @@ mod tests {
         want_err: bool,
     }
 
-    #[test_case(HashMap::new(), 0, None; "empty prompt")]
+    #[test_case(HashMap::new(), "cgroup".into(), None; "empty prompt")]
     #[test_case(
-        HashMap::from([(0, active_prompt())]), 0, Some(prompt());
+        HashMap::from([("cgroup_0".into(), active_prompt())]), "cgroup_0".into(), Some(prompt());
         "non-empty prompt"
     )]
     #[test_case(
-        HashMap::from([(0, active_prompt())]), 1, None;
+        HashMap::from([("cgroup_0".into(), active_prompt())]), "cgroup_1".into(), None;
         "non-empty prompt for different pid"
     )]
     #[tokio::test]
     async fn test_get_current_prompt(
-        active_prompts: HashMap<i64, ActivePrompt>,
-        pid: i64,
+        active_prompts: HashMap<Cgroup, ActivePrompt>,
+        cgroup: Cgroup,
         expected: Option<Prompt>,
     ) {
         let mock_client = MockClient {
@@ -572,7 +576,9 @@ mod tests {
         let mut client =
             setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
 
-        let response = client.get_current_prompt(Request::new(pid)).await;
+        let response = client
+            .get_current_prompt(Request::new(cgroup.0.clone()))
+            .await;
         if expected.is_none() {
             assert!(response.is_err());
             return;
@@ -589,7 +595,7 @@ mod tests {
         assert_eq!(resp, expected);
 
         if expected.is_some() {
-            active_prompt.drop_prompt(pid);
+            active_prompt.drop_prompt(&cgroup);
         }
         let next = stream.message().await.unwrap();
         assert_eq!(next, None);

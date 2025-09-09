@@ -1,7 +1,7 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
 use crate::{
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
-    snapd_client::{PromptId, SnapdSocketClient, TypedUiInput},
+    snapd_client::{Cgroup, PromptId, SnapdSocketClient, TypedUiInput},
     Result,
 };
 use futures::{stream::FuturesUnordered, FutureExt};
@@ -36,7 +36,7 @@ enum Recv {
 }
 
 #[derive(Debug)]
-pub struct RefActivePrompts(Arc<Mutex<HashMap<i64, ActivePrompt>>>);
+pub struct RefActivePrompts(Arc<Mutex<HashMap<Cgroup, ActivePrompt>>>);
 
 pub struct ActivePrompt {
     pub(crate) typed_ui_input: TypedUiInput,
@@ -52,33 +52,33 @@ impl Debug for ActivePrompt {
 
 impl RefActivePrompts {
     #[cfg(test)]
-    pub fn new(active_prompts: HashMap<i64, ActivePrompt>) -> Self {
+    pub fn new(active_prompts: HashMap<Cgroup, ActivePrompt>) -> Self {
         Self(Arc::new(Mutex::new(active_prompts)))
     }
 
     #[cfg(test)]
-    pub fn drop_prompt(&mut self, pid: i64) {
+    pub fn drop_prompt(&mut self, cgroup: &Cgroup) {
         let mut guard = match self.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        guard.remove(&pid);
+        guard.remove(cgroup);
     }
 
-    pub fn get(&self, pid: i64) -> Option<TypedUiInput> {
+    pub fn get(&self, cgroup: &Cgroup) -> Option<TypedUiInput> {
         let guard = match self.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        Some(guard.get(&pid)?.typed_ui_input.clone())
+        Some(guard.get(cgroup)?.typed_ui_input.clone())
     }
 
-    pub fn get_context(&self, pid: i64) -> Option<Context> {
+    pub fn get_context(&self, cgroup: &Cgroup) -> Option<Context> {
         let mut guard = match self.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        Some(guard.get_mut(&pid)?.ui_handle.as_mut()?.spawn_ctx())
+        Some(guard.get_mut(cgroup)?.ui_handle.as_mut()?.spawn_ctx())
     }
 }
 
@@ -128,8 +128,8 @@ where
     rx_prompts: UnboundedReceiver<PromptUpdate>,
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
     active_prompts: RefActivePrompts,
-    dialog_processes: HashMap<i64, D>,
-    pending_prompts: HashMap<i64, VecDeque<EnrichedPrompt>>,
+    dialog_processes: HashMap<Cgroup, D>,
+    pending_prompts: HashMap<Cgroup, VecDeque<EnrichedPrompt>>,
     dead_prompts: Vec<PromptId>,
     recv_timeout: Duration,
     ui: S,
@@ -244,11 +244,11 @@ where
     fn drop_prompt(&mut self, id: PromptId) {
         self.pending_prompts
             .iter_mut()
-            .for_each(|(pid, pending_prompts)| {
+            .for_each(|(cgroup, pending_prompts)| {
                 let len = pending_prompts.len();
                 pending_prompts.retain(|enriched_prompt| enriched_prompt.prompt.id() != &id);
                 if pending_prompts.len() < len {
-                    info!(id=%id.0, pid=%pid, "dropping prompt as it has already been actioned");
+                    info!(id=%id.0, cgroup=%cgroup.0, "dropping prompt as it has already been actioned");
                 }
             });
         self.pending_prompts
@@ -272,12 +272,12 @@ where
 
         match update {
             PromptUpdate::Add(enriched_prompt) => {
-                let pid = enriched_prompt.prompt.pid();
-                if let Some(pending_prompts) = self.pending_prompts.get_mut(&pid) {
+                let cgroup = enriched_prompt.prompt.cgroup();
+                if let Some(pending_prompts) = self.pending_prompts.get_mut(cgroup) {
                     pending_prompts.push_back(enriched_prompt);
                 } else {
                     self.pending_prompts
-                        .insert(pid, VecDeque::from([enriched_prompt]));
+                        .insert(cgroup.clone(), VecDeque::from([enriched_prompt]));
                 }
             }
             PromptUpdate::Drop(id) => self.drop_prompt(id),
@@ -287,8 +287,8 @@ where
     async fn process_next_pending_prompts(&mut self) -> Result<()> {
         let mut new_prompts = HashMap::new();
 
-        for (pid, pending_prompts) in self.pending_prompts.iter_mut() {
-            if self.dialog_processes.contains_key(pid) {
+        for (cgroup, pending_prompts) in self.pending_prompts.iter_mut() {
+            if self.dialog_processes.contains_key(cgroup) {
                 continue;
             }
             let enriched_prompt = match pending_prompts.pop_front() {
@@ -308,23 +308,23 @@ where
                     continue;
                 }
                 Ok(typed_ui_input) => {
-                    new_prompts.insert(*pid, (enriched_prompt, typed_ui_input));
+                    new_prompts.insert(cgroup.clone(), (enriched_prompt, typed_ui_input));
                 }
             }
         }
 
-        for (pid, (enriched_prompt, typed_ui_input)) in new_prompts.into_iter() {
-            self.update_active_prompt(pid, enriched_prompt, typed_ui_input)?;
+        for (cgroup, (enriched_prompt, typed_ui_input)) in new_prompts.into_iter() {
+            self.update_active_prompt(&cgroup, enriched_prompt, typed_ui_input)?;
         }
 
         Ok(())
     }
 
-    async fn wait_for_ui_reply(&mut self, pid: i64) -> Result<()> {
+    async fn wait_for_ui_reply(&mut self, cgroup: &Cgroup) -> Result<()> {
         debug!("waiting for ui reply");
         let exit_code = self
             .dialog_processes
-            .remove(&pid)
+            .remove(cgroup)
             .expect("dialog process")
             .wait()
             .await?
@@ -338,7 +338,7 @@ where
                 Err(err) => err.into_inner(),
             };
             guard
-                .get(&pid)
+                .get(cgroup)
                 .as_ref()
                 .expect("active prompt")
                 .enriched_prompt
@@ -362,7 +362,7 @@ where
                         // need to send a reply to snapd manually, as the prompt has already become
                         // invalid.
                         if guard
-                            .get(&pid)
+                            .get(cgroup)
                             .as_ref()
                             .expect("active prompt")
                             .ui_handle
@@ -392,25 +392,25 @@ where
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        guard.remove(&pid);
+        guard.remove(cgroup);
 
         Ok(())
     }
 
-    async fn wait_for_dialog_processes(dialog_processes: &mut HashMap<i64, D>) -> i64 {
+    async fn wait_for_dialog_processes(dialog_processes: &mut HashMap<Cgroup, D>) -> Cgroup {
         dialog_processes
             .iter_mut()
-            .map(|(pid, process_handle)| {
+            .map(|(cgroup, process_handle)| {
                 process_handle.wait().map(move |result| {
                     result.expect("completes");
-                    pid
+                    cgroup
                 })
             })
             .collect::<FuturesUnordered<_>>()
             .next()
             .await
-            .copied()
-            .expect("a pid")
+            .cloned()
+            .expect("a cgroup")
     }
 
     /// The step function is the core of the worker and processes incoming prompts as follows:
@@ -441,9 +441,9 @@ where
                     }
                 }
             },
-            pid = Self::wait_for_dialog_processes(&mut self.dialog_processes),
+            cgroup = Self::wait_for_dialog_processes(&mut self.dialog_processes),
             if !self.dialog_processes.is_empty() => {
-                self.wait_for_ui_reply(pid).await?;
+                self.wait_for_ui_reply(&cgroup).await?;
             }
         };
 
@@ -452,7 +452,7 @@ where
 
     fn update_active_prompt(
         &mut self,
-        pid: i64,
+        cgroup: &Cgroup,
         enriched_prompt: EnrichedPrompt,
         typed_ui_input: TypedUiInput,
     ) -> Result<()> {
@@ -466,7 +466,7 @@ where
 
         debug!("updating active prompt");
         guard.insert(
-            pid,
+            cgroup.clone(),
             ActivePrompt {
                 typed_ui_input,
                 enriched_prompt: enriched_prompt.clone(),
@@ -479,8 +479,9 @@ where
         let dialog_process = self.ui.spawn(&[
             enriched_prompt.prompt.snap(),
             &enriched_prompt.prompt.pid().to_string(),
+            &enriched_prompt.prompt.cgroup().0,
         ])?;
-        self.dialog_processes.insert(pid, dialog_process);
+        self.dialog_processes.insert(cgroup.clone(), dialog_process);
 
         Ok(())
     }
@@ -572,13 +573,14 @@ mod tests {
         }
     }
 
-    fn enriched_prompt(id: &str, pid: i64) -> EnrichedPrompt {
+    fn enriched_prompt(id: &str, cgroup: &str) -> EnrichedPrompt {
         EnrichedPrompt {
             prompt: TypedPrompt::Home(Prompt {
                 id: PromptId(id.to_string()),
                 timestamp: String::new(),
                 snap: "test".to_string(),
-                pid,
+                pid: 1234,
+                cgroup: cgroup.into(),
                 interface: "home".to_string(),
                 constraints: HomeConstraints::default(),
             }),
@@ -586,8 +588,8 @@ mod tests {
         }
     }
 
-    fn add(id: &str, pid: i64) -> PromptUpdate {
-        PromptUpdate::Add(enriched_prompt(id, pid))
+    fn add(id: &str, cgroup: &str) -> PromptUpdate {
+        PromptUpdate::Add(enriched_prompt(id, cgroup))
     }
 
     fn drop_id(id: &str) -> PromptUpdate {
@@ -595,44 +597,46 @@ mod tests {
     }
 
     #[test_case(
-        add("1", 0), [].into(), [(0, vec!["1"])].into();
+        add("1", "cgroup_0"), [].into(), [("cgroup_0".into(), vec!["1"])].into();
         "add new prompt"
     )]
     #[test_case(
-        add("2", 1), [(0, vec!["1"])].into(), [(0, vec!["1"]), (1, vec!["2"])].into();
+        add("2", "cgroup_1"), [("cgroup_0".into(), vec!["1"])].into(), [("cgroup_0".into(), vec!["1"]), ("cgroup_1".into(), vec!["2"])].into();
         "add new prompt to new queue"
     )]
     #[test_case(
-        add("2", 0), [(0, vec!["1"])].into(), [(0, vec!["1", "2"])].into();
+        add("2", "cgroup_0"), [("cgroup_0".into(), vec!["1"])].into(), [("cgroup_0".into(), vec!["1", "2"])].into();
         "add new prompt to existing queue"
     )]
     #[test_case(
-        drop_id("1"), [(0, vec!["1"])].into(), [].into();
+        drop_id("1"), [("cgroup_0".into(), vec!["1"])].into(), [].into();
         "drop last pending prompt"
     )]
     #[test_case(
-        drop_id("1"), [(0, vec!["1", "2"])].into(), [(0, vec!["2"])].into();
+        drop_id("1"), [("cgroup_0".into(), vec!["1", "2"])].into(), [("cgroup_0".into(), vec!["2"])].into();
         "drop with single queue"
     )]
     #[test_case(
-        drop_id("1"), [(0, vec!["1"]), (1, vec!["2"])].into(), [(1, vec!["2"])].into();
+        drop_id("1"), [("cgroup_0".into(), vec!["1"]), ("cgroup_1".into(), vec!["2"])].into(), [("cgroup_1".into(), vec!["2"])].into();
         "drop with multiple queues"
     )]
     #[test_case(drop_id("1"), [].into(), [].into(); "drop prompt not seen yet")]
     #[test]
     fn process_update(
         update: PromptUpdate,
-        current_pending: HashMap<i64, Vec<&str>>,
-        expected_pending: HashMap<i64, Vec<&str>>,
+        current_pending: HashMap<Cgroup, Vec<&str>>,
+        expected_pending: HashMap<Cgroup, Vec<&str>>,
     ) {
         let (_, rx_prompts) = unbounded_channel();
         let (_, rx_actioned_prompts) = unbounded_channel();
         let pending_prompts = current_pending
             .into_iter()
-            .map(|(pid, ids)| {
+            .map(|(cgroup, ids)| {
                 (
-                    pid,
-                    ids.into_iter().map(|id| enriched_prompt(id, pid)).collect(),
+                    cgroup.clone(),
+                    ids.into_iter()
+                        .map(|id| enriched_prompt(id, &cgroup.0))
+                        .collect(),
                 )
             })
             .collect();
@@ -654,12 +658,12 @@ mod tests {
 
         w.process_update(update);
 
-        let pending: HashMap<i64, Vec<&str>> = w
+        let pending: HashMap<Cgroup, Vec<&str>> = w
             .pending_prompts
             .iter()
-            .map(|(pid, prompts)| {
+            .map(|(cgroup, prompts)| {
                 (
-                    *pid,
+                    cgroup.clone(),
                     prompts
                         .iter()
                         .map(|prompt| prompt.prompt.id().0.as_str())
@@ -822,7 +826,7 @@ mod tests {
 
     #[derive(Debug)]
     struct TestUi {
-        replies: HashMap<i64, Vec<Reply>>,
+        replies: HashMap<Cgroup, Vec<Reply>>,
         tx: UnboundedSender<ActionedPrompt>,
         active_prompts: RefActivePrompts,
         tx_done: Option<oneshot::Sender<()>>,
@@ -832,8 +836,11 @@ mod tests {
         type Handle = TestDialogHandle;
         fn spawn(&mut self, args: &[&str]) -> Result<TestDialogHandle> {
             debug!("spawning test ui");
-            let pid = args.get(1).expect("a pid").parse().expect("a numeric pid");
-            let reply = self.replies.get_mut(&pid).map(|replies| replies.remove(0));
+            let cgroup: Cgroup = (*args.get(2).expect("a pid")).into();
+            let reply = self
+                .replies
+                .get_mut(&cgroup)
+                .map(|replies| replies.remove(0));
             self.replies.retain(|_, replies| !replies.is_empty());
             let tx = self.tx.clone();
             let active_prompt = self.active_prompts.clone();
@@ -845,7 +852,7 @@ mod tests {
                 .flatten();
             let context = self
                 .active_prompts
-                .get_context(pid)
+                .get_context(&cgroup)
                 .expect("to get a context");
 
             Ok(TestDialogHandle {
@@ -855,7 +862,7 @@ mod tests {
                 context,
                 closed: reply_sent,
                 tx_done,
-                pid,
+                cgroup,
             })
         }
     }
@@ -867,7 +874,7 @@ mod tests {
         context: Context,
         closed: bool,
         tx_done: Option<oneshot::Sender<()>>,
-        pid: i64,
+        cgroup: Cgroup,
     }
 
     impl Debug for TestDialogHandle {
@@ -885,7 +892,10 @@ mod tests {
                 return Ok(ExitStatus::default());
             }
 
-            let active_prompt = &self.active_prompts.get(self.pid).expect("active prompt");
+            let active_prompt = &self
+                .active_prompts
+                .get(&self.cgroup)
+                .expect("active prompt");
             if let Some(reply) = self.reply {
                 assert_eq!(
                     reply.active_prompt_id,
@@ -925,55 +935,55 @@ mod tests {
 
     #[test_case(vec![], [].into(); "channel close without prompts")]
     #[test_case(
-        vec![add("1", 0)], [(0, vec![reply("1", 10, "1", &[])])].into();
+        vec![add("1", "cgroup_0")], [("cgroup_0".into(), vec![reply("1", 10, "1", &[])])].into();
         "single"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 1)],
+        vec![add("1", "cgroup_0"), add("2", "cgroup_1")],
         [
-            (0, vec![reply("1", 10, "1", &[])]),
-            (1, vec![reply("2", 10, "2", &[])])
+            ("cgroup_0".into(), vec![reply("1", 10, "1", &[])]),
+            ("cgroup_1".into(), vec![reply("2", 10, "2", &[])])
         ].into();
         "single in parallel"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 0), add("3", 0)],
-        [(0, vec![reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])])].into();
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0"), add("3", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])])].into();
         "multiple"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 1), add("3", 0), add("4", 1), add("5", 0)],
+        vec![add("1", "cgroup_0"), add("2", "cgroup_1"), add("3", "cgroup_0"), add("4", "cgroup_1"), add("5", "cgroup_0")],
         [
-            (0, vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("5", 10, "5", &[])]),
-            (1, vec![reply("2", 10, "2", &[]), reply("4", 10, "4", &[])])
+            ("cgroup_0".into(), vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("5", 10, "5", &[])]),
+            ("cgroup_1".into(), vec![reply("2", 10, "2", &[]), reply("4", 10, "4", &[])])
         ].into();
         "multiple in parallel"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 0), add("3", 0)],
-        [(0, vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0"), add("3", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
         "first reply actions second prompt as well"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 1), add("3", 0)],
-        [(0, vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
+        vec![add("1", "cgroup_0"), add("2", "cgroup_1"), add("3", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
         "first reply actions parallel prompt"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 0)],
-        [(0, vec![reply("1", 200, "1", &[]), reply("2", 50, "2", &[])])].into();
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 200, "1", &[]), reply("2", 50, "2", &[])])].into();
         "delayed reply skips"
     )]
     #[test_case(
-        vec![add("1", 0), add("2", 0), add("3", 0), drop_id("2"), add("4", 0)],
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0"), add("3", "cgroup_0"), drop_id("2"), add("4", "cgroup_0")],
         [(
-            0,
+            "cgroup_0".into(),
             vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("4", 10, "4", &[])]
         )].into();
         "explicit drop of previous prompt"
     )]
     #[tokio::test]
-    async fn sequence(updates: Vec<PromptUpdate>, replies: HashMap<i64, Vec<Reply>>) {
+    async fn sequence(updates: Vec<PromptUpdate>, replies: HashMap<Cgroup, Vec<Reply>>) {
         let (tx_prompts, rx_prompts) = unbounded_channel();
         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
         let (tx_done, rx_done) = oneshot::channel();
@@ -1065,7 +1075,10 @@ mod tests {
         let (_tx_prompts, rx_prompts) = unbounded_channel();
         let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
         let active_prompts = RefActivePrompts::new(HashMap::new());
-        let pending_prompts = HashMap::from([(0, vec![enriched_prompt("1", 0)].into())]);
+        let pending_prompts = HashMap::from([(
+            "cgroup_0".into(),
+            vec![enriched_prompt("1", "cgroup_0")].into(),
+        )]);
 
         let mut w = Worker {
             rx_prompts,
@@ -1136,14 +1149,16 @@ mod tests {
         // for the home interface
         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
-        tx_prompts.send(add(id, 0)).expect("to send update");
+        tx_prompts
+            .send(add(id, "cgroup_0"))
+            .expect("to send update");
         w.step().await.expect("step");
 
         tx_prompts.send(drop_id(id)).expect("to send update");
 
         let handle = tokio::spawn(async move {
             w.run().await.expect("run");
-            assert!(w.active_prompts.get(0).is_none());
+            assert!(w.active_prompts.get(&"cgroup_0".into()).is_none());
         });
 
         rx_done.await.expect("done");
