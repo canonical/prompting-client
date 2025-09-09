@@ -23,7 +23,7 @@ use tracing_subscriber::{reload::Handle, EnvFilter};
 pub fn new_server_and_listener<R, S>(
     client: R,
     reload_handle: S,
-    active_prompt: RefActivePrompts,
+    active_prompts: RefActivePrompts,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     socket_path: String,
 ) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
@@ -34,7 +34,7 @@ where
     let service = Service::new(
         client.clone(),
         reload_handle,
-        active_prompt,
+        active_prompts,
         tx_actioned_prompts,
     );
     let listener = UnixListener::bind(&socket_path).expect("to be able to bind to our socket");
@@ -74,7 +74,7 @@ where
 {
     client: R,
     reload_handle: S,
-    active_prompt: RefActivePrompts,
+    active_prompts: RefActivePrompts,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
@@ -86,13 +86,13 @@ where
     pub fn new(
         client: R,
         reload_handle: S,
-        active_prompt: RefActivePrompts,
+        active_prompts: RefActivePrompts,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
         Self {
             client,
             reload_handle,
-            active_prompt,
+            active_prompts,
             tx_actioned_prompts,
         }
     }
@@ -118,7 +118,7 @@ where
         let cgroup = Cgroup(request.into_inner());
         let (tx, rx) = channel(1);
 
-        let prompt = match self.active_prompt.get(&cgroup) {
+        let prompt = match self.active_prompts.get(&cgroup) {
             Some(p) => {
                 let id = &p.id().0;
                 debug!(%id, "serving request for active prompt (id={id})");
@@ -132,7 +132,7 @@ where
             }
         };
 
-        match self.active_prompt.get_context(&cgroup) {
+        match self.active_prompts.get_context(&cgroup) {
             Some(mut ctx) => {
                 tokio::spawn(async move {
                     debug!("spawning stream");
@@ -407,7 +407,7 @@ mod tests {
 
     async fn setup_server_and_client(
         mock_client: MockClient,
-        active_prompt: RefActivePrompts,
+        active_prompts: RefActivePrompts,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> SelfCleaningClient {
         let test_name = Uuid::new_v4().to_string();
@@ -417,7 +417,7 @@ mod tests {
         let (server, listener) = new_server_and_listener(
             mock_client,
             MockReloadHandle,
-            active_prompt,
+            active_prompts,
             tx_actioned_prompts,
             socket_path.clone(),
         );
@@ -572,9 +572,9 @@ mod tests {
             expected_reply: None,
         };
         let (tx_actioned_prompts, _rx_actioned_prompts) = unbounded_channel();
-        let mut active_prompt = RefActivePrompts::new(active_prompts);
+        let mut active_prompts = RefActivePrompts::new(active_prompts);
         let mut client =
-            setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
+            setup_server_and_client(mock_client, active_prompts.clone(), tx_actioned_prompts).await;
 
         let response = client
             .get_current_prompt(Request::new(cgroup.0.clone()))
@@ -595,7 +595,7 @@ mod tests {
         assert_eq!(resp, expected);
 
         if expected.is_some() {
-            active_prompt.drop_prompt(&cgroup);
+            active_prompts.drop_prompt(&cgroup);
         }
         let next = stream.message().await.unwrap();
         assert_eq!(next, None);
