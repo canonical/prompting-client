@@ -34,7 +34,7 @@ class AppArmorPromptingClient extends $grpc.Client {
   AppArmorPromptingClient(super.channel, {super.options, super.interceptors});
 
   $grpc.ResponseStream<$1.GetCurrentPromptResponse> getCurrentPrompt(
-    $0.Int64Value request, {
+    $0.StringValue request, {
     $grpc.CallOptions? options,
   }) {
     return $createStreamingCall(
@@ -68,9 +68,9 @@ class AppArmorPromptingClient extends $grpc.Client {
   // method descriptors
 
   static final _$getCurrentPrompt =
-      $grpc.ClientMethod<$0.Int64Value, $1.GetCurrentPromptResponse>(
+      $grpc.ClientMethod<$0.StringValue, $1.GetCurrentPromptResponse>(
           '/apparmor_prompting.AppArmorPrompting/GetCurrentPrompt',
-          ($0.Int64Value value) => value.writeToBuffer(),
+          ($0.StringValue value) => value.writeToBuffer(),
           $1.GetCurrentPromptResponse.fromBuffer);
   static final _$replyToPrompt =
       $grpc.ClientMethod<$1.PromptReply, $1.PromptReplyResponse>(
@@ -94,12 +94,12 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
   $core.String get $name => 'apparmor_prompting.AppArmorPrompting';
 
   AppArmorPromptingServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Int64Value, $1.GetCurrentPromptResponse>(
+    $addMethod($grpc.ServiceMethod<$0.StringValue, $1.GetCurrentPromptResponse>(
         'GetCurrentPrompt',
         getCurrentPrompt_Pre,
         false,
         true,
-        ($core.List<$core.int> value) => $0.Int64Value.fromBuffer(value),
+        ($core.List<$core.int> value) => $0.StringValue.fromBuffer(value),
         ($1.GetCurrentPromptResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$1.PromptReply, $1.PromptReplyResponse>(
         'ReplyToPrompt',
@@ -127,12 +127,12 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
   }
 
   $async.Stream<$1.GetCurrentPromptResponse> getCurrentPrompt_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Int64Value> $request) async* {
+      $grpc.ServiceCall $call, $async.Future<$0.StringValue> $request) async* {
     yield* getCurrentPrompt($call, await $request);
   }
 
   $async.Stream<$1.GetCurrentPromptResponse> getCurrentPrompt(
-      $grpc.ServiceCall call, $0.Int64Value request);
+      $grpc.ServiceCall call, $0.StringValue request);
 
   $async.Future<$1.PromptReplyResponse> replyToPrompt_Pre(
       $grpc.ServiceCall $call, $async.Future<$1.PromptReply> $request) async {
