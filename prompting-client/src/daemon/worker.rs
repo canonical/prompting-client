@@ -241,6 +241,16 @@ where
         Some(updates)
     }
 
+    fn add_prompt(&mut self, enriched_prompt: EnrichedPrompt) {
+        let cgroup = enriched_prompt.prompt.cgroup();
+        if let Some(pending_prompts) = self.pending_prompts.get_mut(cgroup) {
+            pending_prompts.push_back(enriched_prompt);
+        } else {
+            self.pending_prompts
+                .insert(cgroup.clone(), VecDeque::from([enriched_prompt]));
+        }
+    }
+
     fn drop_prompt(&mut self, id: PromptId) {
         for (cgroup, pending_prompts) in self.pending_prompts.iter_mut() {
             let len = pending_prompts.len();
@@ -268,15 +278,7 @@ where
         debug!("processing update: {update:?}");
 
         match update {
-            PromptUpdate::Add(enriched_prompt) => {
-                let cgroup = enriched_prompt.prompt.cgroup();
-                if let Some(pending_prompts) = self.pending_prompts.get_mut(cgroup) {
-                    pending_prompts.push_back(enriched_prompt);
-                } else {
-                    self.pending_prompts
-                        .insert(cgroup.clone(), VecDeque::from([enriched_prompt]));
-                }
-            }
+            PromptUpdate::Add(enriched_prompt) => self.add_prompt(enriched_prompt),
             PromptUpdate::Drop(id) => self.drop_prompt(id),
         }
     }
