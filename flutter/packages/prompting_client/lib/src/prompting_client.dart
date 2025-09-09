@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fixnum/fixnum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grpc/grpc.dart';
 import 'package:prompting_client/src/generated/apparmor-prompting.pbgrpc.dart'
@@ -25,8 +24,8 @@ class PromptingClient {
 
   final pb.AppArmorPromptingClient _client;
 
-  Stream<PromptDetails> getCurrentPrompt(int pid) => _client
-      .getCurrentPrompt(Int64Value(value: Int64(pid)))
+  Stream<PromptDetails> getCurrentPrompt(String cgroup) => _client
+      .getCurrentPrompt(StringValue(value: cgroup))
       .map(PrompteDetailsConversion.fromProto);
 
   Future<PromptReplyResponse> replyToPrompt(PromptReply reply) => _client

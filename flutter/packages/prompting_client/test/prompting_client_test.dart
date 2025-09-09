@@ -86,7 +86,7 @@ void main() {
           ),
         );
 
-        final promptDetailsStream = client.getCurrentPrompt(0);
+        final promptDetailsStream = client.getCurrentPrompt('cgroup');
         if (testCase.expectError) {
           await expectLater(promptDetailsStream, throwsArgumentError);
         } else {
