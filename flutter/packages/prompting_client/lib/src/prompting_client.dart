@@ -109,15 +109,15 @@ extension PermissionConversion on HomePermission {
       };
 }
 
-extension CameraPermissionConversion on CameraPermission {
-  static CameraPermission fromProto(pb.CameraPermission permission) =>
+extension DevicePermissionConversion on DevicePermission {
+  static DevicePermission fromProto(pb.DevicePermission permission) =>
       switch (permission) {
-        pb.CameraPermission.ACCESS => CameraPermission.access,
-        _ => throw ArgumentError('Unknown camera permission: $permission'),
+        pb.DevicePermission.ACCESS => DevicePermission.access,
+        _ => throw ArgumentError('Unknown device permission: $permission'),
       };
 
-  pb.CameraPermission toProto() => switch (this) {
-        CameraPermission.access => pb.CameraPermission.ACCESS,
+  pb.DevicePermission toProto() => switch (this) {
+        DevicePermission.access => pb.DevicePermission.ACCESS,
       };
 }
 

@@ -34,7 +34,7 @@ class CameraPromptDataModel extends _$CameraPromptDataModel {
       promptId: state.details.metaData.promptId,
       action: action,
       lifespan: lifespan ?? state.lifespan,
-      permissions: {CameraPermission.access},
+      permissions: {DevicePermission.access},
     );
   }
 

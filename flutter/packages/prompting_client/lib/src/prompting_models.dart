@@ -23,7 +23,7 @@ enum Lifespan { single, session, forever }
 
 enum HomePermission { read, write, execute }
 
-enum CameraPermission { access }
+enum DevicePermission { access }
 
 @freezed
 class MetaData with _$MetaData {
@@ -112,7 +112,7 @@ sealed class PromptReply with _$PromptReply {
     required String promptId,
     required Action action,
     required Lifespan lifespan,
-    required Set<CameraPermission> permissions,
+    required Set<DevicePermission> permissions,
   }) = PromptReplyCamera;
 
   factory PromptReply.fromJson(Map<String, dynamic> json) =>

@@ -56,7 +56,7 @@ void main() {
           promptId: 'promptId',
           action: Action.allow,
           lifespan: Lifespan.forever,
-          permissions: {CameraPermission.access},
+          permissions: {DevicePermission.access},
         ),
       ),
       (
@@ -66,7 +66,7 @@ void main() {
           promptId: 'promptId',
           action: Action.allow,
           lifespan: Lifespan.session,
-          permissions: {CameraPermission.access},
+          permissions: {DevicePermission.access},
         ),
       ),
       (
@@ -76,7 +76,7 @@ void main() {
           promptId: 'promptId',
           action: Action.deny,
           lifespan: Lifespan.single,
-          permissions: {CameraPermission.access},
+          permissions: {DevicePermission.access},
         ),
       ),
     ]) {
