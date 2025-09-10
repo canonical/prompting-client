@@ -92,13 +92,6 @@ sealed class PromptDetails with _$PromptDetails {
 
   factory PromptDetails.camera({
     required MetaData metaData,
-    required String requestedPath,
-    required String name,
-    required String subsystem,
-    required Set<CameraPermission> requestedPermissions,
-    required Set<CameraPermission> availablePermissions,
-    required Set<CameraPermission>
-        suggestedPermissions, // this may be redundant
   }) = PromptDetailsCamera;
 
   factory PromptDetails.fromJson(Map<String, dynamic> json) =>
@@ -119,7 +112,6 @@ sealed class PromptReply with _$PromptReply {
     required String promptId,
     required Action action,
     required Lifespan lifespan,
-    required String pathPattern,
     required Set<CameraPermission> permissions,
   }) = PromptReplyCamera;
 
