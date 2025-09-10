@@ -1,0 +1,15 @@
+{
+    "id": "0000000000000000",
+    "timestamp": "2025-08-20T16:17:44.28198468+02:00",
+    "snap": "cheese",
+    "pid": 136211,
+    "interface": "camera",
+    "constraints": {
+        "requested-permissions": [
+            "access"
+        ],
+        "available-permissions": [
+            "access"
+        ]
+    }
+}

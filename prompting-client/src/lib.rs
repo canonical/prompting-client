@@ -76,6 +76,9 @@ pub enum Error {
     #[error("the apparmor-prompting feature is not supported: {reason}")]
     NotSupported { reason: String },
 
+    #[error("unable to convert prompt to {interface} prompt")]
+    PromptConversionError { interface: String },
+
     #[error("error message returned from snapd: {message}")]
     SnapdError {
         status: StatusCode,
