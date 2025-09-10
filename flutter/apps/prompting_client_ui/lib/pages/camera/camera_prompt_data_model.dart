@@ -12,7 +12,6 @@ part 'camera_prompt_data_model.g.dart';
 class CameraPromptData with _$CameraPromptData {
   factory CameraPromptData({
     required PromptDetailsCamera details,
-    @Default(Lifespan.forever) Lifespan lifespan,
     CameraPromptError? error,
   }) = _CameraPromptData;
 
@@ -29,23 +28,18 @@ class CameraPromptDataModel extends _$CameraPromptDataModel {
     );
   }
 
-  PromptReply buildReply({required Action action, Lifespan? lifespan}) {
+  PromptReply buildReply({required Action action, required Lifespan lifespan}) {
     return PromptReply.camera(
       promptId: state.details.metaData.promptId,
       action: action,
-      lifespan: lifespan ?? state.lifespan,
+      lifespan: lifespan,
       permissions: {DevicePermission.access},
     );
   }
 
-  void setLifespan(Lifespan? lifespan) {
-    if (lifespan == null || lifespan == state.lifespan) return;
-    state = state.copyWith(lifespan: lifespan);
-  }
-
   Future<PromptReplyResponse> saveAndContinue({
     required Action action,
-    Lifespan? lifespan,
+    required Lifespan lifespan,
   }) async {
     final response = await getService<PromptingClient>()
         .replyToPrompt(buildReply(action: action, lifespan: lifespan));

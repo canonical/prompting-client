@@ -85,7 +85,10 @@ class CameraActionButton extends ConsumerWidget {
       onPressed: () async {
         final response = await ref
             .read(cameraPromptDataModelProvider.notifier)
-            .saveAndContinue(action: action, lifespan: lifespan);
+            .saveAndContinue(
+              action: action,
+              lifespan: lifespan ?? Lifespan.single,
+            );
         if (response is PromptReplyResponseSuccess) {
           if (context.mounted) {
             await YaruWindow.of(context).close();
