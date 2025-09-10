@@ -160,6 +160,22 @@ $ cargo test --lib
 $ melos test
 ```
 
+#### Flutter dry-run mode
+It is possible to spawn a prompt using `dry-run` mode and a `.json` file without
+hardcoded prompt details in it. This can be very useful for testing UI changes.
+
+You can initiate `dry-run` mode from the `/flutter/apps/prompting_client_ui` 
+using:
+```bash
+ fvm flutter run -a --dry-run
+```
+
+You can specify a specific `.json` file for testing using the `--test-prompt`
+argument:
+```bash
+ fvm flutter run -a --dry-run -a --test-prompt -a lib/test_camera_prompt_details.json
+```
+
 #### Integration tests
 Running the integration tests locally requires a running Ubuntu VM:
 ```bash
