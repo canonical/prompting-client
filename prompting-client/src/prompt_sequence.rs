@@ -1,7 +1,7 @@
 use crate::snapd_client::{
     interfaces::{
-        camera::CameraInterface, home::HomeInterface, ConstraintsFilter, ReplyConstraintsOverrides,
-        SnapInterface,
+        camera::CameraInterface, home::HomeInterface, microphone::MicrophoneInterface,
+        ConstraintsFilter, ReplyConstraintsOverrides, SnapInterface,
     },
     Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
 };
@@ -67,14 +67,24 @@ impl PromptSequence {
 
                 res
             }
+            (TypedPromptCase::Microphone(case), TypedPrompt::Microphone(p)) => {
+                let res = case
+                    .into_reply_or_error(p, self.index)
+                    .map(|res| res.map(TypedPromptReply::Microphone));
+                self.index += 1;
+
+                res
+            }
             (case, p) => Err(MatchError::WrongInterface {
                 expected: match case {
                     TypedPromptCase::Camera(_) => CameraInterface::NAME.to_string(),
                     TypedPromptCase::Home(_) => HomeInterface::NAME.to_string(),
+                    TypedPromptCase::Microphone(_) => MicrophoneInterface::NAME.to_string(),
                 },
                 seen: match p {
                     TypedPrompt::Camera(_) => CameraInterface::NAME.to_string(),
                     TypedPrompt::Home(_) => HomeInterface::NAME.to_string(),
+                    TypedPrompt::Microphone(_) => MicrophoneInterface::NAME.to_string(),
                 },
             }),
         }
@@ -103,6 +113,7 @@ fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
 enum TypedPromptCase {
     Home(PromptCase<HomeInterface>),
     Camera(PromptCase<CameraInterface>),
+    Microphone(PromptCase<MicrophoneInterface>),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -110,6 +121,7 @@ enum TypedPromptCase {
 enum TypedPromptFilter {
     Camera(PromptFilter<CameraInterface>),
     Home(PromptFilter<HomeInterface>),
+    Microphone(PromptFilter<MicrophoneInterface>),
 }
 
 impl TypedPromptFilter {
@@ -117,6 +129,7 @@ impl TypedPromptFilter {
         match (self, prompt) {
             (Self::Camera(f), TypedPrompt::Camera(p)) => f.matches(p).is_success(),
             (Self::Home(f), TypedPrompt::Home(p)) => f.matches(p).is_success(),
+            (Self::Microphone(f), TypedPrompt::Microphone(p)) => f.matches(p).is_success(),
             _ => false,
         }
     }

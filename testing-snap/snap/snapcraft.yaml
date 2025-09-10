@@ -15,6 +15,7 @@ parts:
     source: scripts/
     stage-packages:
       - v4l-utils
+      - alsa-utils
 
 apps:
   read:
@@ -34,3 +35,14 @@ apps:
     command: ./camera.sh
     plugs:
       - camera
+
+  microphone:
+    command: ./microphone.sh
+    plugs:
+      - audio-playback
+      - audio-record
+
+# This is a workaround to access alsa config https://github.com/canonical/checkbox/issues/273
+layout:
+  /usr/share/alsa:
+    bind: $SNAP/usr/share/alsa

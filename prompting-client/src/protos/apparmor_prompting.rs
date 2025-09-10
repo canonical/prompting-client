@@ -7,7 +7,7 @@ pub struct PromptReply {
     pub action: i32,
     #[prost(enumeration = "Lifespan", tag = "3")]
     pub lifespan: i32,
-    #[prost(oneof = "prompt_reply::PromptReply", tags = "4, 5")]
+    #[prost(oneof = "prompt_reply::PromptReply", tags = "4, 5, 6")]
     pub prompt_reply: ::core::option::Option<prompt_reply::PromptReply>,
 }
 /// Nested message and enum types in `PromptReply`.
@@ -18,6 +18,8 @@ pub mod prompt_reply {
         HomePromptReply(super::HomePromptReply),
         #[prost(message, tag = "5")]
         CameraPromptReply(super::CameraPromptReply),
+        #[prost(message, tag = "6")]
+        MicrophonePromptReply(super::MicrophonePromptReply),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -102,7 +104,7 @@ pub mod prompt_reply_response {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurrentPromptResponse {
-    #[prost(oneof = "get_current_prompt_response::Prompt", tags = "1, 2")]
+    #[prost(oneof = "get_current_prompt_response::Prompt", tags = "1, 2, 3")]
     pub prompt: ::core::option::Option<get_current_prompt_response::Prompt>,
 }
 /// Nested message and enum types in `GetCurrentPromptResponse`.
@@ -113,6 +115,8 @@ pub mod get_current_prompt_response {
         HomePrompt(super::HomePrompt),
         #[prost(message, tag = "2")]
         CameraPrompt(super::CameraPrompt),
+        #[prost(message, tag = "3")]
+        MicrophonePrompt(super::MicrophonePrompt),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -124,6 +128,11 @@ pub struct HomePromptReply {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CameraPromptReply {
+    #[prost(enumeration = "DevicePermission", repeated, tag = "1")]
+    pub permissions: ::prost::alloc::vec::Vec<i32>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MicrophonePromptReply {
     #[prost(enumeration = "DevicePermission", repeated, tag = "1")]
     pub permissions: ::prost::alloc::vec::Vec<i32>,
 }
@@ -162,6 +171,11 @@ pub mod home_prompt {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CameraPrompt {
+    #[prost(message, optional, tag = "1")]
+    pub meta_data: ::core::option::Option<MetaData>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MicrophonePrompt {
     #[prost(message, optional, tag = "1")]
     pub meta_data: ::core::option::Option<MetaData>,
 }

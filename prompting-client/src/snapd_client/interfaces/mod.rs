@@ -28,9 +28,11 @@ use tonic::{Code, Status};
 
 pub mod camera;
 pub mod home;
+pub mod microphone;
 
 use camera::CameraInterface;
 use home::HomeInterface;
+use microphone::MicrophoneInterface;
 
 #[macro_export]
 macro_rules! map_enum {
@@ -173,6 +175,7 @@ pub trait ReplyConstraintsOverrides:
 pub enum TypedPrompt {
     Camera(Prompt<CameraInterface>),
     Home(Prompt<HomeInterface>),
+    Microphone(Prompt<MicrophoneInterface>),
 }
 
 impl TypedPrompt {
@@ -180,6 +183,7 @@ impl TypedPrompt {
         match self {
             Self::Camera(p) => CameraInterface::prompt_to_reply(p, Action::Deny).into(),
             Self::Home(p) => HomeInterface::prompt_to_reply(p, Action::Deny).into(),
+            Self::Microphone(p) => MicrophoneInterface::prompt_to_reply(p, Action::Deny).into(),
         }
     }
 
@@ -187,6 +191,7 @@ impl TypedPrompt {
         match self {
             Self::Camera(p) => &p.id,
             Self::Home(p) => &p.id,
+            Self::Microphone(p) => &p.id,
         }
     }
 
@@ -194,6 +199,7 @@ impl TypedPrompt {
         match self {
             Self::Camera(p) => &p.snap,
             Self::Home(p) => &p.snap,
+            Self::Microphone(p) => &p.snap,
         }
     }
 
@@ -201,6 +207,7 @@ impl TypedPrompt {
         match self {
             Self::Camera(p) => p.pid,
             Self::Home(p) => p.pid,
+            Self::Microphone(p) => p.pid,
         }
     }
 }
@@ -215,6 +222,9 @@ impl TryFrom<RawPrompt> for TypedPrompt {
             match raw.interface.as_str() {
                 CameraInterface::NAME => Ok(TypedPrompt::Camera(Prompt::try_from_raw(raw)?)),
                 HomeInterface::NAME => Ok(TypedPrompt::Home(Prompt::try_from_raw(raw)?)),
+                MicrophoneInterface::NAME => {
+                    Ok(TypedPrompt::Microphone(Prompt::try_from_raw(raw)?))
+                }
                 _ => Err(Error::UnsupportedInterface {
                     interface: raw.interface,
                 }),
@@ -228,6 +238,7 @@ impl TryFrom<RawPrompt> for TypedPrompt {
 pub enum TypedUiInput {
     Camera(UiInput<CameraInterface>),
     Home(UiInput<HomeInterface>),
+    Microphone(UiInput<MicrophoneInterface>),
 }
 
 impl TypedUiInput {
@@ -235,6 +246,7 @@ impl TypedUiInput {
         match self {
             Self::Camera(input) => &input.id,
             Self::Home(input) => &input.id,
+            Self::Microphone(input) => &input.id,
         }
     }
 }
@@ -248,6 +260,9 @@ impl TryFrom<EnrichedPrompt> for TypedUiInput {
                 Self::Camera(CameraInterface::ui_input_from_prompt(p, ep.meta)?)
             }
             TypedPrompt::Home(p) => Self::Home(HomeInterface::ui_input_from_prompt(p, ep.meta)?),
+            TypedPrompt::Microphone(p) => {
+                Self::Microphone(MicrophoneInterface::ui_input_from_prompt(p, ep.meta)?)
+            }
         };
 
         Ok(typed_prompt)
@@ -261,6 +276,9 @@ impl TryFrom<TypedUiInput> for ProtoPrompt {
         let proto = match ui_input {
             TypedUiInput::Camera(input) => CameraInterface::proto_prompt_from_ui_input(input)?,
             TypedUiInput::Home(input) => HomeInterface::proto_prompt_from_ui_input(input)?,
+            TypedUiInput::Microphone(input) => {
+                MicrophoneInterface::proto_prompt_from_ui_input(input)?
+            }
         };
 
         Ok(proto)
@@ -273,6 +291,7 @@ impl TryFrom<TypedUiInput> for ProtoPrompt {
 pub enum TypedPromptReply {
     Camera(PromptReply<CameraInterface>),
     Home(PromptReply<HomeInterface>),
+    Microphone(PromptReply<MicrophoneInterface>),
 }
 
 impl TryFrom<ProtoPromptReply> for TypedPromptReply {
@@ -325,6 +344,26 @@ impl TryFrom<ProtoPromptReply> for TypedPromptReply {
                     constraints,
                 })
             }
+            ProtoConstraints::MicrophonePromptReply(r) => {
+                let constraints = MicrophoneInterface
+                    .map_proto_reply_constraints(r)
+                    .map_err(Status::internal)?;
+
+                TypedPromptReply::Microphone(PromptReply {
+                    action: map_enum!(
+                        apparmor_prompting::Action => snapd_client::Action;
+                        [Allow, Deny];
+                        raw_reply.action();
+                    ),
+                    lifespan: map_enum!(
+                        apparmor_prompting::Lifespan => snapd_client::Lifespan;
+                        [Single, Session, Forever];
+                        raw_reply.lifespan();
+                    ),
+                    duration: None, // we don't currently use the Timespan variant for `lifespan`
+                    constraints,
+                })
+            }
         };
 
         Ok(reply)
@@ -340,6 +379,12 @@ impl From<PromptReply<CameraInterface>> for TypedPromptReply {
 impl From<PromptReply<HomeInterface>> for TypedPromptReply {
     fn from(value: PromptReply<HomeInterface>) -> Self {
         Self::Home(value)
+    }
+}
+
+impl From<PromptReply<MicrophoneInterface>> for TypedPromptReply {
+    fn from(value: PromptReply<MicrophoneInterface>) -> Self {
+        Self::Microphone(value)
     }
 }
 
@@ -364,6 +409,19 @@ impl TryFrom<TypedPrompt> for Prompt<HomeInterface> {
             TypedPrompt::Home(p) => Ok(p),
             _ => Err(Error::PromptConversionError {
                 interface: HomeInterface::NAME.to_string(),
+            }),
+        }
+    }
+}
+
+impl TryFrom<TypedPrompt> for Prompt<MicrophoneInterface> {
+    type Error = Error;
+
+    fn try_from(typed_prompt: TypedPrompt) -> Result<Self, Self::Error> {
+        match typed_prompt {
+            TypedPrompt::Microphone(p) => Ok(p),
+            _ => Err(Error::PromptConversionError {
+                interface: MicrophoneInterface::NAME.to_string(),
             }),
         }
     }

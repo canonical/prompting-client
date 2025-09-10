@@ -98,7 +98,8 @@ ensure-client-in-vm:
 		lxc exec $(VM_NAME) -- snap set system experimental.user-daemons=true ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$$FILE_NAME ; \
 		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):snap-interfaces-requests-control ; \
-		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):camera ; \
+		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):camera ; \		
+		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):audio-record ; \
 	fi
 
 .PHONY: update-client-in-vm
@@ -120,8 +121,10 @@ ensure-test-snap:
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$(TEST_SNAP_NAME)_0.1_amd64.snap ; \
 		echo ":: Connecting camera interface..." ; \
 		lxc exec $(VM_NAME) -- snap connect $(TEST_SNAP_NAME):camera ; \
+		lxc exec $(VM_NAME) -- snap connect $(TEST_SNAP_NAME):audio-record ; \
 		lxc exec $(VM_NAME) -- apt install -y linux-modules-extra-$$(lxc exec $(VM_NAME) -- uname -r) v4l-utils ; \
 		lxc exec $(VM_NAME) -- modprobe v4l2loopback ; \
+		lxc exec $(VM_NAME) -- modprobe snd-aloop ; \
 	fi
 
 .PHONY: update-test-snap
