@@ -173,7 +173,8 @@ using:
 You can specify a specific `.json` file for testing using the `--test-prompt`
 argument:
 ```bash
- fvm flutter run -a --dry-run -a --test-prompt -a lib/test_camera_prompt_details.json
+fvm flutter run -a --dry-run -a --test-prompt \
+  -a test/test_prompts/test_camera_prompt_details.json
 ```
 
 #### Integration tests

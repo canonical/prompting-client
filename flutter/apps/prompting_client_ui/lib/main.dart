@@ -31,7 +31,7 @@ Future<void> main(List<String> args) async {
     ..addOption(
       'test-prompt',
       help: 'Path to a JSON file containing the test prompt',
-      defaultsTo: 'lib/test_prompt_details.json',
+      defaultsTo: 'test/test_prompts/test_home_prompt_details.json',
     );
 
   final ArgResults argResults;
