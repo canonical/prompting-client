@@ -35,16 +35,23 @@ class FakeApparmorPromptingClient implements PromptingClient {
   Future<PromptReplyResponse> replyToPrompt(PromptReply reply) async {
     _log.info('replyToPrompt: $reply');
     onReply?.call(reply);
-    // This regex checks whether the provided path starts with a `/` and does
-    // not contain any `[` or `]` characters. (Same check that snapd does
-    // internally)
-    final validPattern = RegExp(r'^/([^\[\]]|\\[\[\]])*$');
-    if (!validPattern.hasMatch(reply.pathPattern)) {
-      _log.info('invalid pattern');
-      return PromptReplyResponse.unknown(message: 'invalid pattern');
+
+    switch (reply) {
+      case PromptReplyHome(:final pathPattern):
+        // This regex checks whether the provided path starts with a `/` and does
+        // not contain any `[` or `]` characters. (Same check that snapd does
+        // internally)
+        final validPattern = RegExp(r'^/([^\[\]]|\\[\[\]])*$');
+        if (!validPattern.hasMatch(pathPattern)) {
+          _log.info('invalid home pattern');
+          return PromptReplyResponse.unknown(message: 'invalid pattern');
+        }
+        _log.info('valid home pattern');
+        return PromptReplyResponse.success();
+
+      case PromptReplyCamera():
+        return PromptReplyResponse.success();
     }
-    _log.info('valid pattern');
-    return PromptReplyResponse.success();
   }
 
   @override
