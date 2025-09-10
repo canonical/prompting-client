@@ -79,6 +79,23 @@ PromptDetails mockPromptDetailsHome({
       enrichedPathKind: enrichedPathKind ?? EnrichedPathKind.homeDir(),
     );
 
+PromptDetails mockPromptDetailsCamera({
+  String? promptId,
+  String? snapName,
+  String? publisher,
+  DateTime? updatedAt,
+  String? storeUrl,
+}) =>
+    PromptDetails.camera(
+      metaData: MetaData(
+        promptId: promptId ?? '',
+        snapName: snapName ?? '',
+        publisher: publisher,
+        updatedAt: updatedAt,
+        storeUrl: storeUrl,
+      ),
+    );
+
 PromptDetails registerMockPromptDetails({
   required PromptDetails promptDetails,
 }) {

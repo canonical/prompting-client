@@ -23,6 +23,8 @@ enum Lifespan { single, session, forever }
 
 enum HomePermission { read, write, execute }
 
+enum DevicePermission { access }
+
 @freezed
 class MetaData with _$MetaData {
   factory MetaData({
@@ -88,6 +90,10 @@ sealed class PromptDetails with _$PromptDetails {
     @Default(0) int initialPatternOption,
   }) = PromptDetailsHome;
 
+  factory PromptDetails.camera({
+    required MetaData metaData,
+  }) = PromptDetailsCamera;
+
   factory PromptDetails.fromJson(Map<String, dynamic> json) =>
       _$PromptDetailsFromJson(json);
 }
@@ -101,6 +107,13 @@ sealed class PromptReply with _$PromptReply {
     required String pathPattern,
     required Set<HomePermission> permissions,
   }) = PromptReplyHome;
+
+  factory PromptReply.camera({
+    required String promptId,
+    required Action action,
+    required Lifespan lifespan,
+    required Set<DevicePermission> permissions,
+  }) = PromptReplyCamera;
 
   factory PromptReply.fromJson(Map<String, dynamic> json) =>
       _$PromptReplyFromJson(json);

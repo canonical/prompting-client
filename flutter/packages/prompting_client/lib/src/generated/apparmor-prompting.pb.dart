@@ -21,7 +21,7 @@ export 'package:protobuf/protobuf.dart' show GeneratedMessageGenericExtensions;
 
 export 'apparmor-prompting.pbenum.dart';
 
-enum PromptReply_PromptReply { homePromptReply, notSet }
+enum PromptReply_PromptReply { homePromptReply, cameraPromptReply, notSet }
 
 class PromptReply extends $pb.GeneratedMessage {
   factory PromptReply({
@@ -29,12 +29,14 @@ class PromptReply extends $pb.GeneratedMessage {
     Action? action,
     Lifespan? lifespan,
     HomePromptReply? homePromptReply,
+    CameraPromptReply? cameraPromptReply,
   }) {
     final result = create();
     if (promptId != null) result.promptId = promptId;
     if (action != null) result.action = action;
     if (lifespan != null) result.lifespan = lifespan;
     if (homePromptReply != null) result.homePromptReply = homePromptReply;
+    if (cameraPromptReply != null) result.cameraPromptReply = cameraPromptReply;
     return result;
   }
 
@@ -50,6 +52,7 @@ class PromptReply extends $pb.GeneratedMessage {
   static const $core.Map<$core.int, PromptReply_PromptReply>
       _PromptReply_PromptReplyByTag = {
     4: PromptReply_PromptReply.homePromptReply,
+    5: PromptReply_PromptReply.cameraPromptReply,
     0: PromptReply_PromptReply.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -57,7 +60,7 @@ class PromptReply extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'),
       createEmptyInstance: create)
-    ..oo(0, [4])
+    ..oo(0, [4, 5])
     ..aOS(1, _omitFieldNames ? '' : 'promptId')
     ..e<Action>(2, _omitFieldNames ? '' : 'action', $pb.PbFieldType.OE,
         defaultOrMaker: Action.ALLOW,
@@ -69,6 +72,8 @@ class PromptReply extends $pb.GeneratedMessage {
         enumValues: Lifespan.values)
     ..aOM<HomePromptReply>(4, _omitFieldNames ? '' : 'homePromptReply',
         subBuilder: HomePromptReply.create)
+    ..aOM<CameraPromptReply>(5, _omitFieldNames ? '' : 'cameraPromptReply',
+        subBuilder: CameraPromptReply.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -132,6 +137,17 @@ class PromptReply extends $pb.GeneratedMessage {
   void clearHomePromptReply() => $_clearField(4);
   @$pb.TagNumber(4)
   HomePromptReply ensureHomePromptReply() => $_ensure(3);
+
+  @$pb.TagNumber(5)
+  CameraPromptReply get cameraPromptReply => $_getN(4);
+  @$pb.TagNumber(5)
+  set cameraPromptReply(CameraPromptReply value) => $_setField(5, value);
+  @$pb.TagNumber(5)
+  $core.bool hasCameraPromptReply() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearCameraPromptReply() => $_clearField(5);
+  @$pb.TagNumber(5)
+  CameraPromptReply ensureCameraPromptReply() => $_ensure(4);
 }
 
 class PromptReplyResponse_HomeRuleConflicts extends $pb.GeneratedMessage {
@@ -817,14 +833,16 @@ class PromptReplyResponse extends $pb.GeneratedMessage {
   PromptReplyResponse_UnsupportedValue ensureUnsupportedValue() => $_ensure(9);
 }
 
-enum GetCurrentPromptResponse_Prompt { homePrompt, notSet }
+enum GetCurrentPromptResponse_Prompt { homePrompt, cameraPrompt, notSet }
 
 class GetCurrentPromptResponse extends $pb.GeneratedMessage {
   factory GetCurrentPromptResponse({
     HomePrompt? homePrompt,
+    CameraPrompt? cameraPrompt,
   }) {
     final result = create();
     if (homePrompt != null) result.homePrompt = homePrompt;
+    if (cameraPrompt != null) result.cameraPrompt = cameraPrompt;
     return result;
   }
 
@@ -840,6 +858,7 @@ class GetCurrentPromptResponse extends $pb.GeneratedMessage {
   static const $core.Map<$core.int, GetCurrentPromptResponse_Prompt>
       _GetCurrentPromptResponse_PromptByTag = {
     1: GetCurrentPromptResponse_Prompt.homePrompt,
+    2: GetCurrentPromptResponse_Prompt.cameraPrompt,
     0: GetCurrentPromptResponse_Prompt.notSet
   };
   static final $pb.BuilderInfo _i = $pb.BuilderInfo(
@@ -847,9 +866,11 @@ class GetCurrentPromptResponse extends $pb.GeneratedMessage {
       package:
           const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'),
       createEmptyInstance: create)
-    ..oo(0, [1])
+    ..oo(0, [1, 2])
     ..aOM<HomePrompt>(1, _omitFieldNames ? '' : 'homePrompt',
         subBuilder: HomePrompt.create)
+    ..aOM<CameraPrompt>(2, _omitFieldNames ? '' : 'cameraPrompt',
+        subBuilder: CameraPrompt.create)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -889,6 +910,17 @@ class GetCurrentPromptResponse extends $pb.GeneratedMessage {
   void clearHomePrompt() => $_clearField(1);
   @$pb.TagNumber(1)
   HomePrompt ensureHomePrompt() => $_ensure(0);
+
+  @$pb.TagNumber(2)
+  CameraPrompt get cameraPrompt => $_getN(1);
+  @$pb.TagNumber(2)
+  set cameraPrompt(CameraPrompt value) => $_setField(2, value);
+  @$pb.TagNumber(2)
+  $core.bool hasCameraPrompt() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearCameraPrompt() => $_clearField(2);
+  @$pb.TagNumber(2)
+  CameraPrompt ensureCameraPrompt() => $_ensure(1);
 }
 
 class HomePromptReply extends $pb.GeneratedMessage {
@@ -956,6 +988,61 @@ class HomePromptReply extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(2)
   $pb.PbList<HomePermission> get permissions => $_getList(1);
+}
+
+class CameraPromptReply extends $pb.GeneratedMessage {
+  factory CameraPromptReply({
+    $core.Iterable<DevicePermission>? permissions,
+  }) {
+    final result = create();
+    if (permissions != null) result.permissions.addAll(permissions);
+    return result;
+  }
+
+  CameraPromptReply._();
+
+  factory CameraPromptReply.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CameraPromptReply.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CameraPromptReply',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'),
+      createEmptyInstance: create)
+    ..pc<DevicePermission>(
+        1, _omitFieldNames ? '' : 'permissions', $pb.PbFieldType.KE,
+        valueOf: DevicePermission.valueOf,
+        enumValues: DevicePermission.values,
+        defaultEnumValue: DevicePermission.ACCESS)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CameraPromptReply clone() => CameraPromptReply()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CameraPromptReply copyWith(void Function(CameraPromptReply) updates) =>
+      super.copyWith((message) => updates(message as CameraPromptReply))
+          as CameraPromptReply;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CameraPromptReply create() => CameraPromptReply._();
+  @$core.override
+  CameraPromptReply createEmptyInstance() => create();
+  static $pb.PbList<CameraPromptReply> createRepeated() =>
+      $pb.PbList<CameraPromptReply>();
+  @$core.pragma('dart2js:noInline')
+  static CameraPromptReply getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CameraPromptReply>(create);
+  static CameraPromptReply? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $pb.PbList<DevicePermission> get permissions => $_getList(0);
 }
 
 class HomePrompt_PatternOption extends $pb.GeneratedMessage {
@@ -1195,6 +1282,66 @@ class HomePrompt extends $pb.GeneratedMessage {
   void clearEnrichedPathKind() => $_clearField(9);
   @$pb.TagNumber(9)
   EnrichedPathKind ensureEnrichedPathKind() => $_ensure(8);
+}
+
+class CameraPrompt extends $pb.GeneratedMessage {
+  factory CameraPrompt({
+    MetaData? metaData,
+  }) {
+    final result = create();
+    if (metaData != null) result.metaData = metaData;
+    return result;
+  }
+
+  CameraPrompt._();
+
+  factory CameraPrompt.fromBuffer($core.List<$core.int> data,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromBuffer(data, registry);
+  factory CameraPrompt.fromJson($core.String json,
+          [$pb.ExtensionRegistry registry = $pb.ExtensionRegistry.EMPTY]) =>
+      create()..mergeFromJson(json, registry);
+
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo(
+      _omitMessageNames ? '' : 'CameraPrompt',
+      package:
+          const $pb.PackageName(_omitMessageNames ? '' : 'apparmor_prompting'),
+      createEmptyInstance: create)
+    ..aOM<MetaData>(1, _omitFieldNames ? '' : 'metaData',
+        subBuilder: MetaData.create)
+    ..hasRequiredFields = false;
+
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CameraPrompt clone() => CameraPrompt()..mergeFromMessage(this);
+  @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
+  CameraPrompt copyWith(void Function(CameraPrompt) updates) =>
+      super.copyWith((message) => updates(message as CameraPrompt))
+          as CameraPrompt;
+
+  @$core.override
+  $pb.BuilderInfo get info_ => _i;
+
+  @$core.pragma('dart2js:noInline')
+  static CameraPrompt create() => CameraPrompt._();
+  @$core.override
+  CameraPrompt createEmptyInstance() => create();
+  static $pb.PbList<CameraPrompt> createRepeated() =>
+      $pb.PbList<CameraPrompt>();
+  @$core.pragma('dart2js:noInline')
+  static CameraPrompt getDefault() => _defaultInstance ??=
+      $pb.GeneratedMessage.$_defaultFor<CameraPrompt>(create);
+  static CameraPrompt? _defaultInstance;
+
+  @$pb.TagNumber(1)
+  MetaData get metaData => $_getN(0);
+  @$pb.TagNumber(1)
+  set metaData(MetaData value) => $_setField(1, value);
+  @$pb.TagNumber(1)
+  $core.bool hasMetaData() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearMetaData() => $_clearField(1);
+  @$pb.TagNumber(1)
+  MetaData ensureMetaData() => $_ensure(0);
 }
 
 class MetaData extends $pb.GeneratedMessage {

@@ -200,5 +200,13 @@
     "homePromptPermissionsExecute": "Execute",
     "@homePromptPermissionsExecute": {},
     "homePromptErrorUnknownTitle": "Something went wrong",
-    "@homePromptErrorUnknownTitle": {}
+    "@homePromptErrorUnknownTitle": {},
+    "cameraPromptBody": "Allow {snapName} to access your camera?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    }
 }

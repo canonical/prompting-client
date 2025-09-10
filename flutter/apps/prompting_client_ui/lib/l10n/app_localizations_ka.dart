@@ -160,4 +160,9 @@ class AppLocalizationsKa extends AppLocalizations {
 
   @override
   String get homePromptErrorUnknownTitle => 'რაღაც არასწორია';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to access your camera?';
+  }
 }

@@ -160,4 +160,9 @@ class AppLocalizationsGa extends AppLocalizations {
 
   @override
   String get homePromptErrorUnknownTitle => 'Chuaigh rud éigin mícheart';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to access your camera?';
+  }
 }

@@ -251,7 +251,7 @@ void main() {
       testWidgets(testCase.name, (tester) async {
         final container = createContainer();
         registerMockPromptDetails(
-          promptDetails: testDetails.copyWith(
+          promptDetails: (testDetails as PromptDetailsHome).copyWith(
             requestedPath: testCase.requestedPath,
             patternOptions: testCase.options,
             enrichedPathKind: testCase.enrichedPathKind,
@@ -376,7 +376,7 @@ void main() {
 
   testWidgets('display prompt details without meta', (tester) async {
     final container = createContainer();
-    final testDetailsWithoutMeta = testDetails.copyWith(
+    final testDetailsWithoutMeta = (testDetails as PromptDetailsHome).copyWith(
       metaData: MetaData(
         promptId: 'promptId',
         snapName: 'firefox',

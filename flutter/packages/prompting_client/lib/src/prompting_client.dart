@@ -109,6 +109,18 @@ extension PermissionConversion on HomePermission {
       };
 }
 
+extension DevicePermissionConversion on DevicePermission {
+  static DevicePermission fromProto(pb.DevicePermission permission) =>
+      switch (permission) {
+        pb.DevicePermission.ACCESS => DevicePermission.access,
+        _ => throw ArgumentError('Unknown device permission: $permission'),
+      };
+
+  pb.DevicePermission toProto() => switch (this) {
+        DevicePermission.access => pb.DevicePermission.ACCESS,
+      };
+}
+
 extension EnrichedPathKindConversion on EnrichedPathKind {
   static EnrichedPathKind fromProto(pb.EnrichedPathKind kind) =>
       switch (kind.whichKind()) {
@@ -155,6 +167,10 @@ extension PrompteDetailsConversion on PromptDetails {
               response.homePrompt.enrichedPathKind,
             ),
           ),
+        pb.GetCurrentPromptResponse_Prompt.cameraPrompt => PromptDetails.camera(
+            metaData:
+                MetaDataConversion.fromProto(response.cameraPrompt.metaData),
+          ),
         pb.GetCurrentPromptResponse_Prompt.notSet =>
           throw ArgumentError('Prompt type not set'),
       };
@@ -162,12 +178,33 @@ extension PrompteDetailsConversion on PromptDetails {
 
 extension PromptReplyConversion on PromptReply {
   pb.PromptReply toProto() => switch (this) {
-        PromptReplyHome() => pb.PromptReply(
+        PromptReplyHome(
+          :final promptId,
+          :final action,
+          :final lifespan,
+          :final pathPattern,
+          :final permissions
+        ) =>
+          pb.PromptReply(
             promptId: promptId,
             action: action.toProto(),
             lifespan: lifespan.toProto(),
             homePromptReply: pb.HomePromptReply(
               pathPattern: pathPattern,
+              permissions: permissions.map((e) => e.toProto()),
+            ),
+          ),
+        PromptReplyCamera(
+          :final promptId,
+          :final action,
+          :final lifespan,
+          :final permissions
+        ) =>
+          pb.PromptReply(
+            promptId: promptId,
+            action: action.toProto(),
+            lifespan: lifespan.toProto(),
+            cameraPromptReply: pb.CameraPromptReply(
               permissions: permissions.map((e) => e.toProto()),
             ),
           ),
