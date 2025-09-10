@@ -159,4 +159,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get homePromptErrorUnknownTitle => 'Etwas ist schiefgelaufen';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to access your camera?';
+  }
 }

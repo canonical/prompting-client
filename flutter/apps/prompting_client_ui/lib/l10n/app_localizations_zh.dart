@@ -157,6 +157,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homePromptErrorUnknownTitle => '出现了一些问题';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to access your camera?';
+  }
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).

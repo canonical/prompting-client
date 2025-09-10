@@ -161,4 +161,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get homePromptErrorUnknownTitle => 'Quelque chose a mal tourné';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to access your camera?';
+  }
 }

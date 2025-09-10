@@ -160,4 +160,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get homePromptErrorUnknownTitle => 'Что-то пошло не так';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to access your camera?';
+  }
 }

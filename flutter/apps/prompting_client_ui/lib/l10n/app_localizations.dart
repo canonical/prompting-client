@@ -490,6 +490,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong'**
   String get homePromptErrorUnknownTitle;
+
+  /// No description provided for @cameraPromptBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow {snapName} to access your camera?'**
+  String cameraPromptBody(String snapName);
 }
 
 class _AppLocalizationsDelegate
