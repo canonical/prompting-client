@@ -55,6 +55,18 @@ const HomePermission$json = {
 final $typed_data.Uint8List homePermissionDescriptor = $convert.base64Decode(
     'Cg5Ib21lUGVybWlzc2lvbhIICgRSRUFEEAASCQoFV1JJVEUQARILCgdFWEVDVVRFEAI=');
 
+@$core.Deprecated('Use devicePermissionDescriptor instead')
+const DevicePermission$json = {
+  '1': 'DevicePermission',
+  '2': [
+    {'1': 'ACCESS', '2': 0},
+  ],
+};
+
+/// Descriptor for `DevicePermission`. Decode as a `google.protobuf.EnumDescriptorProto`.
+final $typed_data.Uint8List devicePermissionDescriptor =
+    $convert.base64Decode('ChBEZXZpY2VQZXJtaXNzaW9uEgoKBkFDQ0VTUxAA');
+
 @$core.Deprecated('Use homePatternTypeDescriptor instead')
 const HomePatternType$json = {
   '1': 'HomePatternType',
@@ -106,6 +118,15 @@ const PromptReply$json = {
       '9': 0,
       '10': 'homePromptReply'
     },
+    {
+      '1': 'camera_prompt_reply',
+      '3': 5,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.CameraPromptReply',
+      '9': 0,
+      '10': 'cameraPromptReply'
+    },
   ],
   '8': [
     {'1': 'prompt_reply'},
@@ -118,7 +139,9 @@ final $typed_data.Uint8List promptReplyDescriptor = $convert.base64Decode(
     'EoDjIaLmFwcGFybW9yX3Byb21wdGluZy5BY3Rpb25SBmFjdGlvbhI4CghsaWZlc3BhbhgDIAEo'
     'DjIcLmFwcGFybW9yX3Byb21wdGluZy5MaWZlc3BhblIIbGlmZXNwYW4SUQoRaG9tZV9wcm9tcH'
     'RfcmVwbHkYBCABKAsyIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVByb21wdFJlcGx5SABSD2hv'
-    'bWVQcm9tcHRSZXBseUIOCgxwcm9tcHRfcmVwbHk=');
+    'bWVQcm9tcHRSZXBseRJXChNjYW1lcmFfcHJvbXB0X3JlcGx5GAUgASgLMiUuYXBwYXJtb3JfcH'
+    'JvbXB0aW5nLkNhbWVyYVByb21wdFJlcGx5SABSEWNhbWVyYVByb21wdFJlcGx5Qg4KDHByb21w'
+    'dF9yZXBseQ==');
 
 @$core.Deprecated('Use promptReplyResponseDescriptor instead')
 const PromptReplyResponse$json = {
@@ -346,6 +369,15 @@ const GetCurrentPromptResponse$json = {
       '9': 0,
       '10': 'homePrompt'
     },
+    {
+      '1': 'camera_prompt',
+      '3': 2,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.CameraPrompt',
+      '9': 0,
+      '10': 'cameraPrompt'
+    },
   ],
   '8': [
     {'1': 'prompt'},
@@ -353,10 +385,11 @@ const GetCurrentPromptResponse$json = {
 };
 
 /// Descriptor for `GetCurrentPromptResponse`. Decode as a `google.protobuf.DescriptorProto`.
-final $typed_data.Uint8List getCurrentPromptResponseDescriptor =
-    $convert.base64Decode(
-        'ChhHZXRDdXJyZW50UHJvbXB0UmVzcG9uc2USQQoLaG9tZV9wcm9tcHQYASABKAsyHi5hcHBhcm'
-        '1vcl9wcm9tcHRpbmcuSG9tZVByb21wdEgAUgpob21lUHJvbXB0QggKBnByb21wdA==');
+final $typed_data.Uint8List getCurrentPromptResponseDescriptor = $convert.base64Decode(
+    'ChhHZXRDdXJyZW50UHJvbXB0UmVzcG9uc2USQQoLaG9tZV9wcm9tcHQYASABKAsyHi5hcHBhcm'
+    '1vcl9wcm9tcHRpbmcuSG9tZVByb21wdEgAUgpob21lUHJvbXB0EkcKDWNhbWVyYV9wcm9tcHQY'
+    'AiABKAsyIC5hcHBhcm1vcl9wcm9tcHRpbmcuQ2FtZXJhUHJvbXB0SABSDGNhbWVyYVByb21wdE'
+    'IICgZwcm9tcHQ=');
 
 @$core.Deprecated('Use homePromptReplyDescriptor instead')
 const HomePromptReply$json = {
@@ -379,6 +412,26 @@ final $typed_data.Uint8List homePromptReplyDescriptor = $convert.base64Decode(
     'Cg9Ib21lUHJvbXB0UmVwbHkSIQoMcGF0aF9wYXR0ZXJuGAEgASgJUgtwYXRoUGF0dGVybhJECg'
     'twZXJtaXNzaW9ucxgCIAMoDjIiLmFwcGFybW9yX3Byb21wdGluZy5Ib21lUGVybWlzc2lvblIL'
     'cGVybWlzc2lvbnM=');
+
+@$core.Deprecated('Use cameraPromptReplyDescriptor instead')
+const CameraPromptReply$json = {
+  '1': 'CameraPromptReply',
+  '2': [
+    {
+      '1': 'permissions',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.DevicePermission',
+      '10': 'permissions'
+    },
+  ],
+};
+
+/// Descriptor for `CameraPromptReply`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cameraPromptReplyDescriptor = $convert.base64Decode(
+    'ChFDYW1lcmFQcm9tcHRSZXBseRJGCgtwZXJtaXNzaW9ucxgBIAMoDjIkLmFwcGFybW9yX3Byb2'
+    '1wdGluZy5EZXZpY2VQZXJtaXNzaW9uUgtwZXJtaXNzaW9ucw==');
 
 @$core.Deprecated('Use homePromptDescriptor instead')
 const HomePrompt$json = {
@@ -479,6 +532,26 @@ final $typed_data.Uint8List homePromptDescriptor = $convert.base64Decode(
     'cGUYASABKA4yIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVBhdHRlcm5UeXBlUg9ob21lUGF0dG'
     'VyblR5cGUSIQoMcGF0aF9wYXR0ZXJuGAIgASgJUgtwYXRoUGF0dGVybhIlCg5zaG93X2luaXRp'
     'YWxseRgDIAEoCFINc2hvd0luaXRpYWxseQ==');
+
+@$core.Deprecated('Use cameraPromptDescriptor instead')
+const CameraPrompt$json = {
+  '1': 'CameraPrompt',
+  '2': [
+    {
+      '1': 'meta_data',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.MetaData',
+      '10': 'metaData'
+    },
+  ],
+};
+
+/// Descriptor for `CameraPrompt`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List cameraPromptDescriptor = $convert.base64Decode(
+    'CgxDYW1lcmFQcm9tcHQSOQoJbWV0YV9kYXRhGAEgASgLMhwuYXBwYXJtb3JfcHJvbXB0aW5nLk'
+    '1ldGFEYXRhUghtZXRhRGF0YQ==');
 
 @$core.Deprecated('Use metaDataDescriptor instead')
 const MetaData$json = {

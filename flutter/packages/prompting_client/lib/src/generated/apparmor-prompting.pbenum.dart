@@ -74,6 +74,22 @@ class HomePermission extends $pb.ProtobufEnum {
   const HomePermission._(super.value, super.name);
 }
 
+class DevicePermission extends $pb.ProtobufEnum {
+  static const DevicePermission ACCESS =
+      DevicePermission._(0, _omitEnumNames ? '' : 'ACCESS');
+
+  static const $core.List<DevicePermission> values = <DevicePermission>[
+    ACCESS,
+  ];
+
+  static final $core.List<DevicePermission?> _byValue =
+      $pb.ProtobufEnum.$_initByValueList(values, 0);
+  static DevicePermission? valueOf($core.int value) =>
+      value < 0 || value >= _byValue.length ? null : _byValue[value];
+
+  const DevicePermission._(super.value, super.name);
+}
+
 class HomePatternType extends $pb.ProtobufEnum {
   static const HomePatternType REQUESTED_DIRECTORY =
       HomePatternType._(0, _omitEnumNames ? '' : 'REQUESTED_DIRECTORY');
