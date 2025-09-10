@@ -4,6 +4,7 @@ import 'package:measure_size_builder/measure_size_builder.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/app/prompt_model.dart';
 import 'package:prompting_client_ui/l10n.dart';
+import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_page.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:window_manager/window_manager.dart';
@@ -45,6 +46,7 @@ class PromptPage extends ConsumerWidget {
                   padding: const EdgeInsets.all(18.0),
                   child: switch (prompt) {
                     PromptDetailsHome() => const HomePromptPage(),
+                    PromptDetailsCamera() => const CameraPromptPage(),
                   },
                 ),
               ),
