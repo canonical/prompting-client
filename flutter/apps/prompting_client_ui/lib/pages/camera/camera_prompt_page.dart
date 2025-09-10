@@ -33,10 +33,11 @@ class CameraErrorBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     return YaruInfoBox(
       yaruInfoType: YaruInfoType.danger,
-      title: Text(error.title()),
-      child: Text(error.body()),
+      title: Text(error.title(l10n)),
+      child: Text(error.body(l10n)),
     );
   }
 }

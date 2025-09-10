@@ -1,11 +1,13 @@
+import 'package:prompting_client_ui/l10n.dart';
+
 sealed class CameraPromptError {
   const CameraPromptError();
 
-  String body() => switch (this) {
+  String body(AppLocalizations l10n) => switch (this) {
         CameraPromptErrorUnknown(message: final message) => message
       };
-  String title() => switch (this) {
-        CameraPromptErrorUnknown() => 'Camera Error',
+  String title(AppLocalizations l10n) => switch (this) {
+        CameraPromptErrorUnknown() => l10n.homePromptErrorUnknownTitle,
       };
 }
 
