@@ -82,27 +82,29 @@ class CameraActionButton extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     return OutlinedButton(
       onPressed: () async {
-              final response = await ref
-                  .read(cameraPromptDataModelProvider.notifier)
-                  .saveAndContinue(action: action, lifespan: lifespan);
-              if (response is PromptReplyResponseSuccess) {
-                if (context.mounted) {
-                  await YaruWindow.of(context).close();
-                }
-              } else if (response is PromptReplyResponsePromptNotFound) {
-                if (context.mounted) {
-                  await YaruWindow.of(context).close();
-                }
-              }
-            },
+        final response = await ref
+            .read(cameraPromptDataModelProvider.notifier)
+            .saveAndContinue(action: action, lifespan: lifespan);
+        if (response is PromptReplyResponseSuccess) {
+          if (context.mounted) {
+            await YaruWindow.of(context).close();
+          }
+        } else if (response is PromptReplyResponsePromptNotFound) {
+          if (context.mounted) {
+            await YaruWindow.of(context).close();
+          }
+        }
+      },
       child: Text(
         switch ((action, lifespan)) {
-          (Action.allow, Lifespan.forever) => l10n.promptActionOptionAllowAlways,
-          (Action.allow, Lifespan.session) => l10n.promptActionOptionAllowUntilLogout,
+          (Action.allow, Lifespan.forever) =>
+            l10n.promptActionOptionAllowAlways,
+          (Action.allow, Lifespan.session) =>
+            l10n.promptActionOptionAllowUntilLogout,
           (Action.deny, Lifespan.single) => l10n.promptActionOptionDenyOnce,
-          _ => action == Action.allow 
-            ? l10n.promptActionOptionAllow 
-            : l10n.promptActionOptionDeny,
+          _ => action == Action.allow
+              ? l10n.promptActionOptionAllow
+              : l10n.promptActionOptionDeny,
         },
       ),
     );

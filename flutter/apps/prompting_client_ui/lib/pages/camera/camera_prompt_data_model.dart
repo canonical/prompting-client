@@ -17,8 +17,6 @@ class CameraPromptData with _$CameraPromptData {
   }) = _CameraPromptData;
 
   CameraPromptData._();
-
-
 }
 
 @riverpod
@@ -44,7 +42,6 @@ class CameraPromptDataModel extends _$CameraPromptDataModel {
     if (lifespan == null || lifespan == state.lifespan) return;
     state = state.copyWith(lifespan: lifespan);
   }
-
 
   Future<PromptReplyResponse> saveAndContinue({
     required Action action,
