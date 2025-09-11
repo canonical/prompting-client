@@ -32,7 +32,9 @@ void main() {
     );
 
     expect(
-        find.text(tester.l10n.microphonePromptBody('firefox')), findsOneWidget);
+      find.text(tester.l10n.microphonePromptBody('firefox')),
+      findsOneWidget,
+    );
     expect(
       find.text(tester.l10n.promptActionOptionAllowAlways),
       findsOneWidget,

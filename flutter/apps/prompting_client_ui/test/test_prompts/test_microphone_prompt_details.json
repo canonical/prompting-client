@@ -2,7 +2,7 @@
     "runtimeType": "microphone",
     "metaData": {
         "promptId": "microphone-prompt-id",
-        "snapName": "audio-recorder",
+        "snapName": "Firefox",
         "updatedAt": "2024-07-13T10:57:28.34963269+02:00",
         "storeUrl": "snap://audio-recorder",
         "publisher": "Example Publisher"
