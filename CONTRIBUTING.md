@@ -100,10 +100,11 @@ to minimize diff review.
 used version is specified in `.tool-versions`.
 
 Install the [protobuf-compiler](https://packages.ubuntu.com/noble/protobuf-compiler)
-and its dependencies.
+and its dependencies:
+
 ```bash
-$ sudo apt update
-$ sudo apt install -y git gcc libssl-dev pkg-config protobuf-compiler
+sudo apt update
+sudo apt install -y git gcc libssl-dev pkg-config protobuf-compiler
 ```
 
 #### Flutter
@@ -121,18 +122,21 @@ straightforward to execute common tasks.
 
 Install fvm (you can also install it from the scripts directory in the
 repository):
+
 ```bash
-$ curl -fsSL https://fvm.app/install.sh | bash
+curl -fsSL https://fvm.app/install.sh | bash
 ```
 
 Install Melos:
+
 ```bash
-$ dart pub global activate melos
+dart pub global activate melos
 ```
 
 Bootstrap the monorepo:
+
 ```bash
-$ melos bootstrap
+melos bootstrap
 ```
 
 `melos bootstrap` connects all the local packages/apps to each other with the
@@ -141,7 +145,87 @@ packages/apps.
 
 ### Building and running the binaries
 
-TODO
+#### Building the Rust binaries
+
+The project contains multiple Rust binaries defined in [`prompting-client`](prompting-client/):
+
+```bash
+cd prompting-client
+cargo build --release
+```
+
+This will build all the binaries:
+- `prompting-client-daemon` - The main daemon that handles prompts
+- `prompting-client-scripted` - Scripted client for automation in integration tests
+- `prompting-client-echo` - Echo client for testing prompts
+- `prompting-client-set-log-level` - Utility to set logging levels
+
+#### Building the Flutter UI
+
+The Flutter UI is located in [`flutter/apps/prompting_client_ui`](flutter/apps/prompting_client_ui/).
+
+First, install the Flutter version manager and dependencies following the [instructions](#flutter).
+
+Generate required files for the project:
+
+```bash
+melos generate
+```
+
+Build the Flutter UI for Linux:
+
+```bash
+melos build
+```
+
+#### Running the binaries
+
+To run the daemon locally with development overrides:
+
+```bash
+cd prompting-client
+RUST_LOG=debug \
+  FLUTTER_UI_OVERRIDE=/path/to/flutter/ui/bundle/prompting_client_ui \
+  PROMPTING_CLIENT_SOCKET=/tmp/prompting.sock \
+  SNAP_REAL_HOME=$HOME \
+  cargo run --bin prompting-client-daemon --features dry-run
+```
+
+The `FLUTTER_UI_OVERRIDE` should point to the built Flutter UI binary at:
+`flutter/apps/prompting_client_ui/build/linux/x64/release/bundle/prompting_client_ui`
+
+
+#### Building the complete snap
+
+To build the snap package:
+
+```bash
+snapcraft pack
+```
+
+This will create a `.snap` file that can be installed with:
+
+```bash
+sudo snap install --dangerous prompting-client_*.snap
+```
+
+#### Development workflow with mock server
+
+For development and testing, you can use the mock server in [`mock-server`](mock-server/).
+
+Start the mock server in the first terminal:
+
+```bash
+make start-mock-server
+```
+
+Start the prompting client daemon in a second terminal:
+
+```bash
+make dev-prompting-client
+```
+
+See [`mock-server/README.md`](mock-server/README.md) for more details on the mock server usage.
 
 ### About the testsuite
 
@@ -150,38 +234,48 @@ tests. All the tests must pass before the review is considered. If you have
 troubles with the testsuite, feel free to mention it on your PR description.
 
 #### Rust
+
+Run the Rust unit tests:
+
 ```bash
-$ cd prompting-client
-$ cargo test --lib
+cd prompting-client
+cargo test --lib
 ```
 
 #### Flutter
+
+Run the Flutter tests:
+
 ```bash
-$ melos test
+melos test
 ```
 
 #### Flutter dry-run mode
+
 It is possible to spawn a prompt using `dry-run` mode and a `.json` file without
 hardcoded prompt details in it. This can be very useful for testing UI changes.
 
 You can initiate `dry-run` mode from the `/flutter/apps/prompting_client_ui` 
 using:
+
 ```bash
- fvm flutter run -a --dry-run
+fvm flutter run -a --dry-run
 ```
 
 You can specify a specific `.json` file for testing using the `--test-prompt`
 argument:
+
 ```bash
-fvm flutter run -a --dry-run -a --test-prompt \
-  -a test/test_prompts/test_camera_prompt_details.json
+fvm flutter run -a --dry-run -a --test-prompt -a test/test_prompts/test_camera_prompt_details.json
 ```
 
 #### Integration tests
+
 Running the integration tests locally requires a running Ubuntu VM:
+
 ```bash
-$ make prepare-vm
-$ make integration-tests
+make prepare-vm
+make integration-tests
 ```
 
 The test suite must pass before merging the PR to our main branch. Any new

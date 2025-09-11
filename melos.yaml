@@ -17,8 +17,8 @@ command:
 scripts:
   # build all packages
   build: >
-    melos exec -c 1 --fail-fast --flutter --dir-exists=linux -- \
-      fvm flutter build linux
+    dart pub global run melos exec -c 1 --fail-fast --flutter --dir-exists=linux -- \
+      fvm flutter build linux --release
 
   # collect coverage information for all packages
   coverage: >
