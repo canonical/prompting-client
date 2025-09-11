@@ -162,6 +162,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String cameraPromptBody(String snapName) {
     return 'Allow $snapName to access your camera?';
   }
+
+  @override
+  String microphonePromptBody(String snapName) {
+    return 'Allow $snapName to access your microphone?';
+  }
 }
 
 /// The translations for Chinese, as used in Taiwan (`zh_TW`).

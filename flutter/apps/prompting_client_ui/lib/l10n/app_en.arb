@@ -208,5 +208,13 @@
                 "type": "String"
             }
         }
+    },
+    "microphonePromptBody": "Allow {snapName} to access your microphone?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
 }

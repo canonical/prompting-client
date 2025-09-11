@@ -164,4 +164,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String cameraPromptBody(String snapName) {
     return 'Allow $snapName to access your camera?';
   }
+
+  @override
+  String microphonePromptBody(String snapName) {
+    return 'Allow $snapName to access your microphone?';
+  }
 }
