@@ -28,18 +28,19 @@ impl PromptReply<MicrophoneInterface> {
     /// This method will error if the requested permissions are not available on the parent
     /// [Prompt].
     pub fn try_with_custom_permissions(mut self, permissions: Vec<String>) -> Result<Self> {
-        if permissions
+        if !permissions
             .iter()
             .all(|p| self.constraints.available_permissions.contains(p))
         {
-            self.constraints.permissions = permissions;
-            Ok(self)
-        } else {
-            Err(Error::InvalidCustomPermissions {
+            return Err(Error::InvalidCustomPermissions {
                 requested: permissions,
                 available: self.constraints.available_permissions,
-            })
+            });
         }
+
+        self.constraints.permissions = permissions;
+
+        Ok(self)
     }
 }
 
