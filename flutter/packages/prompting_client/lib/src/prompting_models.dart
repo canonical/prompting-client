@@ -94,6 +94,10 @@ sealed class PromptDetails with _$PromptDetails {
     required MetaData metaData,
   }) = PromptDetailsCamera;
 
+  factory PromptDetails.microphone({
+    required MetaData metaData,
+  }) = PromptDetailsMicrophone;
+
   factory PromptDetails.fromJson(Map<String, dynamic> json) =>
       _$PromptDetailsFromJson(json);
 }
@@ -114,6 +118,13 @@ sealed class PromptReply with _$PromptReply {
     required Lifespan lifespan,
     required Set<DevicePermission> permissions,
   }) = PromptReplyCamera;
+
+  factory PromptReply.microphone({
+    required String promptId,
+    required Action action,
+    required Lifespan lifespan,
+    required Set<DevicePermission> permissions,
+  }) = PromptReplyMicrophone;
 
   factory PromptReply.fromJson(Map<String, dynamic> json) =>
       _$PromptReplyFromJson(json);
