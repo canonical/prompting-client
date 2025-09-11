@@ -6,6 +6,7 @@ import 'package:prompting_client_ui/app/prompt_model.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_page.dart';
+import 'package:prompting_client_ui/pages/microphone/microphone_prompt_page.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yaru/yaru.dart';
@@ -47,6 +48,7 @@ class PromptPage extends ConsumerWidget {
                   child: switch (prompt) {
                     PromptDetailsHome() => const HomePromptPage(),
                     PromptDetailsCamera() => const CameraPromptPage(),
+                    PromptDetailsMicrophone() => const MicrophonePromptPage(),
                   },
                 ),
               ),
