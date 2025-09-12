@@ -21,6 +21,8 @@ apps:
     plugs: &plugs
       - home
       - camera
+      - audio-playback
+      - audio-record
       - snap-interfaces-requests-control
 
   echo:

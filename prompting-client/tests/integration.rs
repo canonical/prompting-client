@@ -10,7 +10,10 @@ use prompting_client::{
     cli_actions::ScriptedClient,
     prompt_sequence::MatchError,
     snapd_client::{
-        interfaces::{camera::CameraInterface, home::HomeInterface, SnapInterface},
+        interfaces::{
+            camera::CameraInterface, home::HomeInterface, microphone::MicrophoneInterface,
+            SnapInterface,
+        },
         Action, Lifespan, PromptId, PromptNotice, SnapdSocketClient, TypedPrompt,
     },
     Error, Result,
@@ -105,6 +108,10 @@ macro_rules! expect_single_prompt {
                     assert_eq!(p.path(), $expected_path);
                     assert_eq!(p.requested_permissions(), $expected_permissions);
                 }
+                TypedPrompt::Microphone(p) => {
+                    assert_eq!(p.snap(), TEST_SNAP);
+                    assert_eq!(p.requested_permissions(), $expected_permissions);
+                }
             }
 
             (id, p)
@@ -152,6 +159,43 @@ async fn camera_interface_connected(
         expected_stderr.replace("<DEVICE>", &device),
         "stderr"
     );
+
+    Ok(())
+}
+
+// TODO: remove ignore when support for `microphone` interface lands on snapd
+#[ignore = "snapd doesn't have support for microphone prompt"]
+#[test_case(Action::Allow, "Allow access to microphone\n", ""; "allow")]
+#[test_case(Action::Deny, "Deny access to microphone\n", "timeout: failed to open <DEVICE>: Permission denied\n"; "deny")]
+#[tokio::test]
+#[serial]
+async fn microphone_interface_connected(
+    action: Action,
+    expected_stdout: &str,
+    expected_stderr: &str,
+) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let device = "hw:0,0"; // this is the alsa equivalent of /dev/snd/pcmC0D0c
+
+    let rx = spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
+    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
+
+    c.reply_to_prompt(
+        &id,
+        MicrophoneInterface::prompt_to_reply(p.try_into()?, action).into(),
+    )
+    .await?;
+
+    let output = rx.recv().expect("to be able to recv");
+
+    assert_eq!(output.stdout, expected_stdout, "stdout");
+    assert_eq!(
+        output.stderr,
+        expected_stderr.replace("<DEVICE>", &device),
+        "stderr"
+    );
+
+    assert!(false);
 
     Ok(())
 }

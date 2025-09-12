@@ -19,6 +19,7 @@ message PromptReply {
     oneof prompt_reply {
         HomePromptReply home_prompt_reply = 4;
         CameraPromptReply camera_prompt_reply = 5;
+        MicrophonePromptReply microphone_prompt_reply = 6;
     }
 }
 
@@ -93,6 +94,7 @@ message GetCurrentPromptResponse {
     oneof prompt {
         HomePrompt home_prompt = 1;
         CameraPrompt camera_prompt = 2;
+        MicrophonePrompt microphone_prompt = 3;
     }
 }
 
@@ -102,6 +104,10 @@ message HomePromptReply {
 }
 
 message CameraPromptReply {
+   repeated DevicePermission permissions = 1;
+}
+
+message MicrophonePromptReply {
    repeated DevicePermission permissions = 1;
 }
 
@@ -123,6 +129,10 @@ message HomePrompt {
 }
 
 message CameraPrompt {
+    MetaData meta_data = 1;
+}
+
+message MicrophonePrompt {
     MetaData meta_data = 1;
 }
 
