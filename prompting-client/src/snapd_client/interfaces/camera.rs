@@ -190,7 +190,8 @@ mod tests {
       "timestamp": "2024-06-28T19:15:37.321782305Z",
       "snap": "firefox",
       "pid": 1234,
-      "interface": "camera",      
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope",
+      "interface": "camera",
       "constraints": {
         "requested-permissions": [
             "access"
