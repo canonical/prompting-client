@@ -3,6 +3,7 @@
     "timestamp": "2025-08-20T14:32:06.330766685+02:00",
     "snap": "yq",
     "pid": 91995,
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/yq.scope",
     "interface": "home",
     "constraints": {
         "path": "/home/foo.yaml",
