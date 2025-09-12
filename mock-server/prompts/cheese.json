@@ -3,6 +3,7 @@
     "timestamp": "2025-08-20T16:17:44.28198468+02:00",
     "snap": "cheese",
     "pid": 136211,
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/cheese.scope",
     "interface": "camera",
     "constraints": {
         "requested-permissions": [
