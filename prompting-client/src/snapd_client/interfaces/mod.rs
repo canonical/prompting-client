@@ -213,7 +213,9 @@ impl TypedPrompt {
 
     pub fn cgroup(&self) -> &Cgroup {
         match self {
+            Self::Camera(p) => &p.cgroup,
             Self::Home(p) => &p.cgroup,
+            Self::Microphone(p) => &p.cgroup,
         }
     }
 }
