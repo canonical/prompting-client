@@ -17,8 +17,7 @@ import 'package:grpc/service_api.dart' as $grpc;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'apparmor-prompting.pb.dart' as $1;
-import 'google/protobuf/empty.pb.dart' as $0;
-import 'google/protobuf/wrappers.pb.dart' as $2;
+import 'google/protobuf/wrappers.pb.dart' as $0;
 
 export 'apparmor-prompting.pb.dart';
 
@@ -35,7 +34,7 @@ class AppArmorPromptingClient extends $grpc.Client {
   AppArmorPromptingClient(super.channel, {super.options, super.interceptors});
 
   $grpc.ResponseStream<$1.GetCurrentPromptResponse> getCurrentPrompt(
-    $0.Empty request, {
+    $0.StringValue request, {
     $grpc.CallOptions? options,
   }) {
     return $createStreamingCall(
@@ -52,7 +51,7 @@ class AppArmorPromptingClient extends $grpc.Client {
 
   $grpc.ResponseFuture<$1.ResolveHomePatternTypeResponse>
       resolveHomePatternType(
-    $2.StringValue request, {
+    $0.StringValue request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$resolveHomePatternType, request,
@@ -60,7 +59,7 @@ class AppArmorPromptingClient extends $grpc.Client {
   }
 
   $grpc.ResponseFuture<$1.SetLoggingFilterResponse> setLoggingFilter(
-    $2.StringValue request, {
+    $0.StringValue request, {
     $grpc.CallOptions? options,
   }) {
     return $createUnaryCall(_$setLoggingFilter, request, options: options);
@@ -69,9 +68,9 @@ class AppArmorPromptingClient extends $grpc.Client {
   // method descriptors
 
   static final _$getCurrentPrompt =
-      $grpc.ClientMethod<$0.Empty, $1.GetCurrentPromptResponse>(
+      $grpc.ClientMethod<$0.StringValue, $1.GetCurrentPromptResponse>(
           '/apparmor_prompting.AppArmorPrompting/GetCurrentPrompt',
-          ($0.Empty value) => value.writeToBuffer(),
+          ($0.StringValue value) => value.writeToBuffer(),
           $1.GetCurrentPromptResponse.fromBuffer);
   static final _$replyToPrompt =
       $grpc.ClientMethod<$1.PromptReply, $1.PromptReplyResponse>(
@@ -79,14 +78,14 @@ class AppArmorPromptingClient extends $grpc.Client {
           ($1.PromptReply value) => value.writeToBuffer(),
           $1.PromptReplyResponse.fromBuffer);
   static final _$resolveHomePatternType =
-      $grpc.ClientMethod<$2.StringValue, $1.ResolveHomePatternTypeResponse>(
+      $grpc.ClientMethod<$0.StringValue, $1.ResolveHomePatternTypeResponse>(
           '/apparmor_prompting.AppArmorPrompting/ResolveHomePatternType',
-          ($2.StringValue value) => value.writeToBuffer(),
+          ($0.StringValue value) => value.writeToBuffer(),
           $1.ResolveHomePatternTypeResponse.fromBuffer);
   static final _$setLoggingFilter =
-      $grpc.ClientMethod<$2.StringValue, $1.SetLoggingFilterResponse>(
+      $grpc.ClientMethod<$0.StringValue, $1.SetLoggingFilterResponse>(
           '/apparmor_prompting.AppArmorPrompting/SetLoggingFilter',
-          ($2.StringValue value) => value.writeToBuffer(),
+          ($0.StringValue value) => value.writeToBuffer(),
           $1.SetLoggingFilterResponse.fromBuffer);
 }
 
@@ -95,12 +94,12 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
   $core.String get $name => 'apparmor_prompting.AppArmorPrompting';
 
   AppArmorPromptingServiceBase() {
-    $addMethod($grpc.ServiceMethod<$0.Empty, $1.GetCurrentPromptResponse>(
+    $addMethod($grpc.ServiceMethod<$0.StringValue, $1.GetCurrentPromptResponse>(
         'GetCurrentPrompt',
         getCurrentPrompt_Pre,
         false,
         true,
-        ($core.List<$core.int> value) => $0.Empty.fromBuffer(value),
+        ($core.List<$core.int> value) => $0.StringValue.fromBuffer(value),
         ($1.GetCurrentPromptResponse value) => value.writeToBuffer()));
     $addMethod($grpc.ServiceMethod<$1.PromptReply, $1.PromptReplyResponse>(
         'ReplyToPrompt',
@@ -110,30 +109,30 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
         ($core.List<$core.int> value) => $1.PromptReply.fromBuffer(value),
         ($1.PromptReplyResponse value) => value.writeToBuffer()));
     $addMethod(
-        $grpc.ServiceMethod<$2.StringValue, $1.ResolveHomePatternTypeResponse>(
+        $grpc.ServiceMethod<$0.StringValue, $1.ResolveHomePatternTypeResponse>(
             'ResolveHomePatternType',
             resolveHomePatternType_Pre,
             false,
             false,
-            ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+            ($core.List<$core.int> value) => $0.StringValue.fromBuffer(value),
             ($1.ResolveHomePatternTypeResponse value) =>
                 value.writeToBuffer()));
-    $addMethod($grpc.ServiceMethod<$2.StringValue, $1.SetLoggingFilterResponse>(
+    $addMethod($grpc.ServiceMethod<$0.StringValue, $1.SetLoggingFilterResponse>(
         'SetLoggingFilter',
         setLoggingFilter_Pre,
         false,
         false,
-        ($core.List<$core.int> value) => $2.StringValue.fromBuffer(value),
+        ($core.List<$core.int> value) => $0.StringValue.fromBuffer(value),
         ($1.SetLoggingFilterResponse value) => value.writeToBuffer()));
   }
 
   $async.Stream<$1.GetCurrentPromptResponse> getCurrentPrompt_Pre(
-      $grpc.ServiceCall $call, $async.Future<$0.Empty> $request) async* {
+      $grpc.ServiceCall $call, $async.Future<$0.StringValue> $request) async* {
     yield* getCurrentPrompt($call, await $request);
   }
 
   $async.Stream<$1.GetCurrentPromptResponse> getCurrentPrompt(
-      $grpc.ServiceCall call, $0.Empty request);
+      $grpc.ServiceCall call, $0.StringValue request);
 
   $async.Future<$1.PromptReplyResponse> replyToPrompt_Pre(
       $grpc.ServiceCall $call, $async.Future<$1.PromptReply> $request) async {
@@ -144,18 +143,18 @@ abstract class AppArmorPromptingServiceBase extends $grpc.Service {
       $grpc.ServiceCall call, $1.PromptReply request);
 
   $async.Future<$1.ResolveHomePatternTypeResponse> resolveHomePatternType_Pre(
-      $grpc.ServiceCall $call, $async.Future<$2.StringValue> $request) async {
+      $grpc.ServiceCall $call, $async.Future<$0.StringValue> $request) async {
     return resolveHomePatternType($call, await $request);
   }
 
   $async.Future<$1.ResolveHomePatternTypeResponse> resolveHomePatternType(
-      $grpc.ServiceCall call, $2.StringValue request);
+      $grpc.ServiceCall call, $0.StringValue request);
 
   $async.Future<$1.SetLoggingFilterResponse> setLoggingFilter_Pre(
-      $grpc.ServiceCall $call, $async.Future<$2.StringValue> $request) async {
+      $grpc.ServiceCall $call, $async.Future<$0.StringValue> $request) async {
     return setLoggingFilter($call, await $request);
   }
 
   $async.Future<$1.SetLoggingFilterResponse> setLoggingFilter(
-      $grpc.ServiceCall call, $2.StringValue request);
+      $grpc.ServiceCall call, $0.StringValue request);
 }

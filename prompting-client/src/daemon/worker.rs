@@ -1,11 +1,12 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
 use crate::{
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
-    snapd_client::{PromptId, SnapdSocketClient, TypedUiInput},
+    snapd_client::{Cgroup, PromptId, SnapdSocketClient, TypedUiInput},
     Result,
 };
+use futures::{stream::FuturesUnordered, FutureExt};
 use std::{
-    collections::VecDeque,
+    collections::{HashMap, VecDeque},
     env,
     fmt::Debug,
     path::Path,
@@ -19,6 +20,7 @@ use tokio::{
     time::timeout,
 };
 use tokio_context::context::{Context, Handle};
+use tokio_stream::StreamExt;
 use tracing::{debug, error, info, warn};
 
 const RECV_TIMEOUT: Duration = Duration::from_millis(200);
@@ -34,7 +36,7 @@ enum Recv {
 }
 
 #[derive(Debug)]
-pub struct RefActivePrompt(Arc<Mutex<Option<ActivePrompt>>>);
+pub struct RefActivePrompts(Arc<Mutex<HashMap<Cgroup, ActivePrompt>>>);
 
 pub struct ActivePrompt {
     pub(crate) typed_ui_input: TypedUiInput,
@@ -48,37 +50,41 @@ impl Debug for ActivePrompt {
     }
 }
 
-impl RefActivePrompt {
+impl RefActivePrompts {
     #[cfg(test)]
-    pub fn new(active_prompt: Option<ActivePrompt>) -> Self {
-        Self(Arc::new(Mutex::new(active_prompt)))
+    pub fn new(active_prompts: HashMap<Cgroup, ActivePrompt>) -> Self {
+        Self(Arc::new(Mutex::new(active_prompts)))
     }
 
     #[cfg(test)]
-    pub fn drop_prompt(&mut self) {
-        self.0.lock().unwrap().take();
-    }
-
-    pub fn get(&self) -> Option<TypedUiInput> {
-        let guard = match self.0.lock() {
-            Ok(guard) => guard,
-            Err(err) => err.into_inner(),
-        };
-        Some(guard.as_ref()?.typed_ui_input.clone())
-    }
-
-    pub fn get_context(&self) -> Option<Context> {
+    pub fn drop_prompt(&mut self, cgroup: &Cgroup) {
         let mut guard = match self.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        Some(guard.as_mut()?.ui_handle.as_mut()?.spawn_ctx())
+        guard.remove(cgroup);
+    }
+
+    pub fn get(&self, cgroup: &Cgroup) -> Option<TypedUiInput> {
+        let guard = match self.0.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        Some(guard.get(cgroup)?.typed_ui_input.clone())
+    }
+
+    pub fn get_context(&self, cgroup: &Cgroup) -> Option<Context> {
+        let mut guard = match self.0.lock() {
+            Ok(guard) => guard,
+            Err(err) => err.into_inner(),
+        };
+        Some(guard.get_mut(cgroup)?.ui_handle.as_mut()?.spawn_ctx())
     }
 }
 
-impl Clone for RefActivePrompt {
+impl Clone for RefActivePrompts {
     fn clone(&self) -> Self {
-        RefActivePrompt(self.0.clone())
+        RefActivePrompts(self.0.clone())
     }
 }
 
@@ -121,9 +127,9 @@ where
 {
     rx_prompts: UnboundedReceiver<PromptUpdate>,
     rx_actioned_prompts: UnboundedReceiver<ActionedPrompt>,
-    active_prompt: RefActivePrompt,
-    dialog_process: Option<D>,
-    pending_prompts: VecDeque<EnrichedPrompt>,
+    active_prompts: RefActivePrompts,
+    dialog_processes: HashMap<Cgroup, D>,
+    pending_prompts: HashMap<Cgroup, VecDeque<EnrichedPrompt>>,
     dead_prompts: Vec<PromptId>,
     recv_timeout: Duration,
     ui: S,
@@ -167,9 +173,9 @@ impl Worker<FlutterUi, SnapdSocketClient, DialogProcess> {
         Self {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt: RefActivePrompt(Arc::new(Mutex::new(None))),
-            dialog_process: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts(Arc::new(Mutex::new(HashMap::new()))),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: Vec::new(),
             recv_timeout: RECV_TIMEOUT,
             ui: FlutterUi { cmd },
@@ -185,8 +191,8 @@ where
     R: ReplyToPrompt,
     D: DialogHandle,
 {
-    pub fn read_only_active_prompt(&self) -> RefActivePrompt {
-        self.active_prompt.clone()
+    pub fn read_only_active_prompt(&self) -> RefActivePrompts {
+        self.active_prompts.clone()
     }
 
     pub async fn run(&mut self) -> Result<()> {
@@ -235,21 +241,34 @@ where
         Some(updates)
     }
 
-    fn drop_prompt(&mut self, id: PromptId) {
-        let len = self.pending_prompts.len();
-        self.pending_prompts.retain(|ep| ep.prompt.id() != &id);
-        if self.pending_prompts.len() < len {
-            info!(id=%id.0, "dropping prompt as it has already been actioned");
+    fn add_prompt(&mut self, enriched_prompt: EnrichedPrompt) {
+        let cgroup = enriched_prompt.prompt.cgroup();
+        if let Some(pending_prompts) = self.pending_prompts.get_mut(cgroup) {
+            pending_prompts.push_back(enriched_prompt);
+        } else {
+            self.pending_prompts
+                .insert(cgroup.clone(), VecDeque::from([enriched_prompt]));
         }
+    }
 
-        let mut guard = match self.active_prompt.0.lock() {
+    fn drop_prompt(&mut self, id: PromptId) {
+        for (cgroup, pending_prompts) in self.pending_prompts.iter_mut() {
+            let len = pending_prompts.len();
+            pending_prompts.retain(|enriched_prompt| enriched_prompt.prompt.id() != &id);
+            if pending_prompts.len() < len {
+                info!(id=%id.0, cgroup=%cgroup.0, "dropping prompt as it has already been actioned");
+            }
+        }
+        self.pending_prompts
+            .retain(|_, pending_prompts| !pending_prompts.is_empty());
+
+        let mut guard = match self.active_prompts.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
 
-        if let Some(active_prompt) = guard.as_mut() {
+        for (_, active_prompt) in guard.iter_mut() {
             if active_prompt.typed_ui_input.id() == &id {
-                debug!("dropping UI handle for {:?}", &id);
                 active_prompt.ui_handle.take();
             }
         }
@@ -259,37 +278,51 @@ where
         debug!("processing update: {update:?}");
 
         match update {
-            PromptUpdate::Add(ep) => self.pending_prompts.push_back(ep),
+            PromptUpdate::Add(enriched_prompt) => self.add_prompt(enriched_prompt),
             PromptUpdate::Drop(id) => self.drop_prompt(id),
         }
     }
 
-    async fn process_next_pending_prompt(&mut self) -> Result<()> {
-        let enriched_prompt = match self.pending_prompts.pop_front() {
-            Some(ep) if self.running => ep,
-            _ => return Ok(()),
-        };
+    async fn process_next_pending_prompts(&mut self) -> Result<()> {
+        let prompts_to_process: Vec<_> = self
+            .pending_prompts
+            .iter_mut()
+            .filter(|(cgroup, _)| !self.dialog_processes.contains_key(cgroup))
+            .filter_map(|(cgroup, pending_prompts)| {
+                let enriched_prompt = match pending_prompts.pop_front() {
+                    Some(ep) => ep,
+                    None => return None,
+                };
+                if !self.running {
+                    return None;
+                }
+                Some((cgroup.clone(), enriched_prompt))
+            })
+            .collect();
 
-        debug!("got prompt: {enriched_prompt:?}");
-
-        let typed_ui_input = TypedUiInput::try_from(enriched_prompt.clone());
-        if let Err(error) = typed_ui_input {
-            error!(%error, "failed to map prompt to UI input: replying with deny once");
-            let reply = enriched_prompt.prompt.clone().into_deny_once();
-            self.client
-                .reply(&enriched_prompt.prompt.id().clone(), reply)
-                .await?;
-            return Ok(());
+        for (cgroup, enriched_prompt) in prompts_to_process {
+            debug!("got prompt: {enriched_prompt:?}");
+            match TypedUiInput::try_from(enriched_prompt.clone()) {
+                Err(error) => {
+                    error!(%error, "failed to map prompt to UI input: replying with deny once");
+                    let reply = enriched_prompt.prompt.clone().into_deny_once();
+                    self.client
+                        .reply(&enriched_prompt.prompt.id().clone(), reply)
+                        .await?;
+                }
+                Ok(typed_ui_input) => {
+                    self.update_active_prompt(&cgroup, enriched_prompt, typed_ui_input)?;
+                }
+            }
         }
-
-        self.update_active_prompt(enriched_prompt, typed_ui_input?)
+        Ok(())
     }
 
-    async fn wait_for_ui_reply(&mut self) -> Result<()> {
+    async fn wait_for_ui_reply(&mut self, cgroup: &Cgroup) -> Result<()> {
         debug!("waiting for ui reply");
         let exit_code = self
-            .dialog_process
-            .take()
+            .dialog_processes
+            .remove(cgroup)
             .expect("dialog process")
             .wait()
             .await?
@@ -298,11 +331,12 @@ where
         info!("UI exited with {exit_code}");
 
         let enriched_prompt = {
-            let guard = match self.active_prompt.0.lock() {
+            let guard = match self.active_prompts.0.lock() {
                 Ok(guard) => guard,
                 Err(err) => err.into_inner(),
             };
             guard
+                .get(cgroup)
                 .as_ref()
                 .expect("active prompt")
                 .enriched_prompt
@@ -316,7 +350,7 @@ where
                 Recv::Success | Recv::Gone => break,
                 Recv::Timeout => {
                     {
-                        let guard = match self.active_prompt.0.lock() {
+                        let guard = match self.active_prompts.0.lock() {
                             Ok(guard) => guard,
                             Err(err) => err.into_inner(),
                         };
@@ -325,7 +359,13 @@ where
                         // from snapd. We expect no reply from the UI in this case and also don't
                         // need to send a reply to snapd manually, as the prompt has already become
                         // invalid.
-                        if guard.as_ref().expect("active prompt").ui_handle.is_none() {
+                        if guard
+                            .get(cgroup)
+                            .as_ref()
+                            .expect("active prompt")
+                            .ui_handle
+                            .is_none()
+                        {
                             debug!("timeout for cancelled prompt");
                             break;
                         }
@@ -346,13 +386,29 @@ where
         }
 
         debug!("clearing active prompt");
-        let mut guard = match self.active_prompt.0.lock() {
+        let mut guard = match self.active_prompts.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
-        guard.take();
+        guard.remove(cgroup);
 
         Ok(())
+    }
+
+    async fn wait_for_dialog_processes(dialog_processes: &mut HashMap<Cgroup, D>) -> Cgroup {
+        dialog_processes
+            .iter_mut()
+            .map(|(cgroup, process_handle)| {
+                process_handle.wait().map(move |result| {
+                    result.expect("completes");
+                    cgroup
+                })
+            })
+            .collect::<FuturesUnordered<_>>()
+            .next()
+            .await
+            .cloned()
+            .expect("a cgroup")
     }
 
     /// The step function is the core of the worker and processes incoming prompts as follows:
@@ -373,9 +429,7 @@ where
     async fn step(&mut self) -> Result<()> {
         debug!("step");
 
-        if self.dialog_process.is_none() {
-            self.process_next_pending_prompt().await?;
-        }
+        self.process_next_pending_prompts().await?;
 
         tokio::select! {
             updates = Self::pull_updates(&mut self.rx_prompts, &mut self.running) => {
@@ -385,12 +439,9 @@ where
                     }
                 }
             },
-            _ = async {
-                if let Some(dialog_process) = &mut self.dialog_process {
-                    dialog_process.wait().await.expect("completes");
-                }
-            }, if self.dialog_process.is_some() => {
-                self.wait_for_ui_reply().await?;
+            cgroup = Self::wait_for_dialog_processes(&mut self.dialog_processes),
+            if !self.dialog_processes.is_empty() => {
+                self.wait_for_ui_reply(&cgroup).await?;
             }
         };
 
@@ -399,10 +450,11 @@ where
 
     fn update_active_prompt(
         &mut self,
+        cgroup: &Cgroup,
         enriched_prompt: EnrichedPrompt,
         typed_ui_input: TypedUiInput,
     ) -> Result<()> {
-        let mut guard = match self.active_prompt.0.lock() {
+        let mut guard = match self.active_prompts.0.lock() {
             Ok(guard) => guard,
             Err(err) => err.into_inner(),
         };
@@ -411,19 +463,23 @@ where
         let ui_handle = Some(ui_handle);
 
         debug!("updating active prompt");
-        guard.replace(ActivePrompt {
-            typed_ui_input,
-            enriched_prompt: enriched_prompt.clone(),
-            ui_handle,
-        });
+        guard.insert(
+            cgroup.clone(),
+            ActivePrompt {
+                typed_ui_input,
+                enriched_prompt: enriched_prompt.clone(),
+                ui_handle,
+            },
+        );
         drop(guard);
 
         debug!("spawning UI");
         let dialog_process = self.ui.spawn(&[
             enriched_prompt.prompt.snap(),
             &enriched_prompt.prompt.pid().to_string(),
+            &enriched_prompt.prompt.cgroup().0,
         ])?;
-        self.dialog_process.replace(dialog_process);
+        self.dialog_processes.insert(cgroup.clone(), dialog_process);
 
         Ok(())
     }
@@ -515,13 +571,14 @@ mod tests {
         }
     }
 
-    fn enriched_prompt(id: &str) -> EnrichedPrompt {
+    fn enriched_prompt(id: &str, cgroup: &str) -> EnrichedPrompt {
         EnrichedPrompt {
             prompt: TypedPrompt::Home(Prompt {
                 id: PromptId(id.to_string()),
                 timestamp: String::new(),
                 snap: "test".to_string(),
                 pid: 1234,
+                cgroup: cgroup.into(),
                 interface: "home".to_string(),
                 constraints: HomeConstraints::default(),
             }),
@@ -529,31 +586,64 @@ mod tests {
         }
     }
 
-    fn add(id: &str) -> PromptUpdate {
-        PromptUpdate::Add(enriched_prompt(id))
+    fn add(id: &str, cgroup: &str) -> PromptUpdate {
+        PromptUpdate::Add(enriched_prompt(id, cgroup))
     }
 
     fn drop_id(id: &str) -> PromptUpdate {
         PromptUpdate::Drop(PromptId(id.to_string()))
     }
 
-    #[test_case(add("1"), &[], &["1"]; "add new prompt")]
-    #[test_case(drop_id("1"), &["1"], &[]; "drop for pending prompt")]
-    #[test_case(drop_id("1"), &[], &[]; "drop prompt not seen yet")]
+    #[test_case(
+        add("1", "cgroup_0"), [].into(), [("cgroup_0".into(), vec!["1"])].into();
+        "add new prompt"
+    )]
+    #[test_case(
+        add("2", "cgroup_1"), [("cgroup_0".into(), vec!["1"])].into(), [("cgroup_0".into(), vec!["1"]), ("cgroup_1".into(), vec!["2"])].into();
+        "add new prompt to new queue"
+    )]
+    #[test_case(
+        add("2", "cgroup_0"), [("cgroup_0".into(), vec!["1"])].into(), [("cgroup_0".into(), vec!["1", "2"])].into();
+        "add new prompt to existing queue"
+    )]
+    #[test_case(
+        drop_id("1"), [("cgroup_0".into(), vec!["1"])].into(), [].into();
+        "drop last pending prompt"
+    )]
+    #[test_case(
+        drop_id("1"), [("cgroup_0".into(), vec!["1", "2"])].into(), [("cgroup_0".into(), vec!["2"])].into();
+        "drop with single queue"
+    )]
+    #[test_case(
+        drop_id("1"), [("cgroup_0".into(), vec!["1"]), ("cgroup_1".into(), vec!["2"])].into(), [("cgroup_1".into(), vec!["2"])].into();
+        "drop with multiple queues"
+    )]
+    #[test_case(drop_id("1"), [].into(), [].into(); "drop prompt not seen yet")]
     #[test]
-    fn process_update(update: PromptUpdate, current_pending: &[&str], expected_pending: &[&str]) {
+    fn process_update(
+        update: PromptUpdate,
+        current_pending: HashMap<Cgroup, Vec<&str>>,
+        expected_pending: HashMap<Cgroup, Vec<&str>>,
+    ) {
         let (_, rx_prompts) = unbounded_channel();
         let (_, rx_actioned_prompts) = unbounded_channel();
         let pending_prompts = current_pending
-            .iter()
-            .map(|id| enriched_prompt(id))
+            .into_iter()
+            .map(|(cgroup, ids)| {
+                (
+                    cgroup.clone(),
+                    ids.into_iter()
+                        .map(|id| enriched_prompt(id, &cgroup.0))
+                        .collect(),
+                )
+            })
             .collect();
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt: RefActivePrompt::new(None),
-            dialog_process: None,
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
             pending_prompts,
             dead_prompts: Vec::new(),
             recv_timeout: Duration::from_millis(100),
@@ -566,10 +656,18 @@ mod tests {
 
         w.process_update(update);
 
-        let pending: Vec<&str> = w
+        let pending: HashMap<Cgroup, Vec<&str>> = w
             .pending_prompts
             .iter()
-            .map(|ep| ep.prompt.id().0.as_str())
+            .map(|(cgroup, prompts)| {
+                (
+                    cgroup.clone(),
+                    prompts
+                        .iter()
+                        .map(|prompt| prompt.prompt.id().0.as_str())
+                        .collect(),
+                )
+            })
             .collect();
 
         assert_eq!(pending, expected_pending);
@@ -593,9 +691,9 @@ mod tests {
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt: RefActivePrompt::new(None),
-            dialog_process: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -645,9 +743,9 @@ mod tests {
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt: RefActivePrompt::new(None),
-            dialog_process: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -684,9 +782,9 @@ mod tests {
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt: RefActivePrompt::new(None),
-            dialog_process: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts: RefActivePrompts::new(HashMap::new()),
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![PromptId("dead".to_string())],
             recv_timeout: Duration::from_millis(100),
             ui: FlutterUi {
@@ -726,45 +824,55 @@ mod tests {
 
     #[derive(Debug)]
     struct TestUi {
-        replies: Vec<Reply>,
+        replies: HashMap<Cgroup, Vec<Reply>>,
         tx: UnboundedSender<ActionedPrompt>,
-        active_prompt: RefActivePrompt,
+        active_prompts: RefActivePrompts,
         tx_done: Option<oneshot::Sender<()>>,
     }
 
     impl SpawnUi for TestUi {
         type Handle = TestDialogHandle;
-        fn spawn(&mut self, _: &[&str]) -> Result<TestDialogHandle> {
+        fn spawn(&mut self, args: &[&str]) -> Result<TestDialogHandle> {
             debug!("spawning test ui");
-            let reply = self.replies.remove(0);
+            let cgroup: Cgroup = (*args.get(2).expect("a pid")).into();
+            let reply = self
+                .replies
+                .get_mut(&cgroup)
+                .map(|replies| replies.remove(0));
+            self.replies.retain(|_, replies| !replies.is_empty());
             let tx = self.tx.clone();
-            let active_prompt = self.active_prompt.clone();
+            let active_prompt = self.active_prompts.clone();
             let reply_sent = false;
             let tx_done = self
                 .replies
                 .is_empty()
                 .then(|| self.tx_done.take())
                 .flatten();
-            let context = self.active_prompt.get_context().expect("to get a context");
+            let context = self
+                .active_prompts
+                .get_context(&cgroup)
+                .expect("to get a context");
 
             Ok(TestDialogHandle {
                 reply,
                 tx,
-                active_prompt,
+                active_prompts: active_prompt,
                 context,
                 closed: reply_sent,
                 tx_done,
+                cgroup,
             })
         }
     }
 
     struct TestDialogHandle {
-        reply: Reply,
+        reply: Option<Reply>,
         tx: UnboundedSender<ActionedPrompt>,
-        active_prompt: RefActivePrompt,
+        active_prompts: RefActivePrompts,
         context: Context,
         closed: bool,
         tx_done: Option<oneshot::Sender<()>>,
+        cgroup: Cgroup,
     }
 
     impl Debug for TestDialogHandle {
@@ -782,22 +890,28 @@ mod tests {
                 return Ok(ExitStatus::default());
             }
 
-            let active_prompt = &self.active_prompt.get().expect("active prompt");
-            assert_eq!(
-                self.reply.active_prompt_id,
-                active_prompt.id().0,
-                "incorrect active prompt"
-            );
+            let active_prompt = &self
+                .active_prompts
+                .get(&self.cgroup)
+                .expect("active prompt");
+            if let Some(reply) = self.reply {
+                assert_eq!(
+                    reply.active_prompt_id,
+                    active_prompt.id().0,
+                    "incorrect active prompt"
+                );
+            }
 
             tokio::select! {
                 _ = self.context.done() => {
                     debug!("test UI got closed before sending a reply");
                 },
-                _ = sleep(Duration::from_millis(self.reply.sleep_ms)) => {
+                _ = sleep(Duration::from_millis(self.reply.map(|r|r.sleep_ms).unwrap_or(u64::MAX))),
+                if self.reply.is_some() => {
+                    let reply = self.reply.expect("a reply");
                     let _ = self.tx.send(ActionedPrompt::Actioned {
-                        id: PromptId(self.reply.id.to_string()),
-                        others: self
-                            .reply
+                        id: PromptId(reply.id.to_string()),
+                        others: reply
                             .drop
                             .iter()
                             .map(|id| PromptId(id.to_string()))
@@ -817,47 +931,74 @@ mod tests {
         }
     }
 
-    #[test_case(vec![], &[]; "channel close without prompts")]
-    #[test_case(vec![add("1")], &[reply("1", 10, "1", &[])]; "single")]
+    #[test_case(vec![], [].into(); "channel close without prompts")]
     #[test_case(
-        vec![add("1"), add("2"), add("3")],
-        &[reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])];
+        vec![add("1", "cgroup_0")], [("cgroup_0".into(), vec![reply("1", 10, "1", &[])])].into();
+        "single"
+    )]
+    #[test_case(
+        vec![add("1", "cgroup_0"), add("2", "cgroup_1")],
+        [
+            ("cgroup_0".into(), vec![reply("1", 10, "1", &[])]),
+            ("cgroup_1".into(), vec![reply("2", 10, "2", &[])])
+        ].into();
+        "single in parallel"
+    )]
+    #[test_case(
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0"), add("3", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 10, "1", &[]), reply("2", 10, "2", &[]), reply("3", 10, "3", &[])])].into();
         "multiple"
     )]
     #[test_case(
-        vec![add("1"), add("2"), add("3")],
-        &[reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])];
+        vec![add("1", "cgroup_0"), add("2", "cgroup_1"), add("3", "cgroup_0"), add("4", "cgroup_1"), add("5", "cgroup_0")],
+        [
+            ("cgroup_0".into(), vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("5", 10, "5", &[])]),
+            ("cgroup_1".into(), vec![reply("2", 10, "2", &[]), reply("4", 10, "4", &[])])
+        ].into();
+        "multiple in parallel"
+    )]
+    #[test_case(
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0"), add("3", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
         "first reply actions second prompt as well"
     )]
     #[test_case(
-        vec![add("1"), add("2")],
-        &[reply("1", 200, "1", &[]), reply("2", 50, "2", &[])];
+        vec![add("1", "cgroup_0"), add("2", "cgroup_1"), add("3", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 10, "1", &["2"]), reply("3", 10, "3", &[])])].into();
+        "first reply actions parallel prompt"
+    )]
+    #[test_case(
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0")],
+        [("cgroup_0".into(), vec![reply("1", 200, "1", &[]), reply("2", 50, "2", &[])])].into();
         "delayed reply skips"
     )]
     #[test_case(
-        vec![add("1"), add("2"), add("3"), drop_id("2"), add("4")],
-        &[reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("4", 10, "4", &[])];
+        vec![add("1", "cgroup_0"), add("2", "cgroup_0"), add("3", "cgroup_0"), drop_id("2"), add("4", "cgroup_0")],
+        [(
+            "cgroup_0".into(),
+            vec![reply("1", 10, "1", &[]), reply("3", 10, "3", &[]), reply("4", 10, "4", &[])]
+        )].into();
         "explicit drop of previous prompt"
     )]
     #[tokio::test]
-    async fn sequence(updates: Vec<PromptUpdate>, replies: &[Reply]) {
+    async fn sequence(updates: Vec<PromptUpdate>, replies: HashMap<Cgroup, Vec<Reply>>) {
         let (tx_prompts, rx_prompts) = unbounded_channel();
         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
         let (tx_done, rx_done) = oneshot::channel();
-        let active_prompt = RefActivePrompt::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let ui = TestUi {
-            replies: replies.to_vec(),
+            replies,
             tx: tx_actioned_prompts,
-            active_prompt: active_prompt.clone(),
+            active_prompts: active_prompts.clone(),
             tx_done: Some(tx_done),
         };
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt,
-            dialog_process: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts,
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui,
@@ -931,14 +1072,18 @@ mod tests {
         // remain open. Without this calls to recv() immediately returns None.
         let (_tx_prompts, rx_prompts) = unbounded_channel();
         let (_tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
-        let active_prompt = RefActivePrompt::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
+        let pending_prompts = HashMap::from([(
+            "cgroup_0".into(),
+            vec![enriched_prompt("1", "cgroup_0")].into(),
+        )]);
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt,
-            dialog_process: None,
-            pending_prompts: [enriched_prompt("1")].into_iter().collect(),
+            active_prompts,
+            dialog_processes: HashMap::new(),
+            pending_prompts,
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui: StubUi,
@@ -977,20 +1122,20 @@ mod tests {
         let (tx_actioned_prompts, rx_actioned_prompts) = unbounded_channel();
         let (tx_done, rx_done) = oneshot::channel();
         let id = "testId";
-        let active_prompt = RefActivePrompt::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let ui = TestUi {
-            replies: vec![reply(id, u64::MAX, id, &[])],
+            replies: HashMap::new(),
             tx: tx_actioned_prompts,
-            active_prompt: active_prompt.clone(),
+            active_prompts: active_prompts.clone(),
             tx_done: Some(tx_done),
         };
 
         let mut w = Worker {
             rx_prompts,
             rx_actioned_prompts,
-            active_prompt,
-            dialog_process: None,
-            pending_prompts: VecDeque::new(),
+            active_prompts,
+            dialog_processes: HashMap::new(),
+            pending_prompts: HashMap::new(),
             dead_prompts: vec![],
             recv_timeout: Duration::from_millis(100),
             ui,
@@ -1002,14 +1147,16 @@ mod tests {
         // for the home interface
         env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
 
-        tx_prompts.send(add(id)).expect("to send update");
+        tx_prompts
+            .send(add(id, "cgroup_0"))
+            .expect("to send update");
         w.step().await.expect("step");
 
         tx_prompts.send(drop_id(id)).expect("to send update");
 
         let handle = tokio::spawn(async move {
             w.run().await.expect("run");
-            assert!(w.active_prompt.get().is_none());
+            assert!(w.active_prompts.get(&"cgroup_0".into()).is_none());
         });
 
         rx_done.await.expect("done");

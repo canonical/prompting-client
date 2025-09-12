@@ -142,6 +142,7 @@ mod tests {
         "timestamp": "2024-07-03T13:33:25.52039535Z",
         "snap": "prompting-client",
         "pid": 1234,
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope",
         "interface": "home",
         "constraints": {
           "path": "/home/ubuntu/test.json",

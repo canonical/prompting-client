@@ -18,7 +18,7 @@ use crate::{
     snapd_client::{
         self,
         prompt::{Prompt, RawPrompt, UiInput},
-        Action, PromptId, PromptReply, SnapMeta,
+        Action, Cgroup, PromptId, PromptReply, SnapMeta,
     },
     Error, Result,
 };
@@ -208,6 +208,12 @@ impl TypedPrompt {
             Self::Camera(p) => p.pid,
             Self::Home(p) => p.pid,
             Self::Microphone(p) => p.pid,
+        }
+    }
+
+    pub fn cgroup(&self) -> &Cgroup {
+        match self {
+            Self::Home(p) => &p.cgroup,
         }
     }
 }

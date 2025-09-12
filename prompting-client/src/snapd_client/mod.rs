@@ -30,6 +30,15 @@ const SNAPD_ABSTRACT_SNAP_SOCKET: &str = "\0/snapd/snapd-snap.socket";
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub struct PromptId(pub String);
 
+#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize, Hash)]
+pub struct Cgroup(pub String);
+
+impl From<&str> for Cgroup {
+    fn from(value: &str) -> Self {
+        Cgroup(value.to_string())
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize)]
 pub enum PromptNotice {
     Update(PromptId),

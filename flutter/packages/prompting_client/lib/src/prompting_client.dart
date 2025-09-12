@@ -4,7 +4,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grpc/grpc.dart';
 import 'package:prompting_client/src/generated/apparmor-prompting.pbgrpc.dart'
     as pb;
-import 'package:prompting_client/src/generated/google/protobuf/empty.pb.dart';
 import 'package:prompting_client/src/generated/google/protobuf/wrappers.pb.dart';
 import 'package:prompting_client/src/prompting_models.dart';
 
@@ -25,8 +24,9 @@ class PromptingClient {
 
   final pb.AppArmorPromptingClient _client;
 
-  Stream<PromptDetails> getCurrentPrompt() =>
-      _client.getCurrentPrompt(Empty()).map(PrompteDetailsConversion.fromProto);
+  Stream<PromptDetails> getCurrentPrompt(String cgroup) => _client
+      .getCurrentPrompt(StringValue(value: cgroup))
+      .map(PrompteDetailsConversion.fromProto);
 
   Future<PromptReplyResponse> replyToPrompt(PromptReply reply) => _client
       .replyToPrompt(reply.toProto())

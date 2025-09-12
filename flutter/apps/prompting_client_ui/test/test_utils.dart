@@ -112,7 +112,7 @@ PromptingClient registerMockAppArmorPromptingClient({
   provideDummy<PromptDetails>(mockPromptDetailsHome());
   provideDummy<PromptReplyResponse>(PromptReplyResponse.unknown(message: ''));
   final client = MockPromptingClient();
-  when(client.getCurrentPrompt())
+  when(client.getCurrentPrompt(any))
       .thenAnswer((_) => Stream.value(promptDetails));
   when(client.replyToPrompt(any)).thenAnswer(
     (_) async => replyResponse ?? PromptReplyResponse.unknown(message: ''),

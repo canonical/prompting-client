@@ -489,7 +489,7 @@ pub mod app_armor_prompting_client {
         }
         pub async fn get_current_prompt(
             &mut self,
-            request: impl tonic::IntoRequest<()>,
+            request: impl tonic::IntoRequest<::prost::alloc::string::String>,
         ) -> std::result::Result<
             tonic::Response<tonic::codec::Streaming<super::GetCurrentPromptResponse>>,
             tonic::Status,
@@ -629,7 +629,7 @@ pub mod app_armor_prompting_server {
             + 'static;
         async fn get_current_prompt(
             &self,
-            request: tonic::Request<()>,
+            request: tonic::Request<::prost::alloc::string::String>,
         ) -> std::result::Result<
             tonic::Response<Self::GetCurrentPromptStream>,
             tonic::Status,
@@ -735,15 +735,21 @@ pub mod app_armor_prompting_server {
                 "/apparmor_prompting.AppArmorPrompting/GetCurrentPrompt" => {
                     #[allow(non_camel_case_types)]
                     struct GetCurrentPromptSvc<T: AppArmorPrompting>(pub Arc<T>);
-                    impl<T: AppArmorPrompting> tonic::server::ServerStreamingService<()>
-                    for GetCurrentPromptSvc<T> {
+                    impl<
+                        T: AppArmorPrompting,
+                    > tonic::server::ServerStreamingService<
+                        ::prost::alloc::string::String,
+                    > for GetCurrentPromptSvc<T> {
                         type Response = super::GetCurrentPromptResponse;
                         type ResponseStream = T::GetCurrentPromptStream;
                         type Future = BoxFuture<
                             tonic::Response<Self::ResponseStream>,
                             tonic::Status,
                         >;
-                        fn call(&mut self, request: tonic::Request<()>) -> Self::Future {
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<::prost::alloc::string::String>,
+                        ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
                                 <T as AppArmorPrompting>::get_current_prompt(

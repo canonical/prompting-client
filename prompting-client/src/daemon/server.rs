@@ -1,13 +1,13 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
-    daemon::{worker::RefActivePrompt, ActionedPrompt, ReplyToPrompt},
+    daemon::{worker::RefActivePrompts, ActionedPrompt, ReplyToPrompt},
     log_filter,
     protos::{
         apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, PromptReplyResponse,
         ResolveHomePatternTypeResponse,
     },
-    snapd_client::{PromptId, SnapdError, TypedPromptReply},
+    snapd_client::{Cgroup, PromptId, SnapdError, TypedPromptReply},
     Error,
 };
 use std::sync::Arc;
@@ -23,7 +23,7 @@ use tracing_subscriber::{reload::Handle, EnvFilter};
 pub fn new_server_and_listener<R, S>(
     client: R,
     reload_handle: S,
-    active_prompt: RefActivePrompt,
+    active_prompts: RefActivePrompts,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     socket_path: String,
 ) -> (AppArmorPromptingServer<Service<R, S>>, UnixListener)
@@ -34,7 +34,7 @@ where
     let service = Service::new(
         client.clone(),
         reload_handle,
-        active_prompt,
+        active_prompts,
         tx_actioned_prompts,
     );
     let listener = UnixListener::bind(&socket_path).expect("to be able to bind to our socket");
@@ -74,7 +74,7 @@ where
 {
     client: R,
     reload_handle: S,
-    active_prompt: RefActivePrompt,
+    active_prompts: RefActivePrompts,
     tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
 }
 
@@ -86,13 +86,13 @@ where
     pub fn new(
         client: R,
         reload_handle: S,
-        active_prompt: RefActivePrompt,
+        active_prompts: RefActivePrompts,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> Self {
         Self {
             client,
             reload_handle,
-            active_prompt,
+            active_prompts,
             tx_actioned_prompts,
         }
     }
@@ -113,11 +113,12 @@ where
     type GetCurrentPromptStream = ReceiverStream<Result<GetCurrentPromptResponse, Status>>;
     async fn get_current_prompt(
         &self,
-        _request: Request<()>,
+        request: Request<String>,
     ) -> Result<Response<Self::GetCurrentPromptStream>, Status> {
+        let cgroup = Cgroup(request.into_inner());
         let (tx, rx) = channel(1);
 
-        let prompt = match self.active_prompt.get() {
+        let prompt = match self.active_prompts.get(&cgroup) {
             Some(p) => {
                 let id = &p.id().0;
                 debug!(%id, "serving request for active prompt (id={id})");
@@ -131,7 +132,7 @@ where
             }
         };
 
-        match self.active_prompt.get_context() {
+        match self.active_prompts.get_context(&cgroup) {
             Some(mut ctx) => {
                 tokio::spawn(async move {
                     debug!("spawning stream");
@@ -300,7 +301,7 @@ mod tests {
     use super::*;
     use crate::{
         daemon::{
-            worker::{ActivePrompt, RefActivePrompt},
+            worker::{ActivePrompt, RefActivePrompts},
             EnrichedPrompt,
         },
         protos::apparmor_prompting::{
@@ -319,13 +320,14 @@ mod tests {
                 EnrichedPathKind, HomeConstraints, HomeInterface, HomeReplyConstraints,
                 HomeUiInputData,
             },
-            Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapMeta, TypedPrompt,
-            TypedPromptReply, TypedUiInput, UiInput,
+            Cgroup, Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapMeta,
+            TypedPrompt, TypedPromptReply, TypedUiInput, UiInput,
         },
         Error,
     };
     use simple_test_case::test_case;
     use std::{
+        collections::HashMap,
         fs, io,
         ops::{Deref, DerefMut},
     };
@@ -409,7 +411,7 @@ mod tests {
 
     async fn setup_server_and_client(
         mock_client: MockClient,
-        active_prompt: RefActivePrompt,
+        active_prompts: RefActivePrompts,
         tx_actioned_prompts: UnboundedSender<ActionedPrompt>,
     ) -> SelfCleaningClient {
         let test_name = Uuid::new_v4().to_string();
@@ -419,7 +421,7 @@ mod tests {
         let (server, listener) = new_server_and_listener(
             mock_client,
             MockReloadHandle,
-            active_prompt,
+            active_prompts,
             tx_actioned_prompts,
             socket_path.clone(),
         );
@@ -455,6 +457,10 @@ mod tests {
                 timestamp: "0".to_string(),
                 snap: "2".to_string(),
                 pid: 1234,
+                cgroup: Cgroup(
+                    "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope"
+                        .to_string(),
+                ),
                 interface: "home".to_string(),
                 constraints: HomeConstraints {
                     path: "6".to_string(),
@@ -550,11 +556,19 @@ mod tests {
         want_err: bool,
     }
 
-    #[test_case(None, None; "empty prompt")]
-    #[test_case(Some(active_prompt()), Some(prompt()); "non-empty prompt")]
+    #[test_case(HashMap::new(), "cgroup".into(), None; "empty prompt")]
+    #[test_case(
+        HashMap::from([("cgroup_0".into(), active_prompt())]), "cgroup_0".into(), Some(prompt());
+        "non-empty prompt"
+    )]
+    #[test_case(
+        HashMap::from([("cgroup_0".into(), active_prompt())]), "cgroup_1".into(), None;
+        "non-empty prompt for different pid"
+    )]
     #[tokio::test]
     async fn test_get_current_prompt(
-        active_prompt: Option<ActivePrompt>,
+        active_prompts: HashMap<Cgroup, ActivePrompt>,
+        cgroup: Cgroup,
         expected: Option<Prompt>,
     ) {
         let mock_client = MockClient {
@@ -562,11 +576,13 @@ mod tests {
             expected_reply: None,
         };
         let (tx_actioned_prompts, _rx_actioned_prompts) = unbounded_channel();
-        let mut active_prompt = RefActivePrompt::new(active_prompt);
+        let mut active_prompts = RefActivePrompts::new(active_prompts);
         let mut client =
-            setup_server_and_client(mock_client, active_prompt.clone(), tx_actioned_prompts).await;
+            setup_server_and_client(mock_client, active_prompts.clone(), tx_actioned_prompts).await;
 
-        let response = client.get_current_prompt(Request::new(())).await;
+        let response = client
+            .get_current_prompt(Request::new(cgroup.0.clone()))
+            .await;
         if expected.is_none() {
             assert!(response.is_err());
             return;
@@ -583,7 +599,7 @@ mod tests {
         assert_eq!(resp, expected);
 
         if expected.is_some() {
-            active_prompt.drop_prompt();
+            active_prompts.drop_prompt(&cgroup);
         }
         let next = stream.message().await.unwrap();
         assert_eq!(next, None);
@@ -604,9 +620,9 @@ mod tests {
         if expected_errors.tx_err {
             rx_actioned_prompts = None;
         }
-        let active_prompt = RefActivePrompt::new(None);
+        let active_prompts = RefActivePrompts::new(HashMap::new());
         let mut client =
-            setup_server_and_client(mock_client, active_prompt, tx_actioned_prompts).await;
+            setup_server_and_client(mock_client, active_prompts, tx_actioned_prompts).await;
 
         let resp = client.reply_to_prompt(Request::new(prompt_reply)).await;
 

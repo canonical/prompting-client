@@ -6,7 +6,7 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 service AppArmorPrompting {
-    rpc GetCurrentPrompt (google.protobuf.Empty) returns (stream GetCurrentPromptResponse);
+    rpc GetCurrentPrompt (google.protobuf.StringValue) returns (stream GetCurrentPromptResponse);
     rpc ReplyToPrompt (PromptReply) returns (PromptReplyResponse);
     rpc ResolveHomePatternType (google.protobuf.StringValue) returns (ResolveHomePatternTypeResponse);
     rpc SetLoggingFilter (google.protobuf.StringValue) returns (SetLoggingFilterResponse);

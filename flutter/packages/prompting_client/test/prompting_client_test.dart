@@ -86,7 +86,7 @@ void main() {
           ),
         );
 
-        final promptDetailsStream = client.getCurrentPrompt();
+        final promptDetailsStream = client.getCurrentPrompt('cgroup');
         if (testCase.expectError) {
           await expectLater(promptDetailsStream, throwsArgumentError);
         } else {
@@ -222,7 +222,7 @@ pb.AppArmorPromptingClient createMockClient({
   pb.PromptReplyResponse? promptReplyResponse,
 }) {
   final mockClient = MockAppArmorPromptingClient();
-  when(mockClient.getCurrentPrompt(Empty())).thenAnswer(
+  when(mockClient.getCurrentPrompt(any)).thenAnswer(
     (_) => MockResponseStream(
       Stream.value(currentPromptResponse ?? pb.GetCurrentPromptResponse()),
     ),
