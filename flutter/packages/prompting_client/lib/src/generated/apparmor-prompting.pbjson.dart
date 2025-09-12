@@ -127,6 +127,15 @@ const PromptReply$json = {
       '9': 0,
       '10': 'cameraPromptReply'
     },
+    {
+      '1': 'microphone_prompt_reply',
+      '3': 6,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.MicrophonePromptReply',
+      '9': 0,
+      '10': 'microphonePromptReply'
+    },
   ],
   '8': [
     {'1': 'prompt_reply'},
@@ -140,8 +149,9 @@ final $typed_data.Uint8List promptReplyDescriptor = $convert.base64Decode(
     'DjIcLmFwcGFybW9yX3Byb21wdGluZy5MaWZlc3BhblIIbGlmZXNwYW4SUQoRaG9tZV9wcm9tcH'
     'RfcmVwbHkYBCABKAsyIy5hcHBhcm1vcl9wcm9tcHRpbmcuSG9tZVByb21wdFJlcGx5SABSD2hv'
     'bWVQcm9tcHRSZXBseRJXChNjYW1lcmFfcHJvbXB0X3JlcGx5GAUgASgLMiUuYXBwYXJtb3JfcH'
-    'JvbXB0aW5nLkNhbWVyYVByb21wdFJlcGx5SABSEWNhbWVyYVByb21wdFJlcGx5Qg4KDHByb21w'
-    'dF9yZXBseQ==');
+    'JvbXB0aW5nLkNhbWVyYVByb21wdFJlcGx5SABSEWNhbWVyYVByb21wdFJlcGx5EmMKF21pY3Jv'
+    'cGhvbmVfcHJvbXB0X3JlcGx5GAYgASgLMikuYXBwYXJtb3JfcHJvbXB0aW5nLk1pY3JvcGhvbm'
+    'VQcm9tcHRSZXBseUgAUhVtaWNyb3Bob25lUHJvbXB0UmVwbHlCDgoMcHJvbXB0X3JlcGx5');
 
 @$core.Deprecated('Use promptReplyResponseDescriptor instead')
 const PromptReplyResponse$json = {
@@ -378,6 +388,15 @@ const GetCurrentPromptResponse$json = {
       '9': 0,
       '10': 'cameraPrompt'
     },
+    {
+      '1': 'microphone_prompt',
+      '3': 3,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.MicrophonePrompt',
+      '9': 0,
+      '10': 'microphonePrompt'
+    },
   ],
   '8': [
     {'1': 'prompt'},
@@ -388,8 +407,9 @@ const GetCurrentPromptResponse$json = {
 final $typed_data.Uint8List getCurrentPromptResponseDescriptor = $convert.base64Decode(
     'ChhHZXRDdXJyZW50UHJvbXB0UmVzcG9uc2USQQoLaG9tZV9wcm9tcHQYASABKAsyHi5hcHBhcm'
     '1vcl9wcm9tcHRpbmcuSG9tZVByb21wdEgAUgpob21lUHJvbXB0EkcKDWNhbWVyYV9wcm9tcHQY'
-    'AiABKAsyIC5hcHBhcm1vcl9wcm9tcHRpbmcuQ2FtZXJhUHJvbXB0SABSDGNhbWVyYVByb21wdE'
-    'IICgZwcm9tcHQ=');
+    'AiABKAsyIC5hcHBhcm1vcl9wcm9tcHRpbmcuQ2FtZXJhUHJvbXB0SABSDGNhbWVyYVByb21wdB'
+    'JTChFtaWNyb3Bob25lX3Byb21wdBgDIAEoCzIkLmFwcGFybW9yX3Byb21wdGluZy5NaWNyb3Bo'
+    'b25lUHJvbXB0SABSEG1pY3JvcGhvbmVQcm9tcHRCCAoGcHJvbXB0');
 
 @$core.Deprecated('Use homePromptReplyDescriptor instead')
 const HomePromptReply$json = {
@@ -432,6 +452,26 @@ const CameraPromptReply$json = {
 final $typed_data.Uint8List cameraPromptReplyDescriptor = $convert.base64Decode(
     'ChFDYW1lcmFQcm9tcHRSZXBseRJGCgtwZXJtaXNzaW9ucxgBIAMoDjIkLmFwcGFybW9yX3Byb2'
     '1wdGluZy5EZXZpY2VQZXJtaXNzaW9uUgtwZXJtaXNzaW9ucw==');
+
+@$core.Deprecated('Use microphonePromptReplyDescriptor instead')
+const MicrophonePromptReply$json = {
+  '1': 'MicrophonePromptReply',
+  '2': [
+    {
+      '1': 'permissions',
+      '3': 1,
+      '4': 3,
+      '5': 14,
+      '6': '.apparmor_prompting.DevicePermission',
+      '10': 'permissions'
+    },
+  ],
+};
+
+/// Descriptor for `MicrophonePromptReply`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List microphonePromptReplyDescriptor = $convert.base64Decode(
+    'ChVNaWNyb3Bob25lUHJvbXB0UmVwbHkSRgoLcGVybWlzc2lvbnMYASADKA4yJC5hcHBhcm1vcl'
+    '9wcm9tcHRpbmcuRGV2aWNlUGVybWlzc2lvblILcGVybWlzc2lvbnM=');
 
 @$core.Deprecated('Use homePromptDescriptor instead')
 const HomePrompt$json = {
@@ -552,6 +592,26 @@ const CameraPrompt$json = {
 final $typed_data.Uint8List cameraPromptDescriptor = $convert.base64Decode(
     'CgxDYW1lcmFQcm9tcHQSOQoJbWV0YV9kYXRhGAEgASgLMhwuYXBwYXJtb3JfcHJvbXB0aW5nLk'
     '1ldGFEYXRhUghtZXRhRGF0YQ==');
+
+@$core.Deprecated('Use microphonePromptDescriptor instead')
+const MicrophonePrompt$json = {
+  '1': 'MicrophonePrompt',
+  '2': [
+    {
+      '1': 'meta_data',
+      '3': 1,
+      '4': 1,
+      '5': 11,
+      '6': '.apparmor_prompting.MetaData',
+      '10': 'metaData'
+    },
+  ],
+};
+
+/// Descriptor for `MicrophonePrompt`. Decode as a `google.protobuf.DescriptorProto`.
+final $typed_data.Uint8List microphonePromptDescriptor = $convert.base64Decode(
+    'ChBNaWNyb3Bob25lUHJvbXB0EjkKCW1ldGFfZGF0YRgBIAEoCzIcLmFwcGFybW9yX3Byb21wdG'
+    'luZy5NZXRhRGF0YVIIbWV0YURhdGE=');
 
 @$core.Deprecated('Use metaDataDescriptor instead')
 const MetaData$json = {

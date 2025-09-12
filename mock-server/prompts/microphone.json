@@ -1,0 +1,16 @@
+{
+    "id": "0000000000000000",
+    "timestamp": "2025-09-12T10:30:00.000000000+02:00",
+    "snap": "audacity",
+    "pid": 142857,
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/audacity.scope",
+    "interface": "audio-record",
+    "constraints": {
+        "requested-permissions": [
+            "access"
+        ],
+        "available-permissions": [
+            "access"
+        ]
+    }
+}

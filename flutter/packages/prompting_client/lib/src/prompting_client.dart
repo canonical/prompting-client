@@ -171,6 +171,12 @@ extension PrompteDetailsConversion on PromptDetails {
             metaData:
                 MetaDataConversion.fromProto(response.cameraPrompt.metaData),
           ),
+        pb.GetCurrentPromptResponse_Prompt.microphonePrompt =>
+          PromptDetails.microphone(
+            metaData: MetaDataConversion.fromProto(
+              response.microphonePrompt.metaData,
+            ),
+          ),
         pb.GetCurrentPromptResponse_Prompt.notSet =>
           throw ArgumentError('Prompt type not set'),
       };
@@ -205,6 +211,20 @@ extension PromptReplyConversion on PromptReply {
             action: action.toProto(),
             lifespan: lifespan.toProto(),
             cameraPromptReply: pb.CameraPromptReply(
+              permissions: permissions.map((e) => e.toProto()),
+            ),
+          ),
+        PromptReplyMicrophone(
+          :final promptId,
+          :final action,
+          :final lifespan,
+          :final permissions
+        ) =>
+          pb.PromptReply(
+            promptId: promptId,
+            action: action.toProto(),
+            lifespan: lifespan.toProto(),
+            microphonePromptReply: pb.MicrophonePromptReply(
               permissions: permissions.map((e) => e.toProto()),
             ),
           ),

@@ -52,6 +52,9 @@ class FakeApparmorPromptingClient implements PromptingClient {
 
       case PromptReplyCamera():
         return PromptReplyResponse.success();
+
+      case PromptReplyMicrophone():
+        return PromptReplyResponse.success();
     }
   }
 

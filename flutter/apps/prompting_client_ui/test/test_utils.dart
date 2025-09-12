@@ -96,6 +96,23 @@ PromptDetails mockPromptDetailsCamera({
       ),
     );
 
+PromptDetails mockPromptDetailsMicrophone({
+  String? promptId,
+  String? snapName,
+  String? publisher,
+  DateTime? updatedAt,
+  String? storeUrl,
+}) =>
+    PromptDetails.microphone(
+      metaData: MetaData(
+        promptId: promptId ?? '',
+        snapName: snapName ?? '',
+        publisher: publisher,
+        updatedAt: updatedAt,
+        storeUrl: storeUrl,
+      ),
+    );
+
 PromptDetails registerMockPromptDetails({
   required PromptDetails promptDetails,
 }) {
