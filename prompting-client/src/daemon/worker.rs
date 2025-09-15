@@ -1,6 +1,6 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
 
-#![cfg_attr(feature = "auto_reply", allow(unreachable_code))]
+#![cfg_attr(feature = "auto-reply", allow(unreachable_code))]
 #![cfg_attr(feature = "dry-run", allow(unused_variables))]
 
 use crate::{
@@ -9,8 +9,6 @@ use crate::{
     Result,
 };
 use futures::{stream::FuturesUnordered, FutureExt};
-#[cfg(feature = "auto_reply")]
-use std::sync::OnceLock;
 use std::{
     collections::{HashMap, VecDeque},
     env,
@@ -347,14 +345,16 @@ where
         };
         let expected_id = enriched_prompt.prompt.id().clone();
 
-        #[cfg(feature = "auto_reply")]
+        #[cfg(feature = "auto-reply")]
         {
+            use std::sync::OnceLock;
+
             static REPLY: OnceLock<String> = OnceLock::new();
 
             let reply = REPLY.get_or_init(|| {
                 let env_var = env::var("PROMPTING_CLIENT_AUTO_REPLY")
                     .unwrap_or_else(|_| "DENY_ONCE".to_string());
-                debug!("PROMPTING: auto_reply env value: {:?}", env_var);
+                debug!("PROMPTING: auto-reply env value: {:?}", env_var);
 
                 env_var
             });

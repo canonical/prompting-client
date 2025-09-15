@@ -10,8 +10,8 @@ lto = true
 
 [features]
 dry-run = []
-time_debugging = []
-auto_reply = ["time_debugging"]
+time-debugging = []
+auto-reply = ["time-debugging"]
 
 [[bin]]
 name = "prompting-client-scripted"
@@ -33,7 +33,11 @@ path = "src/bin/set_log_level.rs"
 chrono = "0.4.38"
 clap = { version = "4.5.4", features = ["derive"] }
 http-body-util = "0.1.1"
-hyper-util = { version = "0.1.4", features = ["http1", "tokio", "client-legacy"] }
+hyper-util = { version = "0.1.4", features = [
+    "http1",
+    "tokio",
+    "client-legacy",
+] }
 hyper = { version = "1.3.1", features = ["client", "http1"] }
 prost = "0.13.1"
 prost-types = "0.13.1"
@@ -43,7 +47,15 @@ serde = { version = "1.0.202", features = ["derive"] }
 strum = { version = "0.27.0", features = ["derive"] }
 thiserror = "1.0.61"
 tokio-stream = "0.1.15"
-tokio = { version = "1.43.1", features = ["fs", "io-util", "macros", "net", "process", "signal", "rt-multi-thread"] }
+tokio = { version = "1.43.1", features = [
+    "fs",
+    "io-util",
+    "macros",
+    "net",
+    "process",
+    "signal",
+    "rt-multi-thread",
+] }
 tonic = "0.13.1"
 tonic-reflection = "0.13.1"
 tower = "0.5.2"

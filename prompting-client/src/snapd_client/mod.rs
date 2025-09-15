@@ -113,7 +113,7 @@ impl SnapdSocketClient {
     }
 
     pub async fn new_with_notices_after(dt: DateTime<Utc>) -> Self {
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         {
             use std::time::SystemTime;
 
@@ -238,7 +238,7 @@ where
 
     /// Pull details for all pending prompts from snapd
     pub async fn all_pending_prompt_details(&self) -> Result<Vec<TypedPrompt>> {
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         debug!(
             "PROMPTING: before getting all raw prompts from snapd @ {:?}",
             std::time::Instant::now()
@@ -247,7 +247,7 @@ where
         let raw_prompts: Vec<RawPrompt> =
             self.client.get_json("interfaces/requests/prompts").await?;
 
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         debug!(
             "PROMPTING: after getting all raw prompts from snapd @ {:?}",
             std::time::Instant::now()
@@ -258,7 +258,7 @@ where
 
     /// Pull details for a specific prompt from snapd
     pub async fn prompt_details(&self, id: &PromptId) -> Result<TypedPrompt> {
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         debug!(
             ?id,
             "PROMPTING: before pulling prompt details from snapd @ {:?}",
@@ -270,7 +270,7 @@ where
             .get_json(&format!("interfaces/requests/prompts/{}", id.0))
             .await?;
 
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         debug!(
             ?id,
             "PROMPTING: after pulling prompt details from snapd @ {:?}",
@@ -286,7 +286,7 @@ where
         id: &PromptId,
         reply: TypedPromptReply,
     ) -> Result<Vec<PromptId>> {
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         debug!(
             ?id,
             "PROMPTING: before replying to snapd @ {:?}",
@@ -298,7 +298,7 @@ where
             .post_json(&format!("interfaces/requests/prompts/{}", id.0), reply)
             .await?;
 
-        #[cfg(feature = "time_debugging")]
+        #[cfg(feature = "time-debugging")]
         debug!(
             ?id,
             "PROMPTING: after replying to snapd @ {:?}",
