@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "dry-run", allow(unused_variables))]
+
 use crate::{
     exit_with,
     snapd_client::{prompt::RawPrompt, response::parse_response},
@@ -121,9 +123,7 @@ impl SnapdSocketClient {
                 .unwrap();
             info!(?id, ?now, "pulling prompt details from snapd");
         }
-        // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
-        // the `socket` variable is not used in all code paths, which would otherwise cause a warning.
-        #[allow(unused_variables)]
+
         let socket = if env::var("SNAP_NAME").is_ok() {
             if UnixStream::connect(SNAPD_ABSTRACT_SNAP_SOCKET)
                 .await

@@ -1,5 +1,7 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
+
 #![cfg_attr(feature = "auto_reply", allow(unreachable_code))]
+#![cfg_attr(feature = "dry-run", allow(unused_variables))]
 
 use crate::{
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
@@ -148,9 +150,6 @@ impl Worker<FlutterUi, SnapdSocketClient, DialogProcess> {
         client: SnapdSocketClient,
     ) -> Self {
         let cmd = {
-            // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
-            // the `cmd` variable is not used in all code paths, which would otherwise cause a warning.
-            #[allow(unused_variables)]
             let cmd = if let Ok(snap) = env::var("SNAP") {
                 format!("{snap}/bin/prompting_client_ui")
             } else {
