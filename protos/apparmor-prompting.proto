@@ -152,6 +152,7 @@ message MetaData {
     string store_url = 3;
     string publisher = 4;
     string updated_at = 5;
+    optional bytes snap_icon = 6;
 }
 
 message ResolveHomePatternTypeResponse {
