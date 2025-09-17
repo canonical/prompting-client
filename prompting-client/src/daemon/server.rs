@@ -509,7 +509,7 @@ mod tests {
                 store_url: "4".to_string(),
                 publisher: "5".to_string(),
                 updated_at: "3".to_string(),
-                snap_icon: None,
+                snap_icon: vec![],
             }),
             requested_path: "6".to_string(),
             home_dir: "7".to_string(),

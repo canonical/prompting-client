@@ -97,7 +97,7 @@ impl SnapInterface for MicrophoneInterface {
             snap_icon,
         } = input.meta;
 
-        let snap_icon = snap_icon.map(|icon| icon.0.into());
+        let snap_icon = snap_icon.map(|icon| icon.0.into()).unwrap_or(vec![]);
 
         Ok(ProtoPrompt::MicrophonePrompt(ProtoMicrophonePrompt {
             meta_data: Some(MetaData {
