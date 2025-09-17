@@ -244,7 +244,7 @@ impl SnapInterface for HomeInterface {
             snap_icon,
         } = input.meta;
 
-        let snap_icon = snap_icon.map(|icon| icon.0.into()).unwrap_or(vec![]);
+        let snap_icon = snap_icon.map(|icon| icon.0.into()).unwrap_or_default();
 
         let HomeUiInputData {
             requested_path,
