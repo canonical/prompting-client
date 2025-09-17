@@ -51,19 +51,20 @@ pub struct RuleConflict {
 
 pub async fn parse_raw_response(res: Response<Incoming>) -> Result<Bytes> {
     let status = res.status();
-    if status != StatusCode::OK {
-        let response: SnapdResponse<()> = body_json(res).await?;
-        return match response.result {
-            Err((message, err)) => Err(Error::SnapdError {
-                status,
-                message,
-                err: Box::new(err),
-            }),
-            Ok(()) => Err(Error::InvalidSnapdErrorResponse { status }),
-        };
+    match status {
+        StatusCode::OK => {
+            let response: SnapdResponse<()> = body_json(res).await?;
+            match response.result {
+                Err((message, err)) => Err(Error::SnapdError {
+                    status,
+                    message,
+                    err: Box::new(err),
+                }),
+                Ok(()) => Err(Error::InvalidSnapdErrorResponse { status }),
+            }
+        }
+        _ => body_raw(res).await,
     }
-
-    body_raw(res).await
 }
 
 /// Parse a raw response body from snapd into our internal Result type
