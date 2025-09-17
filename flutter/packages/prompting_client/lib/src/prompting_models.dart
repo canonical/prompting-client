@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'prompting_models.freezed.dart';
@@ -33,10 +36,23 @@ class MetaData with _$MetaData {
     DateTime? updatedAt,
     String? storeUrl,
     String? publisher,
+    @BytesConverter() Uint8List? snapIcon,
   }) = _MetaData;
 
   factory MetaData.fromJson(Map<String, dynamic> json) =>
       _$MetaDataFromJson(json);
+}
+
+/// Used to 'deserialize' an icon from an image file in tests.
+class BytesConverter implements JsonConverter<Uint8List, String> {
+  const BytesConverter();
+
+  @override
+  Uint8List fromJson(String json) => File(json).readAsBytesSync();
+
+  @override
+  String toJson(Uint8List object) =>
+      '[raw image data (${object.lengthInBytes} bytes)]';
 }
 
 @freezed

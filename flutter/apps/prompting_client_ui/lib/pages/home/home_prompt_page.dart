@@ -25,18 +25,41 @@ class HomePromptPage extends ConsumerWidget {
           .select((m) => m.visiblePatternOptions.isNotEmpty),
     );
     final error = ref.watch(homePromptDataModelProvider.select((m) => m.error));
+    final snapIcon = ref.watch(
+      homePromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
+    );
 
-    return Column(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Header(),
-        if (hasVisibleOptions) ...[const Divider(), const PatternOptions()],
-        if (error != null && showMoreOptions) _ErrorBox(error),
-        const Permissions(),
-        if (showMoreOptions) const LifespanToggle(),
-        if (error != null && !showMoreOptions) _ErrorBox(error),
-        const ActionButtons(),
-      ].withSpacing(20),
+        if (snapIcon != null)
+          Padding(
+            padding: const EdgeInsets.only(right: 18),
+            child: Image.memory(
+              snapIcon,
+              width: 48,
+              height: 48,
+            ),
+          ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              if (hasVisibleOptions) ...[
+                const Divider(),
+                const PatternOptions(),
+              ],
+              if (error != null && showMoreOptions) _ErrorBox(error),
+              const Permissions(),
+              if (showMoreOptions) const LifespanToggle(),
+              if (error != null && !showMoreOptions) _ErrorBox(error),
+              const ActionButtons(),
+            ].withSpacing(20),
+          ),
+        ),
+      ],
     );
   }
 }

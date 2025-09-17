@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:grpc/grpc.dart';
 import 'package:mockito/annotations.dart';
@@ -23,6 +24,7 @@ void main() {
           storeUrl: 'storeUrl',
           publisher: 'publisher',
           updatedAt: '2024-07-13T10:57:28.34963269+02:00',
+          snapIcon: [1, 2, 3],
         ),
         requestedPath: '/home/user/Downloads/example.txt',
         homeDir: '/home/user',
@@ -56,6 +58,7 @@ void main() {
             storeUrl: 'storeUrl',
             publisher: 'publisher',
             updatedAt: DateTime.utc(2024, 7, 13, 8, 57, 28, 349, 632),
+            snapIcon: Uint8List.fromList([1, 2, 3]),
           ),
           requestedPath: '/home/user/Downloads/example.txt',
           homeDir: '/home/user',
