@@ -78,6 +78,7 @@ impl SnapInterface for MicrophoneInterface {
             updated_at: String::default(),
             store_url: String::default(),
             publisher: String::default(),
+            snap_icon: None,
         });
 
         Ok(UiInput {
@@ -93,7 +94,10 @@ impl SnapInterface for MicrophoneInterface {
             updated_at,
             store_url,
             publisher,
+            snap_icon,
         } = input.meta;
+
+        let snap_icon = snap_icon.map(|icon| icon.0.into());
 
         Ok(ProtoPrompt::MicrophonePrompt(ProtoMicrophonePrompt {
             meta_data: Some(MetaData {
@@ -102,6 +106,7 @@ impl SnapInterface for MicrophoneInterface {
                 store_url,
                 publisher,
                 updated_at,
+                snap_icon,
             }),
         }))
     }

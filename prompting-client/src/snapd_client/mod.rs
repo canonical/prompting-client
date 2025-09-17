@@ -290,6 +290,7 @@ where
 
     /// Pull metadata for rendering apparmor prompts using the `snaps` snapd endpoint.
     pub async fn snap_metadata(&self, name: &str) -> Option<SnapMeta> {
+        let snap_icon = self.snap_icon(name).await;
         let res = self.client.get_json(&format!("snaps/{name}")).await;
         return match res {
             Ok(SnapDetails {
@@ -303,6 +304,7 @@ where
                     .unwrap_or(install_date),
                 store_url: format!("snap://{name}"),
                 publisher: publisher.display_name,
+                snap_icon,
             }),
 
             Err(e) => {
@@ -360,6 +362,7 @@ pub struct SnapMeta {
     pub updated_at: String,
     pub store_url: String,
     pub publisher: String,
+    pub snap_icon: Option<SnapIcon>,
 }
 
 #[derive(Debug, Default, Deserialize)]
