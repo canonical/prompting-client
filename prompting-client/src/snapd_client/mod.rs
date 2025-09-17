@@ -1,11 +1,14 @@
 use crate::{
     exit_with,
-    snapd_client::{prompt::RawPrompt, response::parse_response},
+    snapd_client::{
+        prompt::RawPrompt,
+        response::{parse_raw_response, parse_response},
+    },
     socket_client::UnixSocketClient,
     Error, ExitStatus, Result,
 };
 use chrono::{DateTime, SecondsFormat, Utc};
-use hyper::Uri;
+use hyper::{body::Bytes, Uri};
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use std::{collections::HashMap, env, str::FromStr};
 use tokio::net::UnixStream;
@@ -57,6 +60,8 @@ pub trait Client {
     where
         T: DeserializeOwned,
         U: Serialize;
+
+    async fn get_raw(&self, path: &str) -> Result<Bytes>;
 }
 
 impl Client for UnixSocketClient {
@@ -91,6 +96,18 @@ impl Client for UnixSocketClient {
             .await?;
 
         parse_response(res).await
+    }
+
+    async fn get_raw(&self, path: &str) -> Result<Bytes> {
+        let s = format!("{SNAPD_BASE_URI}/{path}");
+        let uri = Uri::from_str(&s).map_err(|_| Error::InvalidUri {
+            reason: "malformed",
+            uri: s,
+        })?;
+
+        let res = self.get(uri).await?;
+
+        parse_raw_response(res).await
     }
 }
 
@@ -260,6 +277,17 @@ where
         Ok(resp.unwrap_or_default())
     }
 
+    async fn snap_icon(&self, name: &str) -> Option<SnapIcon> {
+        let res = self.client.get_raw(&format!("icons/{name}/icon")).await;
+        match res {
+            Ok(bytes) => Some(SnapIcon(bytes)),
+            Err(e) => {
+                error!("could not fetch snap icon for {name}: {e}");
+                None
+            }
+        }
+    }
+
     /// Pull metadata for rendering apparmor prompts using the `snaps` snapd endpoint.
     pub async fn snap_metadata(&self, name: &str) -> Option<SnapMeta> {
         let res = self.client.get_json(&format!("snaps/{name}")).await;
@@ -297,6 +325,31 @@ where
         struct Publisher {
             display_name: String,
         }
+    }
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
+pub struct SnapIcon(Bytes);
+
+impl Serialize for SnapIcon {
+    fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        // The serializer is only needed for debugging purposes in the 'echo' client, so instead of
+        // serializing the entire byte vector, we return a generic string to avoid spamming the
+        // console output.
+        serializer.serialize_str(&format!("[raw image data ({} bytes)]", self.0.len()))
+    }
+}
+
+impl<'de> Deserialize<'de> for SnapIcon {
+    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        let bytes = <&[u8]>::deserialize(deserializer)?;
+        Ok(SnapIcon(Bytes::copy_from_slice(bytes)))
     }
 }
 

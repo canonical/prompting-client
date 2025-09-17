@@ -99,3 +99,9 @@ where
 
     Ok(t)
 }
+
+pub(crate) async fn body_raw(res: Response<Incoming>) -> Result<Bytes> {
+    let bytes = res.into_body().collect().await.map(|buf| buf.to_bytes())?;
+
+    Ok(bytes)
+}
