@@ -59,7 +59,7 @@ pub async fn parse_raw_response(res: Response<Incoming>) -> Result<Bytes> {
                 message,
                 err: Box::new(err),
             }),
-            Ok(()) => unreachable!(),
+            Ok(()) => Err(Error::InvalidSnapdErrorResponse { status }),
         };
     }
 

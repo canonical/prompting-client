@@ -91,6 +91,9 @@ pub enum Error {
 
     #[error("unable to update log filter: {reason}")]
     UnableToUpdateLogFilter { reason: String },
+
+    #[error("snap replied with status code {status} but didn't provide a valid error response")]
+    InvalidSnapdErrorResponse { status: StatusCode },
 }
 
 /// Convenience Result type where E is an [Error] by default.
