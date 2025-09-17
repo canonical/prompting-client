@@ -94,8 +94,14 @@ pub(crate) async fn body_json<T>(res: Response<Incoming>) -> Result<T>
 where
     T: DeserializeOwned,
 {
-    let bytes = res.into_body().collect().await.map(|buf| buf.to_bytes())?;
+    let bytes = body_raw(res).await?;
     let t: T = serde_json::from_slice(&bytes)?;
 
     Ok(t)
+}
+
+pub(crate) async fn body_raw(res: Response<Incoming>) -> Result<Bytes> {
+    let bytes = res.into_body().collect().await.map(|buf| buf.to_bytes())?;
+
+    Ok(bytes)
 }

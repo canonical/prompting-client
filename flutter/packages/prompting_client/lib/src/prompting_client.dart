@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:grpc/grpc.dart';
@@ -80,6 +81,9 @@ extension MetaDataConversion on MetaData {
         storeUrl: metaData.storeUrl,
         publisher: metaData.publisher,
         updatedAt: DateTime.tryParse(metaData.updatedAt),
+        snapIcon: metaData.hasSnapIcon()
+            ? Uint8List.fromList(metaData.snapIcon)
+            : null,
       );
 }
 

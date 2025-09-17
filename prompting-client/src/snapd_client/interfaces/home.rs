@@ -208,6 +208,7 @@ impl SnapInterface for HomeInterface {
             updated_at: String::default(),
             store_url: String::default(),
             publisher: String::default(),
+            snap_icon: None,
         });
 
         // We elevate the suggested permissions in the ui from write -> read/write in order to
@@ -240,7 +241,10 @@ impl SnapInterface for HomeInterface {
             updated_at,
             store_url,
             publisher,
+            snap_icon,
         } = input.meta;
+
+        let snap_icon = snap_icon.map(|icon| icon.0.into()).unwrap_or_default();
 
         let HomeUiInputData {
             requested_path,
@@ -260,6 +264,7 @@ impl SnapInterface for HomeInterface {
                 store_url,
                 publisher,
                 updated_at,
+                snap_icon,
             }),
             requested_path,
             home_dir,

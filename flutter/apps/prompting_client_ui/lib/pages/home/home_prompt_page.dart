@@ -10,7 +10,10 @@ import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
 import 'package:prompting_client_ui/widgets/form_widgets.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
+import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:yaru/yaru.dart';
+
+final _log = Logger('home_prompt_page');
 
 class HomePromptPage extends ConsumerWidget {
   const HomePromptPage({super.key});
@@ -25,18 +28,45 @@ class HomePromptPage extends ConsumerWidget {
           .select((m) => m.visiblePatternOptions.isNotEmpty),
     );
     final error = ref.watch(homePromptDataModelProvider.select((m) => m.error));
+    final snapIcon = ref.watch(
+      homePromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
+    );
 
-    return Column(
+    return Row(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Header(),
-        if (hasVisibleOptions) ...[const Divider(), const PatternOptions()],
-        if (error != null && showMoreOptions) _ErrorBox(error),
-        const Permissions(),
-        if (showMoreOptions) const LifespanToggle(),
-        if (error != null && !showMoreOptions) _ErrorBox(error),
-        const ActionButtons(),
-      ].withSpacing(20),
+        if (snapIcon != null)
+          Padding(
+            padding: const EdgeInsets.only(right: 18),
+            child: Image.memory(
+              snapIcon,
+              width: 48,
+              height: 48,
+              errorBuilder: (_, e, __) {
+                _log.error('Error decoding snap icon: {e}');
+                return SizedBox.shrink();
+              },
+            ),
+          ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Header(),
+              if (hasVisibleOptions) ...[
+                const Divider(),
+                const PatternOptions(),
+              ],
+              if (error != null && showMoreOptions) _ErrorBox(error),
+              const Permissions(),
+              if (showMoreOptions) const LifespanToggle(),
+              if (error != null && !showMoreOptions) _ErrorBox(error),
+              const ActionButtons(),
+            ].withSpacing(20),
+          ),
+        ),
+      ],
     );
   }
 }

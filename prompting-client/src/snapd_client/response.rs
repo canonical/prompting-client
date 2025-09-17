@@ -1,6 +1,12 @@
 //! Parsing of snapd API responses
-use crate::{socket_client::body_json, Error, Result};
-use hyper::{body::Incoming, Response};
+use crate::{
+    socket_client::{body_json, body_raw},
+    Error, Result,
+};
+use hyper::{
+    body::{Bytes, Incoming},
+    Response, StatusCode,
+};
 use serde::{
     de::{self, DeserializeOwned, Deserializer},
     Deserialize, Serialize,
@@ -41,6 +47,24 @@ pub struct RuleConflict {
     pub(crate) permission: String,
     pub(crate) variant: String,
     pub(crate) conflicting_id: String,
+}
+
+pub async fn parse_raw_response(res: Response<Incoming>) -> Result<Bytes> {
+    let status = res.status();
+    match status {
+        StatusCode::OK => body_raw(res).await,
+        _ => {
+            let response: SnapdResponse<()> = body_json(res).await?;
+            match response.result {
+                Err((message, err)) => Err(Error::SnapdError {
+                    status,
+                    message,
+                    err: Box::new(err),
+                }),
+                Ok(()) => Err(Error::InvalidSnapdErrorResponse { status }),
+            }
+        }
+    }
 }
 
 /// Parse a raw response body from snapd into our internal Result type

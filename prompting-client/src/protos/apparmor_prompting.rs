@@ -191,6 +191,8 @@ pub struct MetaData {
     pub publisher: ::prost::alloc::string::String,
     #[prost(string, tag = "5")]
     pub updated_at: ::prost::alloc::string::String,
+    #[prost(bytes = "vec", tag = "6")]
+    pub snap_icon: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveHomePatternTypeResponse {

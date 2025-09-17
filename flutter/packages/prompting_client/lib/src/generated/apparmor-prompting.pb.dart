@@ -1513,6 +1513,7 @@ class MetaData extends $pb.GeneratedMessage {
     $core.String? storeUrl,
     $core.String? publisher,
     $core.String? updatedAt,
+    $core.List<$core.int>? snapIcon,
   }) {
     final result = create();
     if (promptId != null) result.promptId = promptId;
@@ -1520,6 +1521,7 @@ class MetaData extends $pb.GeneratedMessage {
     if (storeUrl != null) result.storeUrl = storeUrl;
     if (publisher != null) result.publisher = publisher;
     if (updatedAt != null) result.updatedAt = updatedAt;
+    if (snapIcon != null) result.snapIcon = snapIcon;
     return result;
   }
 
@@ -1542,6 +1544,8 @@ class MetaData extends $pb.GeneratedMessage {
     ..aOS(3, _omitFieldNames ? '' : 'storeUrl')
     ..aOS(4, _omitFieldNames ? '' : 'publisher')
     ..aOS(5, _omitFieldNames ? '' : 'updatedAt')
+    ..a<$core.List<$core.int>>(
+        6, _omitFieldNames ? '' : 'snapIcon', $pb.PbFieldType.OY)
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1607,6 +1611,15 @@ class MetaData extends $pb.GeneratedMessage {
   $core.bool hasUpdatedAt() => $_has(4);
   @$pb.TagNumber(5)
   void clearUpdatedAt() => $_clearField(5);
+
+  @$pb.TagNumber(6)
+  $core.List<$core.int> get snapIcon => $_getN(5);
+  @$pb.TagNumber(6)
+  set snapIcon($core.List<$core.int> value) => $_setBytes(5, value);
+  @$pb.TagNumber(6)
+  $core.bool hasSnapIcon() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearSnapIcon() => $_clearField(6);
 }
 
 class ResolveHomePatternTypeResponse extends $pb.GeneratedMessage {
