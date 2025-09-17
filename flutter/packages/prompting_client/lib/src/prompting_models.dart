@@ -48,7 +48,13 @@ class BytesConverter implements JsonConverter<Uint8List, String> {
   const BytesConverter();
 
   @override
-  Uint8List fromJson(String json) => File(json).readAsBytesSync();
+  Uint8List fromJson(String json) {
+    try {
+      return File(json).readAsBytesSync();
+    } on FileSystemException catch (_) {
+      return Uint8List(0);
+    }
+  }
 
   @override
   String toJson(Uint8List object) =>
