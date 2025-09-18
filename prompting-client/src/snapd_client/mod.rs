@@ -9,7 +9,7 @@ use crate::{
 use chrono::{DateTime, SecondsFormat, Utc};
 use hyper::Uri;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
-use std::{collections::HashMap, env, fmt::Debug, str::FromStr};
+use std::{collections::HashMap, env, str::FromStr};
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
 
