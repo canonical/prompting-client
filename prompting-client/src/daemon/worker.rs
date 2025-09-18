@@ -1,4 +1,8 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
+
+#![cfg_attr(feature = "auto-reply", allow(unreachable_code))]
+#![cfg_attr(feature = "dry-run", allow(unused_variables))]
+
 use crate::{
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
     snapd_client::{Cgroup, PromptId, SnapdSocketClient, TypedUiInput},
@@ -144,9 +148,6 @@ impl Worker<FlutterUi, SnapdSocketClient, DialogProcess> {
         client: SnapdSocketClient,
     ) -> Self {
         let cmd = {
-            // The #[allow(unused_variables)] attribute is necessary here because, when the "dry-run" feature is enabled,
-            // the `cmd` variable is not used in all code paths, which would otherwise cause a warning.
-            #[allow(unused_variables)]
             let cmd = if let Ok(snap) = env::var("SNAP") {
                 format!("{snap}/bin/prompting_client_ui")
             } else {
@@ -343,6 +344,30 @@ where
                 .clone()
         };
         let expected_id = enriched_prompt.prompt.id().clone();
+
+        #[cfg(feature = "auto-reply")]
+        {
+            use std::sync::OnceLock;
+
+            static REPLY: OnceLock<String> = OnceLock::new();
+
+            let reply = REPLY.get_or_init(|| {
+                let env_var = env::var("PROMPTING_CLIENT_AUTO_REPLY")
+                    .unwrap_or_else(|_| "DENY_ONCE".to_string());
+                debug!("PROMPTING: auto-reply env value: {:?}", env_var);
+
+                env_var
+            });
+
+            let reply = match reply.as_str() {
+                "ALLOW_ONCE" => enriched_prompt.prompt.into_allow_once(),
+                "ALLOW_FOREVER" => enriched_prompt.prompt.into_allow_forever(),
+                _ => enriched_prompt.prompt.into_deny_once(),
+            };
+            self.client.reply(&expected_id, reply).await?;
+
+            return Ok(());
+        }
 
         loop {
             match self.wait_for_expected_prompt(&expected_id).await {
