@@ -38,6 +38,12 @@ pub struct PromptId(pub String);
 #[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize, Hash)]
 pub struct Cgroup(pub String);
 
+impl Cgroup {
+    pub fn internal() -> Self {
+        Self("internal".into())
+    }
+}
+
 impl From<&str> for Cgroup {
     fn from(value: &str) -> Self {
         Cgroup(value.to_string())
