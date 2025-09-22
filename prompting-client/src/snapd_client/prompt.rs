@@ -30,6 +30,7 @@ pub struct RawPrompt {
     pub(crate) timestamp: String,
     pub(crate) snap: String,
     pub(crate) pid: i64,
+    #[serde(default = "Cgroup::internal")]
     pub(crate) cgroup: Cgroup,
     pub(crate) interface: String,
     pub(crate) constraints: serde_json::Value,
@@ -193,22 +194,21 @@ pub enum Lifespan {
 
 #[cfg(test)]
 mod tests {
+    use simple_test_case::test_case;
+
     use super::*;
 
-    const RAW_PROMPT: &str = r#"{
-  "id": "0000000000000002",
-  "timestamp": "2024-08-14T07:28:22.694800024Z",
-  "snap": "firefox",
-  "pid": 1234,
-  "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope",
-  "interface": "home",
-  "constraints": {}
-}"#;
-
-    #[test]
-    fn raw_prompt_deserializes() {
-        let raw: RawPrompt = serde_json::from_str(RAW_PROMPT).unwrap();
-        let expected = RawPrompt {
+    #[test_case(
+        r#"{
+            "id": "0000000000000002",
+            "timestamp": "2024-08-14T07:28:22.694800024Z",
+            "snap": "firefox",
+            "pid": 1234,
+            "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope",
+            "interface": "home",
+            "constraints": {}
+        }"#,
+        RawPrompt {
             id: PromptId("0000000000000002".to_string()),
             timestamp: "2024-08-14T07:28:22.694800024Z".to_string(),
             snap: "firefox".to_string(),
@@ -219,7 +219,31 @@ mod tests {
             interface: "home".to_string(),
             constraints: serde_json::json!({}),
         };
-
+        "raw prompt with cgroup"
+    )]
+    #[test_case(
+        r#"{
+            "id": "0000000000000002",
+            "timestamp": "2024-08-14T07:28:22.694800024Z",
+            "snap": "firefox",
+            "pid": 1234,
+            "interface": "home",
+            "constraints": {}
+        }"#,
+        RawPrompt {
+            id: PromptId("0000000000000002".to_string()),
+            timestamp: "2024-08-14T07:28:22.694800024Z".to_string(),
+            snap: "firefox".to_string(),
+            pid: 1234,
+            cgroup: Cgroup("internal".to_string()),
+            interface: "home".to_string(),
+            constraints: serde_json::json!({}),
+        };
+        "raw prompt without cgroup"
+    )]
+    #[test]
+    fn raw_prompt_deserializes(json: &str, expected: RawPrompt) {
+        let raw: RawPrompt = serde_json::from_str(json).unwrap();
         assert_eq!(raw, expected);
     }
 }
