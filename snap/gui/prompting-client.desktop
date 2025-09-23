@@ -6,4 +6,3 @@ Icon=${SNAP}/meta/gui/prompting-client.png
 Terminal=false
 NoDisplay=true
 Name=Prompting Client
-

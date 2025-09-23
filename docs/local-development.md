@@ -12,9 +12,10 @@ of snapd.
 
 The first time you are setting up your test VM, running the following from
 your host should be sufficient to get you a local testing environment.
+
 ```bash
-$ sudo make install-local-tooling
-$ make prepare-vm
+sudo make install-local-tooling
+make prepare-vm
 ```
 
 This will install the required local tooling for provisioning the VM and
@@ -28,7 +29,6 @@ Once the VM is up and running you then need to run `make attach-vm` to open a
 VGA console and close gnome-initial-setup. The client runs as a user daemon so
 you it should already be running in the VM by the time you open the VGA console.
 
-
 ### Running locally
 
 If you are already inside of an Ubuntu VM or want to try running apparmor
@@ -38,30 +38,31 @@ install the client locally:
 > **NOTE**: This currently requires using the `edge` channel of snapd.
 
 ```bash
-$ snap refresh snapd --channel=edge
-$ make local-install-client
-$ make local-enable-prompting
+snap refresh snapd --channel=edge
+make local-install-client
+make local-enable-prompting
 ```
 
 To uninstall the client simply remove it as you would any other snap:
-```bash
-$ snap remove prompting-client
-$ make local-disable-prompting
-```
 
+```bash
+snap remove prompting-client
+make local-disable-prompting
+```
 
 ## Running the integration tests
 
 If you have a local Rust toolchain installed you will be able to build and run
 the integration test suite like so (To get set up with Rust locally on Ubuntu,
 see the Bootstrapping a new Rust installation section of [this blog post](https://ubuntu.com/blog/why-and-how-to-use-rust-on-ubuntu)):
+
 ```bash
-$ make integration-tests
+make integration-tests
 ```
+
 > **Note**: this shares the same `aa-testing` VM as the other `make` directives.
 
 This test suite is not intended for full coverage of the API interactions
 between the client and snapd, but it should be sufficient to check and validate
 the behaviour of the client against the most recent `latest/edge`
 channel of snapd.
-
