@@ -1,0 +1,20 @@
+# Markdownlint configuration
+# Rules: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+# MD013: Line length - allow longer lines
+MD013: false
+
+# MD033: Inline HTML - allow HTML tags in markdown
+MD033: false
+
+# MD041: First line in file should be a top level header - not required
+MD041: false
+
+# MD024: Multiple headers with the same content - allow duplicates
+MD024: false
+
+# MD025: Multiple top level headers in the same document - allow multiple H1s
+MD025: false
+
+# TODO: remove this when https://github.com/canonical/prompting-client/pull/252 is ready
+MD001: false

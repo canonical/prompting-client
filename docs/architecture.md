@@ -9,8 +9,8 @@ internal architecture of the daemon. If you are interested in the packaging of t
 client you are encouraged to read through the `/snap/snapcraft.yaml` file in this
 repository. For more details on using the scripted client please see [here][1].
 
-
 ## Functionality offered by the prompting-client snap
+
 ### The prompting-client daemon
 
 The client itself runs as a systemd user service which is started by snapd when the
@@ -23,7 +23,6 @@ API and using the data to render the user interface.
 
 For more details on the internal architecture of the daemon see the
 [Design of the daemon][3] section below.
-
 
 ### The scripted client
 
@@ -39,7 +38,6 @@ standard out and the client will exit with a non-zero exit code.
 
 For more details on the structure of the config file please see [here][1].
 
-
 ### Viewing prompts on the system
 
 `prompting-client.echo` is a simple command line utility that will print out the details
@@ -48,7 +46,6 @@ of each prompt notice that comes through on the system it is running on. If the 
 a file when the program is exited using Ctrl-C. This client will never submit a
 response to any of the prompts that it sees and is safe to run alongside the
 daemon without interfering with its operation.
-
 
 ### Setting a logging level at runtime
 
@@ -66,7 +63,6 @@ The logging framework used by the prompting client supports a rich syntax for sp
 more targetted filters when needed. As and when you need to use this in anger it is best
 to refer to the documentation found [here][5] along with the source code of the client
 itself to see what log messages can be targetted.
-
 
 ## Design of the daemon
 
@@ -129,7 +125,6 @@ will exit with a non-zero exit code, instructing systemd to not restart the serv
 any other non-200 response is received while attempting to establish the long poll, the
 client will retry a fixed number of times before forcing a restart in the same way.
 
-
 ### The worker loop
 
 The main worker loop task provides sequential processing of prompts as they are received
@@ -146,7 +141,6 @@ and track the details for debugging purposes before moving to the next prompt. I
 practice we do not see this failure mode occurring but we want to make sure we have all
 of the information we can if we ever do find that the expected state we have after the
 Flutter UI exits is not correct.
-
 
 ### The gRPC server
 
@@ -168,7 +162,6 @@ to a given prompt in one part of the code base, making it significantly easier t
 about and debug. For the most part the Flutter UI is a simple presentation of a snapd
 interface specific UI that is determined by the data received from the daemon.
 
-
 ## Processing prompt data from snapd
 
 For the most part, the logic in the main event loop described above is agnostic to which
@@ -185,15 +178,13 @@ response back to snapd. If you are interested in how this all works you are enco
 read the source code and documentation on the trait itself along with the guide on
 [adding support for a new interface][9].
 
-
-
   [0]: https://discourse.ubuntu.com/t/ubuntu-desktop-s-24-10-dev-cycle-part-5-introducing-permissions-prompting/47963
   [1]: running-the-scripted-client.md
   [2]: https://snapcraft.io/docs/snapd-rest-api#heading--notices
   [3]: #design-of-the-daemon
   [4]: https://github.com/canonical/snapd/tree/master/tests/main/apparmor-prompting-integration-tests
-  [5]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html  
-  [6]: ../protos/apparmor-prompting.proto  
+  [5]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html
+  [6]: ../protos/apparmor-prompting.proto
   [7]: https://docs.rs/tonic/latest/tonic/
   [8]: ../prompting-client/src/snapd_client/interfaces/mod.rs
   [9]: adding-support-for-new-interfaces.md

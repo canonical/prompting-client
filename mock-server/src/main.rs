@@ -55,7 +55,7 @@ async fn main() -> Result<()> {
 
     let prompts = Prompts::read_initial_state("prompts");
     let mut notices = HashMap::new();
-    for (k, _) in &prompts {
+    for k in prompts.keys() {
         let value = Prompts::make_notice(k.parse::<u64>()?, k);
 
         notices.insert(k.clone(), value);

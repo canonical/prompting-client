@@ -26,7 +26,7 @@ esac
 # Terminal colors setup
 Color_Off='\033[0m'       # Reset
 Green='\033[0;32m'        # Green
-Red='\033[0;31m'          
+Red='\033[0;31m'
 
 success() {
     log_message "${Green}$1${Color_Off}"

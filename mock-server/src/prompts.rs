@@ -16,15 +16,15 @@ impl Prompts {
                     continue;
                 }
 
-                if let Ok(content) = fs::read_to_string(&path) {
-                    if let Ok(mut value) = serde_json::from_str::<Value>(&content) {
-                        id += 1;
+                if let Ok(content) = fs::read_to_string(&path)
+                    && let Ok(mut value) = serde_json::from_str::<Value>(&content)
+                {
+                    id += 1;
 
-                        let key = format!("{id:016x}");
-                        value["id"] = json!(key);
+                    let key = format!("{id:016x}");
+                    value["id"] = json!(key);
 
-                        results.insert(key, value);
-                    }
+                    results.insert(key, value);
                 }
             }
         }

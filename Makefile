@@ -218,4 +218,3 @@ dev-prompting-client:
 	PROMPTING_CLIENT_SOCKET=$(CLIENT_SOCKET) \
 	cargo watch -cqx "run --bin prompting-client-daemon --features dry-run" ; \
 	cd .. ;
-

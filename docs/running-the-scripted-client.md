@@ -5,9 +5,10 @@ provided in this repo can be run in a scripted mode. Doing so requires writing
 a prompt sequence file specifying the prompts that expected to be seen and how
 they should be actioned.
 
-# Running the scripted client from the command line
+## Running the scripted client from the command line
 
 The scripted client can be invoked using the `scripted` subcommand as shown below:
+
 ```bash
 $ apparmor-prompting.scripted \
   --script my-script.json \
@@ -21,10 +22,10 @@ automatically reply to prompts using the provided sequence, exiting 0 exit code
 if the sequence completes successfully and exiting non-0 if there are any
 errors.
 
-
 # Writing a prompt sequence
 
 A prompt sequence is a simple JSON file with the following structure:
+
 ```json
 {
   "version": 1,
@@ -81,13 +82,14 @@ In the event that a scripted client run fails, it will output the fully resolved
 standard out as part of its exit behaviour so you are able to inspect what the final run
 looked like.
 
-
 ## Fields
 
 ### Version
+
 The only supported version at this time is `1`. This field is required.
 
 ### Prompt Filter
+
 The top-level `prompt-filter` field is used to provide a filter that will be used
 to determine which prompts the client will attempt to match against as part of the
 provided `prompts` sequence. It is not required that you specify a top level filter,
@@ -100,6 +102,7 @@ See the `Prompt filter fields` section below for specific details on each of the
 supported fields for a filter.
 
 ### Prompt cases
+
 A sequence of prompt cases: a prompt filter allowing for structural matching
 against the next prompt in the sequence along with a template for build the
 reply to that prompt provided the filter matches. If the filter does not match
@@ -108,16 +111,20 @@ all prompts in the sequence match then the client will exit with a `0` exit
 code.
 
 ### Prompt filter fields
+
 Fields for `prompt filters` are optional and if provided must match the prompt
 seen at that point in the sequence.
 
 #### Snap
+
 The exact name of the snap that the prompt was generated for.
 
 #### Interface
+
 The snap interface that the prompt is for. Currently only `home` is supported.
 
 #### Constraints
+
 Prompt constraints are tied to the interface that the prompt applies to. For `home`
 prompts the following fields are available:
 
@@ -126,6 +133,7 @@ prompts the following fields are available:
 - `available-permissions`: the ordered list of available permissions seen in the prompt
 
 ### Reply templates
+
 If you wish the client to send a reply for a particular prompt then you should provide
 a reply template under the `reply` field of prompt case. This is the expected default
 behaviour of the client. In order to expect that a certain prompt be observed as part

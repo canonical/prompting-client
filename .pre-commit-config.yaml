@@ -1,0 +1,119 @@
+# Pre-commit hooks configuration for prompting-client
+# Run `pre-commit install` to set up the git hook scripts
+#
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-symlinks
+      - id: check-added-large-files
+      - id: destroyed-symlinks
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
+  # Rust checks for prompting-client
+  - repo: local
+    hooks:
+      - id: rust-fmt-prompting-client
+        name: Format Rust code (prompting-client)
+        entry: bash -c 'cd prompting-client && cargo fmt --all -- --check'
+        language: system
+        files: ^prompting-client/.*\.rs$
+        pass_filenames: false
+
+      - id: rust-clippy-prompting-client
+        name: Lint Rust code (prompting-client)
+        entry: bash -c 'cd prompting-client && cargo clippy --all-features -- -D warnings'
+        language: system
+        files: ^prompting-client/.*\.rs$
+        pass_filenames: false
+
+      - id: rust-test-prompting-client
+        name: Test Rust code (prompting-client)
+        entry: bash -c 'cd prompting-client && cargo test --lib'
+        language: system
+        files: ^prompting-client/.*\.rs$
+        pass_filenames: false
+
+  # Rust checks for mock-server
+  - repo: local
+    hooks:
+      - id: rust-fmt-mock-server
+        name: Format Rust code (mock-server)
+        entry: bash -c 'cd mock-server && cargo fmt --all -- --check'
+        language: system
+        files: ^mock-server/.*\.rs$
+        pass_filenames: false
+
+      - id: rust-clippy-mock-server
+        name: Lint Rust code (mock-server)
+        entry: bash -c 'cd mock-server && cargo clippy -- -D warnings'
+        language: system
+        files: ^mock-server/.*\.rs$
+        pass_filenames: false
+
+      - id: rust-test-mock-server
+        name: Test Rust code (mock-server)
+        entry: bash -c 'cd mock-server && cargo test'
+        language: system
+        files: ^mock-server/.*\.rs$
+        pass_filenames: false
+
+  # Flutter/Dart checks using Melos
+  - repo: local
+    hooks:
+      - id: flutter-analyze
+        name: Analyze Flutter code
+        entry: bash -c 'melos analyze --fatal-infos'
+        language: system
+        files: ^flutter/.*\.dart$
+        pass_filenames: false
+
+      - id: flutter-format
+        name: Format Flutter code
+        entry: bash -c 'melos run format:exclude'
+        language: system
+        files: ^flutter/.*\.dart$
+        pass_filenames: false
+
+      - id: flutter-test
+        name: Test Flutter code
+        entry: bash -c 'melos run test'
+        language: system
+        files: ^flutter/.*\.dart$
+        pass_filenames: false
+
+  # Protocol Buffers
+  - repo: https://github.com/bufbuild/buf
+    rev: v1.28.1
+    hooks:
+      # TODO: buf-lint needs further discussion
+      # - id: buf-lint
+      #   files: ^protos/.*\.proto$
+      - id: buf-format
+        files: ^protos/.*\.proto$
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.37.0
+    hooks:
+      - id: markdownlint
+        args: ["--fix"]
+        files: \.(md|markdown)$
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args: ["-d", "relaxed"]
