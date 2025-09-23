@@ -20,6 +20,7 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
       - id: end-of-file-fixer
+        exclude: .fvmrc
 
   # Rust checks for prompting-client
   - repo: local
