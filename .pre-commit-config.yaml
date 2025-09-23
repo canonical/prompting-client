@@ -16,6 +16,8 @@ repos:
       - id: check-added-large-files
       - id: check-symlinks
       - id: check-added-large-files
+      - id: check-shebang-scripts-are-executable
+        exclude: '.+\.(dart|rs)'
       - id: destroyed-symlinks
       - id: mixed-line-ending
       - id: trailing-whitespace
