@@ -36,11 +36,22 @@ class MetaData with _$MetaData {
     DateTime? updatedAt,
     String? storeUrl,
     String? publisher,
-    @BytesConverter() Uint8List? snapIcon,
+    SnapIconData? snapIcon,
   }) = _MetaData;
 
   factory MetaData.fromJson(Map<String, dynamic> json) =>
       _$MetaDataFromJson(json);
+}
+
+@freezed
+class SnapIconData with _$SnapIconData {
+  factory SnapIconData({
+    @BytesConverter() required Uint8List bytes,
+    required String mimeType,
+  }) = _SnapIconData;
+
+  factory SnapIconData.fromJson(Map<String, dynamic> json) =>
+      _$SnapIconDataFromJson(json);
 }
 
 /// Used to 'deserialize' an icon from an image file in tests.
