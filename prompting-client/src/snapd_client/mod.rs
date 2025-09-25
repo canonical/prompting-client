@@ -401,17 +401,7 @@ impl Serialize for SnapIcon {
     }
 }
 
-impl<'de> Deserialize<'de> for SnapIcon {
-    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let bytes = <&[u8]>::deserialize(deserializer)?;
-        Ok(SnapIcon(Bytes::copy_from_slice(bytes)))
-    }
-}
-
-#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct SnapMeta {
     pub name: String,

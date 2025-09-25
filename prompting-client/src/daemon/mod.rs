@@ -2,7 +2,7 @@ use crate::{
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt, TypedPromptReply},
     Result, SOCKET_ENV_VAR,
 };
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use std::{env, fmt::Debug, fs, sync::Arc};
 use tokio::sync::mpsc::unbounded_channel;
 use tokio_stream::wrappers::UnixListenerStream;
@@ -31,14 +31,14 @@ impl ReplyToPrompt for SnapdSocketClient {
 }
 
 // Poll loop -> worker
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct EnrichedPrompt {
     pub(crate) prompt: TypedPrompt,
     pub(crate) meta: Option<SnapMeta>,
 }
 
 #[allow(clippy::large_enum_variant)]
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize)]
 pub enum PromptUpdate {
     Add(EnrichedPrompt),
     Drop(PromptId),
