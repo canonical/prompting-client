@@ -20,6 +20,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   handy_window: ^0.4.0
   intl: ^0.20.2
+  jovial_svg: ^1.1.28
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
   measure_size: ^4.0.0
