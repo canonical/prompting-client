@@ -387,7 +387,10 @@ where
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
-pub struct SnapIcon(Bytes);
+pub struct SnapIcon {
+    pub bytes: Bytes,
+    pub mime_type: String,
+}
 
 impl Serialize for SnapIcon {
     fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
@@ -397,7 +400,11 @@ impl Serialize for SnapIcon {
         // The serializer is only needed for debugging purposes in the 'echo' client, so instead of
         // serializing the entire byte vector, we return a generic string to avoid spamming the
         // console output.
-        serializer.serialize_str(&format!("[raw image data ({} bytes)]", self.0.len()))
+        serializer.serialize_str(&format!(
+            "[raw image data ({} bytes, mime-type: {})]",
+            self.bytes.len(),
+            self.mime_type
+        ))
     }
 }
 
