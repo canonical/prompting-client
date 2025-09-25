@@ -69,7 +69,7 @@ pub trait Client {
         T: DeserializeOwned,
         U: Serialize;
 
-    async fn get_raw(&self, path: &str) -> Result<Bytes>;
+    async fn get_raw(&self, path: &str) -> Result<(Bytes, String)>;
 }
 
 impl Client for UnixSocketClient {
@@ -106,7 +106,7 @@ impl Client for UnixSocketClient {
         parse_response(res).await
     }
 
-    async fn get_raw(&self, path: &str) -> Result<Bytes> {
+    async fn get_raw(&self, path: &str) -> Result<(Bytes, String)> {
         let s = format!("{SNAPD_BASE_URI}/{path}");
         let uri = Uri::from_str(&s).map_err(|_| Error::InvalidUri {
             reason: "malformed",
@@ -336,7 +336,7 @@ where
     async fn snap_icon(&self, name: &str) -> Option<SnapIcon> {
         let res = self.client.get_raw(&format!("icons/{name}/icon")).await;
         match res {
-            Ok(bytes) => Some(SnapIcon(bytes)),
+            Ok((bytes, mime_type)) => Some(SnapIcon { bytes, mime_type }),
             Err(e) => {
                 error!("could not fetch snap icon for {name}: {e}");
                 None
