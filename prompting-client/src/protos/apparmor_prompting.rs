@@ -193,6 +193,8 @@ pub struct MetaData {
     pub updated_at: ::prost::alloc::string::String,
     #[prost(bytes = "vec", tag = "6")]
     pub snap_icon: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "7")]
+    pub snap_icon_mime_type: ::prost::alloc::string::String,
 }
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveHomePatternTypeResponse {
