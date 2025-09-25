@@ -125,6 +125,7 @@ static gboolean my_application_local_command_line(GApplication* application, gch
 
   g_autoptr(GOptionContext) context = g_option_context_new(NULL);
   g_option_context_add_main_entries(context, entries, NULL);
+  g_option_context_set_ignore_unknown_options(context, TRUE);
 
   // Parse the copied arguments (this will mutate args_copy)
   if (!g_option_context_parse_strv(context, &args_copy, NULL)) {

@@ -502,7 +502,7 @@ where
         let dialog_process = self.ui.spawn(&[
             "--snap",
             enriched_prompt.prompt.snap(),
-            "--app-id",
+            "--app-pid",
             &enriched_prompt.prompt.pid().to_string(),
             "--cgroup",
             &enriched_prompt.prompt.cgroup().0,
