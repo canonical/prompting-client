@@ -1,6 +1,9 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
+# The Exec line is stripped by snapd, but while valid, snapcraft requires an Exec
+# https://github.com/canonical/snapcraft/issues/5799
+Exec=${SNAP}/bin/prompting-client-daemon
 Icon=${SNAP}/meta/gui/prompting-client.png
 Terminal=false
 NoDisplay=true
