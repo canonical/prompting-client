@@ -1,7 +1,6 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Exec=prompting-client.daemon %U
 Icon=${SNAP}/meta/gui/prompting-client.png
 Terminal=false
 NoDisplay=true
