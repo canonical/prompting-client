@@ -244,7 +244,9 @@ impl SnapInterface for HomeInterface {
             snap_icon,
         } = input.meta;
 
-        let snap_icon = snap_icon.map(|icon| icon.0.into()).unwrap_or_default();
+        let (snap_icon, snap_icon_mime_type) = snap_icon
+            .map(|icon| (icon.bytes.into(), icon.mime_type))
+            .unwrap_or_default();
 
         let HomeUiInputData {
             requested_path,
@@ -265,6 +267,7 @@ impl SnapInterface for HomeInterface {
                 publisher,
                 updated_at,
                 snap_icon,
+                snap_icon_mime_type,
             }),
             requested_path,
             home_dir,

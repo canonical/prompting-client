@@ -622,18 +622,14 @@ const MetaData$json = {
     {'1': 'store_url', '3': 3, '4': 1, '5': 9, '10': 'storeUrl'},
     {'1': 'publisher', '3': 4, '4': 1, '5': 9, '10': 'publisher'},
     {'1': 'updated_at', '3': 5, '4': 1, '5': 9, '10': 'updatedAt'},
+    {'1': 'snap_icon', '3': 6, '4': 1, '5': 12, '10': 'snapIcon'},
     {
-      '1': 'snap_icon',
-      '3': 6,
+      '1': 'snap_icon_mime_type',
+      '3': 7,
       '4': 1,
-      '5': 12,
-      '9': 0,
-      '10': 'snapIcon',
-      '17': true
+      '5': 9,
+      '10': 'snapIconMimeType'
     },
-  ],
-  '8': [
-    {'1': '_snap_icon'},
   ],
 };
 
@@ -641,8 +637,9 @@ const MetaData$json = {
 final $typed_data.Uint8List metaDataDescriptor = $convert.base64Decode(
     'CghNZXRhRGF0YRIbCglwcm9tcHRfaWQYASABKAlSCHByb21wdElkEhsKCXNuYXBfbmFtZRgCIA'
     'EoCVIIc25hcE5hbWUSGwoJc3RvcmVfdXJsGAMgASgJUghzdG9yZVVybBIcCglwdWJsaXNoZXIY'
-    'BCABKAlSCXB1Ymxpc2hlchIdCgp1cGRhdGVkX2F0GAUgASgJUgl1cGRhdGVkQXQSIAoJc25hcF'
-    '9pY29uGAYgASgMSABSCHNuYXBJY29uiAEBQgwKCl9zbmFwX2ljb24=');
+    'BCABKAlSCXB1Ymxpc2hlchIdCgp1cGRhdGVkX2F0GAUgASgJUgl1cGRhdGVkQXQSGwoJc25hcF'
+    '9pY29uGAYgASgMUghzbmFwSWNvbhItChNzbmFwX2ljb25fbWltZV90eXBlGAcgASgJUhBzbmFw'
+    'SWNvbk1pbWVUeXBl');
 
 @$core.Deprecated('Use resolveHomePatternTypeResponseDescriptor instead')
 const ResolveHomePatternTypeResponse$json = {

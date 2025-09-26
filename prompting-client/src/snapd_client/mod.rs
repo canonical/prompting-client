@@ -69,7 +69,7 @@ pub trait Client {
         T: DeserializeOwned,
         U: Serialize;
 
-    async fn get_raw(&self, path: &str) -> Result<Bytes>;
+    async fn get_raw(&self, path: &str) -> Result<(Bytes, String)>;
 }
 
 impl Client for UnixSocketClient {
@@ -106,7 +106,7 @@ impl Client for UnixSocketClient {
         parse_response(res).await
     }
 
-    async fn get_raw(&self, path: &str) -> Result<Bytes> {
+    async fn get_raw(&self, path: &str) -> Result<(Bytes, String)> {
         let s = format!("{SNAPD_BASE_URI}/{path}");
         let uri = Uri::from_str(&s).map_err(|_| Error::InvalidUri {
             reason: "malformed",
@@ -336,7 +336,7 @@ where
     async fn snap_icon(&self, name: &str) -> Option<SnapIcon> {
         let res = self.client.get_raw(&format!("icons/{name}/icon")).await;
         match res {
-            Ok(bytes) => Some(SnapIcon(bytes)),
+            Ok((bytes, mime_type)) => Some(SnapIcon { bytes, mime_type }),
             Err(e) => {
                 error!("could not fetch snap icon for {name}: {e}");
                 None
@@ -387,7 +387,10 @@ where
 }
 
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
-pub struct SnapIcon(Bytes);
+pub struct SnapIcon {
+    pub bytes: Bytes,
+    pub mime_type: String,
+}
 
 impl Serialize for SnapIcon {
     fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
@@ -397,21 +400,15 @@ impl Serialize for SnapIcon {
         // The serializer is only needed for debugging purposes in the 'echo' client, so instead of
         // serializing the entire byte vector, we return a generic string to avoid spamming the
         // console output.
-        serializer.serialize_str(&format!("[raw image data ({} bytes)]", self.0.len()))
+        serializer.serialize_str(&format!(
+            "[raw image data ({} bytes, mime-type: {})]",
+            self.bytes.len(),
+            self.mime_type
+        ))
     }
 }
 
-impl<'de> Deserialize<'de> for SnapIcon {
-    fn deserialize<D>(deserializer: D) -> std::result::Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let bytes = <&[u8]>::deserialize(deserializer)?;
-        Ok(SnapIcon(Bytes::copy_from_slice(bytes)))
-    }
-}
-
-#[derive(Debug, Default, Clone, PartialEq, Eq, Deserialize, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct SnapMeta {
     pub name: String,

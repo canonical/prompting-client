@@ -97,7 +97,9 @@ impl SnapInterface for CameraInterface {
             snap_icon,
         } = input.meta;
 
-        let snap_icon = snap_icon.map(|icon| icon.0.into()).unwrap_or_default();
+        let (snap_icon, snap_icon_mime_type) = snap_icon
+            .map(|icon| (icon.bytes.into(), icon.mime_type))
+            .unwrap_or_default();
 
         Ok(ProtoPrompt::CameraPrompt(ProtoCameraPrompt {
             meta_data: Some(MetaData {
@@ -107,6 +109,7 @@ impl SnapInterface for CameraInterface {
                 publisher,
                 updated_at,
                 snap_icon,
+                snap_icon_mime_type,
             }),
         }))
     }

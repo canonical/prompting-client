@@ -49,7 +49,7 @@ pub struct RuleConflict {
     pub(crate) conflicting_id: String,
 }
 
-pub async fn parse_raw_response(res: Response<Incoming>) -> Result<Bytes> {
+pub async fn parse_raw_response(res: Response<Incoming>) -> Result<(Bytes, String)> {
     let status = res.status();
     match status {
         StatusCode::OK => body_raw(res).await,

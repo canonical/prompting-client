@@ -49,6 +49,9 @@ pub enum Error {
     #[error(transparent)]
     Regex(#[from] regex::Error),
 
+    #[error(transparent)]
+    ToStrError(#[from] hyper::header::ToStrError),
+
     #[error("failed prompt sequence: {error}")]
     FailedPromptSequence { error: MatchError },
 
@@ -92,8 +95,11 @@ pub enum Error {
     #[error("unable to update log filter: {reason}")]
     UnableToUpdateLogFilter { reason: String },
 
-    #[error("snap replied with status code {status} but didn't provide a valid error response")]
+    #[error("snapd replied with status code {status} but didn't provide a valid error response")]
     InvalidSnapdErrorResponse { status: StatusCode },
+
+    #[error("snapd provided an icon without a content-type")]
+    MissingContentType,
 }
 
 /// Convenience Result type where E is an [Error] by default.

@@ -81,8 +81,11 @@ extension MetaDataConversion on MetaData {
         storeUrl: metaData.storeUrl,
         publisher: metaData.publisher,
         updatedAt: DateTime.tryParse(metaData.updatedAt),
-        snapIcon: metaData.hasSnapIcon()
-            ? Uint8List.fromList(metaData.snapIcon)
+        snapIcon: metaData.hasSnapIcon() && metaData.hasSnapIconMimeType()
+            ? SnapIconData(
+                bytes: Uint8List.fromList(metaData.snapIcon),
+                mimeType: metaData.snapIconMimeType,
+              )
             : null,
       );
 }
