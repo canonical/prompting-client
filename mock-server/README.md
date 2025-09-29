@@ -175,7 +175,7 @@ For example:
 
 ```sh
 cd mock-server
-PIPE_PATH=/tmp/pip SOCKET_PATH=/tmp/mock.sock cargo run
+PIPE_PATH=/tmp/pipe SOCKET_PATH=/tmp/mock.sock cargo run
 ```
 
 The `SOCKET_PATH` must match the value passed to the prompting-client instance you want to test. Additionally, you need to set other override environment variables for the client in order to test it standalone:
