@@ -147,13 +147,13 @@ enum HomePatternType {
 }
 
 message MetaData {
-    string prompt_id = 1;
-    string snap_name = 2;
-    string store_url = 3;
-    string publisher = 4;
-    string updated_at = 5;
-    bytes snap_icon = 6;
-    string snap_icon_mime_type = 7;
+  string prompt_id = 1;
+  string snap_name = 2;
+  string store_url = 3;
+  string publisher = 4;
+  string updated_at = 5;
+  bytes snap_icon = 6;
+  string snap_icon_mime_type = 7;
 }
 
 message ResolveHomePatternTypeResponse {

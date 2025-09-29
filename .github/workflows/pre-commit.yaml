@@ -6,11 +6,10 @@ on:
         branches: [main]
 
 jobs:
-    pre-cmmit:
+    pre-commit:
         runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-python@v3
             - uses: Atsumi3/actions-setup-fvm@0.0.3
             - uses: bluefireteam/melos-action@v3
             - uses: pre-commit/action@v3.0.1
