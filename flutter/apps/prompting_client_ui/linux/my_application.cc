@@ -1,6 +1,8 @@
 #include "my_application.h"
 
 #include <flutter_linux/flutter_linux.h>
+#include <gtk/gtk.h>
+#include <unistd.h>
 #ifdef GDK_WINDOWING_X11
 #include <gdk/gdkx.h>
 #endif
@@ -13,6 +15,38 @@ struct _MyApplication {
 };
 
 G_DEFINE_TYPE(MyApplication, my_application, GTK_TYPE_APPLICATION)
+
+// Signal the Shell about a permission prompting is in progress.
+void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_pid) {
+  // If snap_name or app_pid is not set, we cannot signal the GNOME Shell.
+  if (snap_name == NULL || app_pid == 0) {
+    g_warning("Failed to extract snap name or app PID from the arguments to signal it to GNOME Shell");
+    return;
+  }
+
+  g_autoptr(GDBusConnection) bus = NULL;
+  g_autoptr(GError) error = NULL;
+  bus = g_bus_get_sync(G_BUS_TYPE_SESSION, NULL, &error);
+  if (!bus) {
+    g_warning("Failed to contact to the session bus: %s", error->message);
+    return;
+  }
+
+  if (!g_dbus_connection_call_sync (bus,
+                                    "com.canonical.Shell.PermissionPrompting",
+                                    "/com/canonical/Shell/PermissionPrompting",
+                                    "com.canonical.Shell.PermissionPrompting",
+                                    "Prompt",
+                                    g_variant_new ("(st)", snap_name, app_pid),
+                                    NULL,
+                                    G_DBUS_CALL_FLAGS_NONE,
+                                    -1,
+                                    NULL,
+                                    &error)) {
+      g_warning("Failed to signal GNOME Shell about in progress prompting: %s",
+                error->message);
+  }
+}
 
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
@@ -56,17 +90,56 @@ static void my_application_activate(GApplication* application) {
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
+
+  // Retrieve parsed arguments
+  char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
+  guint64 app_pid = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_pid"));
+
+  const char *session = g_getenv ("XDG_CURRENT_DESKTOP");
+  if (session && strstr (session, "GNOME"))
+      signal_prompting_to_gnome_shell(snap_name, app_pid);
+
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
 
-  gtk_widget_grab_focus(GTK_WIDGET(view));
+  gtk_window_set_skip_taskbar_hint(window, TRUE);
+  gtk_window_set_skip_pager_hint(window, TRUE);
 }
 
 // Implements GApplication::local_command_line.
 static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
   MyApplication* self = MY_APPLICATION(application);
-  // Strip out the first argument as it is the binary name.
+  
+  // Make a copy of arguments for GOption parsing (which mutates the array)
+  g_auto(GStrv) args_copy = g_strdupv(*arguments);
+  
+  // Parse command line arguments
+  g_autofree char *snap_name = NULL;
+  guint64 app_pid = 0;
+
+  static const GOptionEntry entries[] = {
+    { "snap", 0, 0, G_OPTION_ARG_STRING, &snap_name, "Snap name", NULL },
+    { "app-pid", 0, 0, G_OPTION_ARG_INT64, &app_pid, "Application PID", NULL },
+    { NULL }
+  };
+
+  g_autoptr(GOptionContext) context = g_option_context_new(NULL);
+  g_option_context_add_main_entries(context, entries, NULL);
+  g_option_context_set_ignore_unknown_options(context, TRUE);
+
+  // Parse the copied arguments (this will mutate args_copy)
+  if (!g_option_context_parse_strv(context, &args_copy, NULL)) {
+    g_warning("Failed to parse arguments");
+    *exit_status = 1;
+    return TRUE;
+  }
+
+  // Pass the original arguments to Flutter (strip out the first argument as it is the binary name)
   self->dart_entrypoint_arguments = g_strdupv(*arguments + 1);
+
+  // Store parsed values for activate callback
+  g_object_set_data_full(G_OBJECT(application), "snap_name", g_steal_pointer(&snap_name), g_free);
+  g_object_set_data(G_OBJECT(application), "app_pid", GUINT_TO_POINTER(app_pid));
 
   g_autoptr(GError) error = nullptr;
   if (!g_application_register(application, nullptr, &error)) {

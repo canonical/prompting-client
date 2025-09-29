@@ -32,6 +32,18 @@ Future<void> main(List<String> args) async {
       'test-prompt',
       help: 'Path to a JSON file containing the test prompt',
       defaultsTo: 'test/test_prompts/test_home_prompt_details.json',
+    )
+    ..addOption(
+      'snap',
+      help: 'Snap name',
+    )
+    ..addOption(
+      'app-pid',
+      help: 'Application PID',
+    )
+    ..addOption(
+      'cgroup',
+      help: 'Application cgroup',
     );
 
   final ArgResults argResults;
@@ -42,7 +54,19 @@ Future<void> main(List<String> args) async {
     exit(2);
   }
 
+  // Log parsed arguments for debugging
+  if (argResults['snap'] != null) {
+    log.debug('Snap name: ${argResults['snap']}');
+  }
+  if (argResults['app-pid'] != null) {
+    log.debug('App PID: ${argResults['app-pid']}');
+  }
+  if (argResults['cgroup'] != null) {
+    log.debug('Cgroup: ${argResults['cgroup']}');
+  }
+
   if (argResults.flag('dry-run')) {
+    log.info('Running in dry-run mode');
     final fileName = argResults['test-prompt'] as String;
     if (!File(fileName).existsSync()) {
       log.error('Test prompt file $fileName does not exist');
@@ -66,8 +90,13 @@ Future<void> main(List<String> args) async {
   }
 
   final completer = Completer();
+  final cgroup = argResults['cgroup'] as String?;
+  if (cgroup == null) {
+    log.error('Cgroup argument is required');
+    exit(1);
+  }
   final currentPromptStream =
-      getService<PromptingClient>().getCurrentPrompt(argResults.arguments[2]);
+      getService<PromptingClient>().getCurrentPrompt(cgroup);
   currentPromptStream.listen(
     (promptDetails) {
       registerServiceInstance<PromptDetails>(promptDetails);

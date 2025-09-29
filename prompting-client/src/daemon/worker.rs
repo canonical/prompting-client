@@ -500,8 +500,11 @@ where
 
         debug!("spawning UI");
         let dialog_process = self.ui.spawn(&[
+            "--snap",
             enriched_prompt.prompt.snap(),
+            "--app-pid",
             &enriched_prompt.prompt.pid().to_string(),
+            "--cgroup",
             &enriched_prompt.prompt.cgroup().0,
         ])?;
         self.dialog_processes.insert(cgroup.clone(), dialog_process);
@@ -859,7 +862,7 @@ mod tests {
         type Handle = TestDialogHandle;
         fn spawn(&mut self, args: &[&str]) -> Result<TestDialogHandle> {
             debug!("spawning test ui");
-            let cgroup: Cgroup = (*args.get(2).expect("a pid")).into();
+            let cgroup: Cgroup = (*args.get(5).expect("a cgroup")).into();
             let reply = self
                 .replies
                 .get_mut(&cgroup)

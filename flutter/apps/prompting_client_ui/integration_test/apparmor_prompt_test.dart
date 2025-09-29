@@ -15,7 +15,7 @@ void main() {
   YaruTestWindow.ensureInitialized();
 
   testWidgets('UI dry-run', (tester) async {
-    await app.main(['firefox', '123', '--dry-run']);
+    await app.main(['--cgroup=123', '--dry-run']);
     await tester.pumpAndSettle();
 
     final fakeApparmorPromptingClient =
