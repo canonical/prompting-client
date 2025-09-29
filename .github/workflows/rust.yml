@@ -69,3 +69,4 @@ jobs:
           cargo fmt -- --check
           cargo clippy -- -D warnings
           cargo test
+          cargo test --test mock_server --features dry-run
