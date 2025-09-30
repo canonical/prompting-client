@@ -289,6 +289,28 @@ information about the code style in use, please check:
 * For Rust: <https://doc.rust-lang.org/1.0.0/style/README.html>
 * For Flutter: <https://github.com/flutter/flutter/wiki/Style-guide-for-Flutter-repo>
 
+### Pre-commit hooks
+
+This project uses pre-commit hooks to ensure code quality and consistency. Install and configure pre-commit:
+
+```bash
+pre-commit install
+```
+
+Pre-commit will automatically run linting, formatting, and basic checks on your code before each commit. You can also run checks manually:
+
+```bash
+pre-commit run
+```
+
+This command runs the pre-commit checks only on the files that have been staged for commit. If you want to run the checks on all files in the repository, you can use:
+
+```bash
+pre-commit run --all-files
+```
+
+This is useful for ensuring that the entire codebase adheres to the defined standards.
+
 ## Contributor License Agreement
 
 It is required to sign the [Contributor License Agreement](https://ubuntu.com/legal/contributors)
