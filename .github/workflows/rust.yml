@@ -1,4 +1,4 @@
-name: Build
+name: Rust CI
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
 
 jobs:
   test:
-    name: Lint and test
+    name: Build and Test
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -25,7 +25,6 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-          components: clippy, rustfmt
 
       - name: Build prompting-client snap
         id: snapcraft-client
@@ -66,6 +65,4 @@ jobs:
       - name: Run tests
         working-directory: ./prompting-client
         run: |
-          cargo fmt -- --check
-          cargo clippy -- -D warnings
           cargo test

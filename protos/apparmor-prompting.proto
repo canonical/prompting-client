@@ -6,162 +6,162 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
 service AppArmorPrompting {
-    rpc GetCurrentPrompt (google.protobuf.StringValue) returns (stream GetCurrentPromptResponse);
-    rpc ReplyToPrompt (PromptReply) returns (PromptReplyResponse);
-    rpc ResolveHomePatternType (google.protobuf.StringValue) returns (ResolveHomePatternTypeResponse);
-    rpc SetLoggingFilter (google.protobuf.StringValue) returns (SetLoggingFilterResponse);
+  rpc GetCurrentPrompt(google.protobuf.StringValue) returns (stream GetCurrentPromptResponse);
+  rpc ReplyToPrompt(PromptReply) returns (PromptReplyResponse);
+  rpc ResolveHomePatternType(google.protobuf.StringValue) returns (ResolveHomePatternTypeResponse);
+  rpc SetLoggingFilter(google.protobuf.StringValue) returns (SetLoggingFilterResponse);
 }
 
 message PromptReply {
-    string prompt_id = 1;
-    Action action = 2;
-    Lifespan lifespan = 3;
-    oneof prompt_reply {
-        HomePromptReply home_prompt_reply = 4;
-        CameraPromptReply camera_prompt_reply = 5;
-        MicrophonePromptReply microphone_prompt_reply = 6;
-    }
+  string prompt_id = 1;
+  Action action = 2;
+  Lifespan lifespan = 3;
+  oneof prompt_reply {
+    HomePromptReply home_prompt_reply = 4;
+    CameraPromptReply camera_prompt_reply = 5;
+    MicrophonePromptReply microphone_prompt_reply = 6;
+  }
 }
 
 message PromptReplyResponse {
-    string message = 1;
-    oneof prompt_reply_type {
-        google.protobuf.Empty success = 2;
-        google.protobuf.Empty raw = 3;
-        google.protobuf.Empty prompt_not_found = 4;
-        google.protobuf.Empty rule_not_found = 5;
-        HomeRuleConflicts rule_conflicts = 6;
-        InvalidHomePermissions invalid_permissions = 7;
-        InvalidPathPattern invalid_path_pattern = 8;
-        ParseError parse_error = 9;
-        UnsupportedValue unsupported_value = 10;
-    }
+  string message = 1;
+  oneof prompt_reply_type {
+    google.protobuf.Empty success = 2;
+    google.protobuf.Empty raw = 3;
+    google.protobuf.Empty prompt_not_found = 4;
+    google.protobuf.Empty rule_not_found = 5;
+    HomeRuleConflicts rule_conflicts = 6;
+    InvalidHomePermissions invalid_permissions = 7;
+    InvalidPathPattern invalid_path_pattern = 8;
+    ParseError parse_error = 9;
+    UnsupportedValue unsupported_value = 10;
+  }
 
-    message HomeRuleConflicts {
-        repeated HomeRuleConflict conflicts = 1;
-    }
+  message HomeRuleConflicts {
+    repeated HomeRuleConflict conflicts = 1;
+  }
 
-    message HomeRuleConflict {
-        HomePermission permission = 1;
-        string variant = 2;
-        string conflicting_id = 3;
-    }
+  message HomeRuleConflict {
+    HomePermission permission = 1;
+    string variant = 2;
+    string conflicting_id = 3;
+  }
 
-    message InvalidHomePermissions {
-        repeated HomePermission requested = 1;
-        repeated HomePermission replied = 2;
-    }
+  message InvalidHomePermissions {
+    repeated HomePermission requested = 1;
+    repeated HomePermission replied = 2;
+  }
 
-    message InvalidPathPattern {
-        string requested = 1;
-        string replied = 2;
-    }
+  message InvalidPathPattern {
+    string requested = 1;
+    string replied = 2;
+  }
 
-    message ParseError {
-        string field = 1;
-        string value = 2;
-    }
+  message ParseError {
+    string field = 1;
+    string value = 2;
+  }
 
-    message UnsupportedValue {
-        string field = 1;
-        repeated string supported = 2;
-        repeated string provided = 3;
-    }
+  message UnsupportedValue {
+    string field = 1;
+    repeated string supported = 2;
+    repeated string provided = 3;
+  }
 }
 
 enum Action {
-    ALLOW = 0;
-    DENY = 1;
-} 
+  ALLOW = 0;
+  DENY = 1;
+}
 
 enum Lifespan {
-    SINGLE = 0;
-    SESSION = 1;
-    FOREVER = 2;
+  SINGLE = 0;
+  SESSION = 1;
+  FOREVER = 2;
 }
 
 enum HomePermission {
-    READ = 0;
-    WRITE = 1;
-    EXECUTE = 2;
+  READ = 0;
+  WRITE = 1;
+  EXECUTE = 2;
 }
 
 enum DevicePermission {
-    ACCESS = 0;
+  ACCESS = 0;
 }
 
 message GetCurrentPromptResponse {
-    oneof prompt {
-        HomePrompt home_prompt = 1;
-        CameraPrompt camera_prompt = 2;
-        MicrophonePrompt microphone_prompt = 3;
-    }
+  oneof prompt {
+    HomePrompt home_prompt = 1;
+    CameraPrompt camera_prompt = 2;
+    MicrophonePrompt microphone_prompt = 3;
+  }
 }
 
 message HomePromptReply {
-   string path_pattern = 1;
-   repeated HomePermission permissions = 2;
+  string path_pattern = 1;
+  repeated HomePermission permissions = 2;
 }
 
 message CameraPromptReply {
-   repeated DevicePermission permissions = 1;
+  repeated DevicePermission permissions = 1;
 }
 
 message MicrophonePromptReply {
-   repeated DevicePermission permissions = 1;
+  repeated DevicePermission permissions = 1;
 }
 
 message HomePrompt {
-    MetaData meta_data = 1;
-    string requested_path = 2;
-    string home_dir = 3;
-    repeated HomePermission requested_permissions = 4;
-    repeated HomePermission available_permissions = 5;
-    repeated HomePermission suggested_permissions = 6;
-    repeated PatternOption pattern_options = 7;
-    int32 initial_pattern_option = 8;
-    message PatternOption {
-        HomePatternType home_pattern_type = 1;
-        string path_pattern = 2;
-        bool show_initially = 3;
-    };
-    EnrichedPathKind enriched_path_kind = 9;
+  MetaData meta_data = 1;
+  string requested_path = 2;
+  string home_dir = 3;
+  repeated HomePermission requested_permissions = 4;
+  repeated HomePermission available_permissions = 5;
+  repeated HomePermission suggested_permissions = 6;
+  repeated PatternOption pattern_options = 7;
+  int32 initial_pattern_option = 8;
+  message PatternOption {
+    HomePatternType home_pattern_type = 1;
+    string path_pattern = 2;
+    bool show_initially = 3;
+  }
+  EnrichedPathKind enriched_path_kind = 9;
 }
 
 message CameraPrompt {
-    MetaData meta_data = 1;
+  MetaData meta_data = 1;
 }
 
 message MicrophonePrompt {
-    MetaData meta_data = 1;
+  MetaData meta_data = 1;
 }
 
 enum HomePatternType {
-    REQUESTED_DIRECTORY = 0;
-    REQUESTED_FILE = 1;
-    TOP_LEVEL_DIRECTORY = 2;
-    CONTAINING_DIRECTORY = 3;
-    HOME_DIRECTORY = 4;
-    MATCHING_FILE_EXTENSION = 5;
-    REQUESTED_DIRECTORY_CONTENTS = 6;
+  REQUESTED_DIRECTORY = 0;
+  REQUESTED_FILE = 1;
+  TOP_LEVEL_DIRECTORY = 2;
+  CONTAINING_DIRECTORY = 3;
+  HOME_DIRECTORY = 4;
+  MATCHING_FILE_EXTENSION = 5;
+  REQUESTED_DIRECTORY_CONTENTS = 6;
 }
 
 message MetaData {
-    string prompt_id = 1;
-    string snap_name = 2;
-    string store_url = 3;
-    string publisher = 4;
-    string updated_at = 5;
-    bytes snap_icon = 6;
-    string snap_icon_mime_type = 7;
+  string prompt_id = 1;
+  string snap_name = 2;
+  string store_url = 3;
+  string publisher = 4;
+  string updated_at = 5;
+  bytes snap_icon = 6;
+  string snap_icon_mime_type = 7;
 }
 
 message ResolveHomePatternTypeResponse {
-   HomePatternType home_pattern_type = 1; 
+  HomePatternType home_pattern_type = 1;
 }
 
 message SetLoggingFilterResponse {
-    string current = 1;
+  string current = 1;
 }
 
 message EnrichedPathKind {

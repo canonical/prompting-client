@@ -109,10 +109,10 @@ static void my_application_activate(GApplication* application) {
 // Implements GApplication::local_command_line.
 static gboolean my_application_local_command_line(GApplication* application, gchar*** arguments, int* exit_status) {
   MyApplication* self = MY_APPLICATION(application);
-  
+
   // Make a copy of arguments for GOption parsing (which mutates the array)
   g_auto(GStrv) args_copy = g_strdupv(*arguments);
-  
+
   // Parse command line arguments
   g_autofree char *snap_name = NULL;
   guint64 app_pid = 0;

@@ -155,10 +155,11 @@ cargo build --release
 ```
 
 This will build all the binaries:
-- `prompting-client-daemon` - The main daemon that handles prompts
-- `prompting-client-scripted` - Scripted client for automation in integration tests
-- `prompting-client-echo` - Echo client for testing prompts
-- `prompting-client-set-log-level` - Utility to set logging levels
+
+* `prompting-client-daemon` - The main daemon that handles prompts
+* `prompting-client-scripted` - Scripted client for automation in integration tests
+* `prompting-client-echo` - Echo client for testing prompts
+* `prompting-client-set-log-level` - Utility to set logging levels
 
 #### Building the Flutter UI
 
@@ -193,7 +194,6 @@ RUST_LOG=debug \
 
 The `FLUTTER_UI_OVERRIDE` should point to the built Flutter UI binary at:
 `flutter/apps/prompting_client_ui/build/linux/x64/release/bundle/prompting_client_ui`
-
 
 #### Building the complete snap
 
@@ -255,7 +255,7 @@ melos test
 It is possible to spawn a prompt using `dry-run` mode and a `.json` file without
 hardcoded prompt details in it. This can be very useful for testing UI changes.
 
-You can initiate `dry-run` mode from the `/flutter/apps/prompting_client_ui` 
+You can initiate `dry-run` mode from the `/flutter/apps/prompting_client_ui`
 using:
 
 ```bash
@@ -288,6 +288,28 @@ information about the code style in use, please check:
 
 * For Rust: <https://doc.rust-lang.org/1.0.0/style/README.html>
 * For Flutter: <https://github.com/flutter/flutter/wiki/Style-guide-for-Flutter-repo>
+
+### Pre-commit hooks
+
+This project uses pre-commit hooks to ensure code quality and consistency. Install and configure pre-commit:
+
+```bash
+pre-commit install
+```
+
+Pre-commit will automatically run linting, formatting, and basic checks on your code before each commit. You can also run checks manually:
+
+```bash
+pre-commit run
+```
+
+This command runs the pre-commit checks only on the files that have been staged for commit. If you want to run the checks on all files in the repository, you can use:
+
+```bash
+pre-commit run --all-files
+```
+
+This is useful for ensuring that the entire codebase adheres to the defined standards.
 
 ## Contributor License Agreement
 

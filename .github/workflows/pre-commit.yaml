@@ -1,0 +1,26 @@
+name: pre-commit
+
+on:
+    pull_request:
+    push:
+        branches: [main]
+
+jobs:
+    pre-commit:
+        runs-on: ubuntu-24.04
+        steps:
+            - uses: actions/checkout@v4
+            - uses: Atsumi3/actions-setup-fvm@0.0.3
+            - uses: bluefireteam/melos-action@v3
+            - run: melos generate
+
+            - uses: dtolnay/rust-toolchain@stable
+              with:
+                  toolchain: stable
+                  components: clippy, rustfmt
+
+            - name: Install dependencies
+              run: |
+                  sudo apt-get install protobuf-compiler
+
+            - uses: pre-commit/action@v3.0.1
