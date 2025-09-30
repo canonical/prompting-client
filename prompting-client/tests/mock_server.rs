@@ -15,7 +15,13 @@ use prompting_client::{
 };
 use serial_test::serial;
 use simple_test_case::test_case;
-use std::{env, path::PathBuf, process::Stdio, sync::OnceLock, time::Duration};
+use std::{
+    env,
+    path::{Path, PathBuf},
+    process::Stdio,
+    sync::OnceLock,
+    time::Duration,
+};
 use tokio::{
     fs::File,
     io::{self, AsyncBufReadExt, AsyncWriteExt, BufReader, BufWriter},
@@ -28,7 +34,7 @@ use tokio_stream::{wrappers::LinesStream, StreamExt};
 
 static PIPE_PATH: OnceLock<String> = OnceLock::new();
 static SOCKET_PATH: OnceLock<String> = OnceLock::new();
-static PROMPTS_PATH: OnceLock<PathBuf> = OnceLock::new();
+static WORKSPACE_PATH: OnceLock<PathBuf> = OnceLock::new();
 
 fn get_pipe_path() -> &'static str {
     PIPE_PATH.get_or_init(|| format!("/tmp/pipe.{}", uuid::Uuid::new_v4()))
@@ -38,23 +44,19 @@ fn get_socket_path() -> &'static str {
     SOCKET_PATH.get_or_init(|| format!("/tmp/mock.sock.{}", uuid::Uuid::new_v4()))
 }
 
-fn get_prompts_path() -> &'static PathBuf {
-    PROMPTS_PATH.get_or_init(|| {
+fn get_workspace_path() -> &'static PathBuf {
+    WORKSPACE_PATH.get_or_init(|| {
         let manifest_dir = env!("CARGO_MANIFEST_DIR");
-        let workspace_root = std::path::Path::new(manifest_dir)
+        let workspace = Path::new(manifest_dir)
             .parent()
             .expect("CARGO_MANIFEST_DIR should have a parent directory (workspace root)");
 
-        workspace_root.join("mock-server/prompts")
+        workspace.into()
     })
 }
 
 fn get_mock_server_path() -> PathBuf {
-    let manifest_dir = env!("CARGO_MANIFEST_DIR");
-    let workspace_root = std::path::Path::new(manifest_dir)
-        .parent()
-        .expect("CARGO_MANIFEST_DIR should have a parent directory (workspace root)");
-    let mock_server_path = workspace_root.join("mock-server");
+    let mock_server_path = get_workspace_path().join("mock-server");
     let binary_path = mock_server_path.join("target/release/mock-server");
 
     if !binary_path.exists() {
@@ -87,12 +89,15 @@ fn start_mock_server() -> UnboundedReceiver<String> {
 
     let (tx, rx) = unbounded_channel();
     let binary_path = get_mock_server_path();
+    let prompts_path = get_workspace_path().join("mock-server/prompts");
 
     spawn(async move {
+        let relevant_logs = ["Get", "Reply", "Sending", "New"];
+
         let mut c = Command::new(&binary_path)
             .env("PIPE_PATH", get_pipe_path())
             .env("SOCKET_PATH", get_socket_path())
-            .env("PROMPTS_PATH", get_prompts_path())
+            .env("PROMPTS_PATH", prompts_path)
             .env("RUST_LOG", "info")
             .stdout(Stdio::piped())
             .kill_on_drop(true)
@@ -109,13 +114,12 @@ fn start_mock_server() -> UnboundedReceiver<String> {
         let mut stdout_lines = LinesStream::new(stdout.lines());
 
         while let Some(Ok(line)) = stdout_lines.next().await {
-            if ["Get", "Reply", "Sending", "New"]
-                .iter()
-                .any(|&pattern| line.contains(pattern))
-            {
-                if let Err(_) = tx.send(line) {
-                    break;
-                }
+            if !relevant_logs.iter().any(|&p| line.contains(p)) {
+                continue;
+            }
+
+            if let Err(_) = tx.send(line) {
+                break;
             }
         }
     });
@@ -156,7 +160,6 @@ macro_rules! reply {
 
 #[tokio::test]
 #[serial]
-
 async fn ensure_prompting_is_enabled() -> Result<()> {
     let _rx = start_mock_server();
 
@@ -173,7 +176,6 @@ async fn ensure_prompting_is_enabled() -> Result<()> {
 #[test_case(Action::Deny; "deny")]
 #[tokio::test]
 #[serial]
-
 async fn all_initial_state_prompts_are_valid(action: Action) -> Result<()> {
     let mut rx = start_mock_server();
 
@@ -210,7 +212,6 @@ async fn all_initial_state_prompts_are_valid(action: Action) -> Result<()> {
 #[test_case(Action::Deny; "deny")]
 #[tokio::test]
 #[serial]
-
 async fn send_through_pipe(action: Action) -> Result<()> {
     let prompt = serde_json::json!({
         "id": "0000000000000000",
