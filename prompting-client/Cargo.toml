@@ -46,7 +46,7 @@ serde_json = "1.0.117"
 serde = { version = "1.0.202", features = ["derive"] }
 strum = { version = "0.27.0", features = ["derive"] }
 thiserror = "1.0.61"
-tokio-stream = "0.1.15"
+tokio-stream = { version = "0.1.15", features = ["io-util"] }
 tokio = { version = "1.43.1", features = [
     "fs",
     "io-util",
