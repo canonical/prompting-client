@@ -1,7 +1,10 @@
 //! This is our main worker task for processing prompts from snapd and driving the UI.
 
 #![cfg_attr(feature = "auto-reply", allow(unreachable_code))]
-#![cfg_attr(feature = "dry-run", allow(unused_variables))]
+#![cfg_attr(
+    any(feature = "dry-run", feature = "auto-reply"),
+    allow(unused_variables)
+)]
 
 use crate::{
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
@@ -312,6 +315,27 @@ where
                         .await?;
                 }
                 Ok(typed_ui_input) => {
+                    #[cfg(feature = "auto-reply")]
+                    {
+                        use std::sync::OnceLock;
+
+                        static REPLY: OnceLock<String> = OnceLock::new();
+
+                        let reply = REPLY.get_or_init(|| {
+                            env::var("PROMPTING_CLIENT_AUTO_REPLY")
+                                .unwrap_or_else(|_| "DENY_ONCE".to_string())
+                        });
+
+                        let id = enriched_prompt.prompt.id().clone();
+                        debug!("auto-replying to prompt {} with {}", id.0, reply);
+                        let reply = match reply.as_str() {
+                            "ALLOW_ONCE" => enriched_prompt.prompt.into_allow_once(),
+                            "ALLOW_FOREVER" => enriched_prompt.prompt.into_allow_forever(),
+                            _ => enriched_prompt.prompt.into_deny_once(),
+                        };
+                        self.client.reply(&id, reply).await?;
+                        continue;
+                    }
                     self.update_active_prompt(&cgroup, enriched_prompt, typed_ui_input)?;
                 }
             }
@@ -344,30 +368,6 @@ where
                 .clone()
         };
         let expected_id = enriched_prompt.prompt.id().clone();
-
-        #[cfg(feature = "auto-reply")]
-        {
-            use std::sync::OnceLock;
-
-            static REPLY: OnceLock<String> = OnceLock::new();
-
-            let reply = REPLY.get_or_init(|| {
-                let env_var = env::var("PROMPTING_CLIENT_AUTO_REPLY")
-                    .unwrap_or_else(|_| "DENY_ONCE".to_string());
-                debug!("PROMPTING: auto-reply env value: {:?}", env_var);
-
-                env_var
-            });
-
-            let reply = match reply.as_str() {
-                "ALLOW_ONCE" => enriched_prompt.prompt.into_allow_once(),
-                "ALLOW_FOREVER" => enriched_prompt.prompt.into_allow_forever(),
-                _ => enriched_prompt.prompt.into_deny_once(),
-            };
-            self.client.reply(&expected_id, reply).await?;
-
-            return Ok(());
-        }
 
         loop {
             match self.wait_for_expected_prompt(&expected_id).await {
