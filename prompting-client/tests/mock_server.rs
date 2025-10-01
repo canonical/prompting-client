@@ -32,19 +32,21 @@ use tokio::{
 };
 use tokio_stream::{wrappers::LinesStream, StreamExt};
 
-static PIPE_PATH: OnceLock<String> = OnceLock::new();
-static SOCKET_PATH: OnceLock<String> = OnceLock::new();
-static WORKSPACE_PATH: OnceLock<PathBuf> = OnceLock::new();
-
 fn get_pipe_path() -> &'static str {
+    static PIPE_PATH: OnceLock<String> = OnceLock::new();
+
     PIPE_PATH.get_or_init(|| format!("/tmp/pipe.{}", uuid::Uuid::new_v4()))
 }
 
 fn get_socket_path() -> &'static str {
+    static SOCKET_PATH: OnceLock<String> = OnceLock::new();
+
     SOCKET_PATH.get_or_init(|| format!("/tmp/mock.sock.{}", uuid::Uuid::new_v4()))
 }
 
 fn get_workspace_path() -> &'static PathBuf {
+    static WORKSPACE_PATH: OnceLock<PathBuf> = OnceLock::new();
+
     WORKSPACE_PATH.get_or_init(|| {
         let manifest_dir = env!("CARGO_MANIFEST_DIR");
         let workspace = Path::new(manifest_dir)
