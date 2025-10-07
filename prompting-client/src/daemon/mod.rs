@@ -1,10 +1,11 @@
 use crate::{
+    exit_with,
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt, TypedPromptReply},
     Result, SOCKET_ENV_VAR,
 };
 use serde::Serialize;
 use std::{env, fmt::Debug, fs, sync::Arc};
-use tokio::sync::mpsc::unbounded_channel;
+use tokio::{sync::mpsc::unbounded_channel, task::JoinSet};
 use tokio_stream::wrappers::UnixListenerStream;
 use tonic::{async_trait, transport::Server};
 use tracing::{debug, error};
@@ -76,23 +77,43 @@ where
         path,
     );
 
+    let mut set = JoinSet::new();
+
     debug!("spawning poll loop");
     let poll_loop = PollLoop::new(c, tx_prompts);
-    tokio::spawn(async move { poll_loop.run().await });
+    set.spawn(async move {
+        poll_loop
+            .run()
+            .await
+            .inspect_err(|e| error!("poll loop exited with error: {:?}", e))
+    });
 
     debug!("spawning worker thread");
-    tokio::spawn(async move { worker.run().await });
+    set.spawn(async move {
+        worker
+            .run()
+            .await
+            .inspect_err(|e| error!("worker exited with error: {:?}", e))
+    });
 
     debug!("serving incoming grpc connections");
-    let res = Server::builder()
-        .add_service(server)
-        .serve_with_incoming(UnixListenerStream::new(listener))
-        .await;
+    set.spawn(async move {
+        Server::builder()
+            .add_service(server)
+            .serve_with_incoming(UnixListenerStream::new(listener))
+            .await
+            .map_err(Into::into)
+            .inspect_err(|e| error!("grpc server exited with error: {:?}", e))
+    });
 
-    if let Err(error) = res {
-        error!(%error, "grpc server fatal error");
-        panic!("{error}");
+    if let Err(err) = set
+        .join_next()
+        .await
+        .expect("non-empty join set")
+        .expect("no panics in spawned tasks")
+    {
+        error!("join set returned error: {:?}", err);
     }
-
-    Ok(())
+    error!("one or more tasks have returned - exiting");
+    exit_with(crate::ExitStatus::Failure);
 }

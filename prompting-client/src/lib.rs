@@ -41,6 +41,9 @@ pub enum Error {
     HyperHttp(#[from] hyper::http::Error),
 
     #[error(transparent)]
+    TonicTransport(#[from] tonic::transport::Error),
+
+    #[error(transparent)]
     Io(#[from] std::io::Error),
 
     #[error(transparent)]
