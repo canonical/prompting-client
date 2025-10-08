@@ -66,3 +66,4 @@ jobs:
         working-directory: ./prompting-client
         run: |
           cargo test
+          cargo test --test mock_server --features dry-run

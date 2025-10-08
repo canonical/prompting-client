@@ -46,6 +46,7 @@ async fn main() -> Result<()> {
 
     let pipe_path = std::env::var("PIPE_PATH")?;
     let socket_path = std::env::var("SOCKET_PATH")?;
+    let prompts_path = std::env::var("PROMPTS_PATH").unwrap_or("prompts".into());
 
     // A broadcast channel is used instead of a standard mpsc channel because it allows
     // multiple receivers to subscribe and receive all messages sent through the channel.
@@ -53,7 +54,7 @@ async fn main() -> Result<()> {
     // to multiple independent consumers.
     let (tx, _) = broadcast::channel::<(Value, Action)>(16);
 
-    let prompts = Prompts::read_initial_state("prompts");
+    let prompts = Prompts::read_initial_state(&prompts_path);
     let mut notices = HashMap::new();
     for k in prompts.keys() {
         let value = Prompts::make_notice(k.parse::<u64>()?, k);

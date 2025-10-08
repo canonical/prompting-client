@@ -6,6 +6,9 @@
 //!
 //! Creation of the SnapdSocketClient needs to be handled before spawning the test snap so that
 //! polling `after` is correct to pick up the prompt.
+
+#![cfg(not(feature = "dry-run"))]
+
 use prompting_client::{
     cli_actions::ScriptedClient,
     prompt_sequence::MatchError,
