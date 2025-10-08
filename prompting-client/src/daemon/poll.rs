@@ -8,7 +8,7 @@ use crate::{
     daemon::{EnrichedPrompt, PromptUpdate},
     exit_with,
     snapd_client::{PromptId, PromptNotice, SnapMeta, SnapdSocketClient, TypedPrompt},
-    Error, ExitStatus,
+    Error, ExitStatus, Result,
 };
 use cached::proc_macro::cached;
 use hyper::StatusCode;
@@ -58,7 +58,7 @@ impl PollLoop {
     /// we are running under and processes them before dropping into long-polling for notices.
     /// This task is responsible for pulling prompt details and snap meta-data from snapd but
     /// does not directly process the prompts themselves.
-    pub async fn run(mut self) {
+    pub async fn run(mut self) -> Result<()> {
         if !self.skip_outstanding_prompts {
             self.handle_outstanding_prompts().await;
         }
@@ -103,6 +103,8 @@ impl PollLoop {
                 }
             }
         }
+
+        Ok(())
     }
 
     fn send_update(&mut self, update: PromptUpdate) {
