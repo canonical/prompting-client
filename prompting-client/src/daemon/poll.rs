@@ -83,6 +83,7 @@ impl PollLoop {
 
                 Err(error) if retries < MAX_POLL_RETRIES => {
                     error!(%error, "unable to pull prompt ids: retrying");
+                    self.client.exit_if_prompting_not_enabled().await?;
                     sleep(RETRY_SLEEP_DURATION).await;
                     retries += 1;
                     continue;
