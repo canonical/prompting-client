@@ -7,6 +7,7 @@ import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_page.dart';
 import 'package:prompting_client_ui/pages/microphone/microphone_prompt_page.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:yaru/yaru.dart';
@@ -30,28 +31,41 @@ class PromptPage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: MeasureSizeBuilder(
           builder: (context, size) {
-            _log.debug('SizeChangedLayoutNotification received: $size');
-            if (size.width >= 100 && size.height >= 100) {
-              _ensureWindowSize(
-                Size(
-                  size.width,
-                  size.height + kYaruTitleBarHeight,
-                ),
-              );
-            }
+            _log.debug(
+              'SizeChangedLayoutNotification received: (${size.width}, ${size.height})',
+            );
+            _ensureWindowSize(
+              Size(size.width, size.height + kYaruTitleBarHeight),
+            );
 
-            return SizeChangedLayoutNotifier(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(minWidth: 560),
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: switch (prompt) {
-                    PromptDetailsHome() => const HomePromptPage(),
-                    PromptDetailsCamera() => const CameraPromptPage(),
-                    PromptDetailsMicrophone() => const MicrophonePromptPage(),
-                  },
-                ),
-              ),
+            return Consumer(
+              builder: (context, ref, _) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (context.size != null) {
+                    _ensureWindowSize(
+                      Size(
+                        context.size!.width,
+                        context.size!.height + kYaruTitleBarHeight,
+                      ),
+                    );
+                  }
+                });
+                return SizeChangedLayoutNotifier(
+                  child: ConstrainedBox(
+                    constraints:
+                        BoxConstraints(minWidth: defaultWindowSize.width),
+                    child: Padding(
+                      padding: const EdgeInsets.all(18.0),
+                      child: switch (prompt) {
+                        PromptDetailsHome() => const HomePromptPage(),
+                        PromptDetailsCamera() => const CameraPromptPage(),
+                        PromptDetailsMicrophone() =>
+                          const MicrophonePromptPage(),
+                      },
+                    ),
+                  ),
+                );
+              },
             );
           },
         ),
@@ -64,14 +78,17 @@ Future<void> _ensureWindowSize(Size size) async {
   const delay = Duration(milliseconds: 100);
   const maxRetries = 10;
   var retries = 0;
+
+  if (size.width < 100 || size.height < 100) return;
+
   do {
-    _log.debug('Setting window size to $size');
+    _log.debug('Setting window size to (${size.width}, ${size.height})');
     await windowManager.setSize(size);
     await Future.delayed(delay);
   } while (await windowManager.getSize() != size && retries++ < maxRetries);
   if (retries >= maxRetries) {
-    _log.error('Failed to set window size to $size');
+    _log.error('Failed to set window size to (${size.width}, ${size.height})');
   } else {
-    _log.debug('Window size set to $size');
+    _log.debug('Window size set to (${size.width}, ${size.height})');
   }
 }
