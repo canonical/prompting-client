@@ -11,6 +11,7 @@ import 'package:prompting_client_ui/pages/prompt_page.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:ubuntu_service/ubuntu_service.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:yaru/yaru.dart';
 
 const envVarSocketPath = 'PROMPTING_CLIENT_SOCKET';
@@ -22,6 +23,7 @@ Future<void> main(List<String> args) async {
   final log = Logger('apparmor_prompt');
 
   await YaruWindowTitleBar.ensureInitialized();
+  await windowManager.ensureInitialized();
 
   final parser = ArgParser()
     ..addFlag(
@@ -114,6 +116,13 @@ Future<void> main(List<String> args) async {
   await completer.future;
 
   await initDefaultLocale();
+
+  await windowManager
+      .waitUntilReadyToShow(WindowOptions(size: defaultWindowSize), () async {
+    await windowManager.setResizable(false);
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
   runApp(const ProviderScope(child: PromptDialog()));
 }
