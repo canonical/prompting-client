@@ -116,6 +116,33 @@ The required changes include adding the new interface to:
 
 These updates enable the scripted client to deserialize test scripts containing the new interface and properly match incoming prompts against expected test cases for automated testing scenarios.
 
+## Support the new interface in the mock server
+
+In order to keep the mock server in sync with the client, we need to add a new fake prompt to the `/mock-server/prompts/` directory. It will be automatically tested with integration tests.
+
+The `interface` and `constraints` fields must be filled with the defined `NAME` and `Constraints` respectively, based on the specifications.
+
+For the camera interface, a possible prompt looks like:
+
+```json
+{
+    "id": "0000000000000000",
+    "timestamp": "2025-08-20T16:17:44.28198468+02:00",
+    "snap": "cheese",
+    "pid": 136211,
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/cheese.scope",
+    "interface": "camera",
+    "constraints": {
+        "requested-permissions": [
+            "access"
+        ],
+        "available-permissions": [
+            "access"
+        ]
+    }
+}
+```
+
 ## Testing
 
 Comprehensive testing forms a critical part of interface implementation, encompassing both unit and integration testing strategies. Unit tests within the interface module should cover prompt deserialization from JSON, prompt-to-reply conversion logic, custom permission validation, and constraints filtering functionality. These tests ensure that the core interface logic works correctly in isolation.
