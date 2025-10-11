@@ -1,195 +1,213 @@
 {
-  "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
+    "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Povoliť",
+    "@promptActionOptionAllow": {},
+    "promptActionOptionDeny": "Odmietnuť",
+    "@promptActionOptionDeny": {},
+    "promptActionOptionDenyOnce": "Raz odmietnuť",
+    "@promptActionOptionDenyOnce": {},
+    "promptActionTitle": "Akcia",
+    "@promptActionTitle": {},
+    "promptLifespanOptionForever": "Vždy",
+    "@promptLifespanOptionForever": {},
+    "promptLifespanOptionSession": "Do odhlásenia",
+    "@promptLifespanOptionSession": {},
+    "promptLifespanOptionSingle": "Raz",
+    "@promptLifespanOptionSingle": {},
+    "promptLifespanTitle": "Doba trvania",
+    "@promptLifespanTitle": {},
+    "promptSaveAndContinue": "Uložiť a pokračovať",
+    "@promptSaveAndContinue": {},
+    "promptTitle": "Bezpečnostné upozornenie",
+    "@promptTitle": {},
+    "homePatternTypeCustomPath": "Vlastný formát cesty",
+    "@homePatternTypeCustomPath": {},
+    "homePatternTypeRequestedDirectory": "Iba požadovaný priečinok",
+    "@homePatternTypeRequestedDirectory": {},
+    "homePatternTypeTopLevelDirectory": "Všetko v priečinku {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Všetko v priečinku",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "Všetko v priečinku",
+    "@homePatternTypeContainingDirectory": {},
+    "homePatternTypeHomeDirectory": "Všetko v priečinku Domov",
+    "@homePatternTypeHomeDirectory": {},
+    "homePatternTypeMatchingFileExtension": "Všetky súbory {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {},
+    "homePromptMetaDataTitle": "O tejto aplikácii",
+    "@homePromptMetaDataTitle": {},
+    "homePromptMetaDataPublishedBy": "Vydal {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Posledná aktualizácia {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataAppCenterLink": "Navštíviť stránku Centra aplikácií",
+    "@homePromptMetaDataAppCenterLink": {},
+    "homePromptPermissionsTitle": "Oprávnenia",
+    "@homePromptPermissionsTitle": {},
+    "homePromptPermissionsRead": "Čítanie",
+    "@homePromptPermissionsRead": {},
+    "homePromptPermissionsWrite": "Zápis",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsExecute": "Spúšťanie",
+    "@homePromptPermissionsExecute": {},
+    "securityCenterInfo": "Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
+    "@securityCenterInfo": {},
+    "promptActionOptionAllowAlways": "Vždy povoliť",
+    "@promptActionOptionAllowAlways": {},
+    "promptAccessTitle": "Umožniť {snap} na {permission} prístup k:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternInfo": "<Ďalšie informácie o formátoch ciest>",
+    "@homePatternInfo": {},
+    "homePatternTypeRequestedFile": "Iba požadovaný súbor",
+    "@homePatternTypeRequestedFile": {},
+    "homePromptBody": "Povoliť {snap} mať na {permissions} prístup k {path}?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Viac možností...",
+    "@homePromptMoreOptionsLabel": {},
+    "promptActionOptionAllowOnce": "Raz povoliť",
+    "@promptActionOptionAllowOnce": {},
+    "homePromptSuggestedPermission": "Umožniť prístup aj na {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
+    "@homePromptErrorUnknownTitle": {},
+    "homePromptTopLevelDirFileBody": "{snap} žiada na {permissions} prístup k {filename} v priečinku {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} žiada na {permissions} prístup k priečinku Domov.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} žiada na {permissions} prístup k priečinku {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} žiada na {permissions} prístup k {filename} v priečinku Domov.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} žiada na {permissions} prístup k {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Povoliť do odhlásenia",
+    "@promptActionOptionAllowUntilLogout": {},
+    "cameraPromptBody": "Povoliť {snapName} prístup k vašej kamere?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Povoliť {snapName} prístup k vášmu mikrofónu?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptActionOptionAllow": "Povoliť",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionDeny": "Odmietnuť",
-  "@promptActionOptionDeny": {},
-  "promptActionOptionDenyOnce": "Raz odmietnuť",
-  "@promptActionOptionDenyOnce": {},
-  "promptActionTitle": "Akcia",
-  "@promptActionTitle": {},
-  "promptLifespanOptionForever": "Vždy",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Do ukončenia",
-  "@promptLifespanOptionSession": {},
-  "promptLifespanOptionSingle": "Raz",
-  "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "Doba trvania",
-  "@promptLifespanTitle": {},
-  "promptSaveAndContinue": "Uložiť a pokračovať",
-  "@promptSaveAndContinue": {},
-  "promptTitle": "Bezpečnostné upozornenie",
-  "@promptTitle": {},
-  "homePatternTypeCustomPath": "Vlastný formát cesty",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "Iba požadovaný priečinok",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeTopLevelDirectory": "Všetko v priečinku {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeRequestedDirectoryContents": "Všetko v priečinku",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeContainingDirectory": "Všetko v priečinku",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeHomeDirectory": "Všetko v priečinku Domov",
-  "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Všetky súbory {fileExtension}",
-  "@homePatternTypeMatchingFileExtension": {},
-  "homePromptMetaDataTitle": "O tejto aplikácii",
-  "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "Vydal {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataLastUpdated": "Posledná aktualizácia {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataAppCenterLink": "Navštíviť stránku Centra aplikácií",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePromptPermissionsTitle": "Oprávnenia",
-  "@homePromptPermissionsTitle": {},
-  "homePromptPermissionsRead": "Čítanie",
-  "@homePromptPermissionsRead": {},
-  "homePromptPermissionsWrite": "Zápis",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Spúšťanie",
-  "@homePromptPermissionsExecute": {},
-  "securityCenterInfo": "Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
-  "@securityCenterInfo": {},
-  "promptActionOptionAllowAlways": "Vždy povoliť",
-  "@promptActionOptionAllowAlways": {},
-  "promptAccessTitle": "Udeľte {snap} na {permission} prístup k:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternInfo": "<Ďalšie informácie o formátoch ciest>",
-  "@homePatternInfo": {},
-  "homePatternTypeRequestedFile": "Iba požadovaný súbor",
-  "@homePatternTypeRequestedFile": {},
-  "homePromptBody": "Povoliť {snap} mať na {permissions} prístup k {path}?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "Viac možností...",
-  "@homePromptMoreOptionsLabel": {},
-  "promptActionOptionAllowOnce": "Raz povoliť",
-  "@promptActionOptionAllowOnce": {},
-  "homePromptSuggestedPermission": "Udeliť prístup aj na {permission}",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptTopLevelDirFileBody": "{snap} chce získať na {permissions} prístup k {filename} v priečinku {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} chce získať na {permissions} prístup k priečinku Domov.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirBody": "{snap} chce získať na {permissions} prístup k priečinku {foldername}.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} chce získať na {permissions} prístup k {filename} v priečinku Domov.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptDefaultBody": "{snap} chce získať na {permissions} prístup k {path}",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  }
 }
