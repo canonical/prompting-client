@@ -11,8 +11,8 @@ The core types required include:
 - `Constraints` for the interface's permission structure
 - `ReplyConstraints` for reply-specific data
 - `ConstraintsFilter` for scripted client filtering logic
-- `ReplyConstraintsOverrides` for scripted response customization 
-- `UiInputData` for UI communication 
+- `ReplyConstraintsOverrides` for scripted response customization
+- `UiInputData` for UI communication
 - `UiReplyConstraints` for protobuf-generated reply types
 
 Here's an example of implementing the camera interface structure:
@@ -110,7 +110,7 @@ The scripted client requires updates to support new interfaces. While the binary
 The required changes include adding the new interface to:
 
 - `TypedPromptCase` enum for test case handling
-- `TypedPromptFilter` enum for filtering logic  
+- `TypedPromptFilter` enum for filtering logic
 - Pattern matching in `try_match_next()` method
 - Filter matching in `TypedPromptFilter::matches()`
 
@@ -155,7 +155,7 @@ const CAMERA_PROMPT: &str = r#"{
   "timestamp": "2024-06-28T19:15:37.321782305Z",
   "snap": "firefox",
   "pid": 1234,
-  "interface": "camera",      
+  "interface": "camera",
   "constraints": {
     "requested-permissions": ["access"],
     "available-permissions": ["access"]
@@ -265,4 +265,3 @@ parts:
 ## Supporting rule management in the Security Center
 
 TODO
-
