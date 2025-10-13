@@ -43,13 +43,13 @@
     "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Všetko v priečinku",
     "@homePatternTypeContainingDirectory": {},
-    "homePatternTypeHomeDirectory": "Všetko v priečinku Domov",
+    "homePatternTypeHomeDirectory": "Všetko v domovskom priečinku",
     "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Všetky súbory {fileExtension}",
     "@homePatternTypeMatchingFileExtension": {},
     "homePromptMetaDataTitle": "O tejto aplikácii",
     "@homePromptMetaDataTitle": {},
-    "homePromptMetaDataPublishedBy": "Vydal {publisher}",
+    "homePromptMetaDataPublishedBy": "Vydavateľ {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
             "publisher": {
@@ -90,7 +90,7 @@
             }
         }
     },
-    "homePatternInfo": "<Ďalšie informácie o formátoch ciest>",
+    "homePatternInfo": "<Zistite viac o formátoch ciest>",
     "@homePatternInfo": {},
     "homePatternTypeRequestedFile": "Iba požadovaný súbor",
     "@homePatternTypeRequestedFile": {},
@@ -194,7 +194,7 @@
     },
     "promptActionOptionAllowUntilLogout": "Povoliť do odhlásenia",
     "@promptActionOptionAllowUntilLogout": {},
-    "cameraPromptBody": "Povoliť {snapName} prístup k vašej kamere?",
+    "cameraPromptBody": "Povoliť {snapName} prístup ku kamere?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -202,7 +202,7 @@
             }
         }
     },
-    "microphonePromptBody": "Povoliť {snapName} prístup k vášmu mikrofónu?",
+    "microphonePromptBody": "Povoliť {snapName} prístup k mikrofónu?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
