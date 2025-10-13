@@ -1,201 +1,219 @@
 {
-  "promptSaveAndContinue": "Enregistrer et continuer",
-  "@promptSaveAndContinue": {},
-  "homePromptMoreOptionsLabel": "Plus d’options…",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptPermissionsWrite": "Écrire",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Exécuter",
-  "@homePromptPermissionsExecute": {},
-  "promptActionOptionAllow": "Autoriser",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionAllowAlways": "Autoriser toujours",
-  "@promptActionOptionAllowAlways": {},
-  "promptLifespanTitle": "Durée",
-  "@promptLifespanTitle": {},
-  "homePromptPermissionsTitle": "Autorisations",
-  "@homePromptPermissionsTitle": {},
-  "promptActionOptionDeny": "Refuser",
-  "@promptActionOptionDeny": {},
-  "promptLifespanOptionSingle": "Une seule fois",
-  "@promptLifespanOptionSingle": {},
-  "homePromptPermissionsRead": "Lire",
-  "@homePromptPermissionsRead": {},
-  "promptLifespanOptionForever": "Toujours",
-  "@promptLifespanOptionForever": {},
-  "promptActionOptionDenyOnce": "Refuser une seule fois",
-  "@promptActionOptionDenyOnce": {},
-  "promptActionTitle": "Action",
-  "@promptActionTitle": {},
-  "securityCenterInfo": "Vous pouvez toujours modifier ces permissions dans le <Centre de sécurité>",
-  "@securityCenterInfo": {},
-  "promptAccessMoreOptionsTitle": "Définir l’accès concernant {snap} à :",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
+    "promptSaveAndContinue": "Enregistrer et continuer",
+    "@promptSaveAndContinue": {},
+    "homePromptMoreOptionsLabel": "Plus d’options…",
+    "@homePromptMoreOptionsLabel": {},
+    "homePromptPermissionsWrite": "Écrire",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsExecute": "Exécuter",
+    "@homePromptPermissionsExecute": {},
+    "promptActionOptionAllow": "Autoriser",
+    "@promptActionOptionAllow": {},
+    "promptActionOptionAllowAlways": "Autoriser toujours",
+    "@promptActionOptionAllowAlways": {},
+    "promptLifespanTitle": "Durée",
+    "@promptLifespanTitle": {},
+    "homePromptPermissionsTitle": "Autorisations",
+    "@homePromptPermissionsTitle": {},
+    "promptActionOptionDeny": "Refuser",
+    "@promptActionOptionDeny": {},
+    "promptLifespanOptionSingle": "Une seule fois",
+    "@promptLifespanOptionSingle": {},
+    "homePromptPermissionsRead": "Lire",
+    "@homePromptPermissionsRead": {},
+    "promptLifespanOptionForever": "Toujours",
+    "@promptLifespanOptionForever": {},
+    "promptActionOptionDenyOnce": "Refuser une seule fois",
+    "@promptActionOptionDenyOnce": {},
+    "promptActionTitle": "Action",
+    "@promptActionTitle": {},
+    "securityCenterInfo": "Vous pouvez toujours modifier ces permissions dans le <Centre de sécurité>",
+    "@securityCenterInfo": {},
+    "promptAccessMoreOptionsTitle": "Définir l’accès concernant {snap} à :",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptLifespanOptionSession": "Jusqu'à déconnexion",
+    "@promptLifespanOptionSession": {},
+    "promptTitle": "Notification de sécurité",
+    "@promptTitle": {},
+    "homePatternInfo": "<En savoir plus sur les patterns>",
+    "@homePatternInfo": {},
+    "homePatternTypeCustomPath": "Modèle de pattern personnalisé",
+    "@homePatternTypeCustomPath": {},
+    "homePatternTypeRequestedDirectory": "Le dossier demandé seulement",
+    "@homePatternTypeRequestedDirectory": {},
+    "homePatternTypeTopLevelDirectory": "Tout dans le dossier {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Tout dans le dossier",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "Tout dans le dossier",
+    "@homePatternTypeContainingDirectory": {},
+    "homePromptBody": "Autoriser {snap} à avoir accès en {permissions} à {path} ?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "À propos de cette application",
+    "@homePromptMetaDataTitle": {},
+    "homePromptMetaDataPublishedBy": "Publié par {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Dernière mise à jour le {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataAppCenterLink": "Visiter la page du Centre des applications",
+    "@homePromptMetaDataAppCenterLink": {},
+    "homePatternTypeMatchingFileExtension": "Tous les fichiers {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedFile": "Le fichier demandé seulement",
+    "@homePatternTypeRequestedFile": {},
+    "promptActionOptionAllowOnce": "Autoriser une fois",
+    "@promptActionOptionAllowOnce": {},
+    "promptAccessTitle": "Donner à {snap} l’accès {permission} à :",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeHomeDirectory": "Tout dans le dossier personnel",
+    "@homePatternTypeHomeDirectory": {},
+    "homePromptSuggestedPermission": "Donner également l'accès en {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "Quelque chose a mal tourné",
+    "@homePromptErrorUnknownTitle": {},
+    "homePromptTopLevelDirBody": "{snap} veut obtenir l'accès {permissions} au dossier {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} souhaite obtenir un accès {permissions} à {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} souhaite obtenir un accès {permissions} à {filename} dans le dossier {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} souhaite obtenir un accès {permissions} à {filename} dans votre dossier personnel.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} souhaite obtenir un accès {permissions} à votre dossier personnel.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Autoriser jusqu’à déconnexion",
+    "@promptActionOptionAllowUntilLogout": {},
+    "cameraPromptBody": "Autoriser {snapName} à accéder à votre caméra ?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Autoriser {snapName} à accéder à votre microphone ?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptLifespanOptionSession": "Jusqu'à déconnexion",
-  "@promptLifespanOptionSession": {},
-  "promptTitle": "Notification de sécurité",
-  "@promptTitle": {},
-  "homePatternInfo": "<En savoir plus sur les patterns>",
-  "@homePatternInfo": {},
-  "homePatternTypeCustomPath": "Modèle de pattern personnalisé",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "Le dossier demandé seulement",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeTopLevelDirectory": "Tout dans le dossier {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeRequestedDirectoryContents": "Tout dans le dossier",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeContainingDirectory": "Tout dans le dossier",
-  "@homePatternTypeContainingDirectory": {},
-  "homePromptBody": "Autoriser {snap} à avoir accès en {permissions} à {path} ?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataTitle": "À propos de cette application",
-  "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "Publié par {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataLastUpdated": "Dernière mise à jour le {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataAppCenterLink": "Visiter la page du Centre des applications",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePatternTypeMatchingFileExtension": "Tous les fichiers {fileExtension}",
-  "@homePatternTypeMatchingFileExtension": {
-    "placeholders": {
-      "fileExtension": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeRequestedFile": "Le fichier demandé seulement",
-  "@homePatternTypeRequestedFile": {},
-  "promptActionOptionAllowOnce": "Autoriser une fois",
-  "@promptActionOptionAllowOnce": {},
-  "promptAccessTitle": "Donner à {snap} l’accès {permission} à :",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeHomeDirectory": "Tout dans le dossier personnel",
-  "@homePatternTypeHomeDirectory": {},
-  "homePromptSuggestedPermission": "Donner également l'accès en {permission}",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptErrorUnknownTitle": "Quelque chose a mal tourné",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptTopLevelDirBody": "{snap} veut obtenir l'accès {permissions} au dossier {foldername}.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptDefaultBody": "{snap} souhaite obtenir un accès {permissions} à {path}",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} souhaite obtenir un accès {permissions} à {filename} dans le dossier {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} souhaite obtenir un accès {permissions} à {filename} dans votre dossier personnel.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} souhaite obtenir un accès {permissions} à votre dossier personnel.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  }
 }
