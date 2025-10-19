@@ -79,7 +79,7 @@
     "@securityCenterInfo": {},
     "promptActionOptionAllowAlways": "Vždy povoliť",
     "@promptActionOptionAllowAlways": {},
-    "promptAccessTitle": "Umožniť {snap} na {permission} prístup k:",
+    "promptAccessTitle": "Umožniť {snap} prístup na {permission} k:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -122,7 +122,7 @@
     },
     "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
     "@homePromptErrorUnknownTitle": {},
-    "homePromptTopLevelDirFileBody": "{snap} žiada na {permissions} prístup k {filename} v priečinku {foldername}.",
+    "homePromptTopLevelDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v priečinku {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -139,7 +139,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} žiada na {permissions} prístup k priečinku Domov.",
+    "homePromptHomeDirBody": "{snap} žiada o prístup na {permissions} k priečinku Domov.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -150,7 +150,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} žiada na {permissions} prístup k priečinku {foldername}.",
+    "homePromptTopLevelDirBody": "{snap} žiada o prístup na {permissions} k priečinku {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -164,7 +164,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} žiada na {permissions} prístup k {filename} v priečinku Domov.",
+    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v priečinku Domov.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -178,7 +178,7 @@
             }
         }
     },
-    "homePromptDefaultBody": "{snap} žiada na {permissions} prístup k {path}",
+    "homePromptDefaultBody": "{snap} žiada o prístup na {permissions} k {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
@@ -194,7 +194,7 @@
     },
     "promptActionOptionAllowUntilLogout": "Povoliť do odhlásenia",
     "@promptActionOptionAllowUntilLogout": {},
-    "cameraPromptBody": "Povoliť {snapName} prístup ku kamere?",
+    "cameraPromptBody": "Povoliť aplikácii {snapName} prístup ku kamere?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -202,7 +202,7 @@
             }
         }
     },
-    "microphonePromptBody": "Povoliť {snapName} prístup k mikrofónu?",
+    "microphonePromptBody": "Povoliť aplikácii {snapName} prístup k mikrofónu?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
