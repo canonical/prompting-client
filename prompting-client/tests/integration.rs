@@ -413,7 +413,9 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
 
     match c.reply_to_prompt(&id, reply).await {
         Err(Error::SnapdError { message, .. }) => assert!(
-            message.starts_with(&format!("invalid duration: {expected_prefix}")),
+            message.starts_with(&format!(
+                "cannot decode request body into prompt reply: invalid duration: {expected_prefix}"
+            )),
             "message format not as expected: {message}"
         ),
         Err(e) => panic!("expected a snapd error, got: {e}"),
