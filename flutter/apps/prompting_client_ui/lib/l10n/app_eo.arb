@@ -1,195 +1,213 @@
 {
-  "promptActionTitle": "Ago",
-  "@promptActionTitle": {},
-  "promptLifespanOptionForever": "Ĉiam",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Ĝis adiaŭo",
-  "@promptLifespanOptionSession": {},
-  "promptAccessTitle": "Doni al {snap} permeson {permission} la jenon:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
+    "promptActionTitle": "Ago",
+    "@promptActionTitle": {},
+    "promptLifespanOptionForever": "Ĉiam",
+    "@promptLifespanOptionForever": {},
+    "promptLifespanOptionSession": "Ĝis adiaŭo",
+    "@promptLifespanOptionSession": {},
+    "promptAccessTitle": "Doni al {snap} permeson {permission} la jenon:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptLifespanTitle": "Daŭro",
+    "@promptLifespanTitle": {},
+    "promptSaveAndContinue": "Konservi kaj daŭrigi",
+    "@promptSaveAndContinue": {},
+    "promptTitle": "Sciigo pri sekureco",
+    "@promptTitle": {},
+    "homePatternTypeTopLevelDirectory": "Ĉio en la dosierujo {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternInfo": "<Lerni pli pri dosierlokaj ŝablonoj>",
+    "@homePatternInfo": {},
+    "homePatternTypeCustomPath": "Propra dosierloka ŝablono",
+    "@homePatternTypeCustomPath": {},
+    "homePatternTypeMatchingFileExtension": "Ĉiuj {fileExtension}-dosieroj",
+    "@homePatternTypeMatchingFileExtension": {},
+    "homePromptBody": "Ĉu permesi al {snap} {permissions} {path}?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Pli da opcioj…",
+    "@homePromptMoreOptionsLabel": {},
+    "homePromptPermissionsTitle": "Permesoj",
+    "@homePromptPermissionsTitle": {},
+    "homePromptPermissionsRead": "legi",
+    "@homePromptPermissionsRead": {},
+    "promptActionOptionAllow": "Permesi",
+    "@promptActionOptionAllow": {},
+    "promptActionOptionDeny": "Malpermesi",
+    "@promptActionOptionDeny": {},
+    "homePromptMetaDataTitle": "Pri ĉi tiu programo",
+    "@homePromptMetaDataTitle": {},
+    "promptActionOptionAllowAlways": "Permesi ĉiam",
+    "@promptActionOptionAllowAlways": {},
+    "promptActionOptionDenyOnce": "Malpermesi unu fojon",
+    "@promptActionOptionDenyOnce": {},
+    "promptLifespanOptionSingle": "Unu fojon",
+    "@promptLifespanOptionSingle": {},
+    "homePromptMetaDataPublishedBy": "Eldonita de {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Laste ĝisdatigita je {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataAppCenterLink": "Viziti paĝon ĉe App Center",
+    "@homePromptMetaDataAppCenterLink": {},
+    "homePatternTypeRequestedDirectoryContents": "Ĉio en la dosierujo",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "Ĉio en la dosierujo",
+    "@homePatternTypeContainingDirectory": {},
+    "homePatternTypeHomeDirectory": "Ĉio en la hejma dosierujo",
+    "@homePatternTypeHomeDirectory": {},
+    "homePromptPermissionsWrite": "skribi",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsExecute": "ruli",
+    "@homePromptPermissionsExecute": {},
+    "homePatternTypeRequestedFile": "Nur la petata dosiero",
+    "@homePatternTypeRequestedFile": {},
+    "homePatternTypeRequestedDirectory": "Nur la petata dosierujo",
+    "@homePatternTypeRequestedDirectory": {},
+    "securityCenterInfo": "Vi povas iam ajn ŝanĝi tiujn permesojn en la «Sekureca Centro»",
+    "@securityCenterInfo": {},
+    "promptAccessMoreOptionsTitle": "Permesi al {snap}:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowOnce": "Permesi unu fojon",
+    "@promptActionOptionAllowOnce": {},
+    "homePromptSuggestedPermission": "Ankaŭ permesi {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "Io fiaskis",
+    "@homePromptErrorUnknownTitle": {},
+    "homePromptTopLevelDirBody": "{snap} volas havi permeson {permissions} la dosierujon {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} volas havi permeson {permissions} la dosieron {filename} en via hejma dosierujo.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} volas havi permeson {permissions} {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} volas havi permeson {permissions} vian hejman dosierujon.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} volas havi permeson {permissions} la dosieron {filename} en la dosierujo {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Permesi ĝis adiaŭo",
+    "@promptActionOptionAllowUntilLogout": {},
+    "cameraPromptBody": "Ĉu permesi al {snapName} uzi vian kameraon?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Ĉu permesi al {snapName} uzi vian mikrofonon?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptLifespanTitle": "Daŭro",
-  "@promptLifespanTitle": {},
-  "promptSaveAndContinue": "Konservi kaj daŭrigi",
-  "@promptSaveAndContinue": {},
-  "promptTitle": "Sciigo pri sekureco",
-  "@promptTitle": {},
-  "homePatternTypeTopLevelDirectory": "Ĉio en la dosierujo {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternInfo": "<Lerni pli pri dosierlokaj ŝablonoj>",
-  "@homePatternInfo": {},
-  "homePatternTypeCustomPath": "Propra dosierloka ŝablono",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeMatchingFileExtension": "Ĉiuj {fileExtension}-dosieroj",
-  "@homePatternTypeMatchingFileExtension": {},
-  "homePromptBody": "Ĉu permesi al {snap} {permissions} {path}?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "Pli da opcioj…",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptPermissionsTitle": "Permesoj",
-  "@homePromptPermissionsTitle": {},
-  "homePromptPermissionsRead": "legi",
-  "@homePromptPermissionsRead": {},
-  "promptActionOptionAllow": "Permesi",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionDeny": "Malpermesi",
-  "@promptActionOptionDeny": {},
-  "homePromptMetaDataTitle": "Pri ĉi tiu programo",
-  "@homePromptMetaDataTitle": {},
-  "promptActionOptionAllowAlways": "Permesi ĉiam",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionDenyOnce": "Malpermesi unu fojon",
-  "@promptActionOptionDenyOnce": {},
-  "promptLifespanOptionSingle": "Unu fojon",
-  "@promptLifespanOptionSingle": {},
-  "homePromptMetaDataPublishedBy": "Eldonita de {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataLastUpdated": "Laste ĝisdatigita je {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataAppCenterLink": "Viziti paĝon ĉe App Center",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePatternTypeRequestedDirectoryContents": "Ĉio en la dosierujo",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeContainingDirectory": "Ĉio en la dosierujo",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeHomeDirectory": "Ĉio en la hejma dosierujo",
-  "@homePatternTypeHomeDirectory": {},
-  "homePromptPermissionsWrite": "skribi",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "ruli",
-  "@homePromptPermissionsExecute": {},
-  "homePatternTypeRequestedFile": "Nur la petata dosiero",
-  "@homePatternTypeRequestedFile": {},
-  "homePatternTypeRequestedDirectory": "Nur la petata dosierujo",
-  "@homePatternTypeRequestedDirectory": {},
-  "securityCenterInfo": "Vi povas iam ajn ŝanĝi tiujn permesojn en la «Sekureca Centro»",
-  "@securityCenterInfo": {},
-  "promptAccessMoreOptionsTitle": "Permesi al {snap}:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllowOnce": "Permesi unu fojon",
-  "@promptActionOptionAllowOnce": {},
-  "homePromptSuggestedPermission": "Ankaŭ permesi {permission}",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptErrorUnknownTitle": "Io fiaskis",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptTopLevelDirBody": "{snap} volas havi permeson {permissions} la dosierujon {foldername}.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} volas havi permeson {permissions} la dosieron {filename} en via hejma dosierujo.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptDefaultBody": "{snap} volas havi permeson {permissions} {path}",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} volas havi permeson {permissions} vian hejman dosierujon.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} volas havi permeson {permissions} la dosieron {filename} en la dosierujo {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  }
 }
