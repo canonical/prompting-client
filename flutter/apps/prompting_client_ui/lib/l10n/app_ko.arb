@@ -1,187 +1,189 @@
 {
-  "securityCenterInfo": "부여한 권한은 언재든지 <보안 센터>에서 변경할 수 있습니다",
-  "@securityCenterInfo": {},
-  "promptAccessMoreOptionsTitle": "{snap} 에 대한 권한 설정:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllow": "허용",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionAllowAlways": "항상 허용",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionDeny": "거부",
-  "@promptActionOptionDeny": {},
-  "promptActionOptionAllowOnce": "이번에만 허용",
-  "@promptActionOptionAllowOnce": {},
-  "promptActionOptionDenyOnce": "이번에만 거부",
-  "@promptActionOptionDenyOnce": {},
-  "promptLifespanOptionForever": "항상",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "로그아웃하기 전까지",
-  "@promptLifespanOptionSession": {},
-  "promptLifespanOptionSingle": "한 번만",
-  "@promptLifespanOptionSingle": {},
-  "promptSaveAndContinue": "저장하고 계속하기",
-  "@promptSaveAndContinue": {},
-  "promptTitle": "보안 알림",
-  "@promptTitle": {},
-  "homePromptTopLevelDirBody": "{snap}이(가) {foldername} 폴더에 대한 {permissions} 접근 권한을 요청합니다.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap}이 홈 폴더의 {filename}에 대한 {permissions} 접근 권한을 요청합니다.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptSuggestedPermission": "{permission} 접근 권한도 부여",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptDefaultBody": "{snap}이 {path}에 대한 {permissions} 접근 권한을 요청합니다",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap}이 {foldername} 폴더의 {filename}에 대한 {permissions} 접근 권한을 요청합니다.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap}이 홈 폴더에 대한 {permissions} 접근 권한을 요청합니다.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "promptAccessTitle": "{snap} {permission}에 대한 접근 권한 부여:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionTitle": "동작",
-  "@promptActionTitle": {},
-  "promptLifespanTitle": "지속 시간",
-  "@promptLifespanTitle": {},
-  "homePatternTypeCustomPath": "사용자 정의 경로 패턴",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "요청한 폴더만",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeRequestedFile": "요청한 파일만",
-  "@homePatternTypeRequestedFile": {},
-  "homePatternInfo": "<경로 패턴에 대해 알아보기>",
-  "@homePatternInfo": {},
-  "homePatternTypeTopLevelDirectory": "{topLevelDir} 폴더 내 모든 것",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeRequestedDirectoryContents": "폴더 내 모든 것",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeContainingDirectory": "폴더 내 모든 것",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeHomeDirectory": "홈 폴더 내 모든 것",
-  "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "모든 {fileExtension} 파일",
-  "@homePatternTypeMatchingFileExtension": {
-    "placeholders": {
-      "fileExtension": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataTitle": "이 앱 정보",
-  "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "{publisher}에서 배포함",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptPermissionsRead": "읽기",
-  "@homePromptPermissionsRead": {},
-  "homePromptMetaDataLastUpdated": "마지막으로 {date}에 업데이트됨",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptPermissionsWrite": "쓰기",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "실행",
-  "@homePromptPermissionsExecute": {},
-  "homePromptErrorUnknownTitle": "문제가 발생했습니다",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptMoreOptionsLabel": "추가 옵션...",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptMetaDataAppCenterLink": "App Center 페이지 방문",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePromptPermissionsTitle": "권한",
-  "@homePromptPermissionsTitle": {}
+    "securityCenterInfo": "부여한 권한은 언재든지 <보안 센터>에서 변경할 수 있습니다",
+    "@securityCenterInfo": {},
+    "promptAccessMoreOptionsTitle": "{snap} 에 대한 권한 설정:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "허용",
+    "@promptActionOptionAllow": {},
+    "promptActionOptionAllowAlways": "항상 허용",
+    "@promptActionOptionAllowAlways": {},
+    "promptActionOptionDeny": "거부",
+    "@promptActionOptionDeny": {},
+    "promptActionOptionAllowOnce": "이번에만 허용",
+    "@promptActionOptionAllowOnce": {},
+    "promptActionOptionDenyOnce": "이번에만 거부",
+    "@promptActionOptionDenyOnce": {},
+    "promptLifespanOptionForever": "항상",
+    "@promptLifespanOptionForever": {},
+    "promptLifespanOptionSession": "로그아웃하기 전까지",
+    "@promptLifespanOptionSession": {},
+    "promptLifespanOptionSingle": "한 번만",
+    "@promptLifespanOptionSingle": {},
+    "promptSaveAndContinue": "저장하고 계속하기",
+    "@promptSaveAndContinue": {},
+    "promptTitle": "보안 알림",
+    "@promptTitle": {},
+    "homePromptTopLevelDirBody": "{snap}이(가) {foldername} 폴더에 대한 {permissions} 접근 권한을 요청합니다.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap}이 홈 폴더의 {filename}에 대한 {permissions} 접근 권한을 요청합니다.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptSuggestedPermission": "{permission} 접근 권한도 부여",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap}이 {path}에 대한 {permissions} 접근 권한을 요청합니다",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap}이 {foldername} 폴더의 {filename}에 대한 {permissions} 접근 권한을 요청합니다.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap}이 홈 폴더에 대한 {permissions} 접근 권한을 요청합니다.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "{snap} {permission}에 대한 접근 권한 부여:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionTitle": "동작",
+    "@promptActionTitle": {},
+    "promptLifespanTitle": "지속 시간",
+    "@promptLifespanTitle": {},
+    "homePatternTypeCustomPath": "사용자 정의 경로 패턴",
+    "@homePatternTypeCustomPath": {},
+    "homePatternTypeRequestedDirectory": "요청한 폴더만",
+    "@homePatternTypeRequestedDirectory": {},
+    "homePatternTypeRequestedFile": "요청한 파일만",
+    "@homePatternTypeRequestedFile": {},
+    "homePatternInfo": "<경로 패턴에 대해 알아보기>",
+    "@homePatternInfo": {},
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} 폴더 내 모든 것",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "폴더 내 모든 것",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "폴더 내 모든 것",
+    "@homePatternTypeContainingDirectory": {},
+    "homePatternTypeHomeDirectory": "홈 폴더 내 모든 것",
+    "@homePatternTypeHomeDirectory": {},
+    "homePatternTypeMatchingFileExtension": "모든 {fileExtension} 파일",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "이 앱 정보",
+    "@homePromptMetaDataTitle": {},
+    "homePromptMetaDataPublishedBy": "{publisher}에서 배포함",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsRead": "읽기",
+    "@homePromptPermissionsRead": {},
+    "homePromptMetaDataLastUpdated": "마지막으로 {date}에 업데이트됨",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsWrite": "쓰기",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsExecute": "실행",
+    "@homePromptPermissionsExecute": {},
+    "homePromptErrorUnknownTitle": "문제가 발생했습니다",
+    "@homePromptErrorUnknownTitle": {},
+    "homePromptMoreOptionsLabel": "추가 옵션...",
+    "@homePromptMoreOptionsLabel": {},
+    "homePromptMetaDataAppCenterLink": "App Center 페이지 방문",
+    "@homePromptMetaDataAppCenterLink": {},
+    "homePromptPermissionsTitle": "권한",
+    "@homePromptPermissionsTitle": {},
+    "promptActionOptionAllowUntilLogout": "로그아웃 전까지 허용",
+    "@promptActionOptionAllowUntilLogout": {}
 }
