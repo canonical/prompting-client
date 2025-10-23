@@ -117,6 +117,7 @@ To support a new interface, you will need to add a new directory for the interfa
 - `<new-interface>_prompt_page.dart` for the UI widgets used to build your page, as well as the main `<new-interface>PromptPage` widget that will be called to display the new interfaces prompt.
 - `<new-interface>_prompt_error.dart` for error enums specific to the interface
 - `<new-interface>_prompt_data_model.dart` for the data models and [providers](https://riverpod.dev/docs/concepts2/providers)
+
 ### Adding the new interface to the `prompt_page` switch statement.
 In `apps/prompting_client_ui/lib/page` is the `prompting_page.dart` file, which contains the switch statement that is used to determine which prompt page to show. You will need to add the new interface to this statement, pointing it to the relevant `<new-interface>PromptPage` widget.
 ```dart
@@ -168,6 +169,7 @@ switch (reply) {
 ```
 
 From here, you have what you need to add unit tests to `apps/test/<new-interface>`.
+
 ## Supporting the new interface in the scripted client
 
 The scripted client requires updates to support new interfaces. While the binary in `prompting-client/src/bin/scripted.rs` doesn't require changes, the core logic in `prompting-client/src/prompt_sequence.rs` must be updated.
@@ -326,7 +328,3 @@ parts:
         stage-packages:
             - v4l-utils  # for v4l2-ctl
 ```
-
-## Supporting rule management in the Security Center
-
-TODO
