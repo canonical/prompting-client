@@ -128,17 +128,18 @@ In `apps/prompting_client_ui/lib/page` is the `prompting_page.dart` file, which 
 ```dart
 return SizeChangedLayoutNotifier(
   child: ConstrainedBox(
- constraints: const BoxConstraints(minWidth: 560),
- child: Padding(
-   padding: const EdgeInsets.all(18.0),
-   child: switch (prompt) {
-  PromptDetailsHome() => const HomePromptPage(),
-  PromptDetailsCamera() => const CameraPromptPage(),
-  PromptDetailsMicrophone() => const MicrophonePromptPage(),
-  // TODO: New interface goes here.
-   },
- ),
+    constraints: const BoxConstraints(minWidth: 560),
+    child: Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: switch (prompt) {
+        PromptDetailsHome() => const HomePromptPage(),
+        PromptDetailsCamera() => const CameraPromptPage(),
+        PromptDetailsMicrophone() => const MicrophonePromptPage(),
+        // TODO: New interface goes here.
+      },
+    ),
   ),
+);
 ```
 
 ### Updating the `fake_prompting_client`
@@ -148,30 +149,30 @@ The tests are based on the mock client in `apps/prompting_client_ui/lib/fake_pro
 ```dart
 @override
 Future<PromptReplyResponse> replyToPrompt(PromptReply reply) async {
-_log.info('replyToPrompt: $reply');
-onReply?.call(reply);
+  _log.info('replyToPrompt: $reply');
+  onReply?.call(reply);
 
-switch (reply) {
-  case PromptReplyHome(:final pathPattern):
- // This regex checks whether the provided path starts with a `/` and does
- // not contain any `[` or `]` characters. (Same check that snapd does
- // internally)
- final validPattern = RegExp(r'^/([^\[\]]|\\[\[\]])*$');
- if (!validPattern.hasMatch(pathPattern)) {
-   _log.info('invalid home pattern');
-   return PromptReplyResponse.unknown(message: 'invalid pattern');
- }
- _log.info('valid home pattern');
- return PromptReplyResponse.success();
+  switch (reply) {
+    case PromptReplyHome(:final pathPattern):
+      // This regex checks whether the provided path starts with a `/` and does
+      // not contain any `[` or `]` characters. (Same check that snapd does
+      // internally)
+      final validPattern = RegExp(r'^/([^\[\]]|\\[\[\]])*$');
+      if (!validPattern.hasMatch(pathPattern)) {
+        _log.info('invalid home pattern');
+        return PromptReplyResponse.unknown(message: 'invalid pattern');
+      }
+      _log.info('valid home pattern');
+      return PromptReplyResponse.success();
 
-  case PromptReplyCamera():
- return PromptReplyResponse.success();
+    case PromptReplyCamera():
+      return PromptReplyResponse.success();
 
-  case PromptReplyMicrophone():
- return PromptReplyResponse.success();
+    case PromptReplyMicrophone():
+      return PromptReplyResponse.success();
 
-  // TODO: new interface goes here
-}
+    // TODO: new interface goes here
+  }
 }
 ```
 
