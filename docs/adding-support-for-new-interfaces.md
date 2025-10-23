@@ -101,8 +101,73 @@ After modifying the protobuf definition, running `cargo build` automatically reg
 
 ## Supporting the new interface in the UI
 
-TODO
+### Regenerating the protobuf generated files
 
+You can use `Melos` to update the Flutter proto stubs using:
+```
+melos run protoc
+```
+Which will update the generated files in `packages/prompting_client/lib/src/generated`.
+
+### Create a new directory in `/pages` for the new interface
+
+Each supported interface has a respective folder in `apps/prompting_client_ui/lib/pages`, which represents the UI that will be shown when a prompt of that interface type is invoked by the Rust client.
+
+To support a new interface, you will need to add a new directory for the interface. As we are making use of `Riverpod`, you will typically need:
+- `<new-interface>_prompt_page.dart` for the UI widgets used to build your page, as well as the main `<new-interface>PromptPage` widget that will be called to display the new interfaces prompt.
+- `<new-interface>_prompt_error.dart` for error enums specific to the interface
+- `<new-interface>_prompt_data_model.dart` for the data models and [providers](https://riverpod.dev/docs/concepts2/providers)
+### Adding the new interface to the `prompt_page` switch statement.
+In `apps/prompting_client_ui/lib/page` is the `prompting_page.dart` file, which contains the switch statement that is used to determine which prompt page to show. You will need to add the new interface to this statement, pointing it to the relevant `<new-interface>PromptPage` widget.
+```dart
+return SizeChangedLayoutNotifier(
+  child: ConstrainedBox(
+	constraints: const BoxConstraints(minWidth: 560),
+	child: Padding(
+	  padding: const EdgeInsets.all(18.0),
+	  child: switch (prompt) {
+		PromptDetailsHome() => const HomePromptPage(),
+		PromptDetailsCamera() => const CameraPromptPage(),
+		PromptDetailsMicrophone() => const MicrophonePromptPage(),
+		// TODO: New interface goes here.
+	  },
+	),
+  ),
+```
+
+### Updating the `fake_prompting_client`
+The tests are based on the mock client in `apps/prompting_client_ui/lib/fake_prompting_client.dart`. You will need to add a case statement for the interface in the `replyToPrompt()` method.
+```dart
+@override
+Future<PromptReplyResponse> replyToPrompt(PromptReply reply) async {
+_log.info('replyToPrompt: $reply');
+onReply?.call(reply);
+
+switch (reply) {
+  case PromptReplyHome(:final pathPattern):
+	// This regex checks whether the provided path starts with a `/` and does
+	// not contain any `[` or `]` characters. (Same check that snapd does
+	// internally)
+	final validPattern = RegExp(r'^/([^\[\]]|\\[\[\]])*$');
+	if (!validPattern.hasMatch(pathPattern)) {
+	  _log.info('invalid home pattern');
+	  return PromptReplyResponse.unknown(message: 'invalid pattern');
+	}
+	_log.info('valid home pattern');
+	return PromptReplyResponse.success();
+
+  case PromptReplyCamera():
+	return PromptReplyResponse.success();
+
+  case PromptReplyMicrophone():
+	return PromptReplyResponse.success();
+	
+  // TODO: new interface goes here
+}
+}
+```
+
+From here, you have what you need to add unit tests to `apps/test/<new-interface>`.
 ## Supporting the new interface in the scripted client
 
 The scripted client requires updates to support new interfaces. While the binary in `prompting-client/src/bin/scripted.rs` doesn't require changes, the core logic in `prompting-client/src/prompt_sequence.rs` must be updated.
