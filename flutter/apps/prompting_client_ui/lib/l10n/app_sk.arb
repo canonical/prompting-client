@@ -139,7 +139,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} žiada o prístup na {permissions} k priečinku Domov.",
+    "homePromptHomeDirBody": "{snap} žiada o prístup na {permissions} k domovskému priečinku.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -164,7 +164,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v priečinku Domov.",
+    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v domovskom priečinku.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
