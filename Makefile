@@ -36,8 +36,8 @@ disable-prompting:
 
 .PHONY: clean-request-rules
 clean-request-rules:
-	if lxc exec $(VM_NAME) -- test -f /var/lib/snapd/request-rules.json ; then \
-		lxc exec $(VM_NAME) -- rm /var/lib/snapd/request-rules.json ; \
+	if lxc exec $(VM_NAME) -- test -d /var/lib/snapd/interfaces-requests ; then \
+		lxc exec $(VM_NAME) -- rm -rf /var/lib/snapd/interfaces-requests ; \
 	fi
 
 # Sometimes we can get into a situation where snapd is stuck and stops sending notices
@@ -170,8 +170,8 @@ local-disable-prompting:
 
 .PHONY: local-clean-request-rules
 local-clean-request-rules:
-	if test -f /var/lib/snapd/request-rules.json ; then \
-		rm /var/lib/snapd/request-rules.json ; \
+	if test -d /var/lib/snapd/interfaces-requests ; then \
+		rm -rf /var/lib/snapd/interfaces-requests ; \
 	fi
 
 .PHONY: local-bounce-snapd
