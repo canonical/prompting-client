@@ -98,8 +98,6 @@ ensure-client-in-vm:
 		lxc exec $(VM_NAME) -- snap set system experimental.user-daemons=true ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$$FILE_NAME ; \
 		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):snap-interfaces-requests-control ; \
-		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):camera ; \
-		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):audio-record ; \
 	fi
 
 .PHONY: update-client-in-vm

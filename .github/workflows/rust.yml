@@ -43,11 +43,19 @@ jobs:
           sudo snap install --dangerous ${{ steps.snapcraft-client.outputs.snap }}
           sudo snap install --dangerous ${{ steps.snapcraft-testing.outputs.snap }}
           sudo snap connect prompting-client:snap-interfaces-requests-control
+          sudo snap connect aa-prompting-test:camera
           sudo snap set system experimental.apparmor-prompting=true
 
       - name: Install dependencies
         run: |
-          sudo apt-get install protobuf-compiler
+          sudo apt-get install protobuf-compiler linux-modules-extra-$(uname -r) v4l-utils
+
+      - name: Setup virtual devices
+        run: |
+          sudo modprobe v4l2loopback devices=1 video_nr=0 card_label="Dummy Camera" exclusive_caps=1
+          sudo adduser $USER video && newgrp video
+          sudo chmod 666 /dev/video0
+          v4l2-ctl --list-devices
 
       - name: Check generated files are up to date
         working-directory: ./prompting-client

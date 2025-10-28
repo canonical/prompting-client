@@ -131,8 +131,6 @@ async fn ensure_prompting_is_enabled() -> Result<()> {
     Ok(())
 }
 
-// TODO: remove ignore when support for `camera` interface lands on snapd https://github.com/canonical/snapd/pull/15372
-#[ignore = "snapd doesn't have support for camera prompt"]
 #[test_case(Action::Allow, "Allow access to camera\n", ""; "allow")]
 #[test_case(Action::Deny, "Deny access to camera\n", "Failed to open <DEVICE>: Permission denied\n"; "deny")]
 #[tokio::test]
