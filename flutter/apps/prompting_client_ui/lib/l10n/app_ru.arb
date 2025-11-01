@@ -29,7 +29,7 @@
             }
         }
     },
-    "homePromptMoreOptionsLabel": "Больше опций…",
+    "homePromptMoreOptionsLabel": "Другие параметры…",
     "@homePromptMoreOptionsLabel": {},
     "homePromptBody": "Разрешить {snap} доступ на {permissions} по пути {path}?",
     "@homePromptBody": {
