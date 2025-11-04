@@ -191,5 +191,23 @@
                 "type": "String"
             }
         }
+    },
+    "promptActionOptionAllowUntilLogout": "Umožnit až do odhlášení",
+    "@promptActionOptionAllowUntilLogout": {},
+    "cameraPromptBody": "Umožnit {snapName} přistupovat k vaší kameře?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Umožnit {snapName} přistupovat k vašemu mikrofonu?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
 }
