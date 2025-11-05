@@ -125,5 +125,77 @@
   "homePromptPermissionsTitle": "اجازه‌ها",
   "@homePromptPermissionsTitle": {},
   "homePromptPermissionsRead": "خواندن",
-  "@homePromptPermissionsRead": {}
+  "@homePromptPermissionsRead": {},
+  "homePromptErrorUnknownTitle": "چیزی اشتباه پیش رفت",
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptDefaultBody": "{snap} می‌خواهد دسترسی {permissions} را به {path} بگیرد",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirBody": "{snap} می‌خواهد دسترسی {permissions} را به شاخهٔ {foldername} بگیرد.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirBody": "{snap} می‌خواهد دسترسی {permissions} را به شاخهٔ خانگیتان بگیرد.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} می‌خواهد دسترسی {permissions} را به {filename} در شاخهٔ {foldername} بگیرد.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptHomeDirFileBody": "{snap} می‌خواهد دسترسی {permissions} را به {filename} در شاخهٔ خانگیتان بگیرد.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
 }

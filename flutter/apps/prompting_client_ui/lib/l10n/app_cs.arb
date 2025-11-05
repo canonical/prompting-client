@@ -1,195 +1,213 @@
 {
-  "promptActionOptionAllow": "Povolit",
-  "@promptActionOptionAllow": {},
-  "promptLifespanOptionSingle": "Jednou",
-  "@promptLifespanOptionSingle": {},
-  "promptSaveAndContinue": "Uložit a pokračovat",
-  "@promptSaveAndContinue": {},
-  "promptTitle": "Bezpečnostní upozornění",
-  "@promptTitle": {},
-  "homePatternTypeCustomPath": "Vlastní vzor cesty",
-  "@homePatternTypeCustomPath": {},
-  "homePatternInfo": "<Další informace o vzorech cest>",
-  "@homePatternInfo": {},
-  "homePatternTypeRequestedDirectoryContents": "Vše ve složce",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeTopLevelDirectory": "Vše ve složce {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
+    "promptActionOptionAllow": "Povolit",
+    "@promptActionOptionAllow": {},
+    "promptLifespanOptionSingle": "Jednorázově",
+    "@promptLifespanOptionSingle": {},
+    "promptSaveAndContinue": "Uložit a pokračovat",
+    "@promptSaveAndContinue": {},
+    "promptTitle": "Bezpečnostní upozornění",
+    "@promptTitle": {},
+    "homePatternTypeCustomPath": "Uživatelsky určený vzor popisu umístění",
+    "@homePatternTypeCustomPath": {},
+    "homePatternInfo": "<Další informace o vzorech popisů umístění>",
+    "@homePatternInfo": {},
+    "homePatternTypeRequestedDirectoryContents": "Vše ve složce",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeTopLevelDirectory": "Vše ve složce {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeHomeDirectory": "Vše v domovské složce",
+    "@homePatternTypeHomeDirectory": {},
+    "homePatternTypeMatchingFileExtension": "Všechny soubory {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {},
+    "homePromptPermissionsWrite": "Zapisovat",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsRead": "Číst",
+    "@homePromptPermissionsRead": {},
+    "homePromptPermissionsTitle": "Oprávnění",
+    "@homePromptPermissionsTitle": {},
+    "homePromptMetaDataTitle": "O této aplikaci",
+    "@homePromptMetaDataTitle": {},
+    "homePromptMetaDataPublishedBy": "Publikoval {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Poslední aktualizace {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Více možností…",
+    "@homePromptMoreOptionsLabel": {},
+    "homePromptMetaDataAppCenterLink": "Navštivte stránku Centra aplikací",
+    "@homePromptMetaDataAppCenterLink": {},
+    "promptActionTitle": "Činnost",
+    "@promptActionTitle": {},
+    "promptAccessTitle": "Poskytnout {snap} {permission} přístup k:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "securityCenterInfo": "Tato oprávnění můžete kdykoli změnit v <Centru zabezpečení>",
+    "@securityCenterInfo": {},
+    "promptAccessMoreOptionsTitle": "Nastavit přístup pro {snap} na:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowAlways": "Vždy povolit",
+    "@promptActionOptionAllowAlways": {},
+    "promptActionOptionDeny": "Zamítnout",
+    "@promptActionOptionDeny": {},
+    "promptActionOptionDenyOnce": "Pro teď zamítnout",
+    "@promptActionOptionDenyOnce": {},
+    "promptLifespanTitle": "Trvání",
+    "@promptLifespanTitle": {},
+    "promptLifespanOptionForever": "Vždy",
+    "@promptLifespanOptionForever": {},
+    "promptLifespanOptionSession": "Do odhlášení",
+    "@promptLifespanOptionSession": {},
+    "homePatternTypeRequestedDirectory": "Pouze požadovaná složka",
+    "@homePatternTypeRequestedDirectory": {},
+    "homePatternTypeRequestedFile": "Pouze požadovaný soubor",
+    "@homePatternTypeRequestedFile": {},
+    "homePromptPermissionsExecute": "Spouštět",
+    "@homePromptPermissionsExecute": {},
+    "homePatternTypeContainingDirectory": "Vše ve složce",
+    "@homePatternTypeContainingDirectory": {},
+    "homePromptBody": "Povolit aplikaci {snap} mít přístup ke {permissions} k {path}?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowOnce": "Povolit jednou",
+    "@promptActionOptionAllowOnce": {},
+    "homePromptSuggestedPermission": "Poskytnout také přístup k {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "Něco se nepovedlo",
+    "@homePromptErrorUnknownTitle": {},
+    "homePromptDefaultBody": "{snap} chce získat {permissions} přístup k {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} chce získat {permissions} přístup k {filename} ve složce {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} chce získat {permissions} přístup ke složce {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} chce získat {permissions} přístup k vaší domovské složce.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} chce získat {permissions} přístup k {filename} ve vaší domovské složce.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Umožnit až do odhlášení",
+    "@promptActionOptionAllowUntilLogout": {},
+    "cameraPromptBody": "Umožnit {snapName} přistupovat k vaší kameře?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Umožnit {snapName} přistupovat k vašemu mikrofonu?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "homePatternTypeHomeDirectory": "Vše v domovské složce",
-  "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Všechny soubory {fileExtension}",
-  "@homePatternTypeMatchingFileExtension": {},
-  "homePromptPermissionsWrite": "Zapisovat",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsRead": "Číst",
-  "@homePromptPermissionsRead": {},
-  "homePromptPermissionsTitle": "Oprávnění",
-  "@homePromptPermissionsTitle": {},
-  "homePromptMetaDataTitle": "O této aplikaci",
-  "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "Publikoval {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataLastUpdated": "Poslední aktualizace {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "Více možností…",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptMetaDataAppCenterLink": "Navštivte stránku Centra aplikací",
-  "@homePromptMetaDataAppCenterLink": {},
-  "promptActionTitle": "Činnost",
-  "@promptActionTitle": {},
-  "promptAccessTitle": "Poskytnout {snap} {permission} přístup k:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "securityCenterInfo": "Tato oprávnění můžete kdykoli změnit v <Centru zabezpečení>",
-  "@securityCenterInfo": {},
-  "promptAccessMoreOptionsTitle": "Nastavit přístup pro {snap} na:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllowAlways": "Vždy povolit",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionDeny": "Zamítnout",
-  "@promptActionOptionDeny": {},
-  "promptActionOptionDenyOnce": "Jednou zamítnout",
-  "@promptActionOptionDenyOnce": {},
-  "promptLifespanTitle": "Trvání",
-  "@promptLifespanTitle": {},
-  "promptLifespanOptionForever": "Vždy",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Do odhlášení",
-  "@promptLifespanOptionSession": {},
-  "homePatternTypeRequestedDirectory": "Pouze požadovaná složka",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeRequestedFile": "Pouze požadovaný soubor",
-  "@homePatternTypeRequestedFile": {},
-  "homePromptPermissionsExecute": "Spouštět",
-  "@homePromptPermissionsExecute": {},
-  "homePatternTypeContainingDirectory": "Vše ve složce",
-  "@homePatternTypeContainingDirectory": {},
-  "homePromptBody": "Povolit aplikaci {snap} mít přístup ke {permissions} k {path}?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllowOnce": "Povolit jednou",
-  "@promptActionOptionAllowOnce": {},
-  "homePromptSuggestedPermission": "Poskytnout také přístup k {permission}",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptErrorUnknownTitle": "Něco se nepovedlo",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptDefaultBody": "{snap} chce získat {permissions} přístup k {path}",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} chce získat {permissions} přístup k {filename} ve složce {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirBody": "{snap} chce získat {permissions} přístup ke složce {foldername}.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} chce získat {permissions} přístup k vaší domovské složce.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} chce získat {permissions} přístup k {filename} ve vaší domovské složce.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  }
 }
