@@ -1,5 +1,5 @@
 name: prompting-client
-base: core22
+base: core24
 version: git
 title: Prompting Client
 summary: Prompting Client
