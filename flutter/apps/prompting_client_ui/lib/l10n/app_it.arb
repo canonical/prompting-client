@@ -1,1 +1,4 @@
-{}
+{
+    "securityCenterInfo": "Puoi sempre cambiare questi permessi nel <Security Center>",
+    "@securityCenterInfo": {}
+}
