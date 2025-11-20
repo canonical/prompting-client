@@ -41,10 +41,7 @@ jobs:
           # Repack snapd latest/edge to ensure it always has newer version than the .deb
           snap download snapd --channel=latest/edge
           sudo unsquashfs snapd_*.snap
-          # If version is wrapped in ''
-          sudo sed -i "s/^version: *'/version: '1337./" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
-          # If version is not wrapped in ''
-          sudo sed -i "s/^version: */version: 1337./" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
+          sudo sed -Ei "s/^version: *'?([^' ]*)'?$/version: '1337.\1'/" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
           sudo sed -i "s/^VERSION=/VERSION=1337./" squashfs-root/usr/lib/snapd/info
           sudo snap pack squashfs-root
           sudo snap install --dangerous snapd_1337.*.snap

@@ -69,10 +69,7 @@ create-or-start-vm:
 	@lxc exec $(VM_NAME) -- snap download snapd --channel=latest/edge
 	@echo ":: Repack snapd to ensure its version is greater than the system .deb"
 	@lxc exec $(VM_NAME) -- sh -c 'unsquashfs snapd_*.snap'
-	@# If version is wrapped in ''
-	@lxc exec $(VM_NAME) -- sed -i "s/^version: *'/version: '1337./" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
-	@# If version is not wrapped in ''
-	@lxc exec $(VM_NAME) -- sed -i "s/^version: */version: 1337./" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
+	@lxc exec $(VM_NAME) -- sed -Ei "s/^version: *'?([^' ]*)'?$$/version: '1337.\1'/" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
 	@# Change the info file, which is what actually matters at runtime
 	@lxc exec $(VM_NAME) -- sed -i "s/^VERSION=/VERSION=1337./" squashfs-root/usr/lib/snapd/info
 	@lxc exec $(VM_NAME) -- grep '^version:' squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
