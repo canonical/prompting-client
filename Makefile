@@ -70,6 +70,36 @@ create-or-start-vm:
 	@echo ":: Installing the app center..."
 	@lxc exec $(VM_NAME) -- snap install snap-store --channel=latest/stable/ubuntu-24.04
 
+.PHONY: enable-debug
+enable-debug:
+	@lxc exec $(VM_NAME) -- sh -c 'if ! grep 'SNAPD_DEBUG=' /etc/environment ; then echo "SNAPD_DEBUG=1" | tee -a /etc/environment ; fi'
+	@echo ":: Restarting VM ($(VM_NAME))..."
+	@lxc exec $(VM_NAME) -- reboot now
+	@sleep 5
+	@while ! lxc exec $(VM_NAME) echo 2>/dev/null; do \
+		echo ":: Waiting for VM ($(VM_NAME)) to be ready..."; \
+		sleep 1; \
+	done
+	@sleep 5
+	@echo ":: VM ($(VM_NAME)) now ready"
+	@echo ":: Contents of /etc/environment in VM ($(VM_NAME))..."
+	@lxc exec $(VM_NAME) -- cat /etc/environment
+
+.PHONY: disable-debug
+disable-debug:
+	@lxc exec $(VM_NAME) -- sed -i "/SNAPD_DEBUG/d" /etc/environment
+	@echo ":: Restarting VM ($(VM_NAME))..."
+	@lxc exec $(VM_NAME) -- reboot now
+	@sleep 5
+	@while ! lxc exec $(VM_NAME) echo 2>/dev/null; do \
+		echo ":: Waiting for VM ($(VM_NAME)) to be ready..."; \
+		sleep 1; \
+	done
+	@sleep 5
+	@echo ":: VM ($(VM_NAME)) now ready"
+	@echo ":: Contents of /etc/environment in VM ($(VM_NAME))..."
+	@lxc exec $(VM_NAME) -- cat /etc/environment
+
 .PHONY: attach-vm
 attach-vm:
 	lxc console --type=vga $(VM_NAME)
