@@ -38,7 +38,14 @@ jobs:
 
       - name: Setup snapd and snaps
         run: |
-          sudo snap refresh snapd --channel=latest/edge
+          # Repack snapd latest/edge to ensure it always has newer version than the .deb
+          snap download snapd --channel=latest/edge
+          sudo unsquashfs snapd_*.snap
+          sudo sed -Ei "s/^version: *'?([^' ]*)'?$/version: '1337.\1'/" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
+          sudo sed -i "s/^VERSION=/VERSION=1337./" squashfs-root/usr/lib/snapd/info
+          sudo snap pack squashfs-root
+          sudo snap install --dangerous snapd_1337.*.snap
+
           sudo snap set system experimental.user-daemons=true
           sudo snap install --dangerous ${{ steps.snapcraft-client.outputs.snap }}
           sudo snap install --dangerous ${{ steps.snapcraft-testing.outputs.snap }}
