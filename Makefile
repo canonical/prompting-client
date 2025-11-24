@@ -65,19 +65,8 @@ create-or-start-vm:
 	done
 	@sleep 5
 	@echo ":: VM ($(VM_NAME)) now ready"
-	@echo ":: Download snapd latest/edge..."
-	@lxc exec $(VM_NAME) -- snap download snapd --channel=latest/edge
-	@echo ":: Repack snapd to ensure its version is greater than the system .deb"
-	@lxc exec $(VM_NAME) -- sh -c 'unsquashfs snapd_*.snap'
-	@lxc exec $(VM_NAME) -- sed -Ei "s/^version: *'?([^' ]*)'?$$/version: '1337.\1'/" squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
-	@# Change the info file, which is what actually matters at runtime
-	@lxc exec $(VM_NAME) -- sed -i "s/^VERSION=/VERSION=1337./" squashfs-root/usr/lib/snapd/info
-	@lxc exec $(VM_NAME) -- grep '^version:' squashfs-root/meta/snap.yaml squashfs-root/snap/manifest.yaml
-	@lxc exec $(VM_NAME) -- grep '^VERSION=' squashfs-root/usr/lib/snapd/info
-	@lxc exec $(VM_NAME) -- snap pack squashfs-root
-	@lxc exec $(VM_NAME) -- sh -c 'snap install --dangerous snapd_1337.*.snap'
-	@echo ":: Snap version in VM ($(VM_NAME)) should be real version from latest/edge, not 1337 or +ubuntu24.04..."
-	@lxc exec $(VM_NAME) -- snap version
+	@echo ":: Installing snapd..."
+	@lxc exec $(VM_NAME) -- snap install snapd --channel=latest/edge
 	@echo ":: Installing the app center..."
 	@lxc exec $(VM_NAME) -- snap install snap-store --channel=latest/stable/ubuntu-24.04
 
