@@ -46,6 +46,8 @@ jobs:
           sudo snap connect aa-prompting-test:camera
           sudo snap set system experimental.apparmor-prompting=true
 
+          snap version
+
       - name: Install dependencies
         run: |
           sudo apt-get install protobuf-compiler linux-modules-extra-$(uname -r) v4l-utils
