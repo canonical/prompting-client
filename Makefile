@@ -164,6 +164,7 @@ ensure-test-snap:
 		lxc exec $(VM_NAME) -- apt install -y linux-modules-extra-$$(lxc exec $(VM_NAME) -- uname -r) v4l-utils ; \
 		lxc exec $(VM_NAME) -- modprobe v4l2loopback ; \
 		lxc exec $(VM_NAME) -- modprobe snd-aloop ; \
+		lxc exec $(VM_NAME) -- touch /dev/video9 ; \
 	fi
 
 .PHONY: update-test-snap

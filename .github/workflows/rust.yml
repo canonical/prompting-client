@@ -65,6 +65,7 @@ jobs:
           sudo adduser $USER video && newgrp video
           sudo chmod 666 /dev/video0
           v4l2-ctl --list-devices
+          sudo touch /dev/video9
 
       - name: Check generated files are up to date
         working-directory: ./prompting-client
