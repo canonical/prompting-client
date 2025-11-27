@@ -4,7 +4,7 @@ use prompting_client::{
     DEFAULT_LOG_LEVEL,
 };
 use std::{env, io::stdout};
-use tracing::subscriber::set_global_default;
+use tracing::{info, subscriber::set_global_default};
 use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main]
@@ -30,6 +30,7 @@ async fn main() -> Result<()> {
     // display environment variable to be set.
     let have_display = env::vars().any(|(k, _)| k == "DISPLAY" || k == "WAYLAND_DISPLAY");
     if !have_display {
+        info!("no X11 or wayland display set, exiting");
         exit_with(ExitStatus::Failure);
     }
 
