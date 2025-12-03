@@ -4,7 +4,7 @@ use prompting_client::{
     DEFAULT_LOG_LEVEL,
 };
 use std::{env, io::stdout};
-use tracing::subscriber::set_global_default;
+use tracing::{info, subscriber::set_global_default};
 use tracing_subscriber::FmtSubscriber;
 
 #[tokio::main]
@@ -21,6 +21,12 @@ async fn main() -> Result<()> {
 
     set_global_default(subscriber).expect("unable to set a global tracing subscriber");
 
+    // Shutdown the daemon when running in the CI since there's no display to connect to.
+    if std::env::var("PROMPTING_CI").is_ok() {
+        info!("running in CI, shutting down the daemon");
+        exit_with(ExitStatus::Success);
+    }
+
     let c = SnapdSocketClient::new().await;
     c.exit_if_prompting_not_enabled().await?;
 
@@ -30,6 +36,7 @@ async fn main() -> Result<()> {
     // display environment variable to be set.
     let have_display = env::vars().any(|(k, _)| k == "DISPLAY" || k == "WAYLAND_DISPLAY");
     if !have_display {
+        info!("no X11 or wayland display set, exiting");
         exit_with(ExitStatus::Failure);
     }
 
