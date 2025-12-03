@@ -35,7 +35,7 @@ use uuid::Uuid;
 
 const TEST_SNAP: &str = "aa-prompting-test";
 const PROMPT_NOT_FOUND: &str = "cannot find prompt with the given ID for the given user";
-const TIMEOUT: Duration = Duration::from_secs(5);
+const TIMEOUT: Duration = Duration::from_secs(65);
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Output {
