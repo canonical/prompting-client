@@ -21,6 +21,12 @@ async fn main() -> Result<()> {
 
     set_global_default(subscriber).expect("unable to set a global tracing subscriber");
 
+    // Shutdown the daemon when running in the CI since there's no display to connect to.
+    if std::env::var("PROMPTING_CI").is_ok() {
+        info!("running in CI, shutting down the daemon");
+        exit_with(ExitStatus::Success);
+    }
+
     let c = SnapdSocketClient::new().await;
     c.exit_if_prompting_not_enabled().await?;
 
