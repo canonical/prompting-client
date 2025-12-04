@@ -30,11 +30,12 @@ use std::{
     sync::mpsc::{channel, Receiver},
     time::Duration,
 };
-use tokio::{process::Command, spawn, time::sleep};
+use tokio::{process::Command, spawn, time::sleep, time::timeout};
 use uuid::Uuid;
 
 const TEST_SNAP: &str = "aa-prompting-test";
 const PROMPT_NOT_FOUND: &str = "cannot find prompt with the given ID for the given user";
+const TIMEOUT: Duration = Duration::from_secs(65);
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 struct Output {
@@ -83,7 +84,11 @@ fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(S
 macro_rules! expect_single_prompt {
     ($c:expr, $expected_path:expr, $expected_permissions:expr) => {
         async {
-            let mut pending: Vec<_> = match $c.pending_prompt_notices().await {
+            let pending = match timeout(TIMEOUT, $c.pending_prompt_notices()).await {
+                Ok(pending) => pending,
+                Err(_) => panic!("timeout reached while waiting for prompt"),
+            };
+            let mut pending: Vec<_> = match pending {
                 Ok(pending) => pending
                     .into_iter()
                     .flat_map(|n| match n {
@@ -152,7 +157,7 @@ async fn camera_interface_connected(
     )
     .await?;
 
-    let output = rx.recv().expect("to be able to recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -187,7 +192,7 @@ async fn microphone_interface_connected(
     )
     .await?;
 
-    let output = rx.recv().expect("to be able to recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -221,7 +226,7 @@ async fn happy_path_read_single(
         HomeInterface::prompt_to_reply(p.try_into()?, action).into(),
     )
     .await?;
-    let output = rx.recv().expect("to be able recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -446,7 +451,7 @@ async fn replying_multiple_times_errors(
         HomeInterface::prompt_to_reply(p.clone(), action).into(),
     )
     .await?;
-    let output = rx.recv().expect("to be able recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -503,7 +508,7 @@ async fn overwriting_a_file_works() -> Result<()> {
         vec![prefix, "after".to_string()],
     );
     sleep(Duration::from_millis(300)).await;
-    let output = rx.recv().expect("to be able recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
     assert_eq!(output.stdout, "done\n");
     assert_eq!(output.stderr, "");
 

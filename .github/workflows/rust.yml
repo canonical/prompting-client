@@ -47,6 +47,7 @@ jobs:
           sudo snap install --dangerous snapd_1337.*.snap
 
           echo 'PROMPTING_CI=1' | sudo tee -a /etc/environment
+          echo 'SNAPD_DEBUG=1' | sudo tee -a /etc/environment
           sudo snap set system experimental.user-daemons=true
           sudo snap install --dangerous ${{ steps.snapcraft-client.outputs.snap }}
           sudo snap install --dangerous ${{ steps.snapcraft-testing.outputs.snap }}
