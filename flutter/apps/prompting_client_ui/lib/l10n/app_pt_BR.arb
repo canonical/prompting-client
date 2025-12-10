@@ -1,1 +1,205 @@
-{}
+{
+    "securityCenterInfo": "Você sempre pode alterar essas permissões na <Central de Segurança>",
+    "@securityCenterInfo": {},
+    "promptAccessMoreOptionsTitle": "Defina o acesso do {snap} para:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "Permita ao {snap} para acessar:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Permitir",
+    "@promptActionOptionAllow": {},
+    "promptActionOptionAllowAlways": "Permitir sempre",
+    "@promptActionOptionAllowAlways": {},
+    "promptActionOptionAllowOnce": "Permitir uma vez",
+    "@promptActionOptionAllowOnce": {},
+    "promptActionOptionDeny": "Negar",
+    "@promptActionOptionDeny": {},
+    "promptActionOptionDenyOnce": "Negar uma vez",
+    "@promptActionOptionDenyOnce": {},
+    "promptActionOptionAllowUntilLogout": "Permitir até o logout",
+    "@promptActionOptionAllowUntilLogout": {},
+    "promptActionTitle": "Ação",
+    "@promptActionTitle": {},
+    "promptLifespanOptionForever": "Sempre",
+    "@promptLifespanOptionForever": {},
+    "promptLifespanOptionSession": "Até que você faça logout",
+    "@promptLifespanOptionSession": {},
+    "promptLifespanOptionSingle": "Uma vez",
+    "@promptLifespanOptionSingle": {},
+    "promptLifespanTitle": "Duração",
+    "@promptLifespanTitle": {},
+    "promptSaveAndContinue": "Salvar e continuar",
+    "@promptSaveAndContinue": {},
+    "promptTitle": "Notificação de segurança",
+    "@promptTitle": {},
+    "homePatternInfo": "<Saiba mais sobre padrões de caminho>",
+    "@homePatternInfo": {},
+    "homePatternTypeCustomPath": "Padrão de caminho personalizado",
+    "@homePatternTypeCustomPath": {},
+    "homePatternTypeRequestedDirectory": "Somente a pasta solicitada",
+    "@homePatternTypeRequestedDirectory": {},
+    "homePatternTypeRequestedFile": "Somente o arquivo solicitado",
+    "@homePatternTypeRequestedFile": {},
+    "homePatternTypeTopLevelDirectory": "Tudo na pasta {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Tudo na pasta",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "Tudo na pasta",
+    "@homePatternTypeContainingDirectory": {},
+    "homePatternTypeHomeDirectory": "Tudo na pasta Início",
+    "@homePatternTypeHomeDirectory": {},
+    "homePatternTypeMatchingFileExtension": "Todos os arquivos {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} deseja obter acesso de {permissions} à {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} quer obter acesso de {permissions} à pasta {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} quer obter acesso de {permissions} ao arquivo {filename} na pasta {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} deseja obter acesso {permissions} à sua pasta pessoal.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} deseja obter acesso de {permissions} ao arquivo {filename} na sua pasta pessoal.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Sobre este aplicativo",
+    "@homePromptMetaDataTitle": {},
+    "homePromptMetaDataPublishedBy": "Publicado por {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Última atualização em {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Mais opções...",
+    "@homePromptMoreOptionsLabel": {},
+    "homePromptMetaDataAppCenterLink": "Visite a página da Central de Aplicativos",
+    "@homePromptMetaDataAppCenterLink": {},
+    "homePromptSuggestedPermission": "Também conceda acesso {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "Permissões",
+    "@homePromptPermissionsTitle": {},
+    "homePromptPermissionsRead": "Leia",
+    "@homePromptPermissionsRead": {},
+    "homePromptPermissionsWrite": "Escreva",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsExecute": "Execute",
+    "@homePromptPermissionsExecute": {},
+    "homePromptErrorUnknownTitle": "Algo deu errado",
+    "@homePromptErrorUnknownTitle": {},
+    "cameraPromptBody": "Permitir que {snapName} acesse sua câmera?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Permitir que {snapName} acesse seu microfone?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    }
+}
