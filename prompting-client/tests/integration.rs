@@ -169,6 +169,43 @@ async fn camera_interface_connected(
     Ok(())
 }
 
+#[test_case(Action::Allow, "Allow access to <PATH>\n", ""; "allow")]
+#[test_case(Action::Deny, "Deny access to <PATH>\n", "cat: <PATH>: Permission denied\n"; "deny")]
+#[tokio::test]
+#[serial]
+async fn camera_interface_connected_naive(
+    action: Action,
+    expected_stdout: &str,
+    expected_stderr: &str,
+) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let device = "/dev/video9"; // No test environments should have 10 camera devices
+
+    let rx = spawn_for_output("aa-prompting-test.camera-naive", vec![device.into()]);
+    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
+
+    c.reply_to_prompt(
+        &id,
+        CameraInterface::prompt_to_reply(p.try_into()?, action).into(),
+    )
+    .await?;
+
+    let output = rx.recv().expect("to be able to recv");
+
+    assert_eq!(
+        output.stdout,
+        expected_stdout.replace("<PATH>", &device),
+        "stdout"
+    );
+    assert_eq!(
+        output.stderr,
+        expected_stderr.replace("<PATH>", &device),
+        "stderr"
+    );
+
+    Ok(())
+}
+
 // TODO: remove ignore when support for `microphone` interface lands on snapd
 #[ignore = "snapd doesn't have support for microphone prompt"]
 #[test_case(Action::Allow, "Allow access to microphone\n", ""; "allow")]
