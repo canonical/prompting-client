@@ -16,7 +16,8 @@ jobs:
       - name: compile
         working-directory: ./prompting-client
         run: |
-          sudo apt-get install protobuf-compiler
+          sudo apt-get -y update
+          sudo apt-get -y install protobuf-compiler
           cargo test --no-run
           FNAME=$(
             ls -ht target/debug/deps/integration* |

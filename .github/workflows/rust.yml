@@ -57,7 +57,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install protobuf-compiler linux-modules-extra-$(uname -r) v4l-utils
+          sudo apt-get -y update
+          sudo apt-get -y install protobuf-compiler linux-modules-extra-$(uname -r) v4l-utils
 
       - name: Setup virtual devices
         run: |
