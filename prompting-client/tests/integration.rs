@@ -593,6 +593,86 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
 
 #[tokio::test]
 #[serial]
+async fn scripted_client_works_with_simple_filter() -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let seq_allow =
+        include_str!("../resources/prompt-sequence-tests/e2e_path_filter_allow_test.json");
+    let seq_deny =
+        include_str!("../resources/prompt-sequence-tests/e2e_path_filter_deny_test.json");
+    let seq_observe =
+        include_str!("../resources/prompt-sequence-tests/e2e_path_filter_observe_test.json");
+    let (prefix, dir_path) = setup_test_dir(None, &[("allow.json", seq_allow)])?;
+    let (decoy_prefix, decoy_dir_path) = setup_test_dir(
+        None,
+        &[("deny.json", seq_deny), ("observe.json", seq_observe)],
+    )?;
+
+    // Create decoy prompts
+    let _ = spawn_for_output("aa-prompting-test.create", vec![decoy_prefix]);
+
+    // Observe that the "decoy" prompts have been created, but don't reply to any
+    let mut observer_client = ScriptedClient::try_new(
+        format!("{decoy_dir_path}/observe.json"),
+        &[("BASE_PATH", &decoy_dir_path)],
+        c.clone(),
+    )?;
+    let res = observer_client.run(&mut c, None).await;
+    sleep(Duration::from_millis(50)).await;
+    if let Err(e) = res {
+        panic!("unexpected error running observer scripted client: {e}");
+    }
+
+    // Create real prompts
+    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+
+    // Observe and action the real prompts without the other prompts interfering
+    let mut real_client = ScriptedClient::try_new(
+        format!("{dir_path}/allow.json"),
+        &[("BASE_PATH", &dir_path)],
+        c.clone(),
+    )?;
+    let res = real_client.run(&mut c, Some(3)).await;
+    sleep(Duration::from_millis(50)).await;
+    if let Err(e) = res {
+        panic!("unexpected error running real scripted client: {e}");
+    }
+
+    let files = &[
+        ("test-1.txt", "test\n"),
+        ("test-2.txt", "test\n"),
+        ("test-3.txt", "test\n"),
+    ];
+
+    for (p, s) in files {
+        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        assert_eq!(res.expect("file should exist"), *s);
+    }
+
+    // Action the decoy prompts so that the test can finish
+    let mut cleanup_client = ScriptedClient::try_new(
+        format!("{decoy_dir_path}/deny.json"),
+        &[("BASE_PATH", &decoy_dir_path)],
+        c.clone(),
+    )?;
+    let res = cleanup_client.run(&mut c, None).await;
+    sleep(Duration::from_millis(50)).await;
+    if let Err(e) = res {
+        panic!("unexpected error running cleanup scripted client: {e}");
+    }
+
+    for (p, _) in files {
+        let res = fs::exists(format!("{decoy_dir_path}/{p}"));
+        assert_eq!(
+            res.expect("should be able to check whether file exists"),
+            false
+        );
+    }
+
+    Ok(())
+}
+
+#[tokio::test]
+#[serial]
 async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_erroring_write_test.json");

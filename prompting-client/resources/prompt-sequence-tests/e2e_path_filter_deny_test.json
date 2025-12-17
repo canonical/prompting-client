@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "prompt-filter": {
+    "snap": "aa-prompting-test",
+    "interface": "home",
+    "constraints": {
+      "path": "$BASE_PATH/.*"
+    }
+  },
+  "prompts": [
+    {
+      "prompt-filter": {
+        "constraints": {
+          "path": "$BASE_PATH/test-1.txt",
+          "requested-permissions": ["write"],
+          "available-permissions": ["read", "write", "execute"]
+        }
+      },
+      "reply": {
+        "action": "deny",
+        "lifespan": "forever",
+        "constraints": {
+          "permissions": ["read", "write"]
+        }
+      }
+    },
+    {
+      "prompt-filter": {
+        "constraints": {
+          "path": "$BASE_PATH/test-2.txt",
+          "requested-permissions": ["write"],
+          "available-permissions": ["read", "write", "execute"]
+        }
+      },
+      "reply": {
+        "action": "deny",
+        "lifespan": "forever",
+        "constraints": {
+          "path": "${PROMPT_PATH}/../**",
+          "permissions": ["read", "write"]
+        }
+      }
+    },
+    {
+      "prompt-filter": {
+        "constraints": {
+          "path": "$BASE_PATH/test-3.txt",
+          "requested-permissions": ["write"],
+          "available-permissions": ["read", "write", "execute"]
+        }
+      },
+      "reply": {
+        "action": "deny",
+        "lifespan": "forever",
+        "constraints": {
+          "permissions": ["read", "write"]
+        }
+      }
+    }
+  ]
+}
