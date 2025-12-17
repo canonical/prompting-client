@@ -13,7 +13,7 @@ use std::{collections::VecDeque, fs};
 #[serde(rename_all = "kebab-case")]
 pub struct PromptSequence {
     version: u8,
-    filter: Option<TypedPromptFilter>,
+    prompt_filter: Option<TypedPromptFilter>,
     prompts: VecDeque<TypedPromptCase>,
     #[serde(skip, default)]
     index: usize,
@@ -35,7 +35,7 @@ impl PromptSequence {
     }
 
     pub fn should_handle(&self, p: &TypedPrompt) -> bool {
-        match &self.filter {
+        match &self.prompt_filter {
             Some(f) => f.matches(p),
             None => true,
         }
