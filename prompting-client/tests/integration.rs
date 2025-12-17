@@ -63,17 +63,30 @@ fn get_home() -> String {
     env::var("HOME").expect("HOME env var to be set")
 }
 
-fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(String, String)> {
+enum SetupTestDirEntry<'a> {
+    File(&'a str, &'a str), // (name, contents)
+    Directory(&'a str),     // (name)
+}
+
+/// Create a new test directory containing the given file or directory entries relative to the new
+/// directory. If a file should be created within a subdirectory of the test directory, that
+/// subdirectory must appear earlier in the list of entries than the file it contains.
+fn setup_test_dir(entries: &[SetupTestDirEntry]) -> io::Result<(String, String)> {
     let prefix = Uuid::new_v4().to_string();
     let home = get_home();
-    let path = match subdir {
-        Some(s) => format!("{home}/test/{prefix}/{s}"),
-        None => format!("{home}/test/{prefix}"),
-    };
-
+    let path = format!("{home}/test/{prefix}");
     fs::create_dir_all(&path)?;
-    for (fname, contents) in files {
-        fs::write(format!("{path}/{fname}"), contents)?;
+    for entry in entries {
+        match entry {
+            SetupTestDirEntry::File(name, contents) => {
+                let filename = format!("{path}/{name}");
+                fs::write(filename, contents)?;
+            }
+            SetupTestDirEntry::Directory(name) => {
+                let subdir = format!("{path}/{name}");
+                fs::create_dir_all(&subdir)?;
+            }
+        }
     }
 
     Ok((prefix, path))
@@ -287,7 +300,8 @@ async fn happy_path_read_single(
     expected_stderr: &str,
 ) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
+    let (prefix, dir_path) =
+        setup_test_dir(&[SetupTestDirEntry::File("test.txt", expected_stdout)])?;
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
     let (id, p) = expect_single_prompt!(
@@ -327,7 +341,7 @@ async fn happy_path_read_single(
 #[serial]
 async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+    let (prefix, dir_path) = setup_test_dir(&[])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let path = format!("{dir_path}/test-1.txt");
@@ -382,7 +396,7 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
 #[tokio::test]
 #[serial]
 async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespan) -> Result<()> {
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+    let (prefix, dir_path) = setup_test_dir(&[])?;
     let _ = spawn_for_output("aa-prompting-test.create", vec![prefix.clone()]);
     sleep(Duration::from_millis(400)).await;
 
@@ -464,7 +478,7 @@ async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
 #[serial]
 async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("test.txt", "test")])?;
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
     let (id, p) = expect_single_prompt!(
@@ -501,7 +515,7 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
 #[serial]
 async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &str) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("test.txt", "test")])?;
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
     let (id, p) = expect_single_prompt!(
@@ -539,7 +553,8 @@ async fn replying_multiple_times_errors(
     expected_stderr: &str,
 ) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
+    let (prefix, dir_path) =
+        setup_test_dir(&[SetupTestDirEntry::File("test.txt", expected_stdout)])?;
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
     let (id, p) = expect_single_prompt!(
@@ -592,7 +607,7 @@ async fn replying_multiple_times_errors(
 #[serial]
 async fn overwriting_a_file_works() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+    let (prefix, dir_path) = setup_test_dir(&[])?;
 
     let rx = spawn_for_output(
         "aa-prompting-test.create-single",
@@ -637,7 +652,7 @@ async fn overwriting_a_file_works() -> Result<()> {
 async fn scripted_client_works_with_simple_matching() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_write_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("seq.json", seq)])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
 
@@ -677,11 +692,11 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
         include_str!("../resources/prompt-sequence-tests/e2e_path_filter_deny_test.json");
     let seq_observe =
         include_str!("../resources/prompt-sequence-tests/e2e_path_filter_observe_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("allow.json", seq_allow)])?;
-    let (decoy_prefix, decoy_dir_path) = setup_test_dir(
-        None,
-        &[("deny.json", seq_deny), ("observe.json", seq_observe)],
-    )?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("allow.json", seq_allow)])?;
+    let (decoy_prefix, decoy_dir_path) = setup_test_dir(&[
+        SetupTestDirEntry::File("deny.json", seq_deny),
+        SetupTestDirEntry::File("observe.json", seq_observe),
+    ])?;
 
     // Create decoy prompts
     let _ = spawn_for_output("aa-prompting-test.create", vec![decoy_prefix]);
@@ -752,7 +767,7 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
 async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_erroring_write_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("seq.json", seq)])?;
 
     spawn_for_output("aa-prompting-test.create", vec![prefix]);
 
@@ -785,7 +800,7 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
 async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_wrong_path_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("seq.json", seq)])?;
 
     spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let mut scripted_client = ScriptedClient::try_new(
@@ -816,7 +831,7 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
     let seq = include_str!(
         "../resources/prompt-sequence-tests/e2e_unexpected_additional_prompt_test.json"
     );
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("seq.json", seq)])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let mut scripted_client = ScriptedClient::try_new(
@@ -841,7 +856,7 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
     let seq = include_str!(
         "../resources/prompt-sequence-tests/e2e_unexpected_additional_prompt_test.json"
     );
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+    let (prefix, dir_path) = setup_test_dir(&[SetupTestDirEntry::File("seq.json", seq)])?;
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let mut scripted_client = ScriptedClient::try_new(
@@ -869,14 +884,11 @@ async fn scripted_client_test_allow() -> Result<()> {
     let script = include_str!("../resources/scripted-tests/happy-path-read/test.sh");
     let seq = include_str!("../resources/scripted-tests/happy-path-read/prompt-sequence.json");
 
-    let (prefix, dir_path) = setup_test_dir(
-        None,
-        &[
-            ("test.txt", "testing testing 1 2 3"),
-            ("test.sh", script),
-            ("prompt-sequence.json", seq),
-        ],
-    )?;
+    let (prefix, dir_path) = setup_test_dir(&[
+        SetupTestDirEntry::File("test.txt", "testing testing 1 2 3"),
+        SetupTestDirEntry::File("test.sh", script),
+        SetupTestDirEntry::File("prompt-sequence.json", seq),
+    ])?;
 
     let script_path = format!("{dir_path}/test.sh");
     let file = fs::File::open(&script_path)?;
