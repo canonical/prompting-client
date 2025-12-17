@@ -79,10 +79,18 @@ fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(S
     Ok((prefix, path))
 }
 
+/// SinglePromptFilter is used to filter prompts when calling [expect_single_prompt] to avoid prompts from different tests conflicting with each other.
+#[derive(PartialEq)]
+enum SinglePromptFilter {
+    Home(String),
+    Camera,
+    Microphone,
+}
+
 // We have this as a macro rather than a function so that we get the line numbers of the call site
 // in test failures rather than the line numbers of the asserts within this helper
 macro_rules! expect_single_prompt {
-    ($c:expr, $expected_path:expr, $expected_permissions:expr) => {
+    ($c:expr, $filter:expr, $expected_path:expr, $expected_permissions:expr) => {
         async {
             let pending = match timeout(TIMEOUT, $c.pending_prompt_notices()).await {
                 Ok(pending) => pending,
@@ -98,31 +106,56 @@ macro_rules! expect_single_prompt {
                     .collect(),
                 Err(e) => panic!("error pulling pending prompts: {e}"),
             };
-            assert_eq!(pending.len(), 1, "expected a single prompt");
 
-            let id = pending.remove(0);
-            let p = match $c.prompt_details(&id).await {
-                Ok(p) => p,
-                Err(e) => panic!("error pulling prompt details: {e}"),
-            };
+            let mut matching = Vec::new();
 
-            match &p {
-                TypedPrompt::Camera(p) => {
-                    assert_eq!(p.snap(), TEST_SNAP);
-                    assert_eq!(p.requested_permissions(), $expected_permissions);
+            // Loop over all notices, find any which match the filter (we expect just one in the end)
+            loop {
+                let Some(id) = pending.pop() else {
+                    break;
+                };
+
+                let p = match $c.prompt_details(&id).await {
+                    Ok(p) => p,
+                    Err(e) => panic!("error pulling prompt details: {e}"),
+                };
+
+                match &p {
+                    TypedPrompt::Camera(p) => {
+                        if $filter != SinglePromptFilter::Camera {
+                            continue;
+                        }
+                        assert_eq!(p.snap(), TEST_SNAP);
+                        assert_eq!(p.requested_permissions(), $expected_permissions);
+                    }
+                    TypedPrompt::Home(p) => {
+                        match $filter {
+                            SinglePromptFilter::Home(dir) => {
+                                if !p.path().starts_with(&dir) {
+                                    continue;
+                                }
+                            }
+                            _ => {
+                                continue;
+                            }
+                        }
+                        assert_eq!(p.snap(), TEST_SNAP);
+                        assert_eq!(p.path(), $expected_path);
+                        assert_eq!(p.requested_permissions(), $expected_permissions);
+                    }
+                    TypedPrompt::Microphone(p) => {
+                        if $filter != SinglePromptFilter::Microphone {
+                            continue;
+                        }
+                        assert_eq!(p.snap(), TEST_SNAP);
+                        assert_eq!(p.requested_permissions(), $expected_permissions);
+                    }
                 }
-                TypedPrompt::Home(p) => {
-                    assert_eq!(p.snap(), TEST_SNAP);
-                    assert_eq!(p.path(), $expected_path);
-                    assert_eq!(p.requested_permissions(), $expected_permissions);
-                }
-                TypedPrompt::Microphone(p) => {
-                    assert_eq!(p.snap(), TEST_SNAP);
-                    assert_eq!(p.requested_permissions(), $expected_permissions);
-                }
+
+                matching.push((id, p));
             }
-
-            (id, p)
+            assert_eq!(matching.len(), 1, "expected a single matching prompt, got: {:?}", matching);
+            matching.pop().unwrap()
         }
     };
 }
@@ -149,7 +182,7 @@ async fn camera_interface_connected(
     let device = "/dev/video0";
 
     let rx = spawn_for_output("aa-prompting-test.camera", vec![device.into()]);
-    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
+    let (id, p) = expect_single_prompt!(&mut c, SinglePromptFilter::Camera, "", &["access"]).await;
 
     c.reply_to_prompt(
         &id,
@@ -182,7 +215,7 @@ async fn camera_interface_connected_naive(
     let device = "/dev/video9"; // No test environments should have 10 camera devices
 
     let rx = spawn_for_output("aa-prompting-test.camera-naive", vec![device.into()]);
-    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
+    let (id, p) = expect_single_prompt!(&mut c, SinglePromptFilter::Camera, "", &["access"]).await;
 
     c.reply_to_prompt(
         &id,
@@ -221,7 +254,8 @@ async fn microphone_interface_connected(
     let device = "hw:0,0"; // this is the alsa equivalent of /dev/snd/pcmC0D0c
 
     let rx = spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
-    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
+    let (id, p) =
+        expect_single_prompt!(&mut c, SinglePromptFilter::Microphone, "", &["access"]).await;
 
     c.reply_to_prompt(
         &id,
@@ -256,7 +290,13 @@ async fn happy_path_read_single(
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &format!("{dir_path}/test.txt"),
+        &["read"]
+    )
+    .await;
 
     c.reply_to_prompt(
         &id,
@@ -291,7 +331,13 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let path = format!("{dir_path}/test-1.txt");
-    let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &path,
+        &["write"]
+    )
+    .await;
     let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
         .with_custom_path_pattern(format!("{dir_path}/*"));
 
@@ -348,7 +394,13 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
     );
 
     let path = format!("{dir_path}/test.txt");
-    let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &path,
+        &["write"]
+    )
+    .await;
     let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
         .with_custom_path_pattern(format!("{dir_path}/*"));
 
@@ -415,7 +467,13 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &format!("{dir_path}/test.txt"),
+        &["read"]
+    )
+    .await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
         .with_custom_path_pattern(reply_path)
         .into();
@@ -446,7 +504,13 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
 
     let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &format!("{dir_path}/test.txt"),
+        &["read"]
+    )
+    .await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
         .for_timespan(timespan)
         .into();
@@ -478,7 +542,13 @@ async fn replying_multiple_times_errors(
     let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
 
     let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &format!("{dir_path}/test.txt"),
+        &["read"]
+    )
+    .await;
 
     let p: prompting_client::snapd_client::Prompt<HomeInterface> = p.try_into()?;
 
@@ -528,7 +598,13 @@ async fn overwriting_a_file_works() -> Result<()> {
         "aa-prompting-test.create-single",
         vec![prefix.clone(), "before".to_string()],
     );
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["write"]).await;
+    let (id, p) = expect_single_prompt!(
+        &mut c,
+        SinglePromptFilter::Home(dir_path.clone()),
+        &format!("{dir_path}/test.txt"),
+        &["write"]
+    )
+    .await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
         .for_forever()
         .into();
