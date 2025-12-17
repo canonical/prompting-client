@@ -565,8 +565,11 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
 
     let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
 
-    let mut scripted_client =
-        ScriptedClient::try_new(format!("{dir_path}/seq.json"), &[], c.clone())?;
+    let mut scripted_client = ScriptedClient::try_new(
+        format!("{dir_path}/seq.json"),
+        &[("BASE_PATH", &dir_path)],
+        c.clone(),
+    )?;
     let res = scripted_client.run(&mut c, None).await;
     sleep(Duration::from_millis(50)).await;
 
