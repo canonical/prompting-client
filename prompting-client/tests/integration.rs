@@ -388,7 +388,6 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
     Ok(())
 }
 
-#[ignore = "snapd parks the second process for 60s before generating the prompt so this is slow"]
 #[test_case(Action::Allow, Lifespan::Timespan; "allow timespan")]
 #[test_case(Action::Allow, Lifespan::Forever; "allow forever")]
 #[test_case(Action::Deny, Lifespan::Timespan; "deny timespan")]
@@ -396,27 +395,37 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
 #[tokio::test]
 #[serial]
 async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespan) -> Result<()> {
-    let (prefix, dir_path) = setup_test_dir(&[])?;
-    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix.clone()]);
+    // Make sure the two `aa-prompting-test` instances try to create files in different
+    // directories, as otherwise the directory will be locked by the first request and
+    // the second will not trigger a prompt until the first times out in the kernel.
+    let (prefix, dir_path) = setup_test_dir(&[
+        SetupTestDirEntry::Directory("foo"),
+        SetupTestDirEntry::Directory("bar"),
+    ])?;
+    let first_prefix = format!("{prefix}/foo");
+    let first_dir = format!("{dir_path}/foo");
+    let second_prefix = format!("{prefix}/bar");
+    let second_dir = format!("{dir_path}/bar");
+    let rx1 = spawn_for_output("aa-prompting-test.create", vec![first_prefix]);
     sleep(Duration::from_millis(400)).await;
 
     let mut c = SnapdSocketClient::new().await;
 
-    let _rx = spawn_for_output(
+    let rx2 = spawn_for_output(
         "aa-prompting-test.create-single",
-        vec![prefix, "test\n".to_string()],
+        vec![second_prefix, "test\n".to_string()],
     );
 
-    let path = format!("{dir_path}/test.txt");
+    let path = format!("{second_dir}/test.txt");
     let (id, p) = expect_single_prompt!(
         &mut c,
-        SinglePromptFilter::Home(dir_path.clone()),
+        SinglePromptFilter::Home(second_dir.clone()),
         &path,
         &["write"]
     )
     .await;
     let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
-        .with_custom_path_pattern(format!("{dir_path}/*"));
+        .with_custom_path_pattern(format!("{dir_path}/**"));
 
     reply = match lifespan {
         Lifespan::Timespan => reply.for_timespan("1s"),
@@ -431,16 +440,21 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
     // for its prompt to be actioned. The rule we create here should action that prompt and then
     // create a rule that handles the remaining two writes without prompting.
     c.reply_to_prompt(&id, reply.into()).await?;
-    sleep(Duration::from_millis(50)).await;
+
+    rx2.recv_timeout(TIMEOUT)
+        .expect("the second request to be handled by a direct reply");
+    rx1.recv_timeout(TIMEOUT)
+        .expect("the original request to be handled");
 
     let files = &[
-        ("test-1.txt", "test\n"),
-        ("test-2.txt", "test\n"),
-        ("test-3.txt", "test\n"),
+        (format!("{first_dir}/test-1.txt"), "test\n"),
+        (format!("{first_dir}/test-2.txt"), "test\n"),
+        (format!("{first_dir}/test-3.txt"), "test\n"),
+        (format!("{second_dir}/test.txt"), "test\n"),
     ];
 
     for (p, s) in files {
-        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        let res = fs::read_to_string(p);
         match action {
             Action::Allow => assert_eq!(res.expect("file should exist"), *s),
             Action::Deny => assert_eq!(
