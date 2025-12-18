@@ -675,7 +675,10 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
         &[("BASE_PATH", &dir_path)],
         c.clone(),
     )?;
-    let res = scripted_client.run(&mut c, None).await;
+    let res = match timeout(TIMEOUT, scripted_client.run(&mut c, None)).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for scripted client"),
+    };
     sleep(Duration::from_millis(50)).await;
 
     if let Err(e) = res {
@@ -721,7 +724,10 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
         &[("BASE_PATH", &decoy_dir_path)],
         c.clone(),
     )?;
-    let res = observer_client.run(&mut c, None).await;
+    let res = match timeout(TIMEOUT, observer_client.run(&mut c, None)).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for observer scripted client"),
+    };
     sleep(Duration::from_millis(50)).await;
     if let Err(e) = res {
         panic!("unexpected error running observer scripted client: {e}");
@@ -736,7 +742,10 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
         &[("BASE_PATH", &dir_path)],
         c.clone(),
     )?;
-    let res = real_client.run(&mut c, Some(3)).await;
+    let res = match timeout(TIMEOUT, real_client.run(&mut c, Some(3))).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for real scripted client"),
+    };
     sleep(Duration::from_millis(50)).await;
     if let Err(e) = res {
         panic!("unexpected error running real scripted client: {e}");
@@ -759,7 +768,10 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
         &[("BASE_PATH", &decoy_dir_path)],
         c.clone(),
     )?;
-    let res = cleanup_client.run(&mut c, None).await;
+    let res = match timeout(TIMEOUT, cleanup_client.run(&mut c, None)).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for the cleanup scripted client"),
+    };
     sleep(Duration::from_millis(50)).await;
     if let Err(e) = res {
         panic!("unexpected error running cleanup scripted client: {e}");
@@ -791,7 +803,11 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, None).await {
+    let res = match timeout(TIMEOUT, scripted_client.run(&mut c, None)).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for scripted client"),
+    };
+    match res {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedError { error },
         }) => {
@@ -823,7 +839,11 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, None).await {
+    let res = match timeout(TIMEOUT, scripted_client.run(&mut c, None)).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for scripted client"),
+    };
+    match res {
         Err(Error::FailedPromptSequence {
             error: MatchError::MatchFailures { index, failures },
         }) => {
@@ -854,7 +874,11 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, Some(5)).await {
+    let res = match timeout(TIMEOUT, scripted_client.run(&mut c, Some(5))).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for scripted client"),
+    };
+    match res {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedPrompts { .. },
         }) => Ok(()),
@@ -879,7 +903,10 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
         c.clone(),
     )?;
 
-    let res = scripted_client.run(&mut c, None).await;
+    let res = match timeout(TIMEOUT, scripted_client.run(&mut c, None)).await {
+        Ok(res) => res,
+        Err(_) => panic!("timeout reached while waiting for scripted client"),
+    };
 
     // Sleep to create a gap between this test and the next so that the outstanding prompts do not
     // get picked up as part of that test. Without this we are racey around what the first prompt
