@@ -17,26 +17,6 @@
         }
       },
       "reply": null
-    },
-    {
-      "prompt-filter": {
-        "constraints": {
-          "path": "$BASE_PATH/test-2.txt",
-          "requested-permissions": ["write"],
-          "available-permissions": ["read", "write", "execute"]
-        }
-      },
-      "reply": null
-    },
-    {
-      "prompt-filter": {
-        "constraints": {
-          "path": "$BASE_PATH/test-3.txt",
-          "requested-permissions": ["write"],
-          "available-permissions": ["read", "write", "execute"]
-        }
-      },
-      "reply": null
     }
   ]
 }

@@ -702,7 +702,11 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn scripted_client_works_with_simple_filter() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
+    // Need separate clients so all have the potential to see all prompts
+    let mut observe_c = SnapdSocketClient::new().await;
+    let mut real_c = SnapdSocketClient::new().await;
+    let mut cleanup_c = SnapdSocketClient::new().await;
+
     let seq_allow =
         include_str!("../resources/prompt-sequence-tests/e2e_path_filter_allow_test.json");
     let seq_deny =
@@ -722,9 +726,9 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
     let mut observer_client = ScriptedClient::try_new(
         format!("{decoy_dir_path}/observe.json"),
         &[("BASE_PATH", &decoy_dir_path)],
-        c.clone(),
+        observe_c.clone(),
     )?;
-    let res = match timeout(TIMEOUT, observer_client.run(&mut c, None)).await {
+    let res = match timeout(TIMEOUT, observer_client.run(&mut observe_c, None)).await {
         Ok(res) => res,
         Err(_) => panic!("timeout reached while waiting for observer scripted client"),
     };
@@ -740,9 +744,9 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
     let mut real_client = ScriptedClient::try_new(
         format!("{dir_path}/allow.json"),
         &[("BASE_PATH", &dir_path)],
-        c.clone(),
+        real_c.clone(),
     )?;
-    let res = match timeout(TIMEOUT, real_client.run(&mut c, Some(3))).await {
+    let res = match timeout(TIMEOUT, real_client.run(&mut real_c, Some(3))).await {
         Ok(res) => res,
         Err(_) => panic!("timeout reached while waiting for real scripted client"),
     };
@@ -766,9 +770,9 @@ async fn scripted_client_works_with_simple_filter() -> Result<()> {
     let mut cleanup_client = ScriptedClient::try_new(
         format!("{decoy_dir_path}/deny.json"),
         &[("BASE_PATH", &decoy_dir_path)],
-        c.clone(),
+        cleanup_c.clone(),
     )?;
-    let res = match timeout(TIMEOUT, cleanup_client.run(&mut c, None)).await {
+    let res = match timeout(TIMEOUT, cleanup_client.run(&mut cleanup_c, None)).await {
         Ok(res) => res,
         Err(_) => panic!("timeout reached while waiting for the cleanup scripted client"),
     };

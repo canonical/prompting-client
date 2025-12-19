@@ -141,7 +141,10 @@ impl ScriptedClient {
                 Some(PromptUpdate::Add(ep)) if self.should_handle(&ep) => {
                     self.reply(ep, snapd_client).await?
                 }
-                Some(PromptUpdate::Add(ep)) => eprintln!("dropping prompt: {ep:?}"),
+                Some(PromptUpdate::Add(ep)) => eprintln!(
+                    "dropping prompt in client running with path {}: {ep:?}",
+                    &self.path
+                ),
                 Some(PromptUpdate::Drop(PromptId(id))) => warn!(%id, "drop for prompt id"),
                 None => break,
             }
