@@ -67,15 +67,12 @@ impl ScriptedClient {
         // We need to spawn a task to wait for the read prompt we generate when reading in our
         // script file. We can't handle this in the main poll loop as we need to construct the
         // client up front.
-        let mut filter = PromptFilter::default();
+        let mut filter = PromptFilter::<HomeInterface>::default();
         let mut constraints = HomeConstraintsFilter::default();
         constraints
             .try_with_path(format!(".*{path}"))
             .expect("valid regex");
-        filter
-            .with_snap(SNAP_NAME)
-            .with_interface("home")
-            .with_constraints(constraints);
+        filter.with_snap(SNAP_NAME).with_constraints(constraints);
 
         eprintln!("script path: {path}");
 

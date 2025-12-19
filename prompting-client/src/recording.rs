@@ -39,15 +39,12 @@ impl PromptRecording {
     pub fn new(path: Option<String>) -> Self {
         let filter = path.clone().map(|output_file| {
             info!(%output_file, "recording enabled");
-            let mut filter = PromptFilter::default();
+            let mut filter = PromptFilter::<HomeInterface>::default();
             let mut constraints = HomeConstraintsFilter::default();
             constraints
                 .try_with_path(format!(".*/{output_file}"))
                 .expect("valid regex");
-            filter
-                .with_snap(SNAP_NAME)
-                .with_interface("home")
-                .with_constraints(constraints);
+            filter.with_snap(SNAP_NAME).with_constraints(constraints);
 
             filter
         });

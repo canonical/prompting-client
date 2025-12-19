@@ -158,7 +158,7 @@ pub struct CameraReplyConstraints {
     pub(crate) available_permissions: Vec<String>,
 }
 
-#[derive(Debug, Default, Serialize, Deserialize, Clone)]
+#[derive(Debug, Default, Serialize, Deserialize, Clone, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub struct CameraConstraintsFilter {}
 

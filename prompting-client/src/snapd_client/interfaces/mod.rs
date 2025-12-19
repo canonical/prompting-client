@@ -171,7 +171,8 @@ pub trait ReplyConstraintsOverrides:
 
 /// Generic-free counterpart to [Prompt].
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(untagged)]
+#[serde(tag = "interface")]
+#[serde(rename_all = "kebab-case")]
 pub enum TypedPrompt {
     Camera(Prompt<CameraInterface>),
     Home(Prompt<HomeInterface>),

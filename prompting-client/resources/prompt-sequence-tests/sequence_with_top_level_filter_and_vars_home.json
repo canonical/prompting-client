@@ -10,7 +10,7 @@
   "prompts": [
     {
       "prompt-filter": {
-        "snap": "testSnap",
+        "snap": "aa-prompting-test",
         "interface": "home",
         "constraints": {
           "path": "$BASE_PATH/bar",
