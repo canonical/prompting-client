@@ -1,12 +1,19 @@
 {
   "version": 1,
+  "prompt-filter": {
+    "snap": "aa-prompting-test",
+    "interface": "home",
+    "constraints": {
+      "path": "$BASE_PATH/.*"
+    }
+  },
   "prompts": [
     {
       "prompt-filter": {
-        "snap": "testSnap",
+        "snap": "aa-prompting-test",
         "interface": "home",
         "constraints": {
-          "path": "/home/foo/bar",
+          "path": "$BASE_PATH/bar",
           "requested-permissions": [ "read" ],
           "available-permissions": [ "read", "write", "execute" ]
         }
@@ -15,7 +22,7 @@
         "action": "allow",
         "lifespan": "single",
         "constraints": {
-          "path-pattern": "/home/foo/bar",
+          "path-pattern": "${BASE_PATH}/bar",
           "permissions": [ "read", "write" ]
         }
       }

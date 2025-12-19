@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "prompt-filter": {
+    "snap": "aa-prompting-test",
+    "interface": "microphone"
+  },
+  "prompts": [
+    {
+      "prompt-filter": {
+        "snap": "aa-prompting-test",
+        "interface": "microphone",
+        "constraints": {
+          "requested-permissions": ["access"],
+          "available-permissions": ["access"]
+        }
+      },
+      "reply": {
+        "action": "allow",
+        "lifespan": "single",
+        "constraints": {
+          "permissions": ["access"]
+        }
+      }
+    }
+  ]
+}

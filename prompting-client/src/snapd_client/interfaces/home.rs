@@ -470,6 +470,18 @@ impl ConstraintsFilter for HomeConstraintsFilter {
     }
 }
 
+impl PartialEq for HomeConstraintsFilter {
+    fn eq(&self, other: &Self) -> bool {
+        let they_match = match (&self.path, &other.path) {
+            (Some(sp), Some(op)) => sp.as_str() == op.as_str(),
+            (None, None) => true,
+            _ => false,
+        } && self.requested_permissions == other.requested_permissions
+            && self.available_permissions == other.available_permissions;
+        they_match // without the `let they_match =` the match returns () for some reason
+    }
+}
+
 #[derive(Debug, Default, Serialize, Deserialize, Clone)]
 #[serde(rename_all = "kebab-case")]
 pub struct HomeReplyConstraintsOverrides {

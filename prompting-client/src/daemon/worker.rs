@@ -607,7 +607,6 @@ mod tests {
                 snap: "test".to_string(),
                 pid: 1234,
                 cgroup: cgroup.into(),
-                interface: "home".to_string(),
                 constraints: HomeConstraints::default(),
             }),
             meta: None,

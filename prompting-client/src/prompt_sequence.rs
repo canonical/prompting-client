@@ -13,7 +13,7 @@ use std::{collections::VecDeque, fs};
 #[serde(rename_all = "kebab-case")]
 pub struct PromptSequence {
     version: u8,
-    filter: Option<TypedPromptFilter>,
+    prompt_filter: Option<TypedPromptFilter>,
     prompts: VecDeque<TypedPromptCase>,
     #[serde(skip, default)]
     index: usize,
@@ -35,7 +35,7 @@ impl PromptSequence {
     }
 
     pub fn should_handle(&self, p: &TypedPrompt) -> bool {
-        match &self.filter {
+        match &self.prompt_filter {
             Some(f) => f.matches(p),
             None => true,
         }
@@ -97,6 +97,10 @@ impl PromptSequence {
     pub fn len(&self) -> usize {
         self.prompts.len()
     }
+
+    pub(crate) fn prompt_filter(&self) -> &Option<TypedPromptFilter> {
+        &self.prompt_filter
+    }
 }
 
 fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
@@ -116,9 +120,10 @@ enum TypedPromptCase {
     Microphone(PromptCase<MicrophoneInterface>),
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(untagged)]
-enum TypedPromptFilter {
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+#[serde(tag = "interface")]
+#[serde(rename_all = "kebab-case")]
+pub(crate) enum TypedPromptFilter {
     Camera(PromptFilter<CameraInterface>),
     Home(PromptFilter<HomeInterface>),
     Microphone(PromptFilter<MicrophoneInterface>),
@@ -241,14 +246,13 @@ macro_rules! field_matches {
     };
 }
 
-#[derive(Debug, Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub struct PromptFilter<I>
 where
     I: SnapInterface,
 {
     snap: Option<String>,
-    interface: Option<String>,
     constraints: Option<I::ConstraintsFilter>,
 }
 
@@ -261,11 +265,6 @@ where
         self
     }
 
-    pub fn with_interface(&mut self, interface: impl Into<String>) -> &mut Self {
-        self.interface = Some(interface.into());
-        self
-    }
-
     pub fn with_constraints(&mut self, constraints: I::ConstraintsFilter) -> &mut Self {
         self.constraints = Some(constraints);
         self
@@ -274,7 +273,6 @@ where
     pub fn matches(&self, p: &Prompt<I>) -> MatchAttempt {
         let mut failures = Vec::new();
         field_matches!(self, p, failures, snap);
-        field_matches!(self, p, failures, interface);
 
         match &self.constraints {
             None if failures.is_empty() => MatchAttempt::Success,
@@ -307,7 +305,9 @@ where
 mod tests {
     use super::*;
     use crate::snapd_client::{
+        interfaces::camera::CameraConstraints,
         interfaces::home::{HomeConstraints, HomeConstraintsFilter},
+        interfaces::microphone::MicrophoneConstraints,
         Cgroup, PromptId,
     };
     use simple_test_case::{dir_cases, test_case};
@@ -338,23 +338,21 @@ mod tests {
     #[test]
     fn all_fields_deserializes_correctly() {
         let data = include_str!("../resources/filter-serialize-tests/all_fields_home.json");
-        let res = serde_json::from_str::<'_, PromptFilter<HomeInterface>>(data);
+        let res = serde_json::from_str::<'_, TypedPromptFilter>(data);
 
         assert!(res.is_ok(), "error {res:?}");
 
         match res.unwrap() {
-            PromptFilter {
+            TypedPromptFilter::Home(PromptFilter {
                 snap,
-                interface,
                 constraints:
                     Some(HomeConstraintsFilter {
                         path,
                         requested_permissions,
                         available_permissions,
                     }),
-            } => {
+            }) => {
                 assert_eq!(snap.as_deref(), Some("snapName"));
-                assert_eq!(interface.as_deref(), Some("home"));
                 assert_eq!(
                     path.map(|re| re.to_string()).as_deref(),
                     Some("/home/foo/bar")
@@ -373,6 +371,35 @@ mod tests {
         }
     }
 
+    #[test]
+    fn some_fields_deserializes_correctly() {
+        let data = include_str!("../resources/filter-serialize-tests/some_fields_home.json");
+        let res = serde_json::from_str::<'_, TypedPromptFilter>(data);
+
+        assert!(res.is_ok(), "error {res:?}");
+
+        match res.unwrap() {
+            TypedPromptFilter::Home(PromptFilter {
+                snap,
+                constraints:
+                    Some(HomeConstraintsFilter {
+                        path,
+                        requested_permissions,
+                        available_permissions,
+                    }),
+            }) => {
+                assert_eq!(snap.as_deref(), None);
+                assert_eq!(
+                    path.map(|re| re.to_string()).as_deref(),
+                    Some("/home/foo/bar")
+                );
+                assert_eq!(requested_permissions, None);
+                assert_eq!(available_permissions, None);
+            }
+            f => panic!("invalid filter: {f:?}"),
+        }
+    }
+
     fn mf(field: &'static str, expected: &str, seen: &str) -> MatchFailure {
         MatchFailure {
             field,
@@ -381,7 +408,7 @@ mod tests {
         }
     }
 
-    #[test_case(r#"{}"#, MatchAttempt::Success; "empty filter")]
+    #[test_case(r#"{}"#, MatchAttempt::Success; "empty filter")] // should never occur in the wild, as cannot deserialize to TypedPromptFilter
     #[test_case(r#"{ "interface": "home" }"#, MatchAttempt::Success; "interface matching")]
     #[test_case(
         r#"{ "interface": "home", "constraints": { "path": "/home/foo/bar" } }"#,
@@ -389,29 +416,15 @@ mod tests {
         "interface and path matching"
     )]
     #[test_case(
-        r#"{ "interface": "camera" }"#,
-        MatchAttempt::Failure(vec![mf("interface", "\"camera\"", "\"home\"")]);
-        "interface non-matching"
-    )]
-    #[test_case(
         r#"{ "interface": "home", "constraints": { "path": "/home/wrong/path" } }"#,
         MatchAttempt::Failure(vec![mf("path", "\"/home/wrong/path\"", "\"/home/foo/bar\"")]);
         "interface matching path non-matching"
     )]
-    #[test_case(
-        r#"{ "interface": "camera", "constraints": { "path": "/home/wrong/path" } }"#,
-        MatchAttempt::Failure(vec![
-            mf("interface", "\"camera\"", "\"home\""),
-            mf("path", "\"/home/wrong/path\"", "\"/home/foo/bar\""),
-        ]);
-        "interface and path non-matching"
-    )]
     #[test]
-    fn filter_matches(filter_str: &str, expected: MatchAttempt) {
+    fn filter_matches_home(filter_str: &str, expected: MatchAttempt) {
         let filter: PromptFilter<HomeInterface> = serde_json::from_str(filter_str).unwrap();
         let p = Prompt {
             id: PromptId("id".to_string()),
-            interface: "home".to_string(),
             timestamp: "".to_string(),
             snap: "test".to_string(),
             pid: 1234,
@@ -428,10 +441,124 @@ mod tests {
         assert_eq!(filter.matches(&p), expected);
     }
 
+    #[test_case(r#"{}"#, MatchAttempt::Success; "empty filter")] // should never occur in the wild, as cannot deserialize to TypedPromptFilter
+    #[test_case(r#"{ "interface": "camera" }"#, MatchAttempt::Success; "interface matching")]
+    #[test_case(
+        r#"{ "interface": "camera", "snap": "test" }"#,
+        MatchAttempt::Success;
+        "interface and snap matching"
+    )]
+    #[test_case(
+        r#"{ "interface": "camera", "constraints": { "requested-permissions": [ "ignored" ] } }"#,
+        MatchAttempt::Success;
+        "interface matching constraints non-matching but ignored permissions"
+    )]
+    #[test_case(
+        r#"{ "interface": "camera", "snap": "foo", "constraints": { "requested-permissions": [ "ignored" ] } }"#,
+        MatchAttempt::Failure(vec![mf("snap", "\"foo\"", "\"test\"")]);
+        "interface matching snap and constraints non-matching"
+    )]
+    #[test]
+    fn filter_matches_camera(filter_str: &str, expected: MatchAttempt) {
+        let filter: PromptFilter<CameraInterface> = serde_json::from_str(filter_str).unwrap();
+        let p = Prompt {
+            id: PromptId("id".to_string()),
+            timestamp: "".to_string(),
+            snap: "test".to_string(),
+            pid: 1234,
+            cgroup: Cgroup(
+                "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope".to_string(),
+            ),
+            constraints: CameraConstraints {
+                requested_permissions: vec!["access".to_string()],
+                available_permissions: vec!["access".to_string()],
+            },
+        };
+
+        assert_eq!(filter.matches(&p), expected);
+    }
+
+    #[test_case(r#"{}"#, MatchAttempt::Success; "empty filter")]
+    #[test_case(r#"{ "interface": "microphone" }"#, MatchAttempt::Success; "interface matching")]
+    #[test_case(
+        r#"{ "interface": "microphone", "snap": "test" }"#,
+        MatchAttempt::Success;
+        "interface and snap matching"
+    )]
+    #[test_case(
+        r#"{ "interface": "microphone", "constraints": { "requested-permissions": [ "ignored" ] } }"#,
+        MatchAttempt::Success;
+        "interface matching constraints non-matching but ignored permissions"
+    )]
+    #[test_case(
+        r#"{ "interface": "microphone", "snap": "foo", "constraints": { "requested-permissions": [ "ignored" ] } }"#,
+        MatchAttempt::Failure(vec![mf("snap", "\"foo\"", "\"test\"")]);
+        "interface matching snap and constraints non-matching"
+    )]
+    #[test]
+    fn filter_matches_microphone(filter_str: &str, expected: MatchAttempt) {
+        let filter: PromptFilter<MicrophoneInterface> = serde_json::from_str(filter_str).unwrap();
+        let p = Prompt {
+            id: PromptId("id".to_string()),
+            timestamp: "".to_string(),
+            snap: "test".to_string(),
+            pid: 1234,
+            cgroup: Cgroup(
+                "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope".to_string(),
+            ),
+            constraints: MicrophoneConstraints {
+                requested_permissions: vec!["access".to_string()],
+                available_permissions: vec!["access".to_string()],
+            },
+        };
+
+        assert_eq!(filter.matches(&p), expected);
+    }
+
+    #[test_case(r#"{ "interface": "home" }"#, TypedPromptFilter::Home(PromptFilter{
+        snap: None, constraints: None}); "empty home filter")]
+    #[test_case(r#"{ "interface": "camera" }"#, TypedPromptFilter::Camera(PromptFilter{
+        snap: None, constraints: None}); "empty camera filter")]
+    #[test_case(r#"{ "interface": "microphone" }"#, TypedPromptFilter::Microphone(PromptFilter{
+        snap: None, constraints: None}); "empty microphone filter")]
+    #[test_case(r#"{ "snap": "foo", "interface": "home" }"#, TypedPromptFilter::Home(PromptFilter{
+        snap: Some("foo".into()), constraints: None}); "home filter with snap")]
+    #[test_case(r#"{ "snap": "foo", "interface": "camera" }"#, TypedPromptFilter::Camera(PromptFilter{
+        snap: Some("foo".into()), constraints: None}); "camera filter with snap")]
+    #[test_case(r#"{ "snap": "foo", "interface": "microphone" }"#, TypedPromptFilter::Microphone(PromptFilter{
+        snap: Some("foo".into()), constraints: None}); "microphone filter with snap")]
+    #[test_case(r#"{ "snap": "foo", "interface": "home", "constraints": { "path": "/path/to/foo" } }"#, TypedPromptFilter::Home(PromptFilter{
+        snap: Some("foo".into()), constraints: Some(HomeConstraintsFilter{
+            path: Some(regex::Regex::new("/path/to/foo").unwrap()), requested_permissions: None, available_permissions: None})}); "home filter with snap and constraints")]
+    #[test_case(r#"{ "snap": "foo", "interface": "camera" }"#, TypedPromptFilter::Camera(PromptFilter{
+        snap: Some("foo".into()), constraints: None}); "camera filter with snap and constraints")]
+    #[test_case(r#"{ "snap": "foo", "interface": "microphone" }"#, TypedPromptFilter::Microphone(PromptFilter{
+        snap: Some("foo".into()), constraints: None}); "microphone filter with snap and constraints")]
+    #[test]
+    fn typed_filter_can_be_deserialized_with_type(filter_str: &str, expected: TypedPromptFilter) {
+        let res: Result<TypedPromptFilter, serde_json::Error> = serde_json::from_str(filter_str);
+        let filter = match res {
+            Ok(f) => f,
+            Err(e) => panic!("failed to deserialize filter '{filter_str}': {e}"),
+        };
+        assert_eq!(filter, expected);
+    }
+
+    #[test_case(r#"{ }"#; "empty")]
+    #[test_case(r#"{ "interface": "" }"#; "blank interface")]
+    #[test_case(r#"{ "interface": "invalid" }"#; "invalid interface")]
+    #[test]
+    fn typed_filter_cannot_be_deserialized_without_type(filter_str: &str) {
+        let res: Result<TypedPromptFilter, serde_json::Error> = serde_json::from_str(filter_str);
+        if let Ok(f) = res {
+            panic!("unexpectedly deserialized filter with no interface: {f:?}")
+        }
+    }
+
     #[test]
     fn apply_vars_works() {
         let raw = include_str!(
-            "../resources/prompt-sequence-tests/sequence_with_top_level_filter_and_vars.json"
+            "../resources/prompt-sequence-tests/sequence_with_top_level_filter_and_vars_home.json"
         );
         assert!(raw.contains("$BASE_PATH"));
         assert!(raw.contains("${BASE_PATH}"));
@@ -448,5 +575,49 @@ mod tests {
         let res = PromptSequence::try_new_from_string(data, &[("BASE_PATH", "/home/foo")]);
 
         assert!(res.is_ok(), "error parsing {path}: {res:?}");
+        let (seq, _) = res.unwrap();
+        assert!(seq.prompt_filter.is_some());
+        assert!(!seq.prompts.is_empty());
+    }
+
+    #[test_case(
+        "resources/prompt-sequence-tests/sequence_with_top_level_filter_and_vars_home.json",
+        TypedPromptFilter::Home(PromptFilter{
+            snap: Some("aa-prompting-test".into()),
+            constraints: Some(HomeConstraintsFilter{
+                path: Some(regex::Regex::new("/home/foo/.*").unwrap()),
+                requested_permissions: None,
+                available_permissions: None
+            })
+        });
+        "home prompt sequence"
+    )]
+    #[test_case(
+        "resources/prompt-sequence-tests/sequence_with_top_level_filter_and_vars_camera.json",
+        TypedPromptFilter::Camera(PromptFilter{
+            snap: Some("aa-prompting-test".into()),
+            constraints: None,
+        });
+        "camera prompt sequence"
+    )]
+    #[test_case(
+        "resources/prompt-sequence-tests/sequence_with_top_level_filter_and_vars_microphone.json",
+        TypedPromptFilter::Microphone(PromptFilter{
+            snap: Some("aa-prompting-test".into()),
+            constraints: None,
+        });
+        "microphone prompt sequence"
+    )]
+    #[test]
+    fn deserialize_prompt_sequence_filters_correct(path: &str, expected_filter: TypedPromptFilter) {
+        let res = PromptSequence::try_new_from_file(path, &[("BASE_PATH", "/home/foo")]);
+
+        assert!(res.is_ok(), "error parsing {path}: {res:?}");
+        let (seq, _) = res.unwrap();
+        assert!(seq.prompt_filter.is_some());
+        assert!(!seq.prompts.is_empty());
+
+        let filter = seq.prompt_filter.unwrap();
+        assert_eq!(filter, expected_filter);
     }
 }
