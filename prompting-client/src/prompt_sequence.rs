@@ -97,6 +97,10 @@ impl PromptSequence {
     pub fn len(&self) -> usize {
         self.prompts.len()
     }
+
+    pub(crate) fn prompt_filter(&self) -> &Option<TypedPromptFilter> {
+        &self.prompt_filter
+    }
 }
 
 fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {

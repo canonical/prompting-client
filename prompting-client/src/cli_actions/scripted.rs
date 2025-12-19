@@ -1,6 +1,6 @@
 use crate::{
     daemon::{EnrichedPrompt, PollLoop, PromptUpdate},
-    prompt_sequence::{MatchError, PromptFilter, PromptSequence},
+    prompt_sequence::{MatchError, PromptFilter, PromptSequence, TypedPromptFilter},
     snapd_client::{
         interfaces::{
             home::{HomeConstraintsFilter, HomeInterface},
@@ -17,8 +17,12 @@ use tracing::{debug, error, info, warn};
 
 /// Poll for outstanding prompts and auto-deny them before returning an error. This function will
 /// loop until at least one un-actioned prompt is encountered.
-async fn grace_period_deny_and_error(snapd_client: &mut SnapdSocketClient) -> Result<()> {
+async fn grace_period_deny_and_error(
+    snapd_client: &mut SnapdSocketClient,
+    prompt_filter: &Option<TypedPromptFilter>,
+) -> Result<()> {
     loop {
+        // XXX: wouldn't this hang forever if there are no pending prompt notices after the most recent timestamp?
         let notices = snapd_client.pending_prompt_notices().await?;
         let mut prompts = Vec::with_capacity(notices.len());
 
@@ -32,6 +36,12 @@ async fn grace_period_deny_and_error(snapd_client: &mut SnapdSocketClient) -> Re
                 Ok(p) => p,
                 Err(_) => continue,
             };
+
+            if let Some(filter) = prompt_filter {
+                if !filter.matches(&prompt) {
+                    continue;
+                }
+            }
 
             snapd_client
                 .reply_to_prompt(&id, prompt.clone().into_deny_once())
@@ -145,7 +155,7 @@ impl ScriptedClient {
         info!(seconds=%grace_period, "sequence complete, entering grace period");
         select! {
             _ = tokio::time::sleep(Duration::from_secs(grace_period)) => Ok(()),
-            res = grace_period_deny_and_error(snapd_client) => res,
+            res = grace_period_deny_and_error(snapd_client, self.seq.prompt_filter()) => res,
         }
     }
 
