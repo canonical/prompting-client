@@ -27,7 +27,7 @@
     },
     "homePromptErrorUnknownTitle": "發生一些問題",
     "@homePromptErrorUnknownTitle": {},
-    "homePromptMetaDataAppCenterLink": "造訪《應用程式中心》頁面",
+    "homePromptMetaDataAppCenterLink": "造訪《應用中心》頁面",
     "@homePromptMetaDataAppCenterLink": {},
     "promptAccessMoreOptionsTitle": "設定 {snap} 的存取權限為：",
     "@promptAccessMoreOptionsTitle": {
