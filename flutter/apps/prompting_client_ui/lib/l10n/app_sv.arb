@@ -9,7 +9,7 @@
             }
         }
     },
-    "promptAccessTitle": "Ge {snap} {permission} åtkomst till:",
+    "promptAccessTitle": "Ge {snap} {permission}-åtkomst till:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -40,19 +40,19 @@
     "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Spara och fortsätt",
     "@promptSaveAndContinue": {},
-    "promptTitle": "Säkerhetsnotifiering",
+    "promptTitle": "Säkerhetsavisering",
     "@promptTitle": {},
-    "homePatternTypeRequestedDirectory": "Den begärda mappen endast",
+    "homePatternTypeRequestedDirectory": "Endast begärd mapp",
     "@homePatternTypeRequestedDirectory": {},
-    "homePatternTypeRequestedFile": "Den begärda filen endast",
+    "homePatternTypeRequestedFile": "Endast begärd fil",
     "@homePatternTypeRequestedFile": {},
-    "homePatternTypeRequestedDirectoryContents": "Allt i mappen",
+    "homePatternTypeRequestedDirectoryContents": "Allting i mappen",
     "@homePatternTypeRequestedDirectoryContents": {},
-    "homePatternTypeContainingDirectory": "Allt i mappen",
+    "homePatternTypeContainingDirectory": "Allting i mappen",
     "@homePatternTypeContainingDirectory": {},
-    "homePatternTypeHomeDirectory": "Allt i hemkatalogen",
+    "homePatternTypeHomeDirectory": "Allting i hemkatalogen",
     "@homePatternTypeHomeDirectory": {},
-    "homePatternTypeMatchingFileExtension": "Alla {fileExtension} filer",
+    "homePatternTypeMatchingFileExtension": "Alla {fileExtension}-filer",
     "@homePatternTypeMatchingFileExtension": {},
     "homePromptMetaDataTitle": "Om detta program",
     "@homePromptMetaDataTitle": {},
@@ -64,7 +64,7 @@
             }
         }
     },
-    "homePromptMetaDataLastUpdated": "Senast uppdaterad på {date}",
+    "homePromptMetaDataLastUpdated": "Senast uppdaterad {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
             "date": {
@@ -72,7 +72,7 @@
             }
         }
     },
-    "homePromptMoreOptionsLabel": "Mer alternativ...",
+    "homePromptMoreOptionsLabel": "Fler alternativ...",
     "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsRead": "Läs",
     "@homePromptPermissionsRead": {},
@@ -82,7 +82,7 @@
     "@homePatternTypeCustomPath": {},
     "homePatternInfo": "<Läs mer om sökvägsmönster>",
     "@homePatternInfo": {},
-    "homePatternTypeTopLevelDirectory": "Allt i {topLevelDir}-mappen",
+    "homePatternTypeTopLevelDirectory": "Allting i {topLevelDir}-mappen",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
             "topLevelDir": {
@@ -104,7 +104,7 @@
             }
         }
     },
-    "homePromptMetaDataAppCenterLink": "Visa Appcentral sida",
+    "homePromptMetaDataAppCenterLink": "Visa Appcentral-sidan",
     "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "Behörigheter",
     "@homePromptPermissionsTitle": {},
@@ -112,7 +112,7 @@
     "@homePromptPermissionsExecute": {},
     "promptActionOptionAllowOnce": "Tillåt en gång",
     "@promptActionOptionAllowOnce": {},
-    "homePromptSuggestedPermission": "Också ge {permission} tillgång",
+    "homePromptSuggestedPermission": "Ge också {permission}-åtkomst",
     "@homePromptSuggestedPermission": {
         "placeholders": {
             "permission": {
@@ -122,7 +122,7 @@
     },
     "homePromptErrorUnknownTitle": "Någonting gick fel",
     "@homePromptErrorUnknownTitle": {},
-    "homePromptTopLevelDirFileBody": "{snap} vill få {permissions} åtkomst till {filename} i {foldername} mappen.",
+    "homePromptTopLevelDirFileBody": "{snap} vill få {permissions}-åtkomst till {filename} i mappen {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -139,7 +139,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} vill få {permissions} till din hemmapp.",
+    "homePromptHomeDirBody": "{snap} vill få {permissions}-åtkomst till din hemmapp.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -150,7 +150,7 @@
             }
         }
     },
-    "homePromptDefaultBody": "{snap} vill få {permissions} åtkomst till {path}",
+    "homePromptDefaultBody": "{snap} vill få {permissions}-åtkomst till {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
@@ -164,7 +164,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} vill få {permissions} tillgång till {foldername} mapp.",
+    "homePromptTopLevelDirBody": "{snap} vill få {permissions}-åtkomst till mappen {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -178,7 +178,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} vill få {permissions} åtkomst till {filename} i din hemmapp.",
+    "homePromptHomeDirFileBody": "{snap} vill få {permissions}-åtkomst till {filename} i din hemmapp.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
