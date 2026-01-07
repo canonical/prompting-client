@@ -37,6 +37,7 @@ apps:
     environment: *env
     plugs: *plugs
     daemon: simple
+    success-exit-status: [8]
     passthrough: # TODO: Remove once daemon-scope lands in snapcraft
       daemon-scope: user
     restart-condition: on-failure
