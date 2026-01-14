@@ -131,5 +131,75 @@
                 "type": "String"
             }
         }
+    },
+    "homePromptHomeDirFileBody": "ನಿಮ್ಮ ಹೋಮ್ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ {filename} ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "ಈ ಅಪ್ಲಿಕೇಶನ್ ಬಗ್ಗೆ",
+    "@homePromptMetaDataTitle": {},
+    "homePromptMetaDataPublishedBy": "ಪ್ರಕಟಿಸಿದವರು {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "{date} ರಂದು ಕೊನೆಯದಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು...",
+    "@homePromptMoreOptionsLabel": {},
+    "homePromptMetaDataAppCenterLink": "ಅಪ್ಲಿಕೇಶನ್ ಕೇಂದ್ರ ಪುಟಕ್ಕೆ ಭೇಟಿ ನೀಡಿ",
+    "@homePromptMetaDataAppCenterLink": {},
+    "homePromptSuggestedPermission": "{permission} ಪ್ರವೇಶವನ್ನು ಸಹ ನೀಡಿ",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "ಅನುಮತಿಗಳು",
+    "@homePromptPermissionsTitle": {},
+    "homePromptPermissionsRead": "ಓದು",
+    "@homePromptPermissionsRead": {},
+    "homePromptPermissionsWrite": "ಬರೆಯಿರಿ",
+    "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsExecute": "ಕಾರ್ಯಗತಗೊಳಿಸಿ",
+    "@homePromptPermissionsExecute": {},
+    "homePromptErrorUnknownTitle": "ಏನೋ ತಪ್ಪಾಗಿದೆ",
+    "@homePromptErrorUnknownTitle": {},
+    "cameraPromptBody": "ನಿಮ್ಮ ಕ್ಯಾಮರಾವನ್ನು ಪ್ರವೇಶಿಸಲು {snapName} ಗೆ ಅನುಮತಿಸುವುದೇ?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು {snapName} ಗೆ ಅನುಮತಿಸುವುದೇ?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
 }
