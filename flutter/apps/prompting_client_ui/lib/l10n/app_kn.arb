@@ -27,5 +27,109 @@
     "promptActionOptionAllowOnce": "ಒಮ್ಮೆ ಅನುಮತಿಸಿ",
     "@promptActionOptionAllowOnce": {},
     "promptActionOptionDeny": "ನಿರಾಕರಿಸು",
-    "@promptActionOptionDeny": {}
+    "@promptActionOptionDeny": {},
+    "promptLifespanOptionSession": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ",
+    "@promptLifespanOptionSession": {},
+    "promptLifespanOptionSingle": "ಒಮ್ಮೆ",
+    "@promptLifespanOptionSingle": {},
+    "promptLifespanTitle": "ಅವಧಿ",
+    "@promptLifespanTitle": {},
+    "promptSaveAndContinue": "ಉಳಿಸಿ ಮತ್ತು ಮುಂದುವರಿಸಿ",
+    "@promptSaveAndContinue": {},
+    "promptTitle": "ಭದ್ರತಾ ಅಧಿಸೂಚನೆ",
+    "@promptTitle": {},
+    "homePatternInfo": "<ಮಾರ್ಗದ ಮಾದರಿಗಳ ಬಗ್ಗೆ ತಿಳಿಯಿರಿ>",
+    "@homePatternInfo": {},
+    "homePatternTypeCustomPath": "ಕಸ್ಟಮ್ ಮಾರ್ಗದ ಮಾದರಿ",
+    "@homePatternTypeCustomPath": {},
+    "homePatternTypeRequestedDirectory": "ವಿನಂತಿಸಿದ ಫೋಲ್ಡರ್ ಮಾತ್ರ",
+    "@homePatternTypeRequestedDirectory": {},
+    "homePatternTypeRequestedFile": "ವಿನಂತಿಸಿದ ಫೈಲ್ ಮಾತ್ರ",
+    "@homePatternTypeRequestedFile": {},
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "@homePatternTypeRequestedDirectoryContents": {},
+    "homePatternTypeContainingDirectory": "ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "@homePatternTypeContainingDirectory": {},
+    "homePatternTypeHomeDirectory": "ಹೋಮ್ ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "@homePatternTypeHomeDirectory": {},
+    "homePatternTypeMatchingFileExtension": "ಎಲ್ಲಾ {fileExtension} ಫೈಲ್‌ಗಳು",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyOnce": "ಒಮ್ಮೆ ನಿರಾಕರಿಸಿ",
+    "@promptActionOptionDenyOnce": {},
+    "promptActionOptionAllowUntilLogout": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ ಅನುಮತಿಸಿ",
+    "@promptActionOptionAllowUntilLogout": {},
+    "promptActionTitle": "ಕ್ರಿಯೆ",
+    "@promptActionTitle": {},
+    "promptLifespanOptionForever": "ಯಾವಾಗಲೂ",
+    "@promptLifespanOptionForever": {},
+    "homePromptDefaultBody": "{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{foldername} ಫೋಲ್ಡರ್‌ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{foldername} ಫೋಲ್ಡರ್‌ನಲ್ಲಿ {filename} ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "ನಿಮ್ಮ ಹೋಮ್ ಫೋಲ್ಡರ್‌ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
