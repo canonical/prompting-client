@@ -1,1 +1,31 @@
-{}
+{
+    "securityCenterInfo": "ನೀವು ಯಾವಾಗಲೂ ಈ ಅನುಮತಿಗಳನ್ನು <ಭದ್ರತಾ ಕೇಂದ್ರ> ದಲ್ಲಿ ಬದಲಾಯಿಸಬಹುದು",
+    "@securityCenterInfo": {},
+    "promptAccessMoreOptionsTitle": "{snap} ಗೆ ಪ್ರವೇಶವನ್ನು ಹೊಂದಿಸಿ:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "ಇದಕ್ಕೆ {snap} {permission} ಪ್ರವೇಶವನ್ನು ನೀಡಿ:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "ಅನುಮತಿಸಿ",
+    "@promptActionOptionAllow": {},
+    "promptActionOptionAllowAlways": "ಯಾವಾಗಲೂ ಅನುಮತಿಸಿ",
+    "@promptActionOptionAllowAlways": {},
+    "promptActionOptionAllowOnce": "ಒಮ್ಮೆ ಅನುಮತಿಸಿ",
+    "@promptActionOptionAllowOnce": {},
+    "promptActionOptionDeny": "ನಿರಾಕರಿಸು",
+    "@promptActionOptionDeny": {}
+}
