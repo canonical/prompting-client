@@ -1,201 +1,190 @@
 {
-  "promptActionOptionAllow": "Дозволити",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionDeny": "Відмовити",
-  "@promptActionOptionDeny": {},
-  "promptAccessTitle": "Надати {snap} доступ на {permission}:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
+    "promptActionOptionAllow": "Дозволити",
+    "promptActionOptionDeny": "Відмовити",
+    "promptAccessTitle": "Надати {snap} доступ на {permission}:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionTitle": "Дія",
+    "promptLifespanOptionForever": "Завжди",
+    "promptLifespanOptionSession": "До виходу з системи",
+    "promptLifespanOptionSingle": "Один раз",
+    "promptLifespanTitle": "Тривалість",
+    "homePatternInfo": "<Докладніше про шаблони шляху>",
+    "homePatternTypeCustomPath": "Користувацький шаблон шляху",
+    "promptTitle": "Сповіщення безпеки",
+    "homePatternTypeTopLevelDirectory": "Усе в теці {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Про цей застосунок",
+    "securityCenterInfo": "Ви завжди можете змінити ці дозволи в <Центрі безпеки>",
+    "promptActionOptionAllowAlways": "Завжди дозволяти",
+    "homePromptSuggestedPermission": "Також надати доступ на {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessMoreOptionsTitle": "Налаштувати доступ для {snap} на:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowOnce": "Дозволити один раз",
+    "promptActionOptionDenyOnce": "Відмовити один раз",
+    "promptSaveAndContinue": "Зберегти та продовжити",
+    "homePatternTypeRequestedDirectory": "Лише запитувана тека",
+    "homePatternTypeRequestedFile": "Лише запитуваний файл",
+    "homePatternTypeRequestedDirectoryContents": "Усе в теці",
+    "homePatternTypeContainingDirectory": "Усе в теці",
+    "homePatternTypeHomeDirectory": "Усе в теці Домівка",
+    "homePatternTypeMatchingFileExtension": "Усі файли {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataPublishedBy": "Опубліковано {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Востаннє оновлено {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptBody": "Дозволити {snap} доступ на {permissions} за шляхом {path}?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsWrite": "Запис",
+    "homePromptPermissionsExecute": "Виконання",
+    "homePromptMetaDataAppCenterLink": "Відвідати сторінку Центру програмного забезпечення",
+    "homePromptMoreOptionsLabel": "Інші опції...",
+    "homePromptPermissionsTitle": "Дозволи",
+    "homePromptPermissionsRead": "Читання",
+    "homePromptErrorUnknownTitle": "Щось пішло не за планом",
+    "homePromptDefaultBody": "{snap} хоче отримати дозвіл {permissions} на доступ до {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} хоче отримати дозвіл {permissions} до {filename} у теці {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} хоче отримати дозвіл {permissions} до вашої домашньої теки.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} хоче отримати доступ {permissions} до {filename} у вашій домашній теці.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} хоче отримати дозвіл {permissions} до теки {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Дозволити до виходу з системи",
+    "cameraPromptBody": "Дозволити {snapName} доступ до вашої камери?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Дозволити {snapName} доступ до вашого мікрофона?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptActionTitle": "Дія",
-  "@promptActionTitle": {},
-  "promptLifespanOptionForever": "Завжди",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "До виходу з системи",
-  "@promptLifespanOptionSession": {},
-  "promptLifespanOptionSingle": "Один раз",
-  "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "Тривалість",
-  "@promptLifespanTitle": {},
-  "homePatternInfo": "<Докладніше про шаблони шляху>",
-  "@homePatternInfo": {},
-  "homePatternTypeCustomPath": "Користувацький шаблон шляху",
-  "@homePatternTypeCustomPath": {},
-  "promptTitle": "Сповіщення безпеки",
-  "@promptTitle": {},
-  "homePatternTypeTopLevelDirectory": "Усе в теці {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataTitle": "Про цей застосунок",
-  "@homePromptMetaDataTitle": {},
-  "securityCenterInfo": "Ви завжди можете змінити ці дозволи в <Центрі безпеки>",
-  "@securityCenterInfo": {},
-  "promptActionOptionAllowAlways": "Завжди дозволяти",
-  "@promptActionOptionAllowAlways": {},
-  "homePromptSuggestedPermission": "Також надати доступ на {permission}",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptAccessMoreOptionsTitle": "Налаштувати доступ для {snap} на:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllowOnce": "Дозволити один раз",
-  "@promptActionOptionAllowOnce": {},
-  "promptActionOptionDenyOnce": "Відмовити один раз",
-  "@promptActionOptionDenyOnce": {},
-  "promptSaveAndContinue": "Зберегти та продовжити",
-  "@promptSaveAndContinue": {},
-  "homePatternTypeRequestedDirectory": "Лише запитувана тека",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeRequestedFile": "Лише запитуваний файл",
-  "@homePatternTypeRequestedFile": {},
-  "homePatternTypeRequestedDirectoryContents": "Усе в теці",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeContainingDirectory": "Усе в теці",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeHomeDirectory": "Усе в теці Домівка",
-  "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Усі файли {fileExtension}",
-  "@homePatternTypeMatchingFileExtension": {
-    "placeholders": {
-      "fileExtension": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataPublishedBy": "Опубліковано {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataLastUpdated": "Востаннє оновлено {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptBody": "Дозволити {snap} доступ на {permissions} за шляхом {path}?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptPermissionsWrite": "Запис",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Виконання",
-  "@homePromptPermissionsExecute": {},
-  "homePromptMetaDataAppCenterLink": "Відвідати сторінку Центру програмного забезпечення",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePromptMoreOptionsLabel": "Інші опції...",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptPermissionsTitle": "Дозволи",
-  "@homePromptPermissionsTitle": {},
-  "homePromptPermissionsRead": "Читання",
-  "@homePromptPermissionsRead": {},
-  "homePromptErrorUnknownTitle": "Щось пішло не за планом",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptDefaultBody": "{snap} хоче отримати дозвіл {permissions} на доступ до {path}",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} хоче отримати дозвіл {permissions} до {filename} у теці {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} хоче отримати дозвіл {permissions} до вашої домашньої теки.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} хоче отримати доступ {permissions} до {filename} у вашій домашній теці.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirBody": "{snap} хоче отримати дозвіл {permissions} до теки {foldername}.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  }
 }
