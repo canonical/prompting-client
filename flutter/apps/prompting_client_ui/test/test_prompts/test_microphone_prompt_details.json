@@ -1,10 +1,14 @@
 {
     "runtimeType": "microphone",
     "metaData": {
-        "promptId": "microphone-prompt-id",
-        "snapName": "Firefox",
+        "promptId": "promptId",
+        "snapName": "firefox",
         "updatedAt": "2024-07-13T10:57:28.34963269+02:00",
-        "storeUrl": "snap://audio-recorder",
-        "publisher": "Example Publisher"
+        "storeUrl": "snap://firefox",
+        "publisher": "Mozilla",
+        "snapIcon": {
+            "bytes": "/snap/firefox/current/default256.png",
+            "mimeType": "image/png"
+        }
     }
 }

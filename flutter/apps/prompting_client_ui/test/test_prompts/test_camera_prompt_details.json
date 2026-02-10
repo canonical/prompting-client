@@ -1,10 +1,14 @@
 {
     "runtimeType": "camera",
     "metaData": {
-        "promptId": "camera-prompt-id",
-        "snapName": "video-recorder",
+        "promptId": "promptId",
+        "snapName": "firefox",
         "updatedAt": "2024-07-13T10:57:28.34963269+02:00",
-        "storeUrl": "snap://video-recorder",
-        "publisher": "Example Publisher"
+        "storeUrl": "snap://firefox",
+        "publisher": "Mozilla",
+        "snapIcon": {
+            "bytes": "/snap/firefox/current/default256.png",
+            "mimeType": "image/png"
+        }
     }
 }

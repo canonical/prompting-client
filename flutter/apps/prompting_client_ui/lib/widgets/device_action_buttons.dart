@@ -36,7 +36,14 @@ class DeviceActionButtons extends ConsumerWidget {
         onPressed: onAction,
       ),
     ];
-    return Wrap(runSpacing: 16, spacing: 16, children: buttons);
+    return Center(
+      child: Wrap(
+        runSpacing: 16,
+        spacing: 16,
+        alignment: WrapAlignment.center,
+        children: buttons,
+      ),
+    );
   }
 }
 
