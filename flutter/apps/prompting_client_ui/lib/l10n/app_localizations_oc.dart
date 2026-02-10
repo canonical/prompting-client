@@ -38,6 +38,12 @@ class AppLocalizationsOc extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Refusar un còp';
 
   @override
+  String get promptActionOptionDenyAlways => 'Deny always';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+
+  @override
   String get promptActionOptionAllowUntilLogout => 'Allow until logout';
 
   @override

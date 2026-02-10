@@ -38,6 +38,12 @@ class AppLocalizationsTe extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Deny once';
 
   @override
+  String get promptActionOptionDenyAlways => 'Deny always';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+
+  @override
   String get promptActionOptionAllowUntilLogout => 'Allow until logout';
 
   @override

@@ -38,6 +38,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Einmal verweigern';
 
   @override
+  String get promptActionOptionDenyAlways => 'Deny always';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+
+  @override
   String get promptActionOptionAllowUntilLogout => 'Allow until logout';
 
   @override

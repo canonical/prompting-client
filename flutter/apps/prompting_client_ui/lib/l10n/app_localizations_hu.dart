@@ -38,6 +38,12 @@ class AppLocalizationsHu extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Tiltás egyszer';
 
   @override
+  String get promptActionOptionDenyAlways => 'Deny always';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+
+  @override
   String get promptActionOptionAllowUntilLogout => 'Allow until logout';
 
   @override

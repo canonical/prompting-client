@@ -290,6 +290,18 @@ abstract class AppLocalizations {
   /// **'Deny once'**
   String get promptActionOptionDenyOnce;
 
+  /// No description provided for @promptActionOptionDenyAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny always'**
+  String get promptActionOptionDenyAlways;
+
+  /// No description provided for @promptActionOptionDenyUntilLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny until logout'**
+  String get promptActionOptionDenyUntilLogout;
+
   /// No description provided for @promptActionOptionAllowUntilLogout.
   ///
   /// In en, this message translates to:
