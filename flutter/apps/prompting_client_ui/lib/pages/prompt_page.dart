@@ -3,14 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:measure_size_builder/measure_size_builder.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/app/prompt_model.dart';
-import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_page.dart';
 import 'package:prompting_client_ui/pages/microphone/microphone_prompt_page.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:yaru/yaru.dart';
 
 final _log = Logger('prompt_page');
 
@@ -22,21 +20,13 @@ class PromptPage extends ConsumerWidget {
     final prompt = ref.watch(currentPromptProvider);
 
     return Scaffold(
-      appBar: YaruWindowTitleBar(
-        title: Text(AppLocalizations.of(context).promptTitle),
-        isMaximizable: false,
-        isMinimizable: false,
-        isClosable: false,
-      ),
       body: SingleChildScrollView(
         child: MeasureSizeBuilder(
           builder: (context, size) {
             _log.debug(
               'SizeChangedLayoutNotification received: (${size.width}, ${size.height})',
             );
-            _ensureWindowSize(
-              Size(size.width, size.height + kYaruTitleBarHeight),
-            );
+            _ensureWindowSize(Size(size.width, size.height));
 
             return Consumer(
               builder: (context, ref, _) {
@@ -45,7 +35,7 @@ class PromptPage extends ConsumerWidget {
                     _ensureWindowSize(
                       Size(
                         context.size!.width,
-                        context.size!.height + kYaruTitleBarHeight,
+                        context.size!.height,
                       ),
                     );
                   }
