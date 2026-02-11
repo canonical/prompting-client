@@ -19,6 +19,15 @@ class PromptPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final prompt = ref.watch(currentPromptProvider);
 
+    // Camera/mic prompts use fixed size.
+    final allowDynamicResize = prompt is PromptDetailsHome;
+
+    final minWidth = switch (prompt) {
+      PromptDetailsCamera() => deviceWindowSize.width,
+      PromptDetailsMicrophone() => deviceWindowSize.width,
+      PromptDetailsHome() => defaultWindowSize.width,
+    };
+
     return Scaffold(
       body: SingleChildScrollView(
         child: MeasureSizeBuilder(
@@ -26,12 +35,14 @@ class PromptPage extends ConsumerWidget {
             _log.debug(
               'SizeChangedLayoutNotification received: (${size.width}, ${size.height})',
             );
-            _ensureWindowSize(Size(size.width, size.height));
+            if (allowDynamicResize) {
+              _ensureWindowSize(Size(size.width, size.height));
+            }
 
             return Consumer(
               builder: (context, ref, _) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (context.size != null) {
+                  if (context.size != null && allowDynamicResize) {
                     _ensureWindowSize(
                       Size(
                         context.size!.width,
@@ -42,8 +53,7 @@ class PromptPage extends ConsumerWidget {
                 });
                 return SizeChangedLayoutNotifier(
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minWidth: defaultWindowSize.width),
+                    constraints: BoxConstraints(minWidth: minWidth),
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
                       child: switch (prompt) {
