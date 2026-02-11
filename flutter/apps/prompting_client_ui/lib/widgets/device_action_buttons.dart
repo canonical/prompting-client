@@ -17,78 +17,84 @@ class DeviceActionButtons extends ConsumerWidget {
 
   final DeviceActionCallback onAction;
 
+  Future<void> _handleAction(
+    BuildContext context,
+    Action action,
+    Lifespan lifespan,
+  ) async {
+    final response = await onAction(
+      action: action,
+      lifespan: lifespan,
+    );
+    if (response is PromptReplyResponseSuccess ||
+        response is PromptReplyResponsePromptNotFound) {
+      if (context.mounted) {
+        await YaruWindow.of(context).close();
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final buttons = [
-      DeviceActionButton(
-        action: Action.allow,
-        lifespan: Lifespan.forever,
-        onPressed: onAction,
-      ),
-      DeviceActionButton(
-        action: Action.allow,
+    final l10n = AppLocalizations.of(context);
+
+    final allowButtons = [
+      (
+        label: l10n.promptActionOptionAllowUntilLogout,
         lifespan: Lifespan.session,
-        onPressed: onAction,
       ),
-      DeviceActionButton(
-        action: Action.deny,
+      (
+        label: l10n.promptActionOptionAllowOnce,
         lifespan: Lifespan.single,
-        onPressed: onAction,
       ),
     ];
+
+    final denyButtons = [
+      (
+        label: l10n.promptActionOptionDenyAlways,
+        lifespan: Lifespan.forever,
+      ),
+      (
+        label: l10n.promptActionOptionDenyUntilLogout,
+        lifespan: Lifespan.session,
+      ),
+    ];
+
     return Center(
       child: Wrap(
         runSpacing: 16,
         spacing: 16,
         alignment: WrapAlignment.center,
-        children: buttons,
-      ),
-    );
-  }
-}
-
-class DeviceActionButton extends ConsumerWidget {
-  const DeviceActionButton({
-    required this.action,
-    required this.onPressed,
-    this.lifespan,
-    super.key,
-  });
-
-  final Action action;
-  final Lifespan? lifespan;
-  final DeviceActionCallback onPressed;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    return OutlinedButton(
-      onPressed: () async {
-        final response = await onPressed(
-          action: action,
-          lifespan: lifespan ?? Lifespan.single,
-        );
-        if (response is PromptReplyResponseSuccess) {
-          if (context.mounted) {
-            await YaruWindow.of(context).close();
-          }
-        } else if (response is PromptReplyResponsePromptNotFound) {
-          if (context.mounted) {
-            await YaruWindow.of(context).close();
-          }
-        }
-      },
-      child: Text(
-        switch ((action, lifespan)) {
-          (Action.allow, Lifespan.forever) =>
-            l10n.promptActionOptionAllowAlways,
-          (Action.allow, Lifespan.session) =>
-            l10n.promptActionOptionAllowUntilLogout,
-          (Action.deny, Lifespan.single) => l10n.promptActionOptionDenyOnce,
-          _ => action == Action.allow
-              ? l10n.promptActionOptionAllow
-              : l10n.promptActionOptionDeny,
-        },
+        children: [
+          YaruSplitButton(
+            items: allowButtons
+                .map(
+                  (item) => PopupMenuItem(
+                    onTap: () =>
+                        _handleAction(context, Action.allow, item.lifespan),
+                    child: Text(item.label),
+                  ),
+                )
+                .toList(),
+            onPressed: () => _handleAction(
+                context, Action.allow, Lifespan.forever),
+            child: Text(l10n.promptActionOptionAllowAlways),
+          ),
+          YaruSplitButton(
+            items: denyButtons
+                .map(
+                  (item) => PopupMenuItem(
+                    onTap: () =>
+                        _handleAction(context, Action.deny, item.lifespan),
+                    child: Text(item.label),
+                  ),
+                )
+                .toList(),
+            onPressed: () =>
+                _handleAction(context, Action.deny, Lifespan.single),
+            child: Text(l10n.promptActionOptionDenyOnce),
+          ),
+        ],
       ),
     );
   }

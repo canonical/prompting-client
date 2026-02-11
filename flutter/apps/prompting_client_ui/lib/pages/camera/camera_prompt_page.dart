@@ -24,7 +24,7 @@ class CameraPromptPage extends ConsumerWidget {
       children: [
         if (snapIcon != null)
           Center(
-            child: SnapIcon(snapIcon: snapIcon),
+            child: SnapIcon(snapIcon: snapIcon, dimension: 80),
           ),
         const CameraHeader(),
         if (error != null) CameraErrorBox(error),

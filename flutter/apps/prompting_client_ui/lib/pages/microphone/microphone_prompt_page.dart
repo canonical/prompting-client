@@ -16,7 +16,8 @@ class MicrophonePromptPage extends ConsumerWidget {
     final error =
         ref.watch(microphonePromptDataModelProvider.select((m) => m.error));
     final snapIcon = ref.watch(
-      microphonePromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
+      microphonePromptDataModelProvider
+          .select((m) => m.details.metaData.snapIcon),
     );
 
     return Column(
@@ -24,7 +25,7 @@ class MicrophonePromptPage extends ConsumerWidget {
       children: [
         if (snapIcon != null)
           Center(
-            child: SnapIcon(snapIcon: snapIcon),
+            child: SnapIcon(snapIcon: snapIcon, dimension: 80),
           ),
         const MicrophoneHeader(),
         if (error != null) MicrophoneErrorBox(error),
