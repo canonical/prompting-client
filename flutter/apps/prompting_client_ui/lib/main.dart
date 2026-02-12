@@ -120,6 +120,8 @@ Future<void> main(List<String> args) async {
   await windowManager
       .waitUntilReadyToShow(WindowOptions(size: defaultWindowSize), () async {
     await windowManager.setResizable(false);
+    await windowManager.setMinimumSize(const Size(400, 0));
+    await windowManager.setMaximumSize(const Size(400, double.infinity));
     await windowManager.show();
     await windowManager.focus();
   });

@@ -76,8 +76,8 @@ class DeviceActionButtons extends ConsumerWidget {
                   ),
                 )
                 .toList(),
-            onPressed: () => _handleAction(
-                context, Action.allow, Lifespan.forever),
+            onPressed: () =>
+                _handleAction(context, Action.allow, Lifespan.forever),
             child: Text(l10n.promptActionOptionAllowAlways),
           ),
           YaruSplitButton(

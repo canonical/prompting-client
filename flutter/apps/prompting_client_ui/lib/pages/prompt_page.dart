@@ -22,11 +22,7 @@ class PromptPage extends ConsumerWidget {
     // Camera/mic prompts use fixed size.
     final allowDynamicResize = prompt is PromptDetailsHome;
 
-    final minWidth = switch (prompt) {
-      PromptDetailsCamera() => deviceWindowSize.width,
-      PromptDetailsMicrophone() => deviceWindowSize.width,
-      PromptDetailsHome() => defaultWindowSize.width,
-    };
+    final minWidth = defaultWindowSize.width;
 
     return Scaffold(
       body: SingleChildScrollView(

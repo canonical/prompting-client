@@ -30,33 +30,24 @@ class HomePromptPage extends ConsumerWidget {
       homePromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
     );
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (snapIcon != null)
-          Padding(
-            padding: const EdgeInsets.only(right: 18),
-            child: SnapIcon(snapIcon: snapIcon),
+          Center(
+            child: SnapIcon(snapIcon: snapIcon, dimension: 80),
           ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Header(),
-              if (hasVisibleOptions) ...[
-                const Divider(),
-                const PatternOptions(),
-              ],
-              if (error != null && showMoreOptions) _ErrorBox(error),
-              const Permissions(),
-              if (showMoreOptions) const LifespanToggle(),
-              if (error != null && !showMoreOptions) _ErrorBox(error),
-              const ActionButtons(),
-            ].withSpacing(20),
-          ),
-        ),
-      ],
+        const Header(),
+        if (hasVisibleOptions) ...[
+          const Divider(),
+          const PatternOptions(),
+        ],
+        if (error != null && showMoreOptions) _ErrorBox(error),
+        const Permissions(),
+        if (showMoreOptions) const LifespanToggle(),
+        if (error != null && !showMoreOptions) _ErrorBox(error),
+        const ActionButtons(),
+      ].withSpacing(20),
     );
   }
 }
