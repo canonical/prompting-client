@@ -175,4 +175,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String microphonePromptBody(String snapName) {
     return 'Allow $snapName to access your microphone?';
   }
+
+  @override
+  String homePromptTitleQuestion(String snapName, String permissions) {
+    return 'Give $snapName $permissions access to files?';
+  }
 }

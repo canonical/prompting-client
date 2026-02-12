@@ -220,5 +220,16 @@
                 "type": "String"
             }
         }
+    },
+    "homePromptTitleQuestion": "Give {snapName} {permissions} access to files?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
     }
 }

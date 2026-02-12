@@ -514,6 +514,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow {snapName} to access your microphone?'**
   String microphonePromptBody(String snapName);
+
+  /// No description provided for @homePromptTitleQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Give {snapName} {permissions} access to files?'**
+  String homePromptTitleQuestion(String snapName, String permissions);
 }
 
 class _AppLocalizationsDelegate

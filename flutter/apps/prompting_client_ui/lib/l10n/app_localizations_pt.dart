@@ -175,6 +175,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String microphonePromptBody(String snapName) {
     return 'Allow $snapName to access your microphone?';
   }
+
+  @override
+  String homePromptTitleQuestion(String snapName, String permissions) {
+    return 'Give $snapName $permissions access to files?';
+  }
 }
 
 /// The translations for Portuguese, as used in Brazil (`pt_BR`).
