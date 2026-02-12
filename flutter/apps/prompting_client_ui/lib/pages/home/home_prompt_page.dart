@@ -29,6 +29,10 @@ class HomePromptPage extends ConsumerWidget {
     final snapIcon = ref.watch(
       homePromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
     );
+    final details = ref.watch(
+      homePromptDataModelProvider.select((m) => m.details),
+    );
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,6 +41,17 @@ class HomePromptPage extends ConsumerWidget {
           Center(
             child: SnapIcon(snapIcon: snapIcon, dimension: 80),
           ),
+        Center(
+          child: Text(
+            l10n.homePromptTitleQuestion(
+              details.metaData.snapName,
+              details.requestedPermissions
+                  .map((p) => p.localize(l10n).toLowerCase())
+                  .join(', '),
+            ),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
         const Header(),
         if (hasVisibleOptions) ...[
           const Divider(),
