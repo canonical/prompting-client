@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
+import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
+import 'package:prompting_client_ui/widgets/tile_list.dart';
 import 'package:yaru/yaru.dart';
 
 class RadioButtonList<T> extends StatelessWidget {
@@ -30,19 +32,20 @@ class RadioButtonList<T> extends StatelessWidget {
       children: [
         MarkdownText(title.bold()),
         const SizedBox(height: 10),
-        Flex(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          direction: direction,
+        TileList(
           children: [
             for (final option in options)
-              YaruRadioButton<T>(
-                value: option,
-                groupValue: groupValue,
-                onChanged: onChanged,
-                title: Text(optionTitle(option)),
+              PromptingListTile(
+                title: optionTitle(option),
                 subtitle: optionSubtitle?.call(option),
+                leading: YaruRadio<T>(
+                  value: option,
+                  groupValue: groupValue,
+                  onChanged: onChanged,
+                ),
+                onTap: onChanged != null ? () => onChanged!(option) : null,
               ),
-          ].withSpacing(direction == Axis.horizontal ? 16 : 0),
+          ],
         ),
       ],
     );
