@@ -53,10 +53,8 @@ class HomePromptPage extends ConsumerWidget {
           ),
         ),
         const Header(),
-        if (hasVisibleOptions) ...[
-          const Divider(),
+        if (hasVisibleOptions)
           const PatternOptions(),
-        ],
         if (error != null && showMoreOptions) _ErrorBox(error),
         const Permissions(),
         if (showMoreOptions) const LifespanToggle(),
