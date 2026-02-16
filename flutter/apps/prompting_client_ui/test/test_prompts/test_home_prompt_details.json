@@ -42,7 +42,8 @@
         },
         {
             "homePatternType": "requestedFile",
-            "pathPattern": "/home/user/Downloads/Minotaur/minotaur-13293232.jpeg"
+            "pathPattern": "/home/user/Downloads/Minotaur/minotaur-13293232.jpeg",
+            "showInitially": true
         },
         {
             "homePatternType": "matchingFileExtension",
