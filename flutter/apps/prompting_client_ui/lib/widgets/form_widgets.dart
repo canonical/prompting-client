@@ -20,7 +20,7 @@ class RadioButtonList<T> extends StatelessWidget {
   final String title;
   final Iterable<T> options;
   final String Function(T option) optionTitle;
-  final Widget Function(T option)? optionSubtitle;
+  final Widget? Function(T option)? optionSubtitle;
   final T? groupValue;
   final void Function(T?)? onChanged;
   final Axis direction;

@@ -326,13 +326,15 @@ class PatternOptions extends ConsumerWidget {
         PatternOption(homePatternType: HomePatternType.customPath) =>
           model.patternOption.homePatternType == HomePatternType.customPath
               ? const _CustomPathTextField()
-              : const SizedBox.shrink(),
-        _ => Text(
-            option.pathPattern,
-            style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                  color: Theme.of(context).hintColor,
-                ),
-          ),
+              : null,
+        _ => model.showMoreOptions
+            ? Text(
+                option.pathPattern,
+                style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                      color: Theme.of(context).hintColor,
+                    ),
+              )
+            : null,
       },
       groupValue: model.patternOption,
       onChanged: notifier.setPatternOption,
