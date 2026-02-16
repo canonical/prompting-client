@@ -7,6 +7,7 @@ import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
+import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/form_widgets.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
@@ -234,69 +235,17 @@ class ActionButtons extends ConsumerWidget {
     final showMoreOptions = ref.watch(
       homePromptDataModelProvider.select((m) => m.showMoreOptions),
     );
-    final buttons = showMoreOptions
-        ? const [
-            ActionButton(action: Action.allow),
-            ActionButton(action: Action.deny),
-          ]
-        : const [
-            ActionButton(action: Action.allow, lifespan: Lifespan.forever),
-            ActionButton(action: Action.allow, lifespan: Lifespan.session),
-            ActionButton(action: Action.deny, lifespan: Lifespan.single),
-          ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Wrap(runSpacing: 16, spacing: 16, children: buttons),
+        DeviceActionButtons(
+          onAction: ({required action, required lifespan}) => ref
+              .read(homePromptDataModelProvider.notifier)
+              .saveAndContinue(action: action, lifespan: lifespan),
+        ),
         if (!showMoreOptions) const MoreOptionsButton(),
       ].withSpacing(16),
-    );
-  }
-}
-
-class ActionButton extends ConsumerWidget {
-  const ActionButton({required this.action, this.lifespan, super.key});
-
-  final Action action;
-  final Lifespan? lifespan;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    return OutlinedButton(
-      onPressed: ref.watch(
-        homePromptDataModelProvider.select((m) => m.isValid),
-      )
-          ? () async {
-              final response = await ref
-                  .read(homePromptDataModelProvider.notifier)
-                  .saveAndContinue(action: action, lifespan: lifespan);
-              if (response is PromptReplyResponseSuccess) {
-                if (context.mounted) {
-                  await YaruWindow.of(context).close();
-                }
-              } else if (response is PromptReplyResponsePromptNotFound) {
-                // FIXME: really this needs to display an error to the user and then close
-                // but we need to at make sure that the UI doesn't hang as an initial step
-                if (context.mounted) {
-                  await YaruWindow.of(context).close();
-                }
-              }
-            }
-          : null,
-      child: Text(
-        switch ((action, lifespan)) {
-          (final action, null) => action.localize(l10n),
-          (Action.allow, Lifespan.forever) =>
-            l10n.promptActionOptionAllowAlways,
-          (Action.allow, Lifespan.single) => l10n.promptActionOptionAllowOnce,
-          (Action.allow, Lifespan.session) =>
-            l10n.promptActionOptionAllowUntilLogout,
-          (Action.deny, Lifespan.single) => l10n.promptActionOptionDenyOnce,
-          (final action, final Lifespan lifespan) =>
-            '${action.localize(l10n)} (${lifespan.name})',
-        },
-      ),
     );
   }
 }
