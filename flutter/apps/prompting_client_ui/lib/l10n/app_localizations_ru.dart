@@ -144,6 +144,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Больше опций…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Открыть страницу в Центре приложений';
 

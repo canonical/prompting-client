@@ -144,6 +144,9 @@ class AppLocalizationsGa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Tuilleadh roghanna...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Tabhair cuairt ar leathanach App Centre';
 

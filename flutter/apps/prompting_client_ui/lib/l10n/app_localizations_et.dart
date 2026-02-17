@@ -143,6 +143,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Lisavalikud...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Vaata andmeid Rakendustekeskuses';
 

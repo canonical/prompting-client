@@ -461,6 +461,12 @@ abstract class AppLocalizations {
   /// **'More options...'**
   String get homePromptMoreOptionsLabel;
 
+  /// No description provided for @homePromptMoreOptionsTileLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get homePromptMoreOptionsTileLabel;
+
   /// No description provided for @homePromptMetaDataAppCenterLink.
   ///
   /// In en, this message translates to:

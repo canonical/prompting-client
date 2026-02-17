@@ -143,6 +143,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Opsi tambahan...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => 'Kunjungi halaman Pusat App';
 
   @override

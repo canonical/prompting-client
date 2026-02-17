@@ -143,6 +143,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Více možností…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Navštivte stránku Centra aplikací';
 

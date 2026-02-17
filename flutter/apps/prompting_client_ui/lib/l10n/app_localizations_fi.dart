@@ -143,6 +143,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Lisää valintoja...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => 'Käy sovelluskeskuksen sivulla';
 
   @override

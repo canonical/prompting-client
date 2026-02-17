@@ -143,6 +143,9 @@ class AppLocalizationsHu extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'További beállítások…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Az alkalmazásközpont oldalának meglátogatása';
 

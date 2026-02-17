@@ -144,6 +144,9 @@ class AppLocalizationsKa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'მეტი პარამეტრი...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'აპების ცენტრის გვერდზე გადასვლა';
 

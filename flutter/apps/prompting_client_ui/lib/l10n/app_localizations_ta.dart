@@ -146,6 +146,9 @@ class AppLocalizationsTa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'மேலும் விருப்பங்கள் ...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'பயன்பாட்டு மையப் பக்கத்தைப் பார்வையிடவும்';
 

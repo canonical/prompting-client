@@ -145,6 +145,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Plus d’options…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Visiter la page du Centre des applications';
 

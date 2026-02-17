@@ -142,6 +142,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePromptMoreOptionsLabel => '更多选项…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => '访问应用中心页面';
 
   @override

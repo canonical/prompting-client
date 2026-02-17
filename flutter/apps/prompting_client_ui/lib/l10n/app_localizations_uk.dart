@@ -143,6 +143,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Інші опції...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Відвідати сторінку Центру програмного забезпечення';
 

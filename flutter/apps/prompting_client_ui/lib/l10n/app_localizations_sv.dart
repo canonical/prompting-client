@@ -143,6 +143,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Mer alternativ...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => 'Visa Appcentral sida';
 
   @override

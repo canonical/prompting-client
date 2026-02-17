@@ -143,6 +143,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'گزینه‌های بیش‌تر…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => 'دیدن صفحهٔ مرکز کاره';
 
   @override

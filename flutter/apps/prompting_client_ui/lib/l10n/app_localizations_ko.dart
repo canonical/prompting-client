@@ -142,6 +142,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homePromptMoreOptionsLabel => '추가 옵션...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => 'App Center 페이지 방문';
 
   @override

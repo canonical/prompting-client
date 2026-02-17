@@ -143,6 +143,9 @@ class AppLocalizationsEo extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Pli da opcioj…';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink => 'Viziti paĝon ĉe App Center';
 
   @override
