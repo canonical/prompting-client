@@ -14,6 +14,7 @@ class RadioButtonList<T> extends StatelessWidget {
     this.onChanged,
     this.optionSubtitle,
     this.direction = Axis.vertical,
+    this.trailingTile,
     super.key,
   });
 
@@ -24,6 +25,7 @@ class RadioButtonList<T> extends StatelessWidget {
   final T? groupValue;
   final void Function(T?)? onChanged;
   final Axis direction;
+  final Widget? trailingTile;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class RadioButtonList<T> extends StatelessWidget {
                 ),
                 onTap: onChanged != null ? () => onChanged!(option) : null,
               ),
+            if (trailingTile != null) trailingTile!,
           ],
         ),
       ],
