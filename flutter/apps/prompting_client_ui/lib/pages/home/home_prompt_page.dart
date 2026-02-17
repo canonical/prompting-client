@@ -11,6 +11,7 @@ import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/form_widgets.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
+import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
 import 'package:prompting_client_ui/widgets/snap_icon.dart';
 import 'package:yaru/yaru.dart';
 
@@ -38,6 +39,12 @@ class HomePromptPage extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (showMoreOptions)
+          IconButton(
+            icon: const Icon(Icons.navigate_before),
+            onPressed:
+                ref.read(homePromptDataModelProvider.notifier).toggleMoreOptions,
+          ),
         if (snapIcon != null)
           Center(
             child: SnapIcon(snapIcon: snapIcon, dimension: 80),
@@ -232,42 +239,10 @@ class ActionButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showMoreOptions = ref.watch(
-      homePromptDataModelProvider.select((m) => m.showMoreOptions),
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        DeviceActionButtons(
-          onAction: ({required action, required lifespan}) => ref
-              .read(homePromptDataModelProvider.notifier)
-              .saveAndContinue(action: action, lifespan: lifespan),
-        ),
-        if (!showMoreOptions) const MoreOptionsButton(),
-      ].withSpacing(16),
-    );
-  }
-}
-
-class MoreOptionsButton extends ConsumerWidget {
-  const MoreOptionsButton({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: ref.read(homePromptDataModelProvider.notifier).toggleMoreOptions,
-        child: Text(
-          AppLocalizations.of(context).homePromptMoreOptionsLabel,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            decoration: TextDecoration.underline,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
+    return DeviceActionButtons(
+      onAction: ({required action, required lifespan}) => ref
+          .read(homePromptDataModelProvider.notifier)
+          .saveAndContinue(action: action, lifespan: lifespan),
     );
   }
 }
@@ -338,6 +313,13 @@ class PatternOptions extends ConsumerWidget {
       },
       groupValue: model.patternOption,
       onChanged: notifier.setPatternOption,
+      trailingTile: !model.showMoreOptions
+          ? PromptingListTile(
+              title: l10n.homePromptMoreOptionsTileLabel,
+              trailing: const Icon(Icons.navigate_next),
+              onTap: notifier.toggleMoreOptions,
+            )
+          : null,
     );
   }
 }
