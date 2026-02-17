@@ -65,7 +65,6 @@ class HomePromptPage extends ConsumerWidget {
           const PatternOptions(),
         if (error != null && showMoreOptions) _ErrorBox(error),
         const Permissions(),
-        if (showMoreOptions) const LifespanToggle(),
         if (error != null && !showMoreOptions) _ErrorBox(error),
         const ActionButtons(),
       ].withSpacing(20),
@@ -243,29 +242,6 @@ class ActionButtons extends ConsumerWidget {
       onAction: ({required action, required lifespan}) => ref
           .read(homePromptDataModelProvider.notifier)
           .saveAndContinue(action: action, lifespan: lifespan),
-    );
-  }
-}
-
-class LifespanToggle extends ConsumerWidget {
-  const LifespanToggle({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-
-    return RadioButtonList<Lifespan>(
-      title: l10n.promptLifespanTitle,
-      options: const [
-        Lifespan.forever,
-        Lifespan.session,
-        Lifespan.single,
-      ],
-      optionTitle: (lifespan) => lifespan.localize(l10n),
-      groupValue:
-          ref.watch(homePromptDataModelProvider.select((m) => m.lifespan)),
-      onChanged: ref.read(homePromptDataModelProvider.notifier).setLifespan,
-      direction: Axis.horizontal,
     );
   }
 }
