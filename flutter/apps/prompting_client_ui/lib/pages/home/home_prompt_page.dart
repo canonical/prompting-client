@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +12,7 @@ import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
 import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
 import 'package:prompting_client_ui/widgets/snap_icon.dart';
+import 'package:prompting_client_ui/widgets/tile_constants.dart';
 import 'package:yaru/yaru.dart';
 
 class HomePromptPage extends ConsumerWidget {
@@ -330,9 +330,6 @@ class Permissions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showMoreOptions = ref.watch(
-      homePromptDataModelProvider.select((m) => m.showMoreOptions),
-    );
     final selectedPermissions =
         ref.watch(homePromptDataModelProvider.select((m) => m.permissions));
     final details = ref.watch(
@@ -341,25 +338,58 @@ class Permissions extends ConsumerWidget {
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    if (showMoreOptions) {
-      return CheckButtonList<HomePermission>(
-        title: l10n.homePromptPermissionsTitle,
-        options: details.availablePermissions,
-        optionTitle: (option) => option.localize(l10n),
-        hasOption: selectedPermissions.contains,
-        isEnabled: (option) => !details.requestedPermissions.contains(option),
-        toggleOption: notifier.togglePermission,
-        direction: Axis.horizontal,
-      );
-    } else {
-      return CheckButtonList<HomePermission>(
-        options: details.suggestedPermissions
-            .whereNot(details.requestedPermissions.contains),
-        optionTitle: (option) =>
-            l10n.homePromptSuggestedPermission(option.localize(l10n)),
-        hasOption: selectedPermissions.contains,
-        toggleOption: notifier.togglePermission,
-      );
-    }
+    final selectedSummary = selectedPermissions.isEmpty
+        ? null
+        : selectedPermissions.map((p) => p.localize(l10n)).join(', ');
+
+    return YaruBorderContainer(
+      clipBehavior: Clip.hardEdge,
+      child: PopupMenuButton<HomePermission>(
+        padding: EdgeInsets.zero,
+        tooltip: '',
+        position: PopupMenuPosition.under,
+        itemBuilder: (context) => [
+          for (final option in details.availablePermissions)
+            YaruMultiSelectPopupMenuItem<HomePermission>(
+              value: option,
+              checked: selectedPermissions.contains(option),
+              enabled: !details.requestedPermissions.contains(option),
+              onChanged: (_) => notifier.togglePermission(option),
+              child: Text(option.localize(l10n)),
+            ),
+        ],
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: kTileMinHeight),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.homePromptPermissionsTitle,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            letterSpacing: kTileTitleLetterSpacing,
+                            fontWeight: FontWeight.normal,
+                          ),
+                    ),
+                    if (selectedSummary != null)
+                      Text(
+                        selectedSummary,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                  ],
+                ),
+                const Icon(Icons.expand_more),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
