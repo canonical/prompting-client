@@ -362,6 +362,48 @@ abstract class AppLocalizations {
   /// **'Custom path pattern'**
   String get homePatternTypeCustomPath;
 
+  /// No description provided for @homeCustomPathSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save custom path'**
+  String get homeCustomPathSaveButton;
+
+  /// No description provided for @homeCustomPathMustStartWithSlash.
+  ///
+  /// In en, this message translates to:
+  /// **'The path pattern must start with /'**
+  String get homeCustomPathMustStartWithSlash;
+
+  /// No description provided for @homeCustomPathWildcardStarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches any string of characters except /'**
+  String get homeCustomPathWildcardStarDescription;
+
+  /// No description provided for @homeCustomPathWildcardQuestionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches a single character'**
+  String get homeCustomPathWildcardQuestionDescription;
+
+  /// No description provided for @homeCustomPathWildcardDoubleStarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches zero or more folders and files recursively'**
+  String get homeCustomPathWildcardDoubleStarDescription;
+
+  /// No description provided for @homeCustomPathWildcardCurlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches either x or y'**
+  String get homeCustomPathWildcardCurlyDescription;
+
+  /// No description provided for @homeCustomPathWildcardBackslashDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Escapes special characters to treat them as literals'**
+  String get homeCustomPathWildcardBackslashDescription;
+
   /// No description provided for @homePatternTypeRequestedDirectory.
   ///
   /// In en, this message translates to:

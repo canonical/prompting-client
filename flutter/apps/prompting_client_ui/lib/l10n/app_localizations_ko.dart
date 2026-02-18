@@ -73,6 +73,32 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homePatternTypeCustomPath => '사용자 정의 경로 패턴';
 
   @override
+  String get homeCustomPathSaveButton => 'Save custom path';
+
+  @override
+  String get homeCustomPathMustStartWithSlash =>
+      'The path pattern must start with /';
+
+  @override
+  String get homeCustomPathWildcardStarDescription =>
+      'Matches any string of characters except /';
+
+  @override
+  String get homeCustomPathWildcardQuestionDescription =>
+      'Matches a single character';
+
+  @override
+  String get homeCustomPathWildcardDoubleStarDescription =>
+      'Matches zero or more folders and files recursively';
+
+  @override
+  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+
+  @override
+  String get homeCustomPathWildcardBackslashDescription =>
+      'Escapes special characters to treat them as literals';
+
+  @override
   String get homePatternTypeRequestedDirectory => '요청한 폴더만';
 
   @override
