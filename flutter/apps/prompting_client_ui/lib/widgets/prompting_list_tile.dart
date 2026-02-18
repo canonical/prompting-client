@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:prompting_client_ui/widgets/tile_constants.dart';
 
 /// A standardized list tile widget used throughout the Security Center.
 ///
 /// This widget wraps a [ListTile] with consistent styling and layout:
-/// - Fixed minimum height of [kMinTileHeight]
+/// - Fixed minimum height of [kTileMinHeight]
 /// - Consistent content padding
 /// - Title styled with [TextTheme.labelLarge] with zero letter spacing
 /// - Subtitle styled with [TextTheme.labelMedium] by default
@@ -48,25 +49,25 @@ class PromptingListTile extends StatelessWidget {
     final titleWidget = Text(
       title,
       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            letterSpacing: 0,
+            letterSpacing: kTileTitleLetterSpacing,
             fontWeight: FontWeight.normal,
           ),
     );
 
     return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 56.0),
+      constraints: const BoxConstraints(minHeight: kTileMinHeight),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: enabled ? onTap : null,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
             child: Center(
               child: Row(
                 children: [
                   if (leading != null) ...[
                     leading!,
-                    const SizedBox(width: 16),
+                    const SizedBox(width: kTileInternalSpacing),
                   ],
                   Expanded(
                     child: Column(
@@ -85,7 +86,7 @@ class PromptingListTile extends StatelessWidget {
                     ),
                   ),
                   if (trailing != null) ...[
-                    const SizedBox(width: 16),
+                    const SizedBox(width: kTileInternalSpacing),
                     trailing!,
                   ],
                 ],
