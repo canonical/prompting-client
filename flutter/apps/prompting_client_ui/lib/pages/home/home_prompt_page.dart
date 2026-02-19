@@ -20,27 +20,11 @@ class HomePromptPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showMoreOptions = ref.watch(
-      homePromptDataModelProvider.select((m) => m.showMoreOptions),
-    );
-    final showCustomPathEditor = ref.watch(
-      homePromptDataModelProvider.select((m) => m.showCustomPathEditor),
-    );
-    final hasVisibleOptions = ref.watch(
-      homePromptDataModelProvider
-          .select((m) => m.visiblePatternOptions.isNotEmpty),
-    );
-    final error = ref.watch(homePromptDataModelProvider.select((m) => m.error));
-    final snapIcon = ref.watch(
-      homePromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
-    );
-    final details = ref.watch(
-      homePromptDataModelProvider.select((m) => m.details),
-    );
+    final model = ref.watch(homePromptDataModelProvider);
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    if (showCustomPathEditor) {
+    if (model.showCustomPathEditor) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -56,20 +40,20 @@ class HomePromptPage extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showMoreOptions)
+        if (model.showMoreOptions)
           IconButton(
             icon: const Icon(Icons.navigate_before),
             onPressed: notifier.toggleMoreOptions,
           ),
-        if (snapIcon != null)
+        if (model.details.metaData.snapIcon != null && !model.showMoreOptions)
           Center(
-            child: SnapIcon(snapIcon: snapIcon, dimension: 80),
+            child: SnapIcon(snapIcon: model.details.metaData.snapIcon!, dimension: 80),
           ),
         Center(
           child: Text(
             l10n.homePromptTitleQuestion(
-              details.metaData.snapName,
-              details.requestedPermissions
+              model.details.metaData.snapName,
+              model.details.requestedPermissions
                   .map((p) => p.localize(l10n).toLowerCase())
                   .join(', '),
             ),
@@ -77,11 +61,11 @@ class HomePromptPage extends ConsumerWidget {
           ),
         ),
         const Header(),
-        if (hasVisibleOptions)
+        if (model.visiblePatternOptions.isNotEmpty)
           const PatternOptions(),
-        if (error != null && showMoreOptions) _ErrorBox(error),
+        if (model.error != null && model.showMoreOptions) _ErrorBox(model.error!),
         const Permissions(),
-        if (error != null && !showMoreOptions) _ErrorBox(error),
+        if (model.error != null && !model.showMoreOptions) _ErrorBox(model.error!),
         const ActionButtons(),
       ].withSpacing(20),
     );
@@ -109,46 +93,38 @@ class Header extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final details = ref.watch(
-      homePromptDataModelProvider.select((m) => m.details),
-    );
-    final hasMeta = ref.watch(
-      homePromptDataModelProvider.select((m) => m.hasMeta),
-    );
-    final enrichedPathKind = ref.watch(
-      homePromptDataModelProvider.select((m) => m.enrichedPathKind),
-    );
+    final model = ref.watch(homePromptDataModelProvider);
     final l10n = AppLocalizations.of(context);
 
-    final markdownText = switch (enrichedPathKind) {
+    final markdownText = switch (model.enrichedPathKind) {
       EnrichedPathKindHomeDir() => l10n.homePromptHomeDirBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
+          model.details.metaData.snapName.bold(),
+          model.details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
         ),
       EnrichedPathKindTopLevelDir(dirname: final dirname) =>
         l10n.homePromptTopLevelDirBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
+          model.details.metaData.snapName.bold(),
+          model.details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
           dirname.bold(),
         ),
       EnrichedPathKindSubDir() => l10n.homePromptDefaultBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
+          model.details.metaData.snapName.bold(),
+          model.details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
-          details.requestedPath.bold(),
+          model.details.requestedPath.bold(),
         ),
       EnrichedPathKindHomeDirFile(filename: final filename) =>
         l10n.homePromptHomeDirFileBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
+          model.details.metaData.snapName.bold(),
+          model.details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
@@ -159,8 +135,8 @@ class Header extends ConsumerWidget {
         filename: final filename
       ) =>
         l10n.homePromptTopLevelDirFileBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
+          model.details.metaData.snapName.bold(),
+          model.details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
@@ -168,12 +144,12 @@ class Header extends ConsumerWidget {
           dirname.bold(),
         ),
       EnrichedPathKindSubDirFile() => l10n.homePromptDefaultBody(
-          details.metaData.snapName.bold(),
-          details.requestedPermissions
+          model.details.metaData.snapName.bold(),
+          model.details.requestedPermissions
               .map((p) => p.localize(l10n).toLowerCase())
               .join(', ')
               .bold(),
-          details.requestedPath.bold(),
+          model.details.requestedPath.bold(),
         ),
     };
 
@@ -183,7 +159,7 @@ class Header extends ConsumerWidget {
         MarkdownText(
           markdownText,
         ),
-        if (hasMeta) const MetaDataDropdown(),
+        if (model.hasMeta) const MetaDataDropdown(),
       ],
     );
   }
@@ -420,17 +396,13 @@ class Permissions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedPermissions =
-        ref.watch(homePromptDataModelProvider.select((m) => m.permissions));
-    final details = ref.watch(
-      homePromptDataModelProvider.select((m) => m.details),
-    );
+    final model = ref.watch(homePromptDataModelProvider);
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    final selectedSummary = selectedPermissions.isEmpty
+    final selectedSummary = model.permissions.isEmpty
         ? null
-        : selectedPermissions.map((p) => p.localize(l10n)).join(', ');
+        : model.permissions.map((p) => p.localize(l10n)).join(', ');
 
     return YaruBorderContainer(
       clipBehavior: Clip.hardEdge,
@@ -439,11 +411,11 @@ class Permissions extends ConsumerWidget {
         tooltip: '',
         position: PopupMenuPosition.under,
         itemBuilder: (context) => [
-          for (final option in details.availablePermissions)
+          for (final option in model.details.availablePermissions)
             YaruMultiSelectPopupMenuItem<HomePermission>(
               value: option,
-              checked: selectedPermissions.contains(option),
-              enabled: !details.requestedPermissions.contains(option),
+              checked: model.permissions.contains(option),
+              enabled: !model.details.requestedPermissions.contains(option),
               onChanged: (_) => notifier.togglePermission(option),
               child: Text(option.localize(l10n)),
             ),
