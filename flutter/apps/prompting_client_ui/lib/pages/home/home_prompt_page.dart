@@ -98,17 +98,6 @@ class HomePromptPage extends ConsumerWidget {
               const ActionButtons(),
             ],
           HomePromptView.moreOptions => [
-              Center(
-                child: Text(
-                  l10n.homePromptTitleQuestion(
-                    model.details.metaData.snapName,
-                    model.details.requestedPermissions
-                        .map((p) => p.localize(l10n).toLowerCase())
-                        .join(', '),
-                  ),
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ),
               const Header(),
               if (model.visiblePatternOptions.isNotEmpty) const PatternOptions(),
               if (model.error != null) _ErrorBox(model.error!),
