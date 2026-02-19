@@ -305,10 +305,7 @@ class PatternOptions extends ConsumerWidget {
                     )
                   : null,
               leading: YaruRadio<PatternOption>(
-                value: PatternOption(
-                  homePatternType: HomePatternType.customPath,
-                  pathPattern: '',
-                ),
+                value: HomePromptData.empty,
                 groupValue: model.patternOption,
                 onChanged: (_) => notifier.enterCustomPathEditor(),
               ),

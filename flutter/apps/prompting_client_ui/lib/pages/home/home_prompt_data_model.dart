@@ -26,6 +26,11 @@ class HomePromptData with _$HomePromptData {
 
   HomePromptData._();
 
+  static final empty = PatternOption(
+    homePatternType: HomePatternType.customPath,
+    pathPattern: '',
+  );
+
   String get pathPattern => switch (patternOption.homePatternType) {
         HomePatternType.customPath => customPath,
         _ => patternOption.pathPattern,
@@ -121,10 +126,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
       showCustomPathEditor: true,
       savedCustomPath: state.customPath,
       savedPatternOption: state.patternOption,
-      patternOption: PatternOption(
-        homePatternType: HomePatternType.customPath,
-        pathPattern: '',
-      ),
+      patternOption: HomePromptData.empty,
     );
   }
 
