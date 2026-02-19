@@ -329,8 +329,8 @@ class _CustomPathEditor extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final customPath =
-        ref.watch(homePromptDataModelProvider.select((m) => m.customPath));
+    final initialCustomPath =
+        ref.read(homePromptDataModelProvider.select((m) => m.customPath));
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
@@ -346,7 +346,7 @@ class _CustomPathEditor extends ConsumerWidget {
             ),
             child: TextFormField(
               style: Theme.of(context).textTheme.bodyMedium,
-              initialValue: customPath,
+              initialValue: initialCustomPath,
               onChanged: notifier.setCustomPath,
               decoration: InputDecoration(
                 labelText: l10n.homePatternTypeCustomPath,
