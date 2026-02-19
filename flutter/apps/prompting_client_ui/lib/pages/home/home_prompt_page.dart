@@ -30,15 +30,41 @@ class HomePromptPage extends ConsumerWidget {
         ...switch (model.view) {
           HomePromptView.standard => [],
           HomePromptView.moreOptions => [
-              IconButton(
-                icon: const Icon(Icons.navigate_before),
-                onPressed: notifier.toggleMoreOptions,
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.navigate_before),
+                    onPressed: notifier.toggleMoreOptions,
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        l10n.homePromptMoreOptionsTileLabel,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                ],
               ),
             ],
           HomePromptView.customPathEditor => [
-              IconButton(
-                icon: const Icon(Icons.navigate_before),
-                onPressed: notifier.cancelCustomPathEditor,
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.navigate_before),
+                    onPressed: notifier.cancelCustomPathEditor,
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        l10n.homePatternTypeCustomPath,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                ],
               ),
             ],
         },
