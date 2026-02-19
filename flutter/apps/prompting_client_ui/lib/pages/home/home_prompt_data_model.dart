@@ -8,6 +8,8 @@ import 'package:ubuntu_service/ubuntu_service.dart';
 part 'home_prompt_data_model.freezed.dart';
 part 'home_prompt_data_model.g.dart';
 
+enum HomePromptView { standard, moreOptions, customPathEditor }
+
 @freezed
 class HomePromptData with _$HomePromptData {
   factory HomePromptData({
@@ -18,8 +20,7 @@ class HomePromptData with _$HomePromptData {
     required EnrichedPathKind enrichedPathKind,
     @Default(Lifespan.forever) Lifespan lifespan,
     HomePromptError? error,
-    @Default(false) bool showMoreOptions,
-    @Default(false) bool showCustomPathEditor,
+    @Default(HomePromptView.standard) HomePromptView view,
     String? savedCustomPath,
     PatternOption? savedPatternOption,
   }) = _HomePromptData;
@@ -43,9 +44,10 @@ class HomePromptData with _$HomePromptData {
       (details.metaData.storeUrl?.isNotEmpty ?? false) &&
       details.metaData.updatedAt != null;
 
-  Iterable<PatternOption> get visiblePatternOptions => showMoreOptions
-      ? details.patternOptions
-      : details.patternOptions.where((option) => option.showInitially);
+  Iterable<PatternOption> get visiblePatternOptions => switch (view) {
+        HomePromptView.moreOptions => details.patternOptions,
+        _ => details.patternOptions.where((option) => option.showInitially),
+      };
 }
 
 @riverpod
@@ -107,23 +109,23 @@ class HomePromptDataModel extends _$HomePromptDataModel {
   }
 
   void toggleMoreOptions() {
-    if (state.showMoreOptions) {
-      state = state.copyWith(
-        showMoreOptions: false,
-        showCustomPathEditor: false,
-        // Remove permissions that were not initially suggested when hiding more options
-        permissions: state.details.requestedPermissions.union(
-          state.permissions.intersection(state.details.suggestedPermissions),
-        ),
-      );
-    } else {
-      state = state.copyWith(showMoreOptions: true);
+    switch (state.view) {
+      case HomePromptView.moreOptions || HomePromptView.customPathEditor:
+        state = state.copyWith(
+          view: HomePromptView.standard,
+          // Remove permissions that were not initially suggested when hiding more options
+          permissions: state.details.requestedPermissions.union(
+            state.permissions.intersection(state.details.suggestedPermissions),
+          ),
+        );
+      case HomePromptView.standard:
+        state = state.copyWith(view: HomePromptView.moreOptions);
     }
   }
 
   void enterCustomPathEditor() {
     state = state.copyWith(
-      showCustomPathEditor: true,
+      view: HomePromptView.customPathEditor,
       savedCustomPath: state.customPath,
       savedPatternOption: state.patternOption,
       patternOption: HomePromptData.empty,
@@ -132,7 +134,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
 
   void saveCustomPath() {
     state = state.copyWith(
-      showCustomPathEditor: false,
+      view: HomePromptView.moreOptions,
       savedCustomPath: null,
       savedPatternOption: null,
     );
@@ -140,7 +142,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
 
   void cancelCustomPathEditor() {
     state = state.copyWith(
-      showCustomPathEditor: false,
+      view: HomePromptView.moreOptions,
       customPath: state.savedCustomPath ?? state.customPath,
       patternOption: state.savedPatternOption ?? state.patternOption,
       savedCustomPath: null,

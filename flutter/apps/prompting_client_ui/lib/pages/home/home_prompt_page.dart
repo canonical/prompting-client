@@ -24,49 +24,72 @@ class HomePromptPage extends ConsumerWidget {
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    if (model.showCustomPathEditor) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.navigate_before),
-            onPressed: notifier.cancelCustomPathEditor,
-          ),
-          const _CustomPathEditor(),
-        ].withSpacing(20),
-      );
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (model.showMoreOptions)
-          IconButton(
-            icon: const Icon(Icons.navigate_before),
-            onPressed: notifier.toggleMoreOptions,
-          ),
-        if (model.details.metaData.snapIcon != null && !model.showMoreOptions)
-          Center(
-            child: SnapIcon(snapIcon: model.details.metaData.snapIcon!, dimension: 80),
-          ),
-        Center(
-          child: Text(
-            l10n.homePromptTitleQuestion(
-              model.details.metaData.snapName,
-              model.details.requestedPermissions
-                  .map((p) => p.localize(l10n).toLowerCase())
-                  .join(', '),
-            ),
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ),
-        const Header(),
-        if (model.visiblePatternOptions.isNotEmpty)
-          const PatternOptions(),
-        if (model.error != null && model.showMoreOptions) _ErrorBox(model.error!),
-        const Permissions(),
-        if (model.error != null && !model.showMoreOptions) _ErrorBox(model.error!),
-        const ActionButtons(),
+      children: <Widget>[
+        ...switch (model.view) {
+          HomePromptView.standard => [],
+          HomePromptView.moreOptions => [
+              IconButton(
+                icon: const Icon(Icons.navigate_before),
+                onPressed: notifier.toggleMoreOptions,
+              ),
+            ],
+          HomePromptView.customPathEditor => [
+              IconButton(
+                icon: const Icon(Icons.navigate_before),
+                onPressed: notifier.cancelCustomPathEditor,
+              ),
+            ],
+        },
+        ...switch (model.view) {
+          HomePromptView.customPathEditor => [
+              const _CustomPathEditor(),
+            ],
+          HomePromptView.standard => [
+              if (model.details.metaData.snapIcon != null)
+                Center(
+                  child: SnapIcon(
+                    snapIcon: model.details.metaData.snapIcon!,
+                    dimension: 80,
+                  ),
+                ),
+              Center(
+                child: Text(
+                  l10n.homePromptTitleQuestion(
+                    model.details.metaData.snapName,
+                    model.details.requestedPermissions
+                        .map((p) => p.localize(l10n).toLowerCase())
+                        .join(', '),
+                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              const Header(),
+              if (model.visiblePatternOptions.isNotEmpty) const PatternOptions(),
+              const Permissions(),
+              if (model.error != null) _ErrorBox(model.error!),
+              const ActionButtons(),
+            ],
+          HomePromptView.moreOptions => [
+              Center(
+                child: Text(
+                  l10n.homePromptTitleQuestion(
+                    model.details.metaData.snapName,
+                    model.details.requestedPermissions
+                        .map((p) => p.localize(l10n).toLowerCase())
+                        .join(', '),
+                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              const Header(),
+              if (model.visiblePatternOptions.isNotEmpty) const PatternOptions(),
+              if (model.error != null) _ErrorBox(model.error!),
+              const Permissions(),
+              const ActionButtons(),
+            ],
+        },
       ].withSpacing(20),
     );
   }
@@ -248,51 +271,55 @@ class PatternOptions extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     return RadioButtonList<PatternOption>(
-      title: model.showMoreOptions
-          ? l10n.promptAccessMoreOptionsTitle(model.details.metaData.snapName)
-          : l10n.promptAccessTitle(
-              model.details.metaData.snapName,
-              model.details.requestedPermissions
-                  .map((p) => p.localize(l10n).toLowerCase())
-                  .join(', '),
-            ),
+      title: switch (model.view) {
+        HomePromptView.moreOptions =>
+          l10n.promptAccessMoreOptionsTitle(model.details.metaData.snapName),
+        _ => l10n.promptAccessTitle(
+            model.details.metaData.snapName,
+            model.details.requestedPermissions
+                .map((p) => p.localize(l10n).toLowerCase())
+                .join(', '),
+          ),
+      },
       options: model.visiblePatternOptions.toList(),
       optionTitle: (option) => option.localize(l10n),
-      optionSubtitle: (option) => model.showMoreOptions
-          ? Text(
-              option.pathPattern,
-              style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    color: Theme.of(context).hintColor,
-                  ),
-            )
-          : null,
+      optionSubtitle: (option) => switch (model.view) {
+        HomePromptView.moreOptions => Text(
+            option.pathPattern,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  color: Theme.of(context).hintColor,
+                ),
+          ),
+        _ => null,
+      },
       groupValue: model.patternOption,
       onChanged: notifier.setPatternOption,
-      trailingTile: model.showMoreOptions
-          ? PromptingListTile(
-              title: l10n.homePatternTypeCustomPath,
-              subtitle: model.patternOption.homePatternType ==
-                      HomePatternType.customPath
-                  ? Text(
-                      model.customPath,
-                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                            color: Theme.of(context).hintColor,
-                          ),
-                    )
-                  : null,
-              leading: YaruRadio<PatternOption>(
-                value: HomePromptData.empty,
-                groupValue: model.patternOption,
-                onChanged: (_) => notifier.enterCustomPathEditor(),
-              ),
-              trailing: const Icon(Icons.edit_outlined),
-              onTap: notifier.enterCustomPathEditor,
-            )
-          : PromptingListTile(
-              title: l10n.homePromptMoreOptionsTileLabel,
-              trailing: const Icon(Icons.navigate_next),
-              onTap: notifier.toggleMoreOptions,
+      trailingTile: switch (model.view) {
+        HomePromptView.moreOptions => PromptingListTile(
+            title: l10n.homePatternTypeCustomPath,
+            subtitle: model.patternOption.homePatternType ==
+                    HomePatternType.customPath
+                ? Text(
+                    model.customPath,
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          color: Theme.of(context).hintColor,
+                        ),
+                  )
+                : null,
+            leading: YaruRadio<PatternOption>(
+              value: HomePromptData.empty,
+              groupValue: model.patternOption,
+              onChanged: (_) => notifier.enterCustomPathEditor(),
             ),
+            trailing: const Icon(Icons.edit_outlined),
+            onTap: notifier.enterCustomPathEditor,
+          ),
+        _ => PromptingListTile(
+            title: l10n.homePromptMoreOptionsTileLabel,
+            trailing: const Icon(Icons.navigate_next),
+            onTap: notifier.toggleMoreOptions,
+          ),
+      },
     );
   }
 }
