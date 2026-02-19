@@ -19,6 +19,9 @@ class HomePromptData with _$HomePromptData {
     @Default(Lifespan.forever) Lifespan lifespan,
     HomePromptError? error,
     @Default(false) bool showMoreOptions,
+    @Default(false) bool showCustomPathEditor,
+    String? savedCustomPath,
+    PatternOption? savedPatternOption,
   }) = _HomePromptData;
 
   HomePromptData._();
@@ -102,6 +105,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     if (state.showMoreOptions) {
       state = state.copyWith(
         showMoreOptions: false,
+        showCustomPathEditor: false,
         // Remove permissions that were not initially suggested when hiding more options
         permissions: state.details.requestedPermissions.union(
           state.permissions.intersection(state.details.suggestedPermissions),
@@ -110,6 +114,36 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     } else {
       state = state.copyWith(showMoreOptions: true);
     }
+  }
+
+  void enterCustomPathEditor() {
+    state = state.copyWith(
+      showCustomPathEditor: true,
+      savedCustomPath: state.customPath,
+      savedPatternOption: state.patternOption,
+      patternOption: PatternOption(
+        homePatternType: HomePatternType.customPath,
+        pathPattern: '',
+      ),
+    );
+  }
+
+  void saveCustomPath() {
+    state = state.copyWith(
+      showCustomPathEditor: false,
+      savedCustomPath: null,
+      savedPatternOption: null,
+    );
+  }
+
+  void cancelCustomPathEditor() {
+    state = state.copyWith(
+      showCustomPathEditor: false,
+      customPath: state.savedCustomPath ?? state.customPath,
+      patternOption: state.savedPatternOption ?? state.patternOption,
+      savedCustomPath: null,
+      savedPatternOption: null,
+    );
   }
 
   Future<PromptReplyResponse> saveAndContinue({

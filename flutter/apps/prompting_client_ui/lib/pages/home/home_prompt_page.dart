@@ -23,6 +23,9 @@ class HomePromptPage extends ConsumerWidget {
     final showMoreOptions = ref.watch(
       homePromptDataModelProvider.select((m) => m.showMoreOptions),
     );
+    final showCustomPathEditor = ref.watch(
+      homePromptDataModelProvider.select((m) => m.showCustomPathEditor),
+    );
     final hasVisibleOptions = ref.watch(
       homePromptDataModelProvider
           .select((m) => m.visiblePatternOptions.isNotEmpty),
@@ -34,7 +37,21 @@ class HomePromptPage extends ConsumerWidget {
     final details = ref.watch(
       homePromptDataModelProvider.select((m) => m.details),
     );
+    final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
+
+    if (showCustomPathEditor) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.navigate_before),
+            onPressed: notifier.cancelCustomPathEditor,
+          ),
+          const _CustomPathEditor(),
+        ].withSpacing(20),
+      );
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,8 +59,7 @@ class HomePromptPage extends ConsumerWidget {
         if (showMoreOptions)
           IconButton(
             icon: const Icon(Icons.navigate_before),
-            onPressed:
-                ref.read(homePromptDataModelProvider.notifier).toggleMoreOptions,
+            onPressed: notifier.toggleMoreOptions,
           ),
         if (snapIcon != null)
           Center(
@@ -264,63 +280,140 @@ class PatternOptions extends ConsumerWidget {
                   .map((p) => p.localize(l10n).toLowerCase())
                   .join(', '),
             ),
-      options: [
-        ...model.visiblePatternOptions,
-        if (model.showMoreOptions)
-          PatternOption(
-            homePatternType: HomePatternType.customPath,
-            pathPattern: '',
-          ),
-      ],
+      options: model.visiblePatternOptions.toList(),
       optionTitle: (option) => option.localize(l10n),
-      optionSubtitle: (option) => switch (option) {
-        PatternOption(homePatternType: HomePatternType.customPath) =>
-          model.patternOption.homePatternType == HomePatternType.customPath
-              ? const _CustomPathTextField()
-              : null,
-        _ => model.showMoreOptions
-            ? Text(
-                option.pathPattern,
-                style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                      color: Theme.of(context).hintColor,
-                    ),
-              )
-            : null,
-      },
+      optionSubtitle: (option) => model.showMoreOptions
+          ? Text(
+              option.pathPattern,
+              style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                    color: Theme.of(context).hintColor,
+                  ),
+            )
+          : null,
       groupValue: model.patternOption,
       onChanged: notifier.setPatternOption,
-      trailingTile: !model.showMoreOptions
+      trailingTile: model.showMoreOptions
           ? PromptingListTile(
+              title: l10n.homePatternTypeCustomPath,
+              subtitle: model.patternOption.homePatternType ==
+                      HomePatternType.customPath
+                  ? Text(
+                      model.customPath,
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                            color: Theme.of(context).hintColor,
+                          ),
+                    )
+                  : null,
+              leading: YaruRadio<PatternOption>(
+                value: PatternOption(
+                  homePatternType: HomePatternType.customPath,
+                  pathPattern: '',
+                ),
+                groupValue: model.patternOption,
+                onChanged: (_) => notifier.enterCustomPathEditor(),
+              ),
+              trailing: const Icon(Icons.edit_outlined),
+              onTap: notifier.enterCustomPathEditor,
+            )
+          : PromptingListTile(
               title: l10n.homePromptMoreOptionsTileLabel,
               trailing: const Icon(Icons.navigate_next),
               onTap: notifier.toggleMoreOptions,
-            )
-          : null,
+            ),
     );
   }
 }
 
-class _CustomPathTextField extends ConsumerWidget {
-  const _CustomPathTextField();
+class _CustomPathEditor extends ConsumerWidget {
+  const _CustomPathEditor();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final customPath =
         ref.watch(homePromptDataModelProvider.select((m) => m.customPath));
     final notifier = ref.read(homePromptDataModelProvider.notifier);
+    final l10n = AppLocalizations.of(context);
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextFormField(
-          style: Theme.of(context).textTheme.bodyMedium,
-          initialValue: customPath,
-          onChanged: notifier.setCustomPath,
-          // TODO: show error if it is caused by the custom path pattern
+        YaruBorderContainer(
+          clipBehavior: Clip.hardEdge,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: kTileHorizontalPadding,
+              vertical: 12,
+            ),
+            child: TextFormField(
+              style: Theme.of(context).textTheme.bodyMedium,
+              initialValue: customPath,
+              onChanged: notifier.setCustomPath,
+              decoration: InputDecoration(
+                labelText: l10n.homePatternTypeCustomPath,
+                suffixIcon: const Icon(Icons.edit_outlined),
+                border: InputBorder.none,
+              ),
+            ),
+          ),
         ),
-        // Text(l10n.homePatternInfo),
-        // TODO: re-enable when we have a link available for this to point to
-      ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                l10n.homeCustomPathMustStartWithSlash,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 12),
+              _WildcardRow('*', l10n.homeCustomPathWildcardStarDescription),
+              _WildcardRow('?', l10n.homeCustomPathWildcardQuestionDescription),
+              _WildcardRow('/**', l10n.homeCustomPathWildcardDoubleStarDescription),
+              _WildcardRow('{x,y}', l10n.homeCustomPathWildcardCurlyDescription),
+              _WildcardRow(r'\', l10n.homeCustomPathWildcardBackslashDescription),
+            ],
+          ),
+        ),
+        ElevatedButton(
+          onPressed: notifier.saveCustomPath,
+          child: Text(l10n.homeCustomPathSaveButton),
+        ),
+      ].withSpacing(12),
+    );
+  }
+}
+
+class _WildcardRow extends StatelessWidget {
+  const _WildcardRow(this.label, this.description);
+
+  final String label;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 52,
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    fontFamily: 'monospace',
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              description,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
