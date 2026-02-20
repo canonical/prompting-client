@@ -298,9 +298,15 @@ class PatternOptions extends ConsumerWidget {
       },
       options: model.visiblePatternOptions.toList(),
       optionTitle: (option) => option.localize(l10n),
-      optionSubtitle: (option) => switch (model.view) {
-        HomePromptView.moreOptions => Text(
+      optionSubtitle: (option) => switch ((model.view, option.homePatternType)) {
+        (HomePromptView.moreOptions, _) => Text(
             option.pathPattern,
+            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  color: Theme.of(context).hintColor,
+                ),
+          ),
+        (_, HomePatternType.customPath) => Text(
+            model.customPath,
             style: Theme.of(context).textTheme.labelSmall!.copyWith(
                   color: Theme.of(context).hintColor,
                 ),

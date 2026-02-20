@@ -46,7 +46,12 @@ class HomePromptData with _$HomePromptData {
 
   Iterable<PatternOption> get visiblePatternOptions => switch (view) {
         HomePromptView.moreOptions => details.patternOptions,
-        _ => details.patternOptions.where((option) => option.showInitially),
+        _ => [
+            ...details.patternOptions.where((option) => option.showInitially),
+            if (customPath.isNotEmpty &&
+                patternOption.homePatternType == HomePatternType.customPath)
+              HomePromptData.empty,
+          ],
       };
 }
 
@@ -134,7 +139,7 @@ class HomePromptDataModel extends _$HomePromptDataModel {
 
   void saveCustomPath() {
     state = state.copyWith(
-      view: HomePromptView.moreOptions,
+      view: HomePromptView.standard,
       savedCustomPath: null,
       savedPatternOption: null,
     );
