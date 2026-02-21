@@ -19,10 +19,12 @@ class PromptPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final prompt = ref.watch(currentPromptProvider);
 
-    // Camera/mic prompts use fixed size.
+    // Home prompts use dynamic resize (min 400x670), camera/mic prompts use fixed size.
     final allowDynamicResize = prompt is PromptDetailsHome;
 
-    final minWidth = defaultWindowSize.width;
+    final minWidth = allowDynamicResize
+        ? homePromptWindowSize.width
+        : defaultWindowSize.width;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -32,19 +34,24 @@ class PromptPage extends ConsumerWidget {
               'SizeChangedLayoutNotification received: (${size.width}, ${size.height})',
             );
             if (allowDynamicResize) {
-              _ensureWindowSize(Size(size.width, size.height));
+              final constrainedSize = Size(
+                size.width.clamp(homePromptWindowSize.width, double.infinity),
+                size.height.clamp(homePromptWindowSize.height, double.infinity),
+              );
+              _ensureWindowSize(constrainedSize);
+            } else {
+              _ensureWindowSize(defaultWindowSize);
             }
 
             return Consumer(
               builder: (context, ref, _) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (context.size != null && allowDynamicResize) {
-                    _ensureWindowSize(
-                      Size(
-                        context.size!.width,
-                        context.size!.height,
-                      ),
+                    final constrainedSize = Size(
+                      context.size!.width.clamp(homePromptWindowSize.width, double.infinity),
+                      context.size!.height.clamp(homePromptWindowSize.height, double.infinity),
                     );
+                    _ensureWindowSize(constrainedSize);
                   }
                 });
                 return SizeChangedLayoutNotifier(
