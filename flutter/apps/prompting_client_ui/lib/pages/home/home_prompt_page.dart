@@ -67,6 +67,25 @@ class HomePromptPage extends ConsumerWidget {
                 ],
               ),
             ],
+          HomePromptView.metadata => [
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.navigate_before),
+                    onPressed: notifier.navigateBackFromMetadata,
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        l10n.homePromptMetaDataTitle,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 48),
+                ],
+              ),
+            ],
         },
         ...switch (model.view) {
           HomePromptView.customPathEditor => [
@@ -103,6 +122,9 @@ class HomePromptPage extends ConsumerWidget {
               if (model.error != null) _ErrorBox(model.error!),
               const Permissions(),
               const ActionButtons(),
+            ],
+          HomePromptView.metadata => [
+              const _MetadataView(),
             ],
         },
       ].withSpacing(20),
@@ -197,18 +219,38 @@ class Header extends ConsumerWidget {
         MarkdownText(
           markdownText,
         ),
-        if (model.hasMeta) const MetaDataDropdown(),
+        if (model.hasMeta && model.view == HomePromptView.standard)
+          const _MetadataNavigationButton(),
       ],
     );
   }
 }
 
-class MetaDataDropdown extends ConsumerWidget {
-  const MetaDataDropdown({super.key});
+class _MetadataNavigationButton extends ConsumerWidget {
+  const _MetadataNavigationButton();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
+    final notifier = ref.read(homePromptDataModelProvider.notifier);
+
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.navigate_next),
+          onPressed: notifier.navigateToMetadata,
+        ),
+        Text(l10n.homePromptMetaDataTitle),
+      ],
+    );
+  }
+}
+
+class _MetadataView extends ConsumerWidget {
+  const _MetadataView();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final metaData = ref
         .watch(homePromptDataModelProvider.select((m) => m.details.metaData));
@@ -223,42 +265,24 @@ class MetaDataDropdown extends ConsumerWidget {
       }
     }
 
-    return YaruExpandable(
-      expandButtonPosition: YaruExpandableButtonPosition.start,
-      header: Text(l10n.homePromptMetaDataTitle),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            color: theme.cardColor,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (metaData.publisher != null)
-                    MarkdownText(
-                      l10n.homePromptMetaDataPublishedBy(
-                        metaData.publisher!.link(''),
-                      ),
-                    ),
-                  if (updatedAt != null)
-                    MarkdownText(
-                      l10n.homePromptMetaDataLastUpdated(updatedAt).bold(),
-                    ),
-                  if (metaData.storeUrl != null)
-                    MarkdownText(
-                      l10n.homePromptMetaDataAppCenterLink
-                          .link(metaData.storeUrl!),
-                    ),
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (metaData.publisher != null)
+          MarkdownText(
+            l10n.homePromptMetaDataPublishedBy(
+              metaData.publisher!.link(''),
             ),
           ),
-          const SizedBox(height: 10),
-        ],
-      ),
+        if (updatedAt != null)
+          MarkdownText(
+            l10n.homePromptMetaDataLastUpdated(updatedAt).bold(),
+          ),
+        if (metaData.storeUrl != null)
+          MarkdownText(
+            l10n.homePromptMetaDataAppCenterLink.link(metaData.storeUrl!),
+          ),
+      ],
     );
   }
 }

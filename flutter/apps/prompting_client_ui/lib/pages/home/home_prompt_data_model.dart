@@ -8,7 +8,7 @@ import 'package:ubuntu_service/ubuntu_service.dart';
 part 'home_prompt_data_model.freezed.dart';
 part 'home_prompt_data_model.g.dart';
 
-enum HomePromptView { standard, moreOptions, customPathEditor }
+enum HomePromptView { standard, moreOptions, customPathEditor, metadata }
 
 @freezed
 class HomePromptData with _$HomePromptData {
@@ -125,6 +125,8 @@ class HomePromptDataModel extends _$HomePromptDataModel {
         );
       case HomePromptView.standard:
         state = state.copyWith(view: HomePromptView.moreOptions);
+      case HomePromptView.metadata:
+        break;
     }
   }
 
@@ -153,6 +155,14 @@ class HomePromptDataModel extends _$HomePromptDataModel {
       savedCustomPath: null,
       savedPatternOption: null,
     );
+  }
+
+  void navigateToMetadata() {
+    state = state.copyWith(view: HomePromptView.metadata);
+  }
+
+  void navigateBackFromMetadata() {
+    state = state.copyWith(view: HomePromptView.standard);
   }
 
   Future<PromptReplyResponse> saveAndContinue({
