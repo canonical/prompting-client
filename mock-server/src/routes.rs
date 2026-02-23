@@ -178,6 +178,7 @@ pub async fn metadata(Path(snapname): Path<String>) -> impl IntoResponse {
         "install-date": "2025-08-08T09:15:01.505417578+02:00",
         "publisher": {
             "display-name": "foo",
+            "validation": "verified"
         }
     }))
 }
