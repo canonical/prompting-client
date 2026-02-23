@@ -162,6 +162,15 @@ class AppLocalizationsBn extends AppLocalizations {
   }
 
   @override
+  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+
+  @override
   String homePromptMetaDataLastUpdated(String date) {
     return 'Last updated on $date';
   }

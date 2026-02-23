@@ -189,6 +189,12 @@
             }
         }
     },
+    "homePromptMetaDataVerifiedAccountPrefix": "This publisher has a ",
+    "@homePromptMetaDataVerifiedAccountPrefix": {},
+    "homePromptMetaDataVerifiedAccountLink": "verified account",
+    "@homePromptMetaDataVerifiedAccountLink": {},
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "@homePromptMetaDataVerifiedAccountSuffix": {},
     "homePromptMetaDataLastUpdated": "Last updated on {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {

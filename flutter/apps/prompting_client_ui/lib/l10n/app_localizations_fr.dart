@@ -163,6 +163,15 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+
+  @override
   String homePromptMetaDataLastUpdated(String date) {
     return 'Dernière mise à jour le $date';
   }

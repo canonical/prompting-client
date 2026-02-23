@@ -491,6 +491,24 @@ abstract class AppLocalizations {
   /// **'Published by {publisher}'**
   String homePromptMetaDataPublishedBy(String publisher);
 
+  /// No description provided for @homePromptMetaDataVerifiedAccountPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'This publisher has a '**
+  String get homePromptMetaDataVerifiedAccountPrefix;
+
+  /// No description provided for @homePromptMetaDataVerifiedAccountLink.
+  ///
+  /// In en, this message translates to:
+  /// **'verified account'**
+  String get homePromptMetaDataVerifiedAccountLink;
+
+  /// No description provided for @homePromptMetaDataVerifiedAccountSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get homePromptMetaDataVerifiedAccountSuffix;
+
   /// No description provided for @homePromptMetaDataLastUpdated.
   ///
   /// In en, this message translates to:

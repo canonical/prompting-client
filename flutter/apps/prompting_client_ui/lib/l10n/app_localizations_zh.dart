@@ -160,6 +160,15 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+
+  @override
   String homePromptMetaDataLastUpdated(String date) {
     return '最后更新日期为 $date';
   }
