@@ -15,6 +15,8 @@ import 'package:prompting_client_ui/widgets/snap_icon.dart';
 import 'package:prompting_client_ui/widgets/tile_constants.dart';
 import 'package:yaru/yaru.dart';
 
+const _verifiedAccountUrl = 'https://forum.snapcraft.io/t/verified-accounts/34002';
+
 class HomePromptPage extends ConsumerWidget {
   const HomePromptPage({super.key});
 
@@ -269,10 +271,29 @@ class _MetadataView extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (metaData.publisher != null)
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 4,
+            children: [
+              MarkdownText(
+                l10n.homePromptMetaDataPublishedBy(
+                  metaData.publisher!.link(''),
+                ),
+              ),
+              if (metaData.publisherVerified)
+                Icon(
+                  Icons.verified,
+                  size: 16,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+            ],
+          ),
+        if (metaData.publisherVerified)
           MarkdownText(
-            l10n.homePromptMetaDataPublishedBy(
-              metaData.publisher!.link(''),
-            ),
+            '${l10n.homePromptMetaDataVerifiedAccountPrefix}'
+            '[${l10n.homePromptMetaDataVerifiedAccountLink}]'
+            '($_verifiedAccountUrl)'
+            '${l10n.homePromptMetaDataVerifiedAccountSuffix}',
           ),
         if (updatedAt != null)
           Text(
