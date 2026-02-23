@@ -174,6 +174,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homePromptMetaDataAppCenterLink => 'App Center 페이지 방문';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return '$permission 접근 권한도 부여';
   }

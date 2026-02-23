@@ -179,6 +179,9 @@ class AppLocalizationsTa extends AppLocalizations {
       'பயன்பாட்டு மையப் பக்கத்தைப் பார்வையிடவும்';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return '$permission அணுகலையும் கொடுங்கள்';
   }

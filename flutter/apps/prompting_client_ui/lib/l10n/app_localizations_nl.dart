@@ -176,6 +176,9 @@ class AppLocalizationsNl extends AppLocalizations {
       'Pagina met App-centrale bezoeken';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Geef ook $permission toegang';
   }

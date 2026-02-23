@@ -174,6 +174,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePromptMetaDataAppCenterLink => '访问应用中心页面';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return '同时授予 $permission 权限';
   }

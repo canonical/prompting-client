@@ -515,6 +515,12 @@ abstract class AppLocalizations {
   /// **'Visit App Center page'**
   String get homePromptMetaDataAppCenterLink;
 
+  /// No description provided for @homePromptMetaDataAppCenterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in App Center'**
+  String get homePromptMetaDataAppCenterButton;
+
   /// No description provided for @homePromptSuggestedPermission.
   ///
   /// In en, this message translates to:

@@ -176,6 +176,9 @@ class AppLocalizationsOc extends AppLocalizations {
       'Consultar la pagina del Centre d’aplicacions';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Donar tanben l’accès $permission';
   }

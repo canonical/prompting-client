@@ -175,6 +175,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get homePromptMetaDataAppCenterLink => 'Käy sovelluskeskuksen sivulla';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Anna myös käyttöoikeus \"$permission\"';
   }

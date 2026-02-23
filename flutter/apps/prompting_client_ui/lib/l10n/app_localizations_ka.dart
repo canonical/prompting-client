@@ -177,6 +177,9 @@ class AppLocalizationsKa extends AppLocalizations {
       'აპების ცენტრის გვერდზე გადასვლა';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'ასევე მიეცემა წვდომა $permission';
   }

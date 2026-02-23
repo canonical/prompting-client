@@ -275,14 +275,26 @@ class _MetadataView extends ConsumerWidget {
             ),
           ),
         if (updatedAt != null)
-          MarkdownText(
-            l10n.homePromptMetaDataLastUpdated(updatedAt).bold(),
+          Text(
+            'App last updated on $updatedAt.',
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         if (metaData.storeUrl != null)
-          MarkdownText(
-            l10n.homePromptMetaDataAppCenterLink.link(metaData.storeUrl!),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                // TODO: Open URL in browser
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                elevation: 0,
+              ),
+              child: Text(l10n.homePromptMetaDataAppCenterButton),
+            ),
           ),
-      ],
+      ].withSpacing(12),
     );
   }
 }

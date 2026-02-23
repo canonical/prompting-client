@@ -177,6 +177,9 @@ class AppLocalizationsGa extends AppLocalizations {
       'Tabhair cuairt ar leathanach App Centre';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Tabhair rochtain $permission freisin';
   }

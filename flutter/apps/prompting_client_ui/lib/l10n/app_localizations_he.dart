@@ -175,6 +175,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homePromptMetaDataAppCenterLink => 'ביקור בעמוד מרכז היישומים';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'להעניק גם גישת $permission';
   }

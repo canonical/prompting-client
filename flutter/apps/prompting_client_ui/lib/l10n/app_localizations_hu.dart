@@ -176,6 +176,9 @@ class AppLocalizationsHu extends AppLocalizations {
       'Az alkalmazásközpont oldalának meglátogatása';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Kapjon $permission hozzáférést is';
   }

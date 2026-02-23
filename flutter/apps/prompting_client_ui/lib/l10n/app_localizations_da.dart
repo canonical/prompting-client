@@ -175,6 +175,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get homePromptMetaDataAppCenterLink => 'Besøg Appcenter-siden';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Giv også $permission-adgang';
   }

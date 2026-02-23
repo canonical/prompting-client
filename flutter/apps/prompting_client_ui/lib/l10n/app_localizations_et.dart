@@ -176,6 +176,9 @@ class AppLocalizationsEt extends AppLocalizations {
       'Vaata andmeid Rakendustekeskuses';
 
   @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+
+  @override
   String homePromptSuggestedPermission(String permission) {
     return 'Luba ka „$permission“ õigused';
   }

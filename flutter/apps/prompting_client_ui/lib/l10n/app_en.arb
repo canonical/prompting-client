@@ -203,6 +203,8 @@
     "@homePromptMoreOptionsTileLabel": {},
     "homePromptMetaDataAppCenterLink": "Visit App Center page",
     "@homePromptMetaDataAppCenterLink": {},
+    "homePromptMetaDataAppCenterButton": "Open in App Center",
+    "@homePromptMetaDataAppCenterButton": {},
     "homePromptSuggestedPermission": "Also give {permission} access",
     "@homePromptSuggestedPermission": {
         "placeholders": {
