@@ -1,1 +1,176 @@
-{}
+{
+    "securityCenterInfo": "Baimen hauek edonoiz aldatzeko aukera duzu <Segurtasun zentroa> erabiliz",
+    "promptActionOptionAllow": "Baimendu",
+    "promptActionOptionAllowAlways": "Baimendu beti",
+    "promptActionOptionAllowOnce": "Baimendu behin",
+    "promptActionOptionDeny": "Ukatu",
+    "promptActionOptionDenyOnce": "Ukatu behin",
+    "promptActionOptionAllowUntilLogout": "Baimendu saioa amaitu arte",
+    "promptActionTitle": "Ekintza",
+    "promptLifespanOptionForever": "Beti",
+    "promptLifespanOptionSession": "Saioa amaitu arte",
+    "promptLifespanOptionSingle": "Behin",
+    "promptLifespanTitle": "Iraupena",
+    "promptSaveAndContinue": "Gorde eta jarraitu",
+    "promptTitle": "Segurtasun jakinarazpena",
+    "homePatternInfo": "<Informazio gehiago bideen patroiei buruz>",
+    "homePatternTypeCustomPath": "Bide patroi pertsonalizatua",
+    "homePatternTypeRequestedDirectory": "Eskatutako karpetan soilik",
+    "homePatternTypeRequestedFile": "Eskatutako fitxategian soilik",
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} karpetako eduki osoan",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Karpetako eduki osoan",
+    "homePatternTypeContainingDirectory": "Karpetako eduki osoan",
+    "homePatternTypeHomeDirectory": "Karpeta nagusiko eduki osoan",
+    "homePatternTypeMatchingFileExtension": "{fileExtension} fitxategi guztietan",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Aplikazio honi buruz",
+    "homePromptMetaDataPublishedBy": "Argitaratzailea: {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Azken eguneratzea: {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Aukera gehiago...",
+    "homePromptMetaDataAppCenterLink": "Bisitatu Aplikazioen zentroaren orria",
+    "homePromptSuggestedPermission": "Eman {permission} baimena ere",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "Baimenak",
+    "homePromptPermissionsRead": "Irakurri",
+    "homePromptPermissionsWrite": "Idatzi",
+    "homePromptPermissionsExecute": "Exekutatu",
+    "homePromptErrorUnknownTitle": "Zerbaitek huts egin du",
+    "cameraPromptBody": "Baimendu {snapName} aplikazioari kamera atzitzea?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Baimendu {snapName} aplikazioari mikrofonoa atzitzea?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessMoreOptionsTitle": "Ezarri {snap} aplikazioaren baimenak honako:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "Eman {snap} aplikazioari {permission} baimena honako:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} aplikazioak {permissions} baimena eskuratu nahi du honako: {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} aplikazioak {permissions} baimena eskuratu nahi du {foldername} karpetarako.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} aplikazioak {permissions} baimena eskuratu nahi du {foldername} karpetako {filename} fitxategirako.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} aplikazioak {permissions} baimena eskuratu nahi du karpeta nagusirako.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} aplikazioak {permissions} baimena eskuratu nahi du karpeta nagusiko {filename} fitxategirako.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    }
+}
