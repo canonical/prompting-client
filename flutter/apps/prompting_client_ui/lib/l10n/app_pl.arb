@@ -1,6 +1,5 @@
 {
     "securityCenterInfo": "Te uprawnienia możesz zawsze zmienić w <Centrum zabezpieczeń>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "Ustaw dostęp dla {snap} na:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -10,7 +9,6 @@
         }
     },
     "promptActionOptionAllowAlways": "Zezwalaj zawsze",
-    "@promptActionOptionAllowAlways": {},
     "promptAccessTitle": "Udziel {snap} dostępu {permission} do:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -23,15 +21,10 @@
         }
     },
     "promptActionOptionDenyOnce": "Odmów raz",
-    "@promptActionOptionDenyOnce": {},
     "promptActionOptionDeny": "Odmów",
-    "@promptActionOptionDeny": {},
     "promptLifespanOptionSingle": "Raz",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "Czas trwania",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Zapisz i kontynuuj",
-    "@promptSaveAndContinue": {},
     "homePatternTypeTopLevelDirectory": "Wszystko w katalogu {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -41,15 +34,10 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "Wszystko w katalogu",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePromptMetaDataTitle": "O tym programie",
-    "@homePromptMetaDataTitle": {},
     "promptTitle": "Powiadomienie o zabezpieczeniach",
-    "@promptTitle": {},
     "homePatternTypeCustomPath": "Niestandardowy wzorzec ścieżki",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "Tylko żądany katalog",
-    "@homePatternTypeRequestedDirectory": {},
     "homePromptMetaDataPublishedBy": "Opublikowany przez {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -59,7 +47,6 @@
         }
     },
     "homePatternTypeMatchingFileExtension": "Wszystkie pliki {fileExtension}",
-    "@homePatternTypeMatchingFileExtension": {},
     "homePromptBody": "Czy zezwolić {snap} na dostęp do {path} na poziomie {permissions}?",
     "@homePromptBody": {
         "placeholders": {
@@ -75,23 +62,14 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "Odwiedź stronę Centrum oprogramowania",
-    "@homePromptMetaDataAppCenterLink": {},
     "promptActionOptionAllow": "Zezwól",
-    "@promptActionOptionAllow": {},
-    "promptActionTitle": "Działanie",
-    "@promptActionTitle": {},
+    "promptActionTitle": "Czynność",
     "promptLifespanOptionForever": "Zawsze",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Do czasu wylogowania",
-    "@promptLifespanOptionSession": {},
     "homePatternInfo": "<Dowiedz się więcej o wzorcach ścieżek>",
-    "@homePatternInfo": {},
     "homePatternTypeRequestedFile": "Tylko żądany plik",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeContainingDirectory": "Wszystko w katalogu",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Wszystko w katalogu domowym",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptMetaDataLastUpdated": "Ostatnio zaktualizowany dnia {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
@@ -101,17 +79,11 @@
         }
     },
     "homePromptMoreOptionsLabel": "Więcej opcji...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsTitle": "Uprawnienia",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "Odczyt",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Zapis",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Wykonywanie",
-    "@homePromptPermissionsExecute": {},
     "promptActionOptionAllowOnce": "Zezwól raz",
-    "@promptActionOptionAllowOnce": {},
     "homePromptSuggestedPermission": "Udziel także dostępu {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -121,7 +93,6 @@
         }
     },
     "homePromptErrorUnknownTitle": "Wystąpił problem",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptTopLevelDirBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do katalogu {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
@@ -208,6 +179,5 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Zezwalaj do momentu wylogowania",
-    "@promptActionOptionAllowUntilLogout": {}
+    "promptActionOptionAllowUntilLogout": "Zezwalaj do momentu wylogowania"
 }
