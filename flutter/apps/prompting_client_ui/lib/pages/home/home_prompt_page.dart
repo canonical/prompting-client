@@ -415,23 +415,13 @@ class _CustomPathEditor extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        YaruBorderContainer(
-          clipBehavior: Clip.hardEdge,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: kTileHorizontalPadding,
-              vertical: 12,
-            ),
-            child: TextFormField(
-              style: Theme.of(context).textTheme.bodyMedium,
-              initialValue: initialCustomPath,
-              onChanged: notifier.setCustomPath,
-              decoration: InputDecoration(
-                labelText: l10n.homePatternTypeCustomPath,
-                suffixIcon: const Icon(Icons.edit_outlined),
-                border: InputBorder.none,
-              ),
-            ),
+        TextFormField(
+          style: Theme.of(context).textTheme.bodyMedium,
+          initialValue: initialCustomPath,
+          onChanged: notifier.setCustomPath,
+          decoration: InputDecoration(
+            labelText: l10n.homePatternTypeCustomPath,
+            suffixIcon: const Icon(Icons.edit_outlined),
           ),
         ),
         Padding(
