@@ -46,6 +46,10 @@ Future<void> main(List<String> args) async {
     ..addOption(
       'cgroup',
       help: 'Application cgroup',
+    )
+    ..addOption(
+      'interface-name',
+      help: 'Interface name (home, camera, audio-record)',
     );
 
   final ArgResults argResults;

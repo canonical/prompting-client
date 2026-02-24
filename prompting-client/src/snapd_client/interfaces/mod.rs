@@ -240,6 +240,14 @@ impl TypedPrompt {
             Self::Microphone(p) => &p.cgroup,
         }
     }
+
+    pub fn interface_name(&self) -> &'static str {
+        match self {
+            Self::Camera(_) => CameraInterface::NAME,
+            Self::Home(_) => HomeInterface::NAME,
+            Self::Microphone(_) => MicrophoneInterface::NAME,
+        }
+    }
 }
 
 impl TryFrom<RawPrompt> for TypedPrompt {

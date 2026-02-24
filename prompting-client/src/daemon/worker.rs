@@ -506,6 +506,8 @@ where
             &enriched_prompt.prompt.pid().to_string(),
             "--cgroup",
             &enriched_prompt.prompt.cgroup().0,
+            "--interface-name",
+            enriched_prompt.prompt.interface_name(),
         ])?;
         self.dialog_processes.insert(cgroup.clone(), dialog_process);
 
