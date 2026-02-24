@@ -4,7 +4,7 @@
     "snap": "aa-prompting-test",
     "interface": "home",
     "constraints": {
-      "path": "$BASE_PATH/*"
+      "path": "$BASE_PATH/.*"
     }
   },
   "prompts": [

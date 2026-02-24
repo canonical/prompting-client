@@ -13,7 +13,7 @@ use std::{collections::VecDeque, fs};
 #[serde(rename_all = "kebab-case")]
 pub struct PromptSequence {
     version: u8,
-    filter: Option<TypedPromptFilter>,
+    prompt_filter: Option<TypedPromptFilter>,
     prompts: VecDeque<TypedPromptCase>,
     #[serde(skip, default)]
     index: usize,
@@ -35,7 +35,7 @@ impl PromptSequence {
     }
 
     pub fn should_handle(&self, p: &TypedPrompt) -> bool {
-        match &self.filter {
+        match &self.prompt_filter {
             Some(f) => f.matches(p),
             None => true,
         }
@@ -116,12 +116,25 @@ enum TypedPromptCase {
     Microphone(PromptCase<MicrophoneInterface>),
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(untagged)]
+#[derive(Debug, Deserialize)]
+#[serde(tag = "interface", rename_all = "lowercase")]
 enum TypedPromptFilter {
+    #[serde(deserialize_with = "deserialize_interface")]
     Camera(PromptFilter<CameraInterface>),
+    #[serde(deserialize_with = "deserialize_interface")]
     Home(PromptFilter<HomeInterface>),
+    #[serde(deserialize_with = "deserialize_interface")]
     Microphone(PromptFilter<MicrophoneInterface>),
+}
+
+fn deserialize_interface<'de, D, T>(d: D) -> Result<PromptFilter<T>, D::Error>
+where
+    D: Deserializer<'de>,
+    T: SnapInterface,
+{
+    let mut filter = PromptFilter::deserialize(d)?;
+    filter.interface = Some(T::NAME.to_string());
+    Ok(filter)
 }
 
 impl TypedPromptFilter {
