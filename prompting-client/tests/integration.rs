@@ -27,10 +27,16 @@ use std::{
     env, fs,
     io::{self, ErrorKind},
     os::unix::fs::PermissionsExt,
+    process::Stdio,
     sync::mpsc::{channel, Receiver},
     time::Duration,
 };
-use tokio::{process::Command, spawn, time::sleep, time::timeout};
+use tokio::{
+    io::{AsyncReadExt, BufReader},
+    process::Command,
+    spawn,
+    time::{sleep, timeout},
+};
 use uuid::Uuid;
 
 const TEST_SNAP: &str = "aa-prompting-test";
@@ -48,12 +54,39 @@ fn spawn_for_output(cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
 
     spawn(async move {
         let mut c = Command::new(cmd);
-        c.args(args);
-        let output = c.output().await.expect("to be able to spawn child process");
-        let stdout = String::from_utf8(output.stdout).expect("valid utf8");
-        let stderr = String::from_utf8(output.stderr).expect("valid utf8");
+        c.args(args)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .kill_on_drop(true);
 
-        tx.send(Output { stdout, stderr }).expect("send to succeed");
+        let mut c = c.spawn().expect("Failed to spawn process");
+
+        let stdout_reader = c.stdout.take().map(|r| BufReader::new(r));
+        let stderr_reader = c.stderr.take().map(|r| BufReader::new(r));
+
+        match tokio::time::timeout(TIMEOUT * 2, c.wait()).await {
+            Ok(Ok(_)) => {
+                let mut stdout = String::new();
+                if let Some(mut reader) = stdout_reader {
+                    let _ = reader.read_to_string(&mut stdout).await;
+                }
+
+                let mut stderr = String::new();
+                if let Some(mut reader) = stderr_reader {
+                    let _ = reader.read_to_string(&mut stderr).await;
+                }
+
+                tx.send(Output { stdout, stderr }).expect("send to succeed");
+            }
+            _ => {
+                // c.kill().await.ok();
+
+                let stdout = String::new();
+                let stderr = "Process timeout".to_string();
+
+                tx.send(Output { stdout, stderr }).ok();
+            }
+        }
     });
 
     rx
@@ -73,7 +106,13 @@ fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(S
 
     fs::create_dir_all(&path)?;
     for (fname, contents) in files {
-        fs::write(format!("{path}/{fname}"), contents)?;
+        let file_path = format!("{path}/{fname}");
+        fs::write(&file_path, contents)?;
+
+        // Set readable permissions for all files so eventually snaps can access them
+        let mut perms = fs::metadata(&file_path)?.permissions();
+        perms.set_mode(0o644); // rw-r--r-- (readable by all)
+        fs::set_permissions(&file_path, perms)?;
     }
 
     Ok((prefix, path))
@@ -190,7 +229,7 @@ async fn camera_interface_connected_naive(
     )
     .await?;
 
-    let output = rx.recv().expect("to be able to recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
 
     assert_eq!(
         output.stdout,
@@ -599,7 +638,7 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_erroring_write_test.json");
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix]);
 
     let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
@@ -632,7 +671,7 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_wrong_path_test.json");
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
         &[("BASE_PATH", &dir_path)],
@@ -663,7 +702,7 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
     );
     let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix]);
     let mut scripted_client = ScriptedClient::try_new(
         format!("{dir_path}/seq.json"),
         &[("BASE_PATH", &dir_path)],
