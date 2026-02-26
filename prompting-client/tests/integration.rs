@@ -79,7 +79,7 @@ fn spawn_for_output(cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
                 tx.send(Output { stdout, stderr }).expect("send to succeed");
             }
             _ => {
-                // c.kill().await.ok();
+                c.kill().await.ok();
 
                 let stdout = String::new();
                 let stderr = "Process timeout".to_string();
@@ -767,6 +767,9 @@ async fn scripted_client_test_allow() -> Result<()> {
     let mut perms = file.metadata()?.permissions();
     perms.set_mode(perms.mode() | 0o111); // Set executable bit for all users (chmod +x)
     file.set_permissions(perms)?;
+
+    // wait
+    let _ = tokio::time::sleep(Duration::from_secs(10));
 
     let res = Command::new(script_path)
         .args([prefix])
