@@ -66,7 +66,7 @@ class DeviceActionButtons extends ConsumerWidget {
         spacing: 16,
         alignment: WrapAlignment.center,
         children: [
-          YaruSplitButton(
+          YaruSplitButton.filled(
             items: allowButtons
                 .map(
                   (item) => PopupMenuItem(
@@ -80,7 +80,7 @@ class DeviceActionButtons extends ConsumerWidget {
                 _handleAction(context, Action.allow, Lifespan.forever),
             child: Text(l10n.promptActionOptionAllowAlways),
           ),
-          YaruSplitButton(
+          YaruSplitButton.filled(
             items: denyButtons
                 .map(
                   (item) => PopupMenuItem(
