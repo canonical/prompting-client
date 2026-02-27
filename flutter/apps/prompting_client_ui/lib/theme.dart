@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:yaru/yaru.dart';
 
-const defaultWindowSize = Size(400, 230);
-const homePromptWindowSize = Size(400, 670);
+const kWindowWidth = 372.0;
+const kDefaultWindowHeight = 230.0;
+const kHomePromptWindowHeight = 690.0;
+const defaultWindowSize = Size(kWindowWidth, kDefaultWindowHeight);
+const homePromptWindowSize = Size(kWindowWidth, kHomePromptWindowHeight);
 
 extension ThemeDataX on ThemeData {
   ThemeData customize() {

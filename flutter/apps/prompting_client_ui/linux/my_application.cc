@@ -89,9 +89,9 @@ static void my_application_activate(GApplication* application) {
   // Set window size based on interface type: home prompts need more height
   int window_height = 230;
   if (interface_name != NULL && strcmp(interface_name, "home") == 0) {
-    window_height = 670;
+    window_height = 690;
   }
-  gtk_window_set_default_size(window, 400, window_height);
+  gtk_window_set_default_size(window, 372, window_height);
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
