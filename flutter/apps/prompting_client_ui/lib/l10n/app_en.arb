@@ -229,7 +229,7 @@
     "@homePromptPermissionsExecute": {},
     "homePromptErrorUnknownTitle": "Something went wrong",
     "@homePromptErrorUnknownTitle": {},
-    "cameraPromptBody": "Allow {snapName} to access your camera?",
+    "cameraPromptBody": "Allow {snapName} to use your cameras?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -237,7 +237,7 @@
             }
         }
     },
-    "microphonePromptBody": "Allow {snapName} to access your microphone?",
+    "microphonePromptBody": "Allow {snapName} to use your microphones?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {

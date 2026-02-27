@@ -209,12 +209,12 @@ class AppLocalizationsBs extends AppLocalizations {
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to access your camera?';
+    return 'Allow $snapName to use your cameras?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to access your microphone?';
+    return 'Allow $snapName to use your microphones?';
   }
 
   @override

@@ -578,13 +578,13 @@ abstract class AppLocalizations {
   /// No description provided for @cameraPromptBody.
   ///
   /// In en, this message translates to:
-  /// **'Allow {snapName} to access your camera?'**
+  /// **'Allow {snapName} to use your cameras?'**
   String cameraPromptBody(String snapName);
 
   /// No description provided for @microphonePromptBody.
   ///
   /// In en, this message translates to:
-  /// **'Allow {snapName} to access your microphone?'**
+  /// **'Allow {snapName} to use your microphones?'**
   String microphonePromptBody(String snapName);
 
   /// No description provided for @homePromptTitleQuestion.
