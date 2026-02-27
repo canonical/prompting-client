@@ -6,6 +6,7 @@ import 'package:prompting_client_ui/pages/microphone/microphone_prompt_error.dar
 import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/snap_icon.dart';
+import 'package:prompting_client_ui/widgets/tile_constants.dart';
 import 'package:yaru/yaru.dart';
 
 class MicrophonePromptPage extends ConsumerWidget {
@@ -30,7 +31,7 @@ class MicrophonePromptPage extends ConsumerWidget {
         const MicrophoneHeader(),
         if (error != null) MicrophoneErrorBox(error),
         MicrophoneActionButtons(),
-      ].withSpacing(20),
+      ].withSpacing(kContentSpacing),
     );
   }
 }
@@ -67,6 +68,9 @@ class MicrophoneHeader extends ConsumerWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
       ),
     );
   }

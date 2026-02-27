@@ -109,7 +109,9 @@ class HomePromptPage extends ConsumerWidget {
                         .map((p) => p.localize(l10n).toLowerCase())
                         .join(', '),
                   ),
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
               const Header(),
@@ -129,7 +131,7 @@ class HomePromptPage extends ConsumerWidget {
               const _MetadataView(),
             ],
         },
-      ].withSpacing(20),
+      ].withSpacing(kContentSpacing),
     );
   }
 }
@@ -315,7 +317,7 @@ class _MetadataView extends ConsumerWidget {
               child: Text(l10n.homePromptMetaDataAppCenterButton),
             ),
           ),
-      ].withSpacing(12),
+      ].withSpacing(kContentSpacing),
     );
   }
 }
@@ -446,7 +448,7 @@ class _CustomPathEditor extends ConsumerWidget {
           onPressed: notifier.saveCustomPath,
           child: Text(l10n.homeCustomPathSaveButton),
         ),
-      ].withSpacing(12),
+      ].withSpacing(kContentSpacing),
     );
   }
 }
