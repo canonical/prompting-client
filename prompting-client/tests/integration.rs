@@ -61,10 +61,10 @@ fn spawn_for_output(cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
 
         let mut c = c.spawn().expect("Failed to spawn process");
 
-        let stdout_reader = c.stdout.take().map(|r| BufReader::new(r));
-        let stderr_reader = c.stderr.take().map(|r| BufReader::new(r));
+        let stdout_reader = c.stdout.take().map(BufReader::new);
+        let stderr_reader = c.stderr.take().map(BufReader::new);
 
-        match tokio::time::timeout(TIMEOUT * 2, c.wait()).await {
+        match tokio::time::timeout(TIMEOUT, c.wait()).await {
             Ok(Ok(_)) => {
                 let mut stdout = String::new();
                 if let Some(mut reader) = stdout_reader {
@@ -116,6 +116,45 @@ fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(S
     }
 
     Ok((prefix, path))
+}
+
+// Some prompts can remain pending testing errors, so we need to manually clean up after the test
+async fn cleanup_pending_prompts() -> Result<()> {
+    let c = SnapdSocketClient::new().await;
+
+    // Answering prompts can unlock other prompts (like create.sh), so we need multiple iterations to ensure
+    // all prompts are properly resolved.
+    for _ in 0..10 {
+        let pending = c.all_pending_prompt_details().await?;
+        for p in &pending {
+            let id = p.id();
+            let p = c.prompt_details(&id).await?;
+
+            let reply = match p {
+                TypedPrompt::Camera(_) => {
+                    CameraInterface::prompt_to_reply(p.try_into()?, Action::Deny).into()
+                }
+                TypedPrompt::Home(_) => {
+                    HomeInterface::prompt_to_reply(p.try_into()?, Action::Deny).into()
+                }
+                TypedPrompt::Microphone(_) => {
+                    MicrophoneInterface::prompt_to_reply(p.try_into()?, Action::Deny).into()
+                }
+            };
+
+            c.reply_to_prompt(id, reply).await?;
+        }
+
+        tokio::time::sleep(Duration::from_millis(10)).await;
+    }
+
+    let pending = c.all_pending_prompt_details().await?;
+    assert!(
+        pending.is_empty(),
+        "expected no pending prompts after clean up"
+    );
+
+    Ok(())
 }
 
 // We have this as a macro rather than a function so that we get the line numbers of the call site
@@ -468,6 +507,8 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
         Ok(_) => panic!("should have errored but got an OK response"),
     }
 
+    cleanup_pending_prompts().await?;
+
     Ok(())
 }
 
@@ -500,6 +541,8 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
         Err(e) => panic!("expected a snapd error, got: {e}"),
         Ok(_) => panic!("should have errored but got an OK response"),
     }
+
+    cleanup_pending_prompts().await?;
 
     Ok(())
 }
@@ -628,6 +671,8 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
         assert_eq!(res.expect("file should exist"), *s);
     }
 
+    cleanup_pending_prompts().await?;
+
     Ok(())
 }
 
@@ -661,6 +706,8 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
         Ok(()) => panic!("expected client to error but it ran to completion"),
     }
 
+    cleanup_pending_prompts().await?;
+
     Ok(())
 }
 
@@ -690,6 +737,8 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
         Ok(()) => panic!("expected client to error but it ran to completion"),
     }
 
+    cleanup_pending_prompts().await?;
+
     Ok(())
 }
 
@@ -712,10 +761,14 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
     match scripted_client.run(&mut c, Some(5)).await {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedPrompts { .. },
-        }) => Ok(()),
+        }) => (),
         Err(e) => panic!("unexpected error: {e}"),
         Ok(()) => panic!("expected client to error but it ran to completion"),
     }
+
+    cleanup_pending_prompts().await?;
+
+    Ok(())
 }
 
 #[tokio::test]
@@ -734,17 +787,13 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
         c.clone(),
     )?;
 
-    let res = scripted_client.run(&mut c, None).await;
-
-    // Sleep to create a gap between this test and the next so that the outstanding prompts do not
-    // get picked up as part of that test. Without this we are racey around what the first prompt
-    // seen by the next test case is.
-    sleep(Duration::from_millis(100)).await;
-
-    match res {
-        Ok(()) => Ok(()),
-        Err(e) => panic!("unexpected error: {e}"),
+    if let Err(e) = scripted_client.run(&mut c, None).await {
+        panic!("unexpected error: {e}")
     }
+
+    cleanup_pending_prompts().await?;
+
+    Ok(())
 }
 
 #[tokio::test]
@@ -767,9 +816,6 @@ async fn scripted_client_test_allow() -> Result<()> {
     let mut perms = file.metadata()?.permissions();
     perms.set_mode(perms.mode() | 0o111); // Set executable bit for all users (chmod +x)
     file.set_permissions(perms)?;
-
-    // wait
-    let _ = tokio::time::sleep(Duration::from_secs(10));
 
     let res = Command::new(script_path)
         .args([prefix])
