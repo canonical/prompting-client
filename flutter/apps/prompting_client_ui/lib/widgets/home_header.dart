@@ -77,7 +77,10 @@ class HomeHeader extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MarkdownText(markdownText),
-        if (metadataButton != null) metadataButton!,
+        if (metadataButton != null) ...[
+          const SizedBox(height: 8),
+          metadataButton!,
+        ],
       ],
     );
   }

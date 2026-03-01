@@ -52,9 +52,9 @@ class HomeStandardPage extends ConsumerWidget {
           metadataButton: model.hasMeta
               ? Row(
                   children: [
-                    IconButton(
-                      icon: const Icon(Icons.navigate_next),
-                      onPressed: () {
+                    _CompactIconButton(
+                      icon: Icons.navigate_next,
+                      onTap: () {
                         Navigator.push(
                           context,
                           ThemedPageRoute<void>(
@@ -113,6 +113,25 @@ class _ErrorBox extends ConsumerWidget {
       yaruInfoType: YaruInfoType.danger,
       title: Text(error.title(l10n)),
       child: Text(error.body(l10n)),
+    );
+  }
+}
+
+class _CompactIconButton extends StatelessWidget {
+  const _CompactIconButton({
+    required this.icon,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: onTap,
+      child: Icon(icon),
     );
   }
 }
