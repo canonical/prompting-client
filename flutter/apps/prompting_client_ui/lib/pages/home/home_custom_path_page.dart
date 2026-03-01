@@ -70,7 +70,7 @@ class HomeCustomPathPage extends ConsumerWidget {
                   ],
                 ),
               ),
-              ElevatedButton(
+              FilledButton(
                 onPressed: () {
                   notifier.saveCustomPath();
                   // Pop back to standard page (pop both custom path and more options pages)
