@@ -607,10 +607,8 @@ void main() {
     final expectedError = HomePromptErrorUnknown('error message');
 
     await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
+      (_) => const PromptPage(),
         container: container,
-        child: const PromptPage(),
-      ),
     );
 
     await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));
@@ -620,7 +618,7 @@ void main() {
     expect(find.text(expectedError.title(tester.l10n)), findsOneWidget);
 
     await tester.tap(
-      find.text(tester.l10n.homePromptMoreOptionsLabel),
+      find.text(tester.l10n.homePromptMoreOptionsTileLabel),
     );
     await tester.pumpAndSettle();
 
