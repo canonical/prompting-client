@@ -26,6 +26,7 @@ class HomePermissions extends ConsumerWidget {
         padding: EdgeInsets.zero,
         tooltip: '',
         position: PopupMenuPosition.under,
+        offset: Offset(1, 1),
         itemBuilder: (context) => [
           for (final option in model.details.availablePermissions)
             YaruMultiSelectPopupMenuItem<HomePermission>(
