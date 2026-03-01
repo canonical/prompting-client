@@ -473,6 +473,7 @@ mod tests {
                 updated_at: "3".to_string(),
                 store_url: "4".to_string(),
                 publisher: "5".to_string(),
+                publisher_verified: false,
                 snap_icon: Some(SnapIcon {
                     bytes: vec![1, 2, 3].into(),
                     mime_type: "8".into(),
@@ -489,6 +490,7 @@ mod tests {
                 updated_at: "3".to_string(),
                 store_url: "4".to_string(),
                 publisher: "5".to_string(),
+                publisher_verified: false,
                 snap_icon: Some(SnapIcon {
                     bytes: vec![1, 2, 3].into(),
                     mime_type: "8".into(),
@@ -517,6 +519,7 @@ mod tests {
                 updated_at: "3".to_string(),
                 snap_icon: vec![1, 2, 3],
                 snap_icon_mime_type: "8".to_string(),
+                publisher_verified: false,
             }),
             requested_path: "6".to_string(),
             home_dir: "7".to_string(),

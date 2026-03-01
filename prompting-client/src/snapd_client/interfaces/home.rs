@@ -607,7 +607,7 @@ impl<'a> CategorisedPath<'a> {
         } else {
             PatternType::RequestedFile
         };
-        let show_initially = !matches!(self.kind, PathKind::HomeDir);
+        let show_initially = !matches!(self.kind, PathKind::HomeDir | PathKind::HomeDirFile);
 
         TypedPathPattern::new(pattern_type, self.raw_path, show_initially)
     }
