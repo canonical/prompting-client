@@ -53,7 +53,7 @@ class HomeStandardPage extends ConsumerWidget {
               ? Row(
                   children: [
                     _CompactIconButton(
-                      icon: Icons.navigate_next,
+                      icon: YaruIcons.go_next,
                       onTap: () {
                         Navigator.push(
                           context,
@@ -78,7 +78,7 @@ class HomeStandardPage extends ConsumerWidget {
             ),
             trailingTile: PromptingListTile(
               title: l10n.homePromptMoreOptionsTileLabel,
-              trailing: const Icon(Icons.navigate_next),
+              trailing: const Icon(YaruIcons.go_next, size: 24),
               onTap: () {
                 Navigator.push(
                   context,
@@ -131,7 +131,7 @@ class _CompactIconButton extends StatelessWidget {
     return InkWell(
       customBorder: const CircleBorder(),
       onTap: onTap,
-      child: Icon(icon),
+      child: Icon(icon, size: 16),
     );
   }
 }

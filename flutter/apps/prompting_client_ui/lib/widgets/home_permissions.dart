@@ -63,7 +63,7 @@ class HomePermissions extends ConsumerWidget {
                               fontWeight: FontWeight.normal,
                             ),
                       ),
-                    const Icon(Icons.expand_more),
+                    const Icon(YaruIcons.go_down, size: 24),
                   ],
                 ),
               ],
