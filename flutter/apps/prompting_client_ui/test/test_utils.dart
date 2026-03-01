@@ -52,9 +52,9 @@ extension WidgetTesterSplitButton on WidgetTester {
       of: button,
       matching: find.byIcon(YaruIcons.pan_down),
     );
-    await tap(dropdown);
+    await tap(dropdown, warnIfMissed: false);
     await pumpAndSettle();
-    await tap(find.text(menuItemText));
+    await tap(find.text(menuItemText), warnIfMissed: false);
     await pumpAndSettle();
   }
 }

@@ -6,6 +6,7 @@ import 'package:prompting_client_ui/fake_prompting_client.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
 import 'package:prompting_client_ui/main.dart' as app;
 import 'package:ubuntu_service/ubuntu_service.dart';
+import 'package:yaru/yaru.dart';
 import 'package:yaru_test/yaru_test.dart';
 
 import '../test/test_utils.dart';
@@ -34,45 +35,62 @@ void main() {
           ),
         );
 
-    // Expand metadata section
-    await tester.tap(find.text(tester.l10n.homePromptMetaDataTitle));
+    // Navigate to metadata page
+    await tester.tap(find.byIcon(YaruIcons.go_next).first);
     await tester.pumpAndSettle();
     expect(
-      find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
+      find.text(
+        tester.l10n.homePromptMetaDataPublishedBy('Mozilla'),
+        findRichText: true,
+      ),
       findsOneWidget,
     );
 
-    // Show more options
-    await tester
-        .ensureVisibleAndTap(find.text(tester.l10n.homePromptMoreOptionsLabel));
+    // Navigate back to standard page
+    await tester.tap(find.byIcon(Icons.navigate_before));
     await tester.pumpAndSettle();
 
-    // Select 'custom prompt' to reveal text field
+    // Navigate to more options page
     await tester.ensureVisibleAndTap(
-      find.text(
-        PatternOption(
-          homePatternType: HomePatternType.customPath,
-          pathPattern: '',
-        ).localize(tester.l10n),
-      ),
+      find.text(tester.l10n.homePromptMoreOptionsTileLabel),
+    );
+    await tester.pumpAndSettle();
+
+    // Tap 'Custom path pattern' to navigate to custom path editor
+    await tester.ensureVisibleAndTap(
+      find.text(tester.l10n.homePatternTypeCustomPath).last,
     );
     await tester.pumpAndSettle();
 
     // Enter custom path
-    await tester.enterText(find.byType(TextField), '/home/ubuntu/**/');
+    await tester.enterText(find.byType(TextFormField), '/home/ubuntu/**/');
 
-    // Select lifespan
-    await tester
-        .ensureVisibleAndTap(find.text(Lifespan.forever.localize(tester.l10n)));
-
-    // Select 'execute' permission
+    // Save custom path
     await tester.ensureVisibleAndTap(
-      find.text(HomePermission.execute.localize(tester.l10n)),
+      find.text(tester.l10n.homeCustomPathSaveButton),
     );
+    await tester.pumpAndSettle();
 
-    // Deny the request
-    await tester
-        .ensureVisibleAndTap(find.text(Action.deny.localize(tester.l10n)));
+    // Toggle 'execute' permission via popup menu
+    await tester.ensureVisibleAndTap(
+      find.text(tester.l10n.homePromptPermissionsTitle),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.text(HomePermission.execute.localize(tester.l10n)),
+      warnIfMissed: false,
+    );
+    await tester.pumpAndSettle();
+
+    // Dismiss permissions popup
+    await tester.tapAt(Offset.zero);
+    await tester.pumpAndSettle();
+
+    // Deny always via split button menu
+    await tester.tapSplitButtonMenuItem(
+      tester.l10n.promptActionOptionDenyOnce,
+      tester.l10n.promptActionOptionDenyAlways,
+    );
     await tester.pumpAndSettle();
   });
 }
