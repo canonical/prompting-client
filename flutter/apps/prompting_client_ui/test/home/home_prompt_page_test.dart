@@ -1,11 +1,16 @@
+import 'package:flutter/material.dart' hide Action, MetaData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
+import 'package:prompting_client_ui/pages/home/home_metadata_page.dart';
+import 'package:prompting_client_ui/pages/home/home_more_options_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
+import 'package:prompting_client_ui/pages/home/home_standard_page.dart';
 import 'package:prompting_client_ui/pages/prompt_page.dart';
+import 'package:yaru/yaru.dart';
 import 'package:yaru_test/yaru_test.dart';
 
 import '../test_utils.dart';
@@ -258,10 +263,8 @@ void main() {
           ),
         );
         await tester.pumpApp(
-          (_) => UncontrolledProviderScope(
+          (_) => const PromptPage(),
             container: container,
-            child: const PromptPage(),
-          ),
         );
 
         switch (testCase.enrichedPathKind) {
@@ -346,23 +349,20 @@ void main() {
             );
             break;
         }
+        final selectedOption = testCase.options.toList()[0];
+        // Selected options will be shown, so find them as well even if showInitially is false.   
 
-        expect(
-          find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
-          findsOneWidget,
-        );
-
-        for (final option in testCase.options.where((o) => o.showInitially)) {
+        for (final option in testCase.options.where((o) => o.showInitially || o == selectedOption)) {
           expect(find.text(option.localize(tester.l10n)), findsOneWidget);
-          expect(find.text(option.pathPattern), findsOneWidget);
         }
-        for (final option in testCase.options.where((o) => !o.showInitially)) {
+        for (final option in testCase.options.where(
+          (o) => !o.showInitially && o != selectedOption,
+        )) {
           expect(find.text(option.localize(tester.l10n)), findsNothing);
-          expect(find.text(option.pathPattern), findsNothing);
         }
 
         await tester.tap(
-          find.text(tester.l10n.homePromptMoreOptionsLabel),
+          find.text(tester.l10n.homePromptMoreOptionsTileLabel),
         );
         await tester.pumpAndSettle();
 
