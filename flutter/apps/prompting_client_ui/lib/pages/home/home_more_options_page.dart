@@ -65,7 +65,10 @@ class HomeMoreOptionsPage extends ConsumerWidget {
                             HomePatternType.customPath
                         ? Text(
                             model.customPath,
-                            style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
                                   color: Theme.of(context).hintColor,
                                 ),
                           )

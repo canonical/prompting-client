@@ -40,7 +40,8 @@ class HomePermissions extends ConsumerWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: kTileMinHeight),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
+            padding:
+                const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

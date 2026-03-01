@@ -61,7 +61,8 @@ class PromptingListTile extends StatelessWidget {
         child: InkWell(
           onTap: enabled ? onTap : null,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
+            padding:
+                const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
             child: Center(
               child: Row(
                 children: [

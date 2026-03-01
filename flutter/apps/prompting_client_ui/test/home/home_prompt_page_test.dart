@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart' hide Action, MetaData;
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
@@ -350,9 +349,10 @@ void main() {
             break;
         }
         final selectedOption = testCase.options.toList()[0];
-        // Selected options will be shown, so find them as well even if showInitially is false.   
+        // Selected options will be shown, so find them as well even if showInitially is false.
 
-        for (final option in testCase.options.where((o) => o.showInitially || o == selectedOption)) {
+        for (final option in testCase.options
+            .where((o) => o.showInitially || o == selectedOption)) {
           expect(find.text(option.localize(tester.l10n)), findsOneWidget);
         }
         for (final option in testCase.options.where(
@@ -841,7 +841,7 @@ void main() {
     );
     await tester.tap(menuItem, warnIfMissed: false);
     await tester.pumpAndSettle();
-    
+
     await tester.tapAt(Offset.zero);
     await tester.pumpAndSettle();
 

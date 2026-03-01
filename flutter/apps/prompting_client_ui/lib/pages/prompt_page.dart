@@ -48,8 +48,10 @@ class PromptPage extends ConsumerWidget {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (context.size != null && allowDynamicResize) {
                     final constrainedSize = Size(
-                      context.size!.width.clamp(homePromptWindowSize.width, double.infinity),
-                      context.size!.height.clamp(homePromptWindowSize.height, double.infinity),
+                      context.size!.width
+                          .clamp(homePromptWindowSize.width, double.infinity),
+                      context.size!.height
+                          .clamp(homePromptWindowSize.height, double.infinity),
                     );
                     _ensureWindowSize(constrainedSize);
                   }

@@ -7,7 +7,8 @@ import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
 import 'package:prompting_client_ui/widgets/tile_constants.dart';
 
-const _verifiedAccountUrl = 'https://forum.snapcraft.io/t/verified-accounts/34002';
+const _verifiedAccountUrl =
+    'https://forum.snapcraft.io/t/verified-accounts/34002';
 
 class HomeMetadataPage extends ConsumerWidget {
   const HomeMetadataPage({super.key});
@@ -91,7 +92,8 @@ class HomeMetadataPage extends ConsumerWidget {
                       // TODO: Open URL in browser
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                       foregroundColor: Theme.of(context).colorScheme.onSurface,
                       elevation: 0,
                     ),

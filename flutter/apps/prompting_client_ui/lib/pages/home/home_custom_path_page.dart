@@ -53,7 +53,9 @@ class HomeCustomPathPage extends ConsumerWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: kTileHorizontalPadding),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: kTileHorizontalPadding,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -62,11 +64,26 @@ class HomeCustomPathPage extends ConsumerWidget {
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 12),
-                    _WildcardRow('*', l10n.homeCustomPathWildcardStarDescription),
-                    _WildcardRow('?', l10n.homeCustomPathWildcardQuestionDescription),
-                    _WildcardRow('/**', l10n.homeCustomPathWildcardDoubleStarDescription),
-                    _WildcardRow('{x,y}', l10n.homeCustomPathWildcardCurlyDescription),
-                    _WildcardRow(r'\', l10n.homeCustomPathWildcardBackslashDescription),
+                    _WildcardRow(
+                      '*',
+                      l10n.homeCustomPathWildcardStarDescription,
+                    ),
+                    _WildcardRow(
+                      '?',
+                      l10n.homeCustomPathWildcardQuestionDescription,
+                    ),
+                    _WildcardRow(
+                      '/**',
+                      l10n.homeCustomPathWildcardDoubleStarDescription,
+                    ),
+                    _WildcardRow(
+                      '{x,y}',
+                      l10n.homeCustomPathWildcardCurlyDescription,
+                    ),
+                    _WildcardRow(
+                      r'\',
+                      l10n.homeCustomPathWildcardBackslashDescription,
+                    ),
                   ],
                 ),
               ),
