@@ -41,12 +41,21 @@ class HomePromptData with _$HomePromptData {
       (details.metaData.storeUrl?.isNotEmpty ?? false) &&
       details.metaData.updatedAt != null;
 
-  Iterable<PatternOption> get visiblePatternOptions => [
-        ...details.patternOptions.where((option) => option.showInitially),
-        if (customPath.isNotEmpty &&
-            patternOption.homePatternType == HomePatternType.customPath)
-          HomePromptData.empty,
-      ];
+  Iterable<PatternOption> get visiblePatternOptions {
+    final initiallyVisible =
+        details.patternOptions.where((option) => option.showInitially).toSet();
+    return [
+      ...initiallyVisible,
+      // Include selected option if it's not already visible and not custom path
+      if (patternOption.homePatternType != HomePatternType.customPath &&
+          !initiallyVisible.contains(patternOption))
+        patternOption,
+      // Include custom path placeholder if custom path is selected
+      if (customPath.isNotEmpty &&
+          patternOption.homePatternType == HomePatternType.customPath)
+        HomePromptData.empty,
+    ];
+  }
 
   Iterable<PatternOption> get allPatternOptions => details.patternOptions;
 }

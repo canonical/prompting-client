@@ -13,12 +13,14 @@ class HomePatternOptions extends ConsumerWidget {
     this.showSubtitles = false,
     this.trailingTile,
     this.options,
+    this.onChanged,
   });
 
   final String title;
   final bool showSubtitles;
   final Widget? trailingTile;
   final Iterable<PatternOption>? options;
+  final void Function(PatternOption?)? onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +52,7 @@ class HomePatternOptions extends ConsumerWidget {
         return null;
       },
       groupValue: model.patternOption,
-      onChanged: notifier.setPatternOption,
+      onChanged: onChanged ?? notifier.setPatternOption,
       trailingTile: trailingTile,
     );
   }

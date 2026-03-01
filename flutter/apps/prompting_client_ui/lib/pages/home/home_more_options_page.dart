@@ -5,10 +5,8 @@ import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/home/home_custom_path_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
-import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/home_header.dart';
 import 'package:prompting_client_ui/widgets/home_pattern_options.dart';
-import 'package:prompting_client_ui/widgets/home_permissions.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
 import 'package:prompting_client_ui/widgets/themed_page_route.dart';
@@ -57,6 +55,10 @@ class HomeMoreOptionsPage extends ConsumerWidget {
                     model.details.metaData.snapName,
                   ),
                   showSubtitles: true,
+                  onChanged: (option) {
+                    notifier.setPatternOption(option);
+                    Navigator.pop(context);
+                  },
                   trailingTile: PromptingListTile(
                     title: l10n.homePatternTypeCustomPath,
                     subtitle: model.patternOption.homePatternType ==
@@ -94,12 +96,6 @@ class HomeMoreOptionsPage extends ConsumerWidget {
                   ),
                 ),
               if (model.error != null) _ErrorBox(model.error!),
-              const HomePermissions(),
-              DeviceActionButtons(
-                onAction: ({required action, required lifespan}) => ref
-                    .read(homePromptDataModelProvider.notifier)
-                    .saveAndContinue(action: action, lifespan: lifespan),
-              ),
             ].withSpacing(kContentSpacing),
           ),
         ),
