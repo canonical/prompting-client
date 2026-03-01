@@ -392,10 +392,8 @@ void main() {
       promptDetails: testDetailsWithoutMeta,
     );
     await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
+      (_) => const PromptPage(),
         container: container,
-        child: const PromptPage(),
-      ),
     );
 
     expect(
@@ -416,7 +414,16 @@ void main() {
     );
 
     expect(
-      find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
+      find.text(tester.l10n.homePromptMetaDataTitle),
+      findsNothing,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Icon &&
+            widget.icon == YaruIcons.go_next &&
+            widget.size == 16,
+      ),
       findsNothing,
     );
   });
