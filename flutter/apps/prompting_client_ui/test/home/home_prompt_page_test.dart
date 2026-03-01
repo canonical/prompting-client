@@ -451,14 +451,12 @@ void main() {
           replyResponse: testCase.replyResponse,
         );
         await tester.pumpApp(
-          (_) => UncontrolledProviderScope(
+          (_) => const PromptPage(),
             container: container,
-            child: const PromptPage(),
-          ),
         );
 
         await tester.tap(
-          find.text(tester.l10n.homePromptMoreOptionsLabel),
+          find.text(tester.l10n.homePromptMoreOptionsTileLabel),
         );
         await tester.pumpAndSettle();
 
@@ -467,10 +465,16 @@ void main() {
             tester.l10n.homePatternTypeCustomPath,
           ),
         );
+        await tester.pumpAndSettle();
+
+        await tester.tap(
+          find.text(tester.l10n.homeCustomPathSaveButton),
+        );
+        await tester.pumpAndSettle();
 
         final windowClosed = YaruTestWindow.waitForClosed();
 
-        await tester.tap(find.text(tester.l10n.promptActionOptionDeny));
+        await tester.tap(find.text(tester.l10n.promptActionOptionDenyOnce));
         await tester.pumpAndSettle();
 
         verify(
@@ -478,7 +482,7 @@ void main() {
             PromptReply.home(
               promptId: 'promptId',
               action: Action.deny,
-              lifespan: Lifespan.forever,
+              lifespan: Lifespan.single,
               pathPattern: '/home/ubuntu/Downloads/file.txt',
               permissions: {HomePermission.read},
             ),
