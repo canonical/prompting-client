@@ -4,7 +4,7 @@ import 'package:measure_size_builder/measure_size_builder.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/app/prompt_model.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
-import 'package:prompting_client_ui/pages/home/home_prompt_page.dart';
+import 'package:prompting_client_ui/pages/home/home_standard_page.dart';
 import 'package:prompting_client_ui/pages/microphone/microphone_prompt_page.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
@@ -60,7 +60,7 @@ class PromptPage extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: switch (prompt) {
-                        PromptDetailsHome() => const HomePromptPage(),
+                        PromptDetailsHome() => const HomeStandardPage(),
                         PromptDetailsCamera() => const CameraPromptPage(),
                         PromptDetailsMicrophone() =>
                           const MicrophonePromptPage(),
