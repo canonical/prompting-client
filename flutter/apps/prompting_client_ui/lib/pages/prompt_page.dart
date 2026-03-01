@@ -60,7 +60,7 @@ class PromptPage extends ConsumerWidget {
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minWidth: minWidth),
                     child: Padding(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.all(kPagePadding),
                       child: switch (prompt) {
                         PromptDetailsHome() => const HomeStandardPage(),
                         PromptDetailsCamera() => const CameraPromptPage(),

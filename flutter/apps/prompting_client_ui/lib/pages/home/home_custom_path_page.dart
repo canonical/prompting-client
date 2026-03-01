@@ -2,8 +2,8 @@ import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
 
 class HomeCustomPathPage extends ConsumerWidget {
   const HomeCustomPathPage({super.key});
@@ -19,7 +19,7 @@ class HomeCustomPathPage extends ConsumerWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(kPagePadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -40,7 +40,7 @@ class HomeCustomPathPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  const SizedBox(width: kBackButtonSpacerWidth),
                 ],
               ),
               TextFormField(
@@ -120,10 +120,7 @@ class _WildcardRow extends StatelessWidget {
             width: 52,
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    fontFamily: 'monospace',
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
           Expanded(

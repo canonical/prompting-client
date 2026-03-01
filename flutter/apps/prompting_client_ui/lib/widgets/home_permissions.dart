@@ -4,7 +4,7 @@ import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:yaru/yaru.dart';
 
 class HomePermissions extends ConsumerWidget {
@@ -64,7 +64,7 @@ class HomePermissions extends ConsumerWidget {
                               fontWeight: FontWeight.normal,
                             ),
                       ),
-                    const Icon(YaruIcons.go_down, size: 24),
+                    const Icon(YaruIcons.go_down, size: kTrailingIconSize),
                   ],
                 ),
               ],

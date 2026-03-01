@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
+import 'package:prompting_client_ui/theme.dart';
 
 /// A standardized list tile widget used throughout the Security Center.
 ///

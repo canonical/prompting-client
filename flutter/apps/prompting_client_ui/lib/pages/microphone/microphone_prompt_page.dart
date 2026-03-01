@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/microphone/microphone_prompt_data_model.dart';
 import 'package:prompting_client_ui/pages/microphone/microphone_prompt_error.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/snap_icon.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
 import 'package:yaru/yaru.dart';
 
 class MicrophonePromptPage extends ConsumerWidget {
@@ -26,7 +26,7 @@ class MicrophonePromptPage extends ConsumerWidget {
       children: [
         if (snapIcon != null)
           Center(
-            child: SnapIcon(snapIcon: snapIcon, dimension: 80),
+            child: SnapIcon(snapIcon: snapIcon, dimension: kSnapIconDimension),
           ),
         const MicrophoneHeader(),
         if (error != null) MicrophoneErrorBox(error),

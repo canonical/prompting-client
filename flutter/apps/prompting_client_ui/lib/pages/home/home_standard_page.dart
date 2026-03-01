@@ -6,6 +6,7 @@ import 'package:prompting_client_ui/pages/home/home_metadata_page.dart';
 import 'package:prompting_client_ui/pages/home/home_more_options_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/home_header.dart';
 import 'package:prompting_client_ui/widgets/home_pattern_options.dart';
@@ -14,7 +15,6 @@ import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
 import 'package:prompting_client_ui/widgets/snap_icon.dart';
 import 'package:prompting_client_ui/widgets/themed_page_route.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
 import 'package:yaru/yaru.dart';
 
 class HomeStandardPage extends ConsumerWidget {
@@ -32,7 +32,7 @@ class HomeStandardPage extends ConsumerWidget {
           Center(
             child: SnapIcon(
               snapIcon: model.details.metaData.snapIcon!,
-              dimension: 80,
+              dimension: kSnapIconDimension,
             ),
           ),
         Center(
@@ -78,7 +78,7 @@ class HomeStandardPage extends ConsumerWidget {
             ),
             trailingTile: PromptingListTile(
               title: l10n.homePromptMoreOptionsTileLabel,
-              trailing: const Icon(YaruIcons.go_next, size: 24),
+              trailing: const Icon(YaruIcons.go_next, size: kTrailingIconSize),
               onTap: () {
                 Navigator.push(
                   context,

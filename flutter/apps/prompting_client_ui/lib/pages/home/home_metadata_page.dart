@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
 
 const _verifiedAccountUrl =
     'https://forum.snapcraft.io/t/verified-accounts/34002';
@@ -33,7 +33,7 @@ class HomeMetadataPage extends ConsumerWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(kPagePadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -51,7 +51,7 @@ class HomeMetadataPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  const SizedBox(width: kBackButtonSpacerWidth),
                 ],
               ),
               if (metaData.publisher != null)

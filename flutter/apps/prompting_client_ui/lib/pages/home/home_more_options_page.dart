@@ -5,12 +5,12 @@ import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/home/home_custom_path_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/home_header.dart';
 import 'package:prompting_client_ui/widgets/home_pattern_options.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
 import 'package:prompting_client_ui/widgets/themed_page_route.dart';
-import 'package:prompting_client_ui/widgets/tile_constants.dart';
 import 'package:yaru/yaru.dart';
 
 class HomeMoreOptionsPage extends ConsumerWidget {
@@ -26,7 +26,7 @@ class HomeMoreOptionsPage extends ConsumerWidget {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(kPagePadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -44,7 +44,7 @@ class HomeMoreOptionsPage extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  const SizedBox(width: kBackButtonSpacerWidth),
                 ],
               ),
               const HomeHeader(),
