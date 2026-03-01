@@ -43,26 +43,28 @@ class HomePermissions extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                Text(
+                  l10n.homePromptPermissionsTitle,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        letterSpacing: kTileTitleLetterSpacing,
+                        fontWeight: FontWeight.normal,
+                      ),
+                ),
+                Row(
                   mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  spacing: 8,
                   children: [
-                    Text(
-                      l10n.homePromptPermissionsTitle,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            letterSpacing: kTileTitleLetterSpacing,
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
                     if (selectedSummary != null)
                       Text(
                         selectedSummary,
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              letterSpacing: kTileTitleLetterSpacing,
+                              fontWeight: FontWeight.normal,
+                            ),
                       ),
+                    const Icon(Icons.expand_more),
                   ],
                 ),
-                const Icon(Icons.expand_more),
               ],
             ),
           ),
