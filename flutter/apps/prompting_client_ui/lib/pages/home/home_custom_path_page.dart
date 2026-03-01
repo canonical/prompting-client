@@ -59,7 +59,7 @@ class HomeCustomPathPage extends ConsumerWidget {
                   children: [
                     Text(
                       l10n.homeCustomPathMustStartWithSlash,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 12),
                     _WildcardRow('*', l10n.homeCustomPathWildcardStarDescription),
@@ -112,7 +112,7 @@ class _WildcardRow extends StatelessWidget {
           Expanded(
             child: Text(
               description,
-              style: Theme.of(context).textTheme.bodySmall,
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ],
