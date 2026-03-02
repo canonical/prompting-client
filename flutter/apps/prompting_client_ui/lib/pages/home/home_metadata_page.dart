@@ -6,6 +6,7 @@ import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
+import 'package:yaru/yaru.dart';
 
 const _verifiedAccountUrl =
     'https://forum.snapcraft.io/t/verified-accounts/34002';
@@ -32,15 +33,15 @@ class HomeMetadataPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(kPagePadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.navigate_before),
+                    icon: const Icon(YaruIcons.go_previous),
                     onPressed: () => Navigator.pop(context),
                   ),
                   Expanded(
@@ -54,48 +55,56 @@ class HomeMetadataPage extends ConsumerWidget {
                   const SizedBox(width: kBackButtonSpacerWidth),
                 ],
               ),
-              if (metaData.publisher != null)
-                Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 4,
-                  children: [
+            ),
+            Padding(
+              padding: const EdgeInsets.all(kPagePadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (metaData.publisher != null)
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 4,
+                      children: [
+                        MarkdownText(
+                          l10n.homePromptMetaDataPublishedBy(
+                            metaData.publisher!.link(''),
+                          ),
+                        ),
+                        if (metaData.publisherVerified)
+                          Icon(
+                            Icons.verified,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                      ],
+                    ),
+                  if (metaData.publisherVerified)
                     MarkdownText(
-                      l10n.homePromptMetaDataPublishedBy(
-                        metaData.publisher!.link(''),
+                      '${l10n.homePromptMetaDataVerifiedAccountPrefix}'
+                      '[${l10n.homePromptMetaDataVerifiedAccountLink}]'
+                      '($_verifiedAccountUrl)'
+                      '${l10n.homePromptMetaDataVerifiedAccountSuffix}',
+                    ),
+                  if (updatedAt != null)
+                    Text(
+                      'App last updated on $updatedAt.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  if (metaData.storeUrl != null)
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () {
+                          // TODO: Open URL in browser
+                        },
+                        child: Text(l10n.homePromptMetaDataAppCenterButton),
                       ),
                     ),
-                    if (metaData.publisherVerified)
-                      Icon(
-                        Icons.verified,
-                        size: 16,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                  ],
-                ),
-              if (metaData.publisherVerified)
-                MarkdownText(
-                  '${l10n.homePromptMetaDataVerifiedAccountPrefix}'
-                  '[${l10n.homePromptMetaDataVerifiedAccountLink}]'
-                  '($_verifiedAccountUrl)'
-                  '${l10n.homePromptMetaDataVerifiedAccountSuffix}',
-                ),
-              if (updatedAt != null)
-                Text(
-                  'App last updated on $updatedAt.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              if (metaData.storeUrl != null)
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: () {
-                      // TODO: Open URL in browser
-                    },
-                    child: Text(l10n.homePromptMetaDataAppCenterButton),
-                  ),
-                ),
-            ].withSpacing(kContentSpacing),
-          ),
+                ].withSpacing(kContentSpacing),
+              ),
+            ),
+          ],
         ),
       ),
     );

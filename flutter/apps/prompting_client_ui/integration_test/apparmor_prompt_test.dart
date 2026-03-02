@@ -47,7 +47,7 @@ void main() {
     );
 
     // Navigate back to standard page
-    await tester.tap(find.byIcon(Icons.navigate_before));
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
     await tester.pumpAndSettle();
 
     // Navigate to more options page

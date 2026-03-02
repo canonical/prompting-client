@@ -662,7 +662,7 @@ void main() {
       findsOneWidget,
     );
 
-    await tester.tap(find.byIcon(Icons.navigate_before));
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
     await tester.pumpAndSettle();
 
     expect(find.byType(HomeStandardPage), findsOneWidget);
@@ -809,11 +809,11 @@ void main() {
     await tester.pumpAndSettle();
 
     // Cancel by tapping back button
-    await tester.tap(find.byIcon(Icons.navigate_before));
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
     await tester.pumpAndSettle();
     expect(find.byType(HomeMoreOptionsPage), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.navigate_before));
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
     await tester.pumpAndSettle();
     expect(find.byType(HomeStandardPage), findsOneWidget);
   });

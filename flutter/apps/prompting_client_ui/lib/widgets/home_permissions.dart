@@ -16,10 +16,13 @@ class HomePermissions extends ConsumerWidget {
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    final selectedSummary = switch (model.permissions.length) {
+    final sortedPermissions = model.permissions.toList()
+      ..sort((a, b) => a.index.compareTo(b.index));
+
+    final selectedSummary = switch (sortedPermissions.length) {
       0 => null,
-      1 => model.permissions.first.localizeOnly(l10n),
-      _ => model.permissions.map((p) => p.localize(l10n)).join(', '),
+      1 => sortedPermissions.first.localizeOnly(l10n),
+      _ => sortedPermissions.map((p) => p.localize(l10n)).join(', '),
     };
 
     return YaruBorderContainer(
@@ -29,16 +32,20 @@ class HomePermissions extends ConsumerWidget {
         tooltip: '',
         position: PopupMenuPosition.under,
         offset: Offset(1, 1),
-        itemBuilder: (context) => [
-          for (final option in model.details.availablePermissions)
-            YaruMultiSelectPopupMenuItem<HomePermission>(
-              value: option,
-              checked: model.permissions.contains(option),
-              enabled: !model.details.requestedPermissions.contains(option),
-              onChanged: (_) => notifier.togglePermission(option),
-              child: Text(option.localize(l10n)),
-            ),
-        ],
+        itemBuilder: (context) {
+          final sortedAvailable = model.details.availablePermissions.toList()
+            ..sort((a, b) => a.index.compareTo(b.index));
+          return [
+            for (final option in sortedAvailable)
+              YaruMultiSelectPopupMenuItem<HomePermission>(
+                value: option,
+                checked: model.permissions.contains(option),
+                enabled: !model.details.requestedPermissions.contains(option),
+                onChanged: (_) => notifier.togglePermission(option),
+                child: Text(option.localize(l10n)),
+              ),
+          ];
+        },
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: kTileMinHeight),
           child: Padding(
@@ -66,7 +73,7 @@ class HomePermissions extends ConsumerWidget {
                               fontWeight: FontWeight.normal,
                             ),
                       ),
-                    const Icon(YaruIcons.go_down, size: kTrailingIconSize),
+                    const Icon(YaruIcons.pan_down, size: kTrailingIconSize),
                   ],
                 ),
               ],

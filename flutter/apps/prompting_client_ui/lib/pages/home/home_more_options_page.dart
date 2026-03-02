@@ -25,15 +25,15 @@ class HomeMoreOptionsPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(kPagePadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.navigate_before),
+                    icon: const Icon(YaruIcons.go_previous),
                     onPressed: () => Navigator.pop(context),
                   ),
                   Expanded(
@@ -47,60 +47,69 @@ class HomeMoreOptionsPage extends ConsumerWidget {
                   const SizedBox(width: kBackButtonSpacerWidth),
                 ],
               ),
-              const HomeHeader(),
-              if (model.allPatternOptions.isNotEmpty)
-                HomePatternOptions(
-                  options: model.allPatternOptions,
-                  title: l10n.promptAccessMoreOptionsTitle(
-                    model.details.metaData.snapName,
-                  ),
-                  showSubtitles: true,
-                  onChanged: (option) {
-                    notifier.setPatternOption(option);
-                    Navigator.pop(context);
-                  },
-                  trailingTile: PromptingListTile(
-                    title: l10n.homePatternTypeCustomPath,
-                    subtitle: model.patternOption.homePatternType ==
-                            HomePatternType.customPath
-                        ? Text(
-                            model.customPath,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelSmall!
-                                .copyWith(
-                                  color: Theme.of(context).hintColor,
-                                ),
-                          )
-                        : null,
-                    leading: YaruRadio<PatternOption>(
-                      value: HomePromptData.empty,
-                      groupValue: model.patternOption,
-                      onChanged: (_) {
-                        notifier.enterCustomPathEditor();
-                        Navigator.push(
-                          context,
-                          ThemedPageRoute<void>(
-                            builder: (context) => const HomeCustomPathPage(),
-                          ),
-                        );
+            ),
+            Padding(
+              padding: const EdgeInsets.all(kPagePadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const HomeHeader(),
+                  if (model.allPatternOptions.isNotEmpty)
+                    HomePatternOptions(
+                      options: model.allPatternOptions,
+                      title: l10n.promptAccessMoreOptionsTitle(
+                        model.details.metaData.snapName,
+                      ),
+                      showSubtitles: true,
+                      onChanged: (option) {
+                        notifier.setPatternOption(option);
+                        Navigator.pop(context);
                       },
-                    ),
-                    trailing: const Icon(Icons.edit_outlined),
-                    onTap: () {
-                      notifier.enterCustomPathEditor();
-                      Navigator.push(
-                        context,
-                        ThemedPageRoute<void>(
-                          builder: (context) => const HomeCustomPathPage(),
+                      trailingTile: PromptingListTile(
+                        title: l10n.homePatternTypeCustomPath,
+                        subtitle: model.patternOption.homePatternType ==
+                                HomePatternType.customPath
+                            ? Text(
+                                model.customPath,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall!
+                                    .copyWith(
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                              )
+                            : null,
+                        leading: YaruRadio<PatternOption>(
+                          value: HomePromptData.empty,
+                          groupValue: model.patternOption,
+                          onChanged: (_) {
+                            notifier.enterCustomPathEditor();
+                            Navigator.push(
+                              context,
+                              ThemedPageRoute<void>(
+                                builder: (context) =>
+                                    const HomeCustomPathPage(),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                ),
-              if (model.error != null) _ErrorBox(model.error!),
-            ].withSpacing(kContentSpacing),
-          ),
+                        trailing: const Icon(Icons.edit_outlined),
+                        onTap: () {
+                          notifier.enterCustomPathEditor();
+                          Navigator.push(
+                            context,
+                            ThemedPageRoute<void>(
+                              builder: (context) => const HomeCustomPathPage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  if (model.error != null) _ErrorBox(model.error!),
+                ].withSpacing(kContentSpacing),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
+import 'package:yaru/yaru.dart';
 
 class HomeCustomPathPage extends ConsumerWidget {
   const HomeCustomPathPage({super.key});
@@ -18,15 +19,15 @@ class HomeCustomPathPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(kPagePadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.navigate_before),
+                    icon: const Icon(YaruIcons.go_previous),
                     onPressed: () {
                       notifier.cancelCustomPathEditor();
                       Navigator.pop(context);
@@ -43,60 +44,63 @@ class HomeCustomPathPage extends ConsumerWidget {
                   const SizedBox(width: kBackButtonSpacerWidth),
                 ],
               ),
-              TextFormField(
-                style: Theme.of(context).textTheme.bodyMedium,
-                initialValue: initialCustomPath,
-                onChanged: notifier.setCustomPath,
-                decoration: InputDecoration(
-                  labelText: l10n.homePatternTypeCustomPath,
-                  suffixIcon: const Icon(Icons.edit_outlined),
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(kPagePadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TextFormField(
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    initialValue: initialCustomPath,
+                    onChanged: notifier.setCustomPath,
+                    decoration: InputDecoration(
+                      labelText: l10n.homePatternTypeCustomPath,
+                      suffixIcon: const Icon(Icons.edit_outlined),
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.homeCustomPathMustStartWithSlash,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 12),
+                      _WildcardRow(
+                        '*',
+                        l10n.homeCustomPathWildcardStarDescription,
+                      ),
+                      _WildcardRow(
+                        '?',
+                        l10n.homeCustomPathWildcardQuestionDescription,
+                      ),
+                      _WildcardRow(
+                        '/**',
+                        l10n.homeCustomPathWildcardDoubleStarDescription,
+                      ),
+                      _WildcardRow(
+                        '{x,y}',
+                        l10n.homeCustomPathWildcardCurlyDescription,
+                      ),
+                      _WildcardRow(
+                        r'\',
+                        l10n.homeCustomPathWildcardBackslashDescription,
+                      ),
+                    ],
+                  ),
+                  FilledButton(
+                    onPressed: () {
+                      notifier.saveCustomPath();
+                      // Pop back to standard page (pop both custom path and more options pages)
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                    },
+                    child: Text(l10n.homeCustomPathSaveButton),
+                  ),
+                ].withSpacing(kContentSpacing),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kTileHorizontalPadding,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.homeCustomPathMustStartWithSlash,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 12),
-                    _WildcardRow(
-                      '*',
-                      l10n.homeCustomPathWildcardStarDescription,
-                    ),
-                    _WildcardRow(
-                      '?',
-                      l10n.homeCustomPathWildcardQuestionDescription,
-                    ),
-                    _WildcardRow(
-                      '/**',
-                      l10n.homeCustomPathWildcardDoubleStarDescription,
-                    ),
-                    _WildcardRow(
-                      '{x,y}',
-                      l10n.homeCustomPathWildcardCurlyDescription,
-                    ),
-                    _WildcardRow(
-                      r'\',
-                      l10n.homeCustomPathWildcardBackslashDescription,
-                    ),
-                  ],
-                ),
-              ),
-              FilledButton(
-                onPressed: () {
-                  notifier.saveCustomPath();
-                  // Pop back to standard page (pop both custom path and more options pages)
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: Text(l10n.homeCustomPathSaveButton),
-              ),
-            ].withSpacing(kContentSpacing),
-          ),
+            ),
+          ],
         ),
       ),
     );
