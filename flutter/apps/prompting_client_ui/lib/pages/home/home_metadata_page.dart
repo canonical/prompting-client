@@ -87,16 +87,10 @@ class HomeMetadataPage extends ConsumerWidget {
               if (metaData.storeUrl != null)
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: FilledButton(
                     onPressed: () {
                       // TODO: Open URL in browser
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
-                      foregroundColor: Theme.of(context).colorScheme.onSurface,
-                      elevation: 0,
-                    ),
                     child: Text(l10n.homePromptMetaDataAppCenterButton),
                   ),
                 ),
