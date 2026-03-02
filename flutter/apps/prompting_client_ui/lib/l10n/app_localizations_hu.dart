@@ -199,10 +199,19 @@ class AppLocalizationsHu extends AppLocalizations {
   String get homePromptPermissionsRead => 'Olvasás';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'Írás';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Végrehajtás';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'Valami tönkre ment';

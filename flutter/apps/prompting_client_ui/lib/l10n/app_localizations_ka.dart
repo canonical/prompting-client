@@ -200,10 +200,19 @@ class AppLocalizationsKa extends AppLocalizations {
   String get homePromptPermissionsRead => 'წაკითხვა';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'ჩაწერა';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'გაშვება';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'რაღაც არასწორია';

@@ -198,10 +198,19 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homePromptPermissionsRead => 'קריאה';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'כתיבה';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'הפעלה';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'משהו השתבש';

@@ -199,10 +199,19 @@ class AppLocalizationsSk extends AppLocalizations {
   String get homePromptPermissionsRead => 'Čítanie';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'Zápis';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Spúšťanie';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'Niečo sa pokazilo';

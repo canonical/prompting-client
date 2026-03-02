@@ -199,10 +199,19 @@ class AppLocalizationsEt extends AppLocalizations {
   String get homePromptPermissionsRead => 'Lugemine';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'Kirjutamine';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Käivitamine';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'Midagi läks valesti';

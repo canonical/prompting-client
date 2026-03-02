@@ -16,9 +16,11 @@ class HomePermissions extends ConsumerWidget {
     final notifier = ref.read(homePromptDataModelProvider.notifier);
     final l10n = AppLocalizations.of(context);
 
-    final selectedSummary = model.permissions.isEmpty
-        ? null
-        : model.permissions.map((p) => p.localize(l10n)).join(', ');
+    final selectedSummary = switch (model.permissions.length) {
+      0 => null,
+      1 => model.permissions.first.localizeOnly(l10n),
+      _ => model.permissions.map((p) => p.localize(l10n)).join(', '),
+    };
 
     return YaruBorderContainer(
       clipBehavior: Clip.hardEdge,

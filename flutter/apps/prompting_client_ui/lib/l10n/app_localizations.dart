@@ -557,17 +557,35 @@ abstract class AppLocalizations {
   /// **'Read'**
   String get homePromptPermissionsRead;
 
+  /// No description provided for @homePromptPermissionsReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Read only'**
+  String get homePromptPermissionsReadOnly;
+
   /// No description provided for @homePromptPermissionsWrite.
   ///
   /// In en, this message translates to:
   /// **'Write'**
   String get homePromptPermissionsWrite;
 
+  /// No description provided for @homePromptPermissionsWriteOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Write only'**
+  String get homePromptPermissionsWriteOnly;
+
   /// No description provided for @homePromptPermissionsExecute.
   ///
   /// In en, this message translates to:
   /// **'Execute'**
   String get homePromptPermissionsExecute;
+
+  /// No description provided for @homePromptPermissionsExecuteOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Execute only'**
+  String get homePromptPermissionsExecuteOnly;
 
   /// No description provided for @homePromptErrorUnknownTitle.
   ///

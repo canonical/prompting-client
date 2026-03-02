@@ -202,10 +202,19 @@ class AppLocalizationsTa extends AppLocalizations {
   String get homePromptPermissionsRead => 'படிக்க';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'எழுதுங்கள்';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'செயல்படுத்தவும்';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'ஏதோ தவறு நடந்தது';

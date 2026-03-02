@@ -200,10 +200,19 @@ class AppLocalizationsGa extends AppLocalizations {
   String get homePromptPermissionsRead => 'Léigh';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'Scríobh';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Rith';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'Chuaigh rud éigin mícheart';

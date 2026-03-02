@@ -197,10 +197,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get homePromptPermissionsRead => '읽기';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => '쓰기';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => '실행';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => '문제가 발생했습니다';

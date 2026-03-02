@@ -199,10 +199,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get homePromptPermissionsRead => 'Lesen';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'Schreiben';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Ausführen';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'Etwas ist schiefgelaufen';

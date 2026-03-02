@@ -199,10 +199,19 @@ class AppLocalizationsSi extends AppLocalizations {
   String get homePromptPermissionsRead => 'කියවීම';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'ලිවීම';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Execute';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'යමක් වැරදී ඇත';
