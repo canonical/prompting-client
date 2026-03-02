@@ -64,7 +64,7 @@ fn spawn_for_output(cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
         let stdout_reader = c.stdout.take().map(BufReader::new);
         let stderr_reader = c.stderr.take().map(BufReader::new);
 
-        match tokio::time::timeout(TIMEOUT, c.wait()).await {
+        match timeout(TIMEOUT, c.wait()).await {
             Ok(Ok(_)) => {
                 let mut stdout = String::new();
                 if let Some(mut reader) = stdout_reader {
@@ -128,25 +128,17 @@ async fn cleanup_pending_prompts() -> Result<()> {
         let pending = c.all_pending_prompt_details().await?;
         for p in &pending {
             let id = p.id();
-            let p = c.prompt_details(&id).await?;
+            let tp = c.prompt_details(&id).await?;
 
-            let reply = match p {
-                TypedPrompt::Camera(_) => {
-                    CameraInterface::prompt_to_reply(p.try_into()?, Action::Deny).into()
-                }
-                TypedPrompt::Home(_) => {
-                    HomeInterface::prompt_to_reply(p.try_into()?, Action::Deny).into()
-                }
-                TypedPrompt::Microphone(_) => {
-                    MicrophoneInterface::prompt_to_reply(p.try_into()?, Action::Deny).into()
-                }
-            };
-
+            let reply = tp.into_deny_once();
             c.reply_to_prompt(id, reply).await?;
         }
 
-        tokio::time::sleep(Duration::from_millis(10)).await;
+        sleep(Duration::from_millis(50)).await;
     }
+
+    // wait
+    sleep(Duration::from_secs(5)).await;
 
     let pending = c.all_pending_prompt_details().await?;
     assert!(
@@ -474,7 +466,10 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, None).await {
+    match scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedError { error },
         }) => {
@@ -620,7 +615,10 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, Some(5)).await {
+    match scripted_client
+        .run_with_timeout(&mut c, Some(5), TIMEOUT)
+        .await
+    {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedPrompts { .. },
         }) => (),
@@ -649,7 +647,10 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
         c.clone(),
     )?;
 
-    if let Err(e) = scripted_client.run(&mut c, None).await {
+    if let Err(e) = scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
         panic!("unexpected error: {e}")
     }
 
@@ -783,7 +784,9 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
         c.clone(),
     )?;
 
-    let res = scripted_client.run(&mut c, None).await;
+    let res = scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await;
     sleep(Duration::from_millis(50)).await;
 
     if let Err(e) = res {
@@ -820,7 +823,10 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, None).await {
+    match scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
         Err(Error::FailedPromptSequence {
             error: MatchError::MatchFailures { index, failures },
         }) => {

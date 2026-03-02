@@ -3,9 +3,11 @@ use clap::Parser;
 use prompting_client::{
     cli_actions::ScriptedClient, snapd_client::SnapdSocketClient, Error, Result,
 };
-use std::{io::stderr, process::exit};
+use std::{io::stderr, process::exit, time::Duration};
 use tracing::subscriber::set_global_default;
 use tracing_subscriber::FmtSubscriber;
+
+const TIMEOUT: Duration = Duration::from_secs(65);
 
 /// Run a scripted client expecting a given sequence of prompts.
 ///
@@ -56,7 +58,10 @@ async fn main() -> Result<()> {
 
     eprintln!("creating client");
     let mut scripted_client = ScriptedClient::try_new(script, &vars, c.clone())?;
-    match scripted_client.run(&mut c, grace_period).await {
+    match scripted_client
+        .run_with_timeout(&mut c, grace_period, TIMEOUT)
+        .await
+    {
         Ok(_) => println!("success"),
         Err(e) => {
             println!("{e}\n\nscript: {}", scripted_client.raw_seq());
