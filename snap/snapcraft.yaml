@@ -17,7 +17,7 @@ apps:
     extensions: [gnome]
     environment: &env
       PROMPTING_CLIENT_SOCKET: "${XDG_RUNTIME_DIR}/prompting.sock"
-      TOKIO_WORKER_THREADS: 2
+      TOKIO_WORKER_THREADS: "2"
     plugs: &plugs
       - home
       - camera
@@ -37,6 +37,7 @@ apps:
     environment: *env
     plugs: *plugs
     daemon: simple
+    success-exit-status: [8]
     passthrough: # TODO: Remove once daemon-scope lands in snapcraft
       daemon-scope: user
     restart-condition: on-failure
