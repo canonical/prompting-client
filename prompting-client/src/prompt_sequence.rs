@@ -117,7 +117,7 @@ enum TypedPromptCase {
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(tag = "interface", rename_all = "lowercase")]
+#[serde(tag = "interface", rename_all = "kebab-case")]
 enum TypedPromptFilter {
     #[serde(deserialize_with = "deserialize_interface")]
     Camera(PromptFilter<CameraInterface>),

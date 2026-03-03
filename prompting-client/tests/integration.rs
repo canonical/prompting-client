@@ -124,21 +124,17 @@ async fn cleanup_pending_prompts() -> Result<()> {
 
     // Answering prompts can unlock other prompts (like create.sh), so we need multiple iterations to ensure
     // all prompts are properly resolved.
-    for _ in 0..10 {
+    for _ in 0..5 {
         let pending = c.all_pending_prompt_details().await?;
         for p in &pending {
             let id = p.id();
-            let tp = c.prompt_details(&id).await?;
+            let reply = p.clone().into_deny_once();
 
-            let reply = tp.into_deny_once();
             c.reply_to_prompt(id, reply).await?;
         }
 
-        sleep(Duration::from_millis(50)).await;
+        sleep(Duration::from_millis(10)).await;
     }
-
-    // wait
-    sleep(Duration::from_secs(5)).await;
 
     let pending = c.all_pending_prompt_details().await?;
     assert!(

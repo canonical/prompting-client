@@ -12,7 +12,7 @@ use crate::{
 };
 use hyper::StatusCode;
 use std::time::Duration;
-use tokio::{select, sync::mpsc::unbounded_channel, time};
+use tokio::{select, sync::mpsc::unbounded_channel, time::timeout};
 use tracing::{debug, error, info, warn};
 
 /// Poll for outstanding prompts and auto-deny them before returning an error. This function will
@@ -119,7 +119,7 @@ impl ScriptedClient {
         &mut self,
         snapd_client: &mut SnapdSocketClient,
         grace_period: Option<u64>,
-        timeout: Duration,
+        duration: Duration,
     ) -> Result<()> {
         let (tx_prompts, mut rx_prompts) = unbounded_channel();
 
@@ -131,7 +131,7 @@ impl ScriptedClient {
         info!(script=%self.path, n_prompts=%self.seq.len(), "running provided script");
 
         while self.is_running() {
-            let Ok(prompt_update) = time::timeout(timeout, rx_prompts.recv()).await else {
+            let Ok(prompt_update) = timeout(duration, rx_prompts.recv()).await else {
                 eprintln!("scriped client timeout expired");
                 break;
             };
