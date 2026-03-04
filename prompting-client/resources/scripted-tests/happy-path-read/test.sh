@@ -11,12 +11,12 @@ prompting-client.scripted \
   --var "BASE_PATH:$TEST_DIR" | tee "$TEST_DIR/outfile" &
 
 # Ensure that the test client is already listening
-sleep 1
+sleep 2
 TEST_OUTPUT="$(aa-prompting-test.read "$PREFIX")"
 
 # Ensure that the test client has time to write its output
 # For tests with a grace period this will need to be taken into account as well
-sleep 1
+sleep 2
 CLIENT_OUTPUT="$(cat "$TEST_DIR/outfile")"
 
 if [ "$CLIENT_OUTPUT" != "success" ]; then
