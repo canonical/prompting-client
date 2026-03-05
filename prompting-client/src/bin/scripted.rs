@@ -7,7 +7,7 @@ use std::{io::stderr, process::exit, time::Duration};
 use tracing::subscriber::set_global_default;
 use tracing_subscriber::FmtSubscriber;
 
-const TIMEOUT: Duration = Duration::from_secs(65);
+const TIMEOUT: Duration = Duration::from_secs(120);
 
 /// Run a scripted client expecting a given sequence of prompts.
 ///
