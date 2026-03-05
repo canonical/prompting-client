@@ -6,6 +6,7 @@ import 'package:prompting_client_ui/pages/home/home_prompt_data_model.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:yaru/yaru.dart';
 
 const _verifiedAccountUrl =
@@ -31,13 +32,12 @@ class HomeMetadataPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(kHeaderPadding),
               child: Row(
                 children: [
                   IconButton(
@@ -64,7 +64,7 @@ class HomeMetadataPage extends ConsumerWidget {
                   if (metaData.publisher != null)
                     Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 4,
+                      spacing: kSmallSpacing,
                       children: [
                         MarkdownText(
                           l10n.homePromptMetaDataPublishedBy(
@@ -74,7 +74,7 @@ class HomeMetadataPage extends ConsumerWidget {
                         if (metaData.publisherVerified)
                           Icon(
                             Icons.verified,
-                            size: 16,
+                            size: kSmallIconSize,
                             color: Theme.of(context).colorScheme.primary,
                           ),
                       ],
@@ -88,16 +88,14 @@ class HomeMetadataPage extends ConsumerWidget {
                     ),
                   if (updatedAt != null)
                     Text(
-                      'App last updated on $updatedAt.',
+                      l10n.homePromptMetaDataLastUpdated(updatedAt),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   if (metaData.storeUrl != null)
                     SizedBox(
                       width: double.infinity,
                       child: FilledButton(
-                        onPressed: () {
-                          // TODO: Open URL in browser
-                        },
+                        onPressed: () => launchUrlString(metaData.storeUrl!),
                         child: Text(l10n.homePromptMetaDataAppCenterButton),
                       ),
                     ),

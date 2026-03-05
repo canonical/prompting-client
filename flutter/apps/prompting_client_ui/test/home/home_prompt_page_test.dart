@@ -348,7 +348,7 @@ void main() {
             );
             break;
         }
-        final selectedOption = testCase.options.toList()[0];
+        final selectedOption = testCase.options.first;
         // Selected options will be shown, so find them as well even if showInitially is false.
 
         for (final option in testCase.options
