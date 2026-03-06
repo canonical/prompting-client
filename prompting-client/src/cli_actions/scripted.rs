@@ -53,7 +53,7 @@ async fn grace_period_deny_and_error(snapd_client: &mut SnapdSocketClient) -> Re
 
 #[derive(Debug)]
 pub struct ScriptedClient {
-    pub seq: PromptSequence,
+    seq: PromptSequence,
     raw_seq: String,
     path: String,
 }

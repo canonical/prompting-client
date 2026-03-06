@@ -116,7 +116,21 @@ enum TypedPromptCase {
     Microphone(PromptCase<MicrophoneInterface>),
 }
 
-#[derive(Debug, Deserialize)]
+/// Deserializes a PromptFilter by manually set the `interface` field.
+/// This function is necessary because when `interface` is used as a tag to
+/// deserialize the enum `TypedPromptFilter` variants, that information gets
+/// lost during deserialization and must be manually set into the struct.
+fn deserialize_interface<'de, D, T>(de: D) -> Result<PromptFilter<T>, D::Error>
+where
+    D: Deserializer<'de>,
+    T: SnapInterface,
+{
+    let mut filter = PromptFilter::deserialize(de)?;
+    filter.interface = Some(T::NAME.to_string());
+    Ok(filter)
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(tag = "interface", rename_all = "kebab-case")]
 enum TypedPromptFilter {
     #[serde(deserialize_with = "deserialize_interface")]
@@ -125,16 +139,6 @@ enum TypedPromptFilter {
     Home(PromptFilter<HomeInterface>),
     #[serde(deserialize_with = "deserialize_interface")]
     Microphone(PromptFilter<MicrophoneInterface>),
-}
-
-fn deserialize_interface<'de, D, T>(d: D) -> Result<PromptFilter<T>, D::Error>
-where
-    D: Deserializer<'de>,
-    T: SnapInterface,
-{
-    let mut filter = PromptFilter::deserialize(d)?;
-    filter.interface = Some(T::NAME.to_string());
-    Ok(filter)
 }
 
 impl TypedPromptFilter {
