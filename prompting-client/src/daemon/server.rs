@@ -461,7 +461,6 @@ mod tests {
                     "/user.slice/user-1000.slice/user@1000.service/app.slice/myapp.scope"
                         .to_string(),
                 ),
-                interface: "home".to_string(),
                 constraints: HomeConstraints {
                     path: "6".to_string(),
                     requested_permissions: Vec::new(),

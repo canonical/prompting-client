@@ -1,5 +1,12 @@
 {
   "version": 1,
+  "prompt-filter": {
+    "snap": "aa-prompting-test",
+    "interface": "home",
+    "constraints": {
+      "path": "$BASE_PATH/.*"
+    }
+  },
   "prompts": [
     {
       "prompt-filter": {

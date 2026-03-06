@@ -48,7 +48,6 @@ where
     pub(crate) snap: String,
     pub(crate) pid: i64,
     pub(crate) cgroup: Cgroup,
-    pub(crate) interface: String,
     pub(crate) constraints: I::Constraints,
 }
 
@@ -77,7 +76,7 @@ where
     }
 
     pub fn interface(&self) -> &str {
-        &self.interface
+        I::NAME
     }
 
     /// Attempt to deserialize the `constraints` field into structured data associated with a
@@ -111,7 +110,6 @@ where
             snap,
             pid,
             cgroup,
-            interface,
             constraints: serde_json::from_value(constraints)?,
         })
     }
