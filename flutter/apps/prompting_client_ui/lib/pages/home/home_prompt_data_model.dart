@@ -18,10 +18,16 @@ class HomePromptData with _$HomePromptData {
     required EnrichedPathKind enrichedPathKind,
     @Default(Lifespan.forever) Lifespan lifespan,
     HomePromptError? error,
-    @Default(false) bool showMoreOptions,
+    String? savedCustomPath,
+    PatternOption? savedPatternOption,
   }) = _HomePromptData;
 
   HomePromptData._();
+
+  static final empty = PatternOption(
+    homePatternType: HomePatternType.customPath,
+    pathPattern: '',
+  );
 
   String get pathPattern => switch (patternOption.homePatternType) {
         HomePatternType.customPath => customPath,
@@ -35,9 +41,23 @@ class HomePromptData with _$HomePromptData {
       (details.metaData.storeUrl?.isNotEmpty ?? false) &&
       details.metaData.updatedAt != null;
 
-  Iterable<PatternOption> get visiblePatternOptions => showMoreOptions
-      ? details.patternOptions
-      : details.patternOptions.where((option) => option.showInitially);
+  Iterable<PatternOption> get visiblePatternOptions {
+    final initiallyVisible =
+        details.patternOptions.where((option) => option.showInitially).toSet();
+    return [
+      ...initiallyVisible,
+      // Include selected option if it's not already visible and not custom path
+      if (patternOption.homePatternType != HomePatternType.customPath &&
+          !initiallyVisible.contains(patternOption))
+        patternOption,
+      // Include custom path placeholder if custom path is selected
+      if (customPath.isNotEmpty &&
+          patternOption.homePatternType == HomePatternType.customPath)
+        HomePromptData.empty,
+    ];
+  }
+
+  Iterable<PatternOption> get allPatternOptions => details.patternOptions;
 }
 
 @riverpod
@@ -98,18 +118,28 @@ class HomePromptDataModel extends _$HomePromptDataModel {
     state = state.copyWith(permissions: permissions);
   }
 
-  void toggleMoreOptions() {
-    if (state.showMoreOptions) {
-      state = state.copyWith(
-        showMoreOptions: false,
-        // Remove permissions that were not initially suggested when hiding more options
-        permissions: state.details.requestedPermissions.union(
-          state.permissions.intersection(state.details.suggestedPermissions),
-        ),
-      );
-    } else {
-      state = state.copyWith(showMoreOptions: true);
-    }
+  void enterCustomPathEditor() {
+    state = state.copyWith(
+      savedCustomPath: state.customPath,
+      savedPatternOption: state.patternOption,
+      patternOption: HomePromptData.empty,
+    );
+  }
+
+  void saveCustomPath() {
+    state = state.copyWith(
+      savedCustomPath: null,
+      savedPatternOption: null,
+    );
+  }
+
+  void cancelCustomPathEditor() {
+    state = state.copyWith(
+      customPath: state.savedCustomPath ?? state.customPath,
+      patternOption: state.savedPatternOption ?? state.patternOption,
+      savedCustomPath: null,
+      savedPatternOption: null,
+    );
   }
 
   Future<PromptReplyResponse> saveAndContinue({

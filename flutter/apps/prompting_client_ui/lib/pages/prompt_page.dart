@@ -3,14 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:measure_size_builder/measure_size_builder.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/app/prompt_model.dart';
-import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
-import 'package:prompting_client_ui/pages/home/home_prompt_page.dart';
+import 'package:prompting_client_ui/pages/home/home_standard_page.dart';
 import 'package:prompting_client_ui/pages/microphone/microphone_prompt_page.dart';
 import 'package:prompting_client_ui/theme.dart';
 import 'package:ubuntu_logger/ubuntu_logger.dart';
 import 'package:window_manager/window_manager.dart';
-import 'package:yaru/yaru.dart';
 
 final _log = Logger('prompt_page');
 
@@ -21,43 +19,50 @@ class PromptPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final prompt = ref.watch(currentPromptProvider);
 
+    // Home prompts use dynamic resize (min 400x670), camera/mic prompts use fixed size.
+    final allowDynamicResize = prompt is PromptDetailsHome;
+
+    final minWidth = allowDynamicResize
+        ? homePromptWindowSize.width
+        : defaultWindowSize.width;
+
     return Scaffold(
-      appBar: YaruWindowTitleBar(
-        title: Text(AppLocalizations.of(context).promptTitle),
-        isMaximizable: false,
-        isMinimizable: false,
-        isClosable: false,
-      ),
       body: SingleChildScrollView(
         child: MeasureSizeBuilder(
           builder: (context, size) {
             _log.debug(
               'SizeChangedLayoutNotification received: (${size.width}, ${size.height})',
             );
-            _ensureWindowSize(
-              Size(size.width, size.height + kYaruTitleBarHeight),
-            );
+            if (allowDynamicResize) {
+              final constrainedSize = Size(
+                size.width.clamp(homePromptWindowSize.width, double.infinity),
+                size.height.clamp(homePromptWindowSize.height, double.infinity),
+              );
+              _ensureWindowSize(constrainedSize);
+            } else {
+              _ensureWindowSize(defaultWindowSize);
+            }
 
             return Consumer(
               builder: (context, ref, _) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (context.size != null) {
-                    _ensureWindowSize(
-                      Size(
-                        context.size!.width,
-                        context.size!.height + kYaruTitleBarHeight,
-                      ),
+                  if (context.size != null && allowDynamicResize) {
+                    final constrainedSize = Size(
+                      context.size!.width
+                          .clamp(homePromptWindowSize.width, double.infinity),
+                      context.size!.height
+                          .clamp(homePromptWindowSize.height, double.infinity),
                     );
+                    _ensureWindowSize(constrainedSize);
                   }
                 });
                 return SizeChangedLayoutNotifier(
                   child: ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minWidth: defaultWindowSize.width),
+                    constraints: BoxConstraints(minWidth: minWidth),
                     child: Padding(
-                      padding: const EdgeInsets.all(18.0),
+                      padding: const EdgeInsets.all(kPagePadding),
                       child: switch (prompt) {
-                        PromptDetailsHome() => const HomePromptPage(),
+                        PromptDetailsHome() => const HomeStandardPage(),
                         PromptDetailsCamera() => const CameraPromptPage(),
                         PromptDetailsMicrophone() =>
                           const MicrophonePromptPage(),

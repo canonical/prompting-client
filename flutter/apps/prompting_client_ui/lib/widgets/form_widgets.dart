@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:prompting_client_ui/widgets/markdown_text.dart';
+import 'package:prompting_client_ui/widgets/prompting_list_tile.dart';
+import 'package:prompting_client_ui/widgets/tile_list.dart';
 import 'package:yaru/yaru.dart';
 
 class RadioButtonList<T> extends StatelessWidget {
@@ -12,16 +14,18 @@ class RadioButtonList<T> extends StatelessWidget {
     this.onChanged,
     this.optionSubtitle,
     this.direction = Axis.vertical,
+    this.trailingTile,
     super.key,
   });
 
   final String title;
   final Iterable<T> options;
   final String Function(T option) optionTitle;
-  final Widget Function(T option)? optionSubtitle;
+  final Widget? Function(T option)? optionSubtitle;
   final T? groupValue;
   final void Function(T?)? onChanged;
   final Axis direction;
+  final Widget? trailingTile;
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +34,21 @@ class RadioButtonList<T> extends StatelessWidget {
       children: [
         MarkdownText(title.bold()),
         const SizedBox(height: 10),
-        Flex(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          direction: direction,
+        TileList(
           children: [
             for (final option in options)
-              YaruRadioButton<T>(
-                value: option,
-                groupValue: groupValue,
-                onChanged: onChanged,
-                title: Text(optionTitle(option)),
+              PromptingListTile(
+                title: optionTitle(option),
                 subtitle: optionSubtitle?.call(option),
+                leading: YaruRadio<T>(
+                  value: option,
+                  groupValue: groupValue,
+                  onChanged: onChanged,
+                ),
+                onTap: onChanged != null ? () => onChanged!(option) : null,
               ),
-          ].withSpacing(direction == Axis.horizontal ? 16 : 0),
+            if (trailingTile != null) trailingTile!,
+          ],
         ),
       ],
     );

@@ -36,6 +36,7 @@ class MetaData with _$MetaData {
     DateTime? updatedAt,
     String? storeUrl,
     String? publisher,
+    @Default(false) bool publisherVerified,
     SnapIconData? snapIcon,
   }) = _MetaData;
 

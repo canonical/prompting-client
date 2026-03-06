@@ -1,11 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/material.dart' hide Action, MetaData;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/l10n_x.dart';
+import 'package:prompting_client_ui/pages/home/home_metadata_page.dart';
+import 'package:prompting_client_ui/pages/home/home_more_options_page.dart';
 import 'package:prompting_client_ui/pages/home/home_prompt_error.dart';
+import 'package:prompting_client_ui/pages/home/home_standard_page.dart';
 import 'package:prompting_client_ui/pages/prompt_page.dart';
+import 'package:yaru/yaru.dart';
 import 'package:yaru_test/yaru_test.dart';
 
 import '../test_utils.dart';
@@ -258,10 +262,8 @@ void main() {
           ),
         );
         await tester.pumpApp(
-          (_) => UncontrolledProviderScope(
-            container: container,
-            child: const PromptPage(),
-          ),
+          (_) => const PromptPage(),
+          container: container,
         );
 
         switch (testCase.enrichedPathKind) {
@@ -346,23 +348,21 @@ void main() {
             );
             break;
         }
+        final selectedOption = testCase.options.first;
+        // Selected options will be shown, so find them as well even if showInitially is false.
 
-        expect(
-          find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
-          findsOneWidget,
-        );
-
-        for (final option in testCase.options.where((o) => o.showInitially)) {
+        for (final option in testCase.options
+            .where((o) => o.showInitially || o == selectedOption)) {
           expect(find.text(option.localize(tester.l10n)), findsOneWidget);
-          expect(find.text(option.pathPattern), findsOneWidget);
         }
-        for (final option in testCase.options.where((o) => !o.showInitially)) {
+        for (final option in testCase.options.where(
+          (o) => !o.showInitially && o != selectedOption,
+        )) {
           expect(find.text(option.localize(tester.l10n)), findsNothing);
-          expect(find.text(option.pathPattern), findsNothing);
         }
 
         await tester.tap(
-          find.text(tester.l10n.homePromptMoreOptionsLabel),
+          find.text(tester.l10n.homePromptMoreOptionsTileLabel),
         );
         await tester.pumpAndSettle();
 
@@ -392,10 +392,8 @@ void main() {
       promptDetails: testDetailsWithoutMeta,
     );
     await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
-        container: container,
-        child: const PromptPage(),
-      ),
+      (_) => const PromptPage(),
+      container: container,
     );
 
     expect(
@@ -416,7 +414,16 @@ void main() {
     );
 
     expect(
-      find.text(tester.l10n.homePromptMetaDataPublishedBy('Mozilla')),
+      find.text(tester.l10n.homePromptMetaDataTitle),
+      findsNothing,
+    );
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Icon &&
+            widget.icon == YaruIcons.go_next &&
+            widget.size == 16,
+      ),
       findsNothing,
     );
   });
@@ -444,14 +451,12 @@ void main() {
           replyResponse: testCase.replyResponse,
         );
         await tester.pumpApp(
-          (_) => UncontrolledProviderScope(
-            container: container,
-            child: const PromptPage(),
-          ),
+          (_) => const PromptPage(),
+          container: container,
         );
 
         await tester.tap(
-          find.text(tester.l10n.homePromptMoreOptionsLabel),
+          find.text(tester.l10n.homePromptMoreOptionsTileLabel),
         );
         await tester.pumpAndSettle();
 
@@ -460,10 +465,16 @@ void main() {
             tester.l10n.homePatternTypeCustomPath,
           ),
         );
+        await tester.pumpAndSettle();
+
+        await tester.tap(
+          find.text(tester.l10n.homeCustomPathSaveButton),
+        );
+        await tester.pumpAndSettle();
 
         final windowClosed = YaruTestWindow.waitForClosed();
 
-        await tester.tap(find.text(tester.l10n.promptActionOptionDeny));
+        await tester.tap(find.text(tester.l10n.promptActionOptionDenyOnce));
         await tester.pumpAndSettle();
 
         verify(
@@ -471,7 +482,7 @@ void main() {
             PromptReply.home(
               promptId: 'promptId',
               action: Action.deny,
-              lifespan: Lifespan.forever,
+              lifespan: Lifespan.single,
               pathPattern: '/home/ubuntu/Downloads/file.txt',
               permissions: {HomePermission.read},
             ),
@@ -494,11 +505,13 @@ void main() {
     for (final testCase in <({
       String name,
       String Function(AppLocalizations l10) label,
+      String Function(AppLocalizations l10)? splitButtonParent,
       PromptReply expectedReply,
     })>[
       (
         name: 'allow always',
         label: (l10) => l10.promptActionOptionAllowAlways,
+        splitButtonParent: null,
         expectedReply: replyTemplate.copyWith(
           action: Action.allow,
           lifespan: Lifespan.forever,
@@ -507,17 +520,46 @@ void main() {
       (
         name: 'allow until logout',
         label: (l10) => l10.promptActionOptionAllowUntilLogout,
+        splitButtonParent: (l10) => l10.promptActionOptionAllowAlways,
         expectedReply: replyTemplate.copyWith(
           action: Action.allow,
           lifespan: Lifespan.session,
         ),
       ),
       (
+        name: 'allow once',
+        label: (l10) => l10.promptActionOptionAllowOnce,
+        splitButtonParent: (l10) => l10.promptActionOptionAllowAlways,
+        expectedReply: replyTemplate.copyWith(
+          action: Action.allow,
+          lifespan: Lifespan.single,
+        ),
+      ),
+      (
         name: 'deny once',
         label: (l10) => l10.promptActionOptionDenyOnce,
+        splitButtonParent: null,
         expectedReply: replyTemplate.copyWith(
           action: Action.deny,
           lifespan: Lifespan.single,
+        ),
+      ),
+      (
+        name: 'deny always',
+        label: (l10) => l10.promptActionOptionDenyAlways,
+        splitButtonParent: (l10) => l10.promptActionOptionDenyOnce,
+        expectedReply: replyTemplate.copyWith(
+          action: Action.deny,
+          lifespan: Lifespan.forever,
+        ),
+      ),
+      (
+        name: 'deny until logout',
+        label: (l10) => l10.promptActionOptionDenyUntilLogout,
+        splitButtonParent: (l10) => l10.promptActionOptionDenyOnce,
+        expectedReply: replyTemplate.copyWith(
+          action: Action.deny,
+          lifespan: Lifespan.session,
         ),
       ),
     ]) {
@@ -531,14 +573,20 @@ void main() {
           replyResponse: PromptReplyResponse.success(),
         );
         await tester.pumpApp(
-          (_) => UncontrolledProviderScope(
-            container: container,
-            child: const PromptPage(),
-          ),
+          (_) => const PromptPage(),
+          container: container,
         );
         await tester.pumpAndSettle();
-        await tester.tap(find.text(testCase.label(tester.l10n)));
-        await tester.pumpAndSettle();
+
+        if (testCase.splitButtonParent != null) {
+          await tester.tapSplitButtonMenuItem(
+            testCase.splitButtonParent!(tester.l10n),
+            testCase.label(tester.l10n),
+          );
+        } else {
+          await tester.tap(find.text(testCase.label(tester.l10n)));
+          await tester.pumpAndSettle();
+        }
 
         verify(
           client.replyToPrompt(testCase.expectedReply),
@@ -559,10 +607,8 @@ void main() {
     final expectedError = HomePromptErrorUnknown('error message');
 
     await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
-        container: container,
-        child: const PromptPage(),
-      ),
+      (_) => const PromptPage(),
+      container: container,
     );
 
     await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));
@@ -572,11 +618,250 @@ void main() {
     expect(find.text(expectedError.title(tester.l10n)), findsOneWidget);
 
     await tester.tap(
-      find.text(tester.l10n.homePromptMoreOptionsLabel),
+      find.text(tester.l10n.homePromptMoreOptionsTileLabel),
     );
     await tester.pumpAndSettle();
 
     expect(find.text(expectedError.body(tester.l10n)), findsOneWidget);
     expect(find.text(expectedError.title(tester.l10n)), findsOneWidget);
+  });
+
+  testWidgets('navigate to metadata page', (tester) async {
+    final container = createContainer();
+    registerMockPromptDetails(promptDetails: testDetails);
+    registerMockAppArmorPromptingClient(
+      promptDetails: testDetails,
+      replyResponse: PromptReplyResponse.success(),
+    );
+    await tester.pumpApp(
+      (_) => const PromptPage(),
+      container: container,
+    );
+
+    expect(find.text(tester.l10n.homePromptMetaDataTitle), findsOneWidget);
+
+    // Tap the metadata icon button (the smaller go_next icon, size 16)
+    final metadataIcon = find.byWidgetPredicate(
+      (widget) =>
+          widget is Icon &&
+          widget.icon == YaruIcons.go_next &&
+          widget.size == 16,
+    );
+    await tester.tap(metadataIcon);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(HomeMetadataPage), findsOneWidget);
+
+    expect(
+      find.textContaining('Mozilla'),
+      findsOneWidget,
+    );
+
+    expect(
+      find.text(tester.l10n.homePromptMetaDataAppCenterButton),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(HomeStandardPage), findsOneWidget);
+  });
+
+  testWidgets('navigate to more options and select pattern', (tester) async {
+    final container = createContainer();
+    final details = (testDetails as PromptDetailsHome).copyWith(
+      requestedPath: '/home/ubuntu/Pictures/nested/foo.jpeg',
+      enrichedPathKind: EnrichedPathKind.subDirFile(),
+      patternOptions: {
+        PatternOption(
+          homePatternType: HomePatternType.homeDirectory,
+          pathPattern: '/home/ubuntu/**',
+        ),
+        PatternOption(
+          homePatternType: HomePatternType.topLevelDirectory,
+          pathPattern: '/home/ubuntu/Pictures/**',
+          showInitially: true,
+        ),
+        PatternOption(
+          homePatternType: HomePatternType.containingDirectory,
+          pathPattern: '/home/ubuntu/Pictures/nested/**',
+        ),
+        PatternOption(
+          homePatternType: HomePatternType.requestedFile,
+          pathPattern: '/home/ubuntu/Pictures/nested/foo.jpeg',
+          showInitially: true,
+        ),
+      },
+    );
+    registerMockPromptDetails(promptDetails: details);
+    registerMockAppArmorPromptingClient(
+      promptDetails: details,
+      replyResponse: PromptReplyResponse.success(),
+    );
+    await tester.pumpApp(
+      (_) => const PromptPage(),
+      container: container,
+    );
+
+    await tester.tap(
+      find.text(tester.l10n.homePromptMoreOptionsTileLabel),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(HomeMoreOptionsPage), findsOneWidget);
+
+    for (final option in details.patternOptions) {
+      expect(find.text(option.localize(tester.l10n)), findsOneWidget);
+      expect(find.text(option.pathPattern), findsOneWidget);
+    }
+
+    // Select a non-initially-visible option (containing directory)
+    final containingDir = details.patternOptions.firstWhere(
+      (o) => o.homePatternType == HomePatternType.containingDirectory,
+    );
+    await tester.tap(find.text(containingDir.localize(tester.l10n)));
+    await tester.pumpAndSettle();
+
+    // Verify navigation back to standard page
+    expect(find.byType(HomeStandardPage), findsOneWidget);
+
+    // The selected option should now be visible on standard page
+    expect(find.text(containingDir.localize(tester.l10n)), findsOneWidget);
+  });
+
+  testWidgets('custom path editor save flow', (tester) async {
+    final container = createContainer();
+    registerMockPromptDetails(promptDetails: testDetails);
+    final client = registerMockAppArmorPromptingClient(
+      promptDetails: testDetails,
+      replyResponse: PromptReplyResponse.success(),
+    );
+    await tester.pumpApp(
+      (_) => const PromptPage(),
+      container: container,
+    );
+
+    await tester.tap(
+      find.text(tester.l10n.homePromptMoreOptionsTileLabel),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(tester.l10n.homePatternTypeCustomPath));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byType(TextFormField),
+      '/custom/path/**',
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(tester.l10n.homeCustomPathSaveButton));
+    await tester.pumpAndSettle();
+
+    // Should be back on standard page
+    expect(find.byType(HomeStandardPage), findsOneWidget);
+
+    final windowClosed = YaruTestWindow.waitForClosed();
+
+    // Submit with deny once
+    await tester.tap(find.text(tester.l10n.promptActionOptionDenyOnce));
+    await tester.pumpAndSettle();
+
+    // Verify the custom path was used in reply
+    verify(
+      client.replyToPrompt(
+        PromptReply.home(
+          promptId: 'promptId',
+          action: Action.deny,
+          lifespan: Lifespan.single,
+          pathPattern: '/custom/path/**',
+          permissions: {HomePermission.read},
+        ),
+      ),
+    ).called(1);
+
+    await expectLater(windowClosed, completes);
+  });
+
+  testWidgets('custom path editor cancel flow', (tester) async {
+    final container = createContainer();
+    registerMockPromptDetails(promptDetails: testDetails);
+    registerMockAppArmorPromptingClient(
+      promptDetails: testDetails,
+      replyResponse: PromptReplyResponse.success(),
+    );
+    await tester.pumpApp(
+      (_) => const PromptPage(),
+      container: container,
+    );
+
+    await tester.tap(
+      find.text(tester.l10n.homePromptMoreOptionsTileLabel),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(tester.l10n.homePatternTypeCustomPath));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byType(TextFormField),
+      '/modified/path/**',
+    );
+    await tester.pumpAndSettle();
+
+    // Cancel by tapping back button
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
+    await tester.pumpAndSettle();
+    expect(find.byType(HomeMoreOptionsPage), findsOneWidget);
+
+    await tester.tap(find.byIcon(YaruIcons.go_previous));
+    await tester.pumpAndSettle();
+    expect(find.byType(HomeStandardPage), findsOneWidget);
+  });
+
+  testWidgets('toggle permissions', (tester) async {
+    final container = createContainer();
+    registerMockPromptDetails(promptDetails: testDetails);
+    final client = registerMockAppArmorPromptingClient(
+      promptDetails: testDetails,
+      replyResponse: PromptReplyResponse.success(),
+    );
+    await tester.pumpApp(
+      (_) => const PromptPage(),
+      container: container,
+    );
+
+    await tester.tap(find.text(tester.l10n.homePromptPermissionsTitle));
+    await tester.pumpAndSettle();
+
+    // Toggle write permission on via the popup menu item
+    final writePermission = HomePermission.write;
+    final menuItem = find.descendant(
+      of: find.byType(YaruMultiSelectPopupMenuItem<HomePermission>),
+      matching: find.text(writePermission.localize(tester.l10n)),
+    );
+    await tester.tap(menuItem, warnIfMissed: false);
+    await tester.pumpAndSettle();
+
+    await tester.tapAt(Offset.zero);
+    await tester.pumpAndSettle();
+
+    final windowClosed = YaruTestWindow.waitForClosed();
+
+    await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));
+    await tester.pumpAndSettle();
+
+    verify(
+      client.replyToPrompt(
+        PromptReply.home(
+          promptId: 'promptId',
+          action: Action.allow,
+          lifespan: Lifespan.forever,
+          pathPattern: '/home/ubuntu/Downloads/**',
+          permissions: {HomePermission.read, HomePermission.write},
+        ),
+      ),
+    ).called(1);
+
+    await expectLater(windowClosed, completes);
   });
 }

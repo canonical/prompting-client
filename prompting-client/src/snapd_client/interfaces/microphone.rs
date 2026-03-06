@@ -78,6 +78,7 @@ impl SnapInterface for MicrophoneInterface {
             updated_at: String::default(),
             store_url: String::default(),
             publisher: String::default(),
+            publisher_verified: false,
             snap_icon: None,
         });
 
@@ -94,6 +95,7 @@ impl SnapInterface for MicrophoneInterface {
             updated_at,
             store_url,
             publisher,
+            publisher_verified,
             snap_icon,
         } = input.meta;
 
@@ -107,6 +109,7 @@ impl SnapInterface for MicrophoneInterface {
                 snap_name: name,
                 store_url,
                 publisher,
+                publisher_verified,
                 updated_at,
                 snap_icon,
                 snap_icon_mime_type,

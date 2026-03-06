@@ -81,7 +81,17 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, "Security notification");
   }
 
-  gtk_window_set_default_size(window, 560, 200);
+  // Retrieve parsed arguments
+  char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
+  guint64 app_pid = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_pid"));
+  char *interface_name = (char*)g_object_get_data(G_OBJECT(application), "interface_name");
+
+  // Set window size based on interface type: home prompts need more height
+  int window_height = 230;
+  if (interface_name != NULL && strcmp(interface_name, "home") == 0) {
+    window_height = 690;
+  }
+  gtk_window_set_default_size(window, 372, window_height);
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
@@ -90,10 +100,6 @@ static void my_application_activate(GApplication* application) {
   gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(view));
 
   fl_register_plugins(FL_PLUGIN_REGISTRY(view));
-
-  // Retrieve parsed arguments
-  char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
-  guint64 app_pid = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_pid"));
 
   const char *session = g_getenv ("XDG_CURRENT_DESKTOP");
   if (session && strstr (session, "GNOME"))
@@ -116,10 +122,12 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   // Parse command line arguments
   g_autofree char *snap_name = NULL;
   guint64 app_pid = 0;
+  g_autofree char *interface_name = NULL;
 
   static const GOptionEntry entries[] = {
     { "snap", 0, 0, G_OPTION_ARG_STRING, &snap_name, "Snap name", NULL },
     { "app-pid", 0, 0, G_OPTION_ARG_INT64, &app_pid, "Application PID", NULL },
+    { "interface-name", 0, 0, G_OPTION_ARG_STRING, &interface_name, "Interface name (home, camera, audio-record)", NULL },
     { NULL }
   };
 
@@ -140,6 +148,7 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   // Store parsed values for activate callback
   g_object_set_data_full(G_OBJECT(application), "snap_name", g_steal_pointer(&snap_name), g_free);
   g_object_set_data(G_OBJECT(application), "app_pid", GUINT_TO_POINTER(app_pid));
+  g_object_set_data_full(G_OBJECT(application), "interface_name", g_steal_pointer(&interface_name), g_free);
 
   g_autoptr(GError) error = nullptr;
   if (!g_application_register(application, nullptr, &error)) {

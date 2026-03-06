@@ -195,6 +195,8 @@ pub struct MetaData {
     pub snap_icon: ::prost::alloc::vec::Vec<u8>,
     #[prost(string, tag = "7")]
     pub snap_icon_mime_type: ::prost::alloc::string::String,
+    #[prost(bool, tag = "8")]
+    pub publisher_verified: bool,
 }
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
 pub struct ResolveHomePatternTypeResponse {

@@ -38,6 +38,12 @@ class AppLocalizationsSr extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Одбиј једном';
 
   @override
+  String get promptActionOptionDenyAlways => 'Deny always';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+
+  @override
   String get promptActionOptionAllowUntilLogout => 'Allow until logout';
 
   @override
@@ -66,6 +72,32 @@ class AppLocalizationsSr extends AppLocalizations {
 
   @override
   String get homePatternTypeCustomPath => 'Прилагођени образац путање';
+
+  @override
+  String get homeCustomPathSaveButton => 'Save custom path';
+
+  @override
+  String get homeCustomPathMustStartWithSlash =>
+      'The path pattern must start with /';
+
+  @override
+  String get homeCustomPathWildcardStarDescription =>
+      'Matches any string of characters except /';
+
+  @override
+  String get homeCustomPathWildcardQuestionDescription =>
+      'Matches a single character';
+
+  @override
+  String get homeCustomPathWildcardDoubleStarDescription =>
+      'Matches zero or more folders and files recursively';
+
+  @override
+  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+
+  @override
+  String get homeCustomPathWildcardBackslashDescription =>
+      'Escapes special characters to treat them as literals';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Само тражени фолдер';
@@ -129,6 +161,15 @@ class AppLocalizationsSr extends AppLocalizations {
   }
 
   @override
+  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+
+  @override
   String homePromptMetaDataLastUpdated(String date) {
     return 'Последњи пут ажурирано $date';
   }
@@ -137,8 +178,14 @@ class AppLocalizationsSr extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Више опција...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Посетите страницу App Center-а';
+
+  @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -152,21 +199,35 @@ class AppLocalizationsSr extends AppLocalizations {
   String get homePromptPermissionsRead => 'Читање';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
   String get homePromptPermissionsWrite => 'Писање';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
   String get homePromptPermissionsExecute => 'Извршавање';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
   String get homePromptErrorUnknownTitle => 'Нешто је пошло наопако';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to access your camera?';
+    return 'Allow $snapName to use your cameras?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to access your microphone?';
+    return 'Allow $snapName to use your microphones?';
+  }
+
+  @override
+  String homePromptTitleQuestion(String snapName, String permissions) {
+    return 'Give $snapName $permissions access to files?';
   }
 }

@@ -46,6 +46,10 @@ Future<void> main(List<String> args) async {
     ..addOption(
       'cgroup',
       help: 'Application cgroup',
+    )
+    ..addOption(
+      'interface-name',
+      help: 'Interface name (home, camera, audio-record)',
     );
 
   final ArgResults argResults;
@@ -120,6 +124,9 @@ Future<void> main(List<String> args) async {
   await windowManager
       .waitUntilReadyToShow(WindowOptions(size: defaultWindowSize), () async {
     await windowManager.setResizable(false);
+    await windowManager.setMinimumSize(const Size(kWindowWidth, 0));
+    await windowManager
+        .setMaximumSize(const Size(kWindowWidth, double.infinity));
     await windowManager.show();
     await windowManager.focus();
   });

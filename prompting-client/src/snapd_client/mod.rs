@@ -359,6 +359,7 @@ where
                     .unwrap_or(install_date),
                 store_url: format!("snap://{name}"),
                 publisher: publisher.display_name,
+                publisher_verified: publisher.validation.as_deref() == Some("verified"),
                 snap_icon,
             }),
 
@@ -381,6 +382,7 @@ where
         #[serde(rename_all = "kebab-case")]
         struct Publisher {
             display_name: String,
+            validation: Option<String>,
         }
     }
 }
@@ -414,6 +416,7 @@ pub struct SnapMeta {
     pub updated_at: String,
     pub store_url: String,
     pub publisher: String,
+    pub publisher_verified: bool,
     pub snap_icon: Option<SnapIcon>,
 }
 

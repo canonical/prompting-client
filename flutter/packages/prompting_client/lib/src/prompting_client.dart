@@ -80,6 +80,7 @@ extension MetaDataConversion on MetaData {
         snapName: metaData.snapName,
         storeUrl: metaData.storeUrl,
         publisher: metaData.publisher,
+        publisherVerified: metaData.publisherVerified,
         updatedAt: DateTime.tryParse(metaData.updatedAt),
         snapIcon: metaData.hasSnapIcon() && metaData.hasSnapIconMimeType()
             ? SnapIconData(

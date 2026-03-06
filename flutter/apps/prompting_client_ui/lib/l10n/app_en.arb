@@ -31,6 +31,10 @@
     "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Deny once",
     "@promptActionOptionDenyOnce": {},
+    "promptActionOptionDenyAlways": "Deny always",
+    "@promptActionOptionDenyAlways": {},
+    "promptActionOptionDenyUntilLogout": "Deny until logout",
+    "@promptActionOptionDenyUntilLogout": {},
     "promptActionOptionAllowUntilLogout": "Allow until logout",
     "@promptActionOptionAllowUntilLogout": {},
     "promptActionTitle": "Action",
@@ -51,6 +55,20 @@
     "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Custom path pattern",
     "@homePatternTypeCustomPath": {},
+    "homeCustomPathSaveButton": "Save custom path",
+    "@homeCustomPathSaveButton": {},
+    "homeCustomPathMustStartWithSlash": "The path pattern must start with /",
+    "@homeCustomPathMustStartWithSlash": {},
+    "homeCustomPathWildcardStarDescription": "Matches any string of characters except /",
+    "@homeCustomPathWildcardStarDescription": {},
+    "homeCustomPathWildcardQuestionDescription": "Matches a single character",
+    "@homeCustomPathWildcardQuestionDescription": {},
+    "homeCustomPathWildcardDoubleStarDescription": "Matches zero or more folders and files recursively",
+    "@homeCustomPathWildcardDoubleStarDescription": {},
+    "homeCustomPathWildcardCurlyDescription": "Matches either x or y",
+    "@homeCustomPathWildcardCurlyDescription": {},
+    "homeCustomPathWildcardBackslashDescription": "Escapes special characters to treat them as literals",
+    "@homeCustomPathWildcardBackslashDescription": {},
     "homePatternTypeRequestedDirectory": "The requested folder only",
     "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "The requested file only",
@@ -171,6 +189,12 @@
             }
         }
     },
+    "homePromptMetaDataVerifiedAccountPrefix": "This publisher has a ",
+    "@homePromptMetaDataVerifiedAccountPrefix": {},
+    "homePromptMetaDataVerifiedAccountLink": "verified account",
+    "@homePromptMetaDataVerifiedAccountLink": {},
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "@homePromptMetaDataVerifiedAccountSuffix": {},
     "homePromptMetaDataLastUpdated": "Last updated on {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
@@ -181,8 +205,12 @@
     },
     "homePromptMoreOptionsLabel": "More options...",
     "@homePromptMoreOptionsLabel": {},
+    "homePromptMoreOptionsTileLabel": "More options",
+    "@homePromptMoreOptionsTileLabel": {},
     "homePromptMetaDataAppCenterLink": "Visit App Center page",
     "@homePromptMetaDataAppCenterLink": {},
+    "homePromptMetaDataAppCenterButton": "Open in App Center",
+    "@homePromptMetaDataAppCenterButton": {},
     "homePromptSuggestedPermission": "Also give {permission} access",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -195,13 +223,19 @@
     "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "Read",
     "@homePromptPermissionsRead": {},
+    "homePromptPermissionsReadOnly": "Read only",
+    "@homePromptPermissionsReadOnly": {},
     "homePromptPermissionsWrite": "Write",
     "@homePromptPermissionsWrite": {},
+    "homePromptPermissionsWriteOnly": "Write only",
+    "@homePromptPermissionsWriteOnly": {},
     "homePromptPermissionsExecute": "Execute",
     "@homePromptPermissionsExecute": {},
+    "homePromptPermissionsExecuteOnly": "Execute only",
+    "@homePromptPermissionsExecuteOnly": {},
     "homePromptErrorUnknownTitle": "Something went wrong",
     "@homePromptErrorUnknownTitle": {},
-    "cameraPromptBody": "Allow {snapName} to access your camera?",
+    "cameraPromptBody": "Allow {snapName} to use your cameras?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -209,10 +243,21 @@
             }
         }
     },
-    "microphonePromptBody": "Allow {snapName} to access your microphone?",
+    "microphonePromptBody": "Allow {snapName} to use your microphones?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTitleQuestion": "Give {snapName} {permissions} access to files?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
