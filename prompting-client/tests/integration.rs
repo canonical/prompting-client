@@ -59,34 +59,30 @@ fn spawn_for_output(cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
             .stderr(Stdio::piped())
             .kill_on_drop(true);
 
-        let mut c = c.spawn().expect("Failed to spawn process");
+        let mut c = c.spawn().expect("spawn process");
 
         let stdout_reader = c.stdout.take().map(BufReader::new);
         let stderr_reader = c.stderr.take().map(BufReader::new);
 
-        match timeout(TIMEOUT, c.wait()).await {
+        let (stdout, stderr) = match timeout(TIMEOUT, c.wait()).await {
             Ok(Ok(_)) => {
                 let mut stdout = String::new();
                 if let Some(mut reader) = stdout_reader {
-                    let _ = reader.read_to_string(&mut stdout).await;
+                    reader.read_to_string(&mut stdout).await.ok();
                 }
 
                 let mut stderr = String::new();
                 if let Some(mut reader) = stderr_reader {
-                    let _ = reader.read_to_string(&mut stderr).await;
+                    reader.read_to_string(&mut stderr).await.ok();
                 }
 
-                tx.send(Output { stdout, stderr }).expect("send to succeed");
+                (stdout, stderr)
             }
-            _ => {
-                c.kill().await.ok();
+            Ok(Err(e)) => (String::new(), format!("Process exited with error: {e}")),
+            Err(_) => (String::new(), "Process timed out".to_string()),
+        };
 
-                let stdout = String::new();
-                let stderr = "Process timeout".to_string();
-
-                tx.send(Output { stdout, stderr }).ok();
-            }
-        }
+        tx.send(Output { stdout, stderr }).expect("send to succeed");
     });
 
     rx
