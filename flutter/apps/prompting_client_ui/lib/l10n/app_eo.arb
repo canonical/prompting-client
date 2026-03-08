@@ -1,10 +1,7 @@
 {
     "promptActionTitle": "Ago",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "Ĉiam",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Ĝis adiaŭo",
-    "@promptLifespanOptionSession": {},
     "promptAccessTitle": "Doni al {snap} permeson {permission} la jenon:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -17,11 +14,8 @@
         }
     },
     "promptLifespanTitle": "Daŭro",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Konservi kaj daŭrigi",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Sciigo pri sekureco",
-    "@promptTitle": {},
     "homePatternTypeTopLevelDirectory": "Ĉio en la dosierujo {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -31,11 +25,8 @@
         }
     },
     "homePatternInfo": "<Lerni pli pri dosierlokaj ŝablonoj>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Propra dosierloka ŝablono",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeMatchingFileExtension": "Ĉiuj {fileExtension}-dosieroj",
-    "@homePatternTypeMatchingFileExtension": {},
     "homePromptBody": "Ĉu permesi al {snap} {permissions} {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -51,23 +42,14 @@
         }
     },
     "homePromptMoreOptionsLabel": "Pli da opcioj…",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsTitle": "Permesoj",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "legi",
-    "@homePromptPermissionsRead": {},
     "promptActionOptionAllow": "Permesi",
-    "@promptActionOptionAllow": {},
     "promptActionOptionDeny": "Malpermesi",
-    "@promptActionOptionDeny": {},
     "homePromptMetaDataTitle": "Pri ĉi tiu programo",
-    "@homePromptMetaDataTitle": {},
     "promptActionOptionAllowAlways": "Permesi ĉiam",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDenyOnce": "Malpermesi unu fojon",
-    "@promptActionOptionDenyOnce": {},
     "promptLifespanOptionSingle": "Unu fojon",
-    "@promptLifespanOptionSingle": {},
     "homePromptMetaDataPublishedBy": "Eldonita de {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -85,23 +67,14 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "Viziti paĝon ĉe App Center",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePatternTypeRequestedDirectoryContents": "Ĉio en la dosierujo",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Ĉio en la dosierujo",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Ĉio en la hejma dosierujo",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptPermissionsWrite": "skribi",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "ruli",
-    "@homePromptPermissionsExecute": {},
     "homePatternTypeRequestedFile": "Nur la petata dosiero",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeRequestedDirectory": "Nur la petata dosierujo",
-    "@homePatternTypeRequestedDirectory": {},
     "securityCenterInfo": "Vi povas iam ajn ŝanĝi tiujn permesojn en la «Sekureca Centro»",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "Permesi al {snap}:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -111,7 +84,6 @@
         }
     },
     "promptActionOptionAllowOnce": "Permesi unu fojon",
-    "@promptActionOptionAllowOnce": {},
     "homePromptSuggestedPermission": "Ankaŭ permesi {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -121,7 +93,6 @@
         }
     },
     "homePromptErrorUnknownTitle": "Io fiaskis",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptTopLevelDirBody": "{snap} volas havi permeson {permissions} la dosierujon {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
@@ -193,7 +164,6 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Permesi ĝis adiaŭo",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "Ĉu permesi al {snapName} uzi vian kameraon?",
     "@cameraPromptBody": {
         "placeholders": {
