@@ -1,6 +1,5 @@
 {
     "securityCenterInfo": "ನೀವು ಯಾವಾಗಲೂ ಈ ಅನುಮತಿಗಳನ್ನು <ಭದ್ರತಾ ಕೇಂದ್ರ> ದಲ್ಲಿ ಬದಲಾಯಿಸಬಹುದು",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "{snap} ಗೆ ಪ್ರವೇಶವನ್ನು ಹೊಂದಿಸಿ:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -21,31 +20,18 @@
         }
     },
     "promptActionOptionAllow": "ಅನುಮತಿಸಿ",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "ಯಾವಾಗಲೂ ಅನುಮತಿಸಿ",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionAllowOnce": "ಒಮ್ಮೆ ಅನುಮತಿಸಿ",
-    "@promptActionOptionAllowOnce": {},
     "promptActionOptionDeny": "ನಿರಾಕರಿಸು",
-    "@promptActionOptionDeny": {},
     "promptLifespanOptionSession": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "ಒಮ್ಮೆ",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "ಅವಧಿ",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "ಉಳಿಸಿ ಮತ್ತು ಮುಂದುವರಿಸಿ",
-    "@promptSaveAndContinue": {},
     "promptTitle": "ಭದ್ರತಾ ಅಧಿಸೂಚನೆ",
-    "@promptTitle": {},
     "homePatternInfo": "<ಮಾರ್ಗದ ಮಾದರಿಗಳ ಬಗ್ಗೆ ತಿಳಿಯಿರಿ>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "ಕಸ್ಟಮ್ ಮಾರ್ಗದ ಮಾದರಿ",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "ವಿನಂತಿಸಿದ ಫೋಲ್ಡರ್ ಮಾತ್ರ",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "ವಿನಂತಿಸಿದ ಫೈಲ್ ಮಾತ್ರ",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "{topLevelDir} ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -55,11 +41,8 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "ಹೋಮ್ ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "ಎಲ್ಲಾ {fileExtension} ಫೈಲ್‌ಗಳು",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -69,13 +52,9 @@
         }
     },
     "promptActionOptionDenyOnce": "ಒಮ್ಮೆ ನಿರಾಕರಿಸಿ",
-    "@promptActionOptionDenyOnce": {},
     "promptActionOptionAllowUntilLogout": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ ಅನುಮತಿಸಿ",
-    "@promptActionOptionAllowUntilLogout": {},
     "promptActionTitle": "ಕ್ರಿಯೆ",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "ಯಾವಾಗಲೂ",
-    "@promptLifespanOptionForever": {},
     "homePromptDefaultBody": "{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -147,7 +126,6 @@
         }
     },
     "homePromptMetaDataTitle": "ಈ ಅಪ್ಲಿಕೇಶನ್ ಬಗ್ಗೆ",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "ಪ್ರಕಟಿಸಿದವರು {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -165,9 +143,7 @@
         }
     },
     "homePromptMoreOptionsLabel": "ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "ಅಪ್ಲಿಕೇಶನ್ ಕೇಂದ್ರ ಪುಟಕ್ಕೆ ಭೇಟಿ ನೀಡಿ",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptSuggestedPermission": "{permission} ಪ್ರವೇಶವನ್ನು ಸಹ ನೀಡಿ",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -177,15 +153,10 @@
         }
     },
     "homePromptPermissionsTitle": "ಅನುಮತಿಗಳು",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "ಓದು",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "ಬರೆಯಿರಿ",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "ಕಾರ್ಯಗತಗೊಳಿಸಿ",
-    "@homePromptPermissionsExecute": {},
     "homePromptErrorUnknownTitle": "ಏನೋ ತಪ್ಪಾಗಿದೆ",
-    "@homePromptErrorUnknownTitle": {},
     "cameraPromptBody": "ನಿಮ್ಮ ಕ್ಯಾಮರಾವನ್ನು ಪ್ರವೇಶಿಸಲು {snapName} ಗೆ ಅನುಮತಿಸುವುದೇ?",
     "@cameraPromptBody": {
         "placeholders": {
