@@ -1,28 +1,16 @@
 {
     "homePromptPermissionsTitle": "წვდომები",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsWrite": "ჩაწერა",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "გაშვება",
-    "@homePromptPermissionsExecute": {},
     "promptActionOptionDeny": "აკრძალვა",
-    "@promptActionOptionDeny": {},
     "promptActionOptionAllowAlways": "ყოველთვის დაშვება",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDenyOnce": "ერთხელ აკრძალვა",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "ქმედება",
-    "@promptActionTitle": {},
     "promptActionOptionAllow": "დაშვება",
-    "@promptActionOptionAllow": {},
     "promptLifespanOptionForever": "ყოველთვის",
-    "@promptLifespanOptionForever": {},
     "promptLifespanTitle": "ხანგრძლივობა",
-    "@promptLifespanTitle": {},
     "homePromptPermissionsRead": "წაკითხვა",
-    "@homePromptPermissionsRead": {},
     "promptLifespanOptionSingle": "ერთხელ",
-    "@promptLifespanOptionSingle": {},
     "homePatternTypeMatchingFileExtension": "ყველა {fileExtension} ფაილი",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -102,7 +90,6 @@
         }
     },
     "securityCenterInfo": "ამ წვდომების შეცვლა ყოველთვის შეგიძლიათ <უსაფრთხოების ცენტრიდან>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "წვდომები {snap}-სთვის:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -123,21 +110,13 @@
         }
     },
     "promptActionOptionAllowOnce": "ერთხელ დაშვება",
-    "@promptActionOptionAllowOnce": {},
     "promptLifespanOptionSession": "სისტემიდან გასვლამდე",
-    "@promptLifespanOptionSession": {},
     "promptSaveAndContinue": "შენახვა და გაგრძელება",
-    "@promptSaveAndContinue": {},
     "promptTitle": "უსაფრთხოების გაფრთხილება",
-    "@promptTitle": {},
     "homePatternInfo": "<გაიგეთ მეტი ბილიკის ნიმუშების შესახებ>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "მორგებული ბილიკის ნიმუში",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "მხოლოდ მოთხოვნილი საქაღალდე",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "მხოლოდ მოთხოვნილი ფაილი",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "ყველაფერი საქაღალდეში {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -147,9 +126,7 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "ყველაფერი საქაღალდეში",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "ყველაფერი საქაღალდეში",
-    "@homePatternTypeContainingDirectory": {},
     "homePromptMetaDataLastUpdated": "ბოლო განახლების დრო: {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
@@ -159,9 +136,7 @@
         }
     },
     "homePatternTypeHomeDirectory": "ყველაფერი საწყის საქაღალდეში",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptMetaDataTitle": "ამ აპის შესახებ",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "გამომცემელი: {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -171,9 +146,7 @@
         }
     },
     "homePromptMoreOptionsLabel": "მეტი პარამეტრი...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "აპების ცენტრის გვერდზე გადასვლა",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptSuggestedPermission": "ასევე მიეცემა წვდომა {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -183,9 +156,7 @@
         }
     },
     "homePromptErrorUnknownTitle": "რაღაც არასწორია",
-    "@homePromptErrorUnknownTitle": {},
     "promptActionOptionAllowUntilLogout": "დაშვება გასვლამდე",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "დაუშვებთ, {snapName}-ს ჰქონდეს წვდომა თქვენს კამერასთან?",
     "@cameraPromptBody": {
         "placeholders": {
