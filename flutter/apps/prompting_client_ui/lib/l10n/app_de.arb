@@ -1,6 +1,5 @@
 {
     "promptActionOptionAllow": "Erlauben",
-    "@promptActionOptionAllow": {},
     "promptAccessMoreOptionsTitle": "Zugriff für {snap} festlegen auf:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -21,27 +20,16 @@
         }
     },
     "promptActionOptionAllowAlways": "Immer zulassen",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "Verweigern",
-    "@promptActionOptionDeny": {},
     "promptActionTitle": "Aktion",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "Immer",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Bis zur Abmeldung",
-    "@promptLifespanOptionSession": {},
     "promptSaveAndContinue": "Speichern und fortfahren",
-    "@promptSaveAndContinue": {},
     "homePatternInfo": "<Etwas über Pfadmuster erfahren>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Benutzerdefiniertes Pfadmuster",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "Nur der angeforderte Ordner",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Nur die angeforderte Datei",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-Dateien",
-    "@homePatternTypeMatchingFileExtension": {},
     "homePromptBody": "{snap} den {permissions}-Zugriff auf {path} erlauben?",
     "@homePromptBody": {
         "placeholders": {
@@ -57,7 +45,6 @@
         }
     },
     "homePromptMetaDataTitle": "Über diese App",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Herausgegeben von {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -67,7 +54,6 @@
         }
     },
     "homePatternTypeHomeDirectory": "Alles im Benutzerordner",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptMetaDataLastUpdated": "Zuletzt aktualisiert am {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
@@ -77,27 +63,16 @@
         }
     },
     "homePromptMoreOptionsLabel": "Weitere Optionen ...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsTitle": "Berechtigungen",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "Lesen",
-    "@homePromptPermissionsRead": {},
     "homePromptMetaDataAppCenterLink": "Seite des App-Zentrums besuchen",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsWrite": "Schreiben",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Ausführen",
-    "@homePromptPermissionsExecute": {},
     "securityCenterInfo": "Sie können diese Berechtigungen jederzeit im <Sicherheitszentrum> ändern",
-    "@securityCenterInfo": {},
     "promptActionOptionDenyOnce": "Einmal verweigern",
-    "@promptActionOptionDenyOnce": {},
     "promptLifespanOptionSingle": "Einmal",
-    "@promptLifespanOptionSingle": {},
     "promptTitle": "Sicherheitsbenachrichtigung",
-    "@promptTitle": {},
     "promptLifespanTitle": "Dauer",
-    "@promptLifespanTitle": {},
     "homePatternTypeTopLevelDirectory": "Alles im Ordner {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -107,13 +82,9 @@
         }
     },
     "homePatternTypeContainingDirectory": "Alles im Ordner",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "promptActionOptionAllowOnce": "Einmal zulassen",
-    "@promptActionOptionAllowOnce": {},
     "homePromptErrorUnknownTitle": "Etwas ist schiefgelaufen",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptSuggestedPermission": "Auch Zugriff für {permission} geben",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -193,7 +164,6 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Bis zum Abmelden zulassen",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "Zugriff auf Ihre Kamera durch {snapName} zulassen?",
     "@cameraPromptBody": {
         "placeholders": {
