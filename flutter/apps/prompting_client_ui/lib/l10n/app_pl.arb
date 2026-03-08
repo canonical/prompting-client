@@ -163,7 +163,7 @@
             }
         }
     },
-    "microphonePromptBody": "Czy zezwolić programowi {snapName} na dostęp do mikrofonu?",
+    "microphonePromptBody": "Czy zezwolić programowi {snapName} na używanie mikrofonów?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -171,7 +171,7 @@
             }
         }
     },
-    "cameraPromptBody": "Czy zezwolić programowi {snapName} na dostęp do kamery?",
+    "cameraPromptBody": "Czy zezwolić programowi {snapName} na używanie kamer?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -179,5 +179,33 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Zezwalaj do momentu wylogowania"
+    "promptActionOptionAllowUntilLogout": "Zezwalaj do momentu wylogowania",
+    "promptActionOptionDenyAlways": "Odmawiaj zawsze",
+    "promptActionOptionDenyUntilLogout": "Odmawiaj do momentu wylogowania",
+    "homeCustomPathSaveButton": "Zapisz ścieżkę niestandardową",
+    "homeCustomPathMustStartWithSlash": "Wzór ścieżki musi zaczynać się od /",
+    "homeCustomPathWildcardStarDescription": "Dopasowuje dowolny ciąg znaków z wyjątkiem /",
+    "homeCustomPathWildcardQuestionDescription": "Dopasowuje pojedynczy znak",
+    "homeCustomPathWildcardDoubleStarDescription": "Dopasowuje rekurencyjnie zero lub więcej katalogów i plików",
+    "homeCustomPathWildcardCurlyDescription": "Dopasowuje x lub y",
+    "homeCustomPathWildcardBackslashDescription": "Uwalnia znaki specjalne od traktowania ich jako znaki dosłowne",
+    "homePromptMetaDataVerifiedAccountPrefix": "Ten wydawca ma ",
+    "homePromptMetaDataVerifiedAccountLink": "zweryfikowane konto",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Więcej opcji",
+    "homePromptMetaDataAppCenterButton": "Otwórz w Centrum oprogramowania",
+    "homePromptPermissionsReadOnly": "Tylko do odczytu",
+    "homePromptPermissionsWriteOnly": "Tylko do zapisu",
+    "homePromptPermissionsExecuteOnly": "Tylko do wykonywania",
+    "homePromptTitleQuestion": "Czy udzielić programowi {snapName} dostępu {permissions} do plików?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
