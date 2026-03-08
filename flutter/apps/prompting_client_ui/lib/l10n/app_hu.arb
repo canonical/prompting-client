@@ -8,7 +8,6 @@
         }
     },
     "securityCenterInfo": "Ezeket a jogosultságokat bármikor megváltoztathatja a <Biztonsági központban>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "A(z) {snap} snap-csomaghoz való hozzáférés beállítása erre:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -18,23 +17,14 @@
         }
     },
     "promptActionOptionDeny": "Tiltás",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Tiltás egyszer",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "Művelet",
-    "@promptActionTitle": {},
     "promptLifespanOptionSession": "Kijelentkezésig",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "Egyszer",
-    "@promptLifespanOptionSingle": {},
     "homePatternTypeCustomPath": "Egyéni útvonalminta",
-    "@homePatternTypeCustomPath": {},
     "homePatternInfo": "<Tudjon meg többet az útvonalmintákról>",
-    "@homePatternInfo": {},
     "homePatternTypeRequestedDirectory": "Csak a kért mappa",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Csak a kért fájl",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "Minden a(z) {topLevelDir} mappában",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -44,11 +34,8 @@
         }
     },
     "homePatternTypeContainingDirectory": "Minden a mappában",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Minden a saját mappában",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptMetaDataTitle": "Az alkalmazás névjegye",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Közzétette: {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -66,13 +53,9 @@
         }
     },
     "homePromptMoreOptionsLabel": "További beállítások…",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsRead": "Olvasás",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Írás",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Végrehajtás",
-    "@homePromptPermissionsExecute": {},
     "promptAccessTitle": "{permission} jogosultság adása a(z) {snap} snap-csomagnak erre:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -85,21 +68,13 @@
         }
     },
     "promptActionOptionAllow": "Engedélyezés",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Engedélyezés mindig",
-    "@promptActionOptionAllowAlways": {},
     "promptLifespanOptionForever": "Mindig",
-    "@promptLifespanOptionForever": {},
     "promptSaveAndContinue": "Mentés és folytatás",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Biztonsági értesítés",
-    "@promptTitle": {},
     "homePatternTypeRequestedDirectoryContents": "Minden a mappában",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "promptActionOptionAllowOnce": "Engedélyezés egyszer",
-    "@promptActionOptionAllowOnce": {},
     "promptLifespanTitle": "Időtartam",
-    "@promptLifespanTitle": {},
     "homePatternTypeMatchingFileExtension": "Az összes {fileExtension} fájl",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -123,11 +98,8 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "Az alkalmazásközpont oldalának meglátogatása",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "Jogosultságok",
-    "@homePromptPermissionsTitle": {},
     "homePromptErrorUnknownTitle": "Valami tönkre ment",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptDefaultBody": "A(z) {snap} snap-csomag {permissions} hozzáférést szeretne kérni a(z) {path} útvonalra",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -199,7 +171,6 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Engedélyezés a kijelentkezésig",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "Engedélyezi a(z) {snapName} számára, hogy hozzáférjen a kamerájához?",
     "@cameraPromptBody": {
         "placeholders": {
