@@ -8,13 +8,9 @@
         }
     },
     "promptLifespanTitle": "مدّت",
-    "@promptLifespanTitle": {},
     "promptActionTitle": "کنش",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "همیشه",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSingle": "یک بار",
-    "@promptLifespanOptionSingle": {},
     "homePromptMetaDataPublishedBy": "منتشر شده به دست {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -32,17 +28,11 @@
         }
     },
     "securityCenterInfo": "همیشه می‌توانید این اجازه‌ها را در «مرکز امنیت» تغییر دهید",
-    "@securityCenterInfo": {},
     "promptActionOptionAllow": "اجازه",
-    "@promptActionOptionAllow": {},
     "promptActionOptionDeny": "رد",
-    "@promptActionOptionDeny": {},
     "promptActionOptionAllowAlways": "اجازه برای همیشه",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDenyOnce": "رد کردن برای یک بار",
-    "@promptActionOptionDenyOnce": {},
     "promptLifespanOptionSession": "تا خروج",
-    "@promptLifespanOptionSession": {},
     "promptAccessTitle": "دادن دسترسی {permission}{snap} به:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -55,9 +45,7 @@
         }
     },
     "promptTitle": "آگاهی امنیتی",
-    "@promptTitle": {},
     "homePatternTypeRequestedFile": "فقط پروندهٔ درخواستی",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "همه‌چیز در شاخهٔ {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -67,23 +55,14 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "هر چیزی در شاخه",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "هر چیزی در شاخه",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "همه‌چیز در شاخهٔ خانگی",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptPermissionsWrite": "نوشتن",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "اجرا",
-    "@homePromptPermissionsExecute": {},
     "promptActionOptionAllowOnce": "اجازه برای یک بار",
-    "@promptActionOptionAllowOnce": {},
     "homePromptMoreOptionsLabel": "گزینه‌های بیش‌تر…",
-    "@homePromptMoreOptionsLabel": {},
     "promptSaveAndContinue": "ذخیره و ادامه",
-    "@promptSaveAndContinue": {},
     "homePatternTypeCustomPath": "الگوی مسیر سفارشی",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeMatchingFileExtension": "همهٔ پرونده‌های {fileExtension}",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -93,11 +72,8 @@
         }
     },
     "homePromptMetaDataTitle": "دربارهٔ این کاره",
-    "@homePromptMetaDataTitle": {},
     "homePatternInfo": "<آموزش بیش‌تر دربارهٔ الگوهای مسیر>",
-    "@homePatternInfo": {},
     "homePatternTypeRequestedDirectory": "فقط شاخهٔ درخواستی",
-    "@homePatternTypeRequestedDirectory": {},
     "homePromptMetaDataLastUpdated": "آخرین به‌روز رسانی در {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
@@ -121,13 +97,9 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "دیدن صفحهٔ مرکز کاره",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "اجازه‌ها",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "خواندن",
-    "@homePromptPermissionsRead": {},
     "homePromptErrorUnknownTitle": "چیزی اشتباه پیش رفت",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptDefaultBody": "{snap} می‌خواهد دسترسی {permissions} را به {path} بگیرد",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -199,7 +171,6 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "اجازه تا خروج",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "اجازه به {snapName} برای دسترسی به دوربینتان؟",
     "@cameraPromptBody": {
         "placeholders": {
