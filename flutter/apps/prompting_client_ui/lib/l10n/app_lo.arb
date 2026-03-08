@@ -1,6 +1,5 @@
 {
     "securityCenterInfo": "ທ່ານສາມາດປ່ຽນການອະນຸຍາດເຫຼົ່ານີ້ໄດ້ຕະຫຼອດເວລາໃນ <ສູນຄວາມປອດໄພ>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "ກຳນົດການເຂົ້າເຖິງສຳລັບ {snap} ໄປທີ່:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -21,39 +20,22 @@
         }
     },
     "promptActionOptionAllow": "ອະນຸຍາດ",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "ອະນຸຍາດຕະຫຼອດ",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionAllowOnce": "ອະນຸຍາດເທື່ອດຽວ",
-    "@promptActionOptionAllowOnce": {},
     "promptActionOptionDeny": "ປະຕິເສດ",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "ປະຕິເສດເທື່ອດຽວ",
-    "@promptActionOptionDenyOnce": {},
     "promptActionOptionAllowUntilLogout": "ອະນຸຍາດຈົນກວ່າຈະອອກຈາກລະບົບ",
-    "@promptActionOptionAllowUntilLogout": {},
     "promptActionTitle": "ການກະທຳ",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "ຕະຫຼອດໄປ",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "ຈົນກວ່າຈະອອກຈາກລະບົບ",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "ເທື່ອດຽວ",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "ໄລຍະເວລາ",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "ບັນທຶກ ແລະ ສືບຕໍ່",
-    "@promptSaveAndContinue": {},
     "promptTitle": "ການແຈ້ງເຕືອນຄວາມປອດໄພ",
-    "@promptTitle": {},
     "homePatternInfo": "<ຮຽນຮູ້ກ່ຽວກັບຮູບແບບເສັ້ນທາງ>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "ຮູບແບບເສັ້ນທາງແບບກຳນົດເອງ",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "ໂຟນເດີທີ່ຮ້ອງຂໍເທົ່ານັ້ນ",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "ໄຟລ໌ທີ່ຮ້ອງຂໍເທົ່ານັ້ນ",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "ທຸກຢ່າງໃນໂຟນເດີ {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -63,11 +45,8 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "ທຸກຢ່າງໃນໂຟນເດີ",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "ທຸກຢ່າງໃນໂຟນເດີ",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "ທຸກຢ່າງໃນໂຟນເດີ Home",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "ໄຟລ໌ {fileExtension} ທັງໝົດ",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -147,7 +126,6 @@
         }
     },
     "homePromptMetaDataTitle": "ກ່ຽວກັບແອັບນີ້",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "ເຜີຍແຜ່ໂດຍ {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -165,9 +143,7 @@
         }
     },
     "homePromptMoreOptionsLabel": "ຕົວເລືອກເພີ່ມເຕີມ...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "ເຂົ້າຊົມໜ້າ App Center",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptSuggestedPermission": "ໃຫ້ສິດເຂົ້າເຖິງ {permission} ນຳ",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -177,15 +153,10 @@
         }
     },
     "homePromptPermissionsTitle": "ການອະນຸຍາດ",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "ອ່ານ",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "ຂຽນ",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "ດຳເນີນການ",
-    "@homePromptPermissionsExecute": {},
     "homePromptErrorUnknownTitle": "ມີບາງຢ່າງຜິດພາດ",
-    "@homePromptErrorUnknownTitle": {},
     "cameraPromptBody": "ອະນຸຍາດໃຫ້ {snapName} ເຂົ້າເຖິງກ້ອງຂອງທ່ານບໍ່?",
     "@cameraPromptBody": {
         "placeholders": {
