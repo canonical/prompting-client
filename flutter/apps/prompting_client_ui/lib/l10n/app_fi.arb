@@ -8,7 +8,6 @@
         }
     },
     "securityCenterInfo": "Voit muuttaa käyttöoikeuksia <Tietoturvakeskuksessa>",
-    "@securityCenterInfo": {},
     "promptAccessTitle": "Anna sovellukselle {snap} käyttöoikeus \"{permission}\":",
     "@promptAccessTitle": {
         "placeholders": {
@@ -21,27 +20,16 @@
         }
     },
     "promptActionOptionAllow": "Salli",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Salli aina",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "Estä",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Estä kerran",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "Toiminto",
-    "@promptActionTitle": {},
     "promptLifespanTitle": "Kesto",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Tallenna ja jatka",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Tietoturvailmoitus",
-    "@promptTitle": {},
     "homePatternTypeCustomPath": "Mukautettu polkukaava",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "Vain pyydetty kansio",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Vain pyydetty tiedosto",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "Kaikki kansiossa {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -51,9 +39,7 @@
         }
     },
     "homePatternTypeContainingDirectory": "Kaikki kansiossa",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeRequestedDirectoryContents": "Kaikki kansiossa",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePromptBody": "Sallitko sovellukselle {snap} käyttöoikeuden \"{permissions}\" polkuun {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -69,7 +55,6 @@
         }
     },
     "homePromptMetaDataTitle": "Tietoja tästä sovelluksesta",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Julkaisija {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -79,9 +64,7 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "Käy sovelluskeskuksen sivulla",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "Oikeudet",
-    "@homePromptPermissionsTitle": {},
     "homePromptMetaDataLastUpdated": "Viimeksi päivitetty {date}",
     "@homePromptMetaDataLastUpdated": {
         "placeholders": {
@@ -91,23 +74,14 @@
         }
     },
     "homePromptMoreOptionsLabel": "Lisää valintoja...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsRead": "Lue",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Kirjoita",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Suorita",
-    "@homePromptPermissionsExecute": {},
     "promptActionOptionAllowOnce": "Salli kerran",
-    "@promptActionOptionAllowOnce": {},
     "promptLifespanOptionForever": "Aina",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Uloskirjautumiseen asti",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "Kerran",
-    "@promptLifespanOptionSingle": {},
     "homePatternTypeHomeDirectory": "Kaikki kotikansiossa",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Kaikki {fileExtension}-tiedostot",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -162,7 +136,6 @@
         }
     },
     "homePromptErrorUnknownTitle": "Tapahtui virhe",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptTopLevelDirBody": "{snap} haluaa oikeudet {permissions} kansioon {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
@@ -197,9 +170,7 @@
         }
     },
     "homePatternInfo": "<Opi polkukaavoista>",
-    "@homePatternInfo": {},
     "promptActionOptionAllowUntilLogout": "Salli uloskirjautumiseen saakka",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "Sallitaanko sovellukselle {snapName} pääsy kameraan?",
     "@cameraPromptBody": {
         "placeholders": {
