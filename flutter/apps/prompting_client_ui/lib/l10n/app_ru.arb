@@ -1,18 +1,11 @@
 {
     "promptActionOptionAllow": "Разрешить",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Разрешать всегда",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "Отказать",
-    "@promptActionOptionDeny": {},
     "promptTitle": "Оповещение о безопасности",
-    "@promptTitle": {},
     "homePatternInfo": "<Узнать о шаблонах пути>",
-    "@homePatternInfo": {},
     "promptSaveAndContinue": "Сохранить и продолжить",
-    "@promptSaveAndContinue": {},
     "homePromptMetaDataTitle": "Об этом приложении",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Опубликовано {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -30,7 +23,6 @@
         }
     },
     "homePromptMoreOptionsLabel": "Другие параметры…",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptBody": "Разрешить {snap} доступ на {permissions} по пути {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -46,7 +38,6 @@
         }
     },
     "homePatternTypeRequestedFile": "Только запрашиваемый файл",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "Всё содержимое в папке {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -56,15 +47,10 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "Всё содержимое в папке",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Всё содержимое в папке",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Всё содержимое Домашней папки",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptMetaDataAppCenterLink": "Открыть страницу в Центре приложений",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "Разрешения",
-    "@homePromptPermissionsTitle": {},
     "homePatternTypeMatchingFileExtension": "Все файлы {fileExtension}",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -74,29 +60,17 @@
         }
     },
     "promptActionOptionAllowOnce": "Разрешить один раз",
-    "@promptActionOptionAllowOnce": {},
     "promptActionOptionDenyOnce": "Отказать один раз",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "Действие",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "Всегда",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "До выхода из системы",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "Один раз",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "Срок",
-    "@promptLifespanTitle": {},
     "homePatternTypeCustomPath": "Пользовательский шаблон пути",
-    "@homePatternTypeCustomPath": {},
     "homePromptPermissionsRead": "Чтение",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Запись",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Выполнение",
-    "@homePromptPermissionsExecute": {},
     "securityCenterInfo": "Вы всегда можете изменить эти разрешения в приложении <Центр безопасности>",
-    "@securityCenterInfo": {},
     "promptAccessTitle": "Доступ на {permission} для {snap}:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -109,7 +83,6 @@
         }
     },
     "homePatternTypeRequestedDirectory": "Только запрашиваемая папка",
-    "@homePatternTypeRequestedDirectory": {},
     "promptAccessMoreOptionsTitle": "Доступ для {snap}:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -127,7 +100,6 @@
         }
     },
     "homePromptErrorUnknownTitle": "Что-то пошло не так",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptTopLevelDirBody": "{snap} запрашивает разрешение на {permissions} папки {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
@@ -214,6 +186,5 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Разрешить до выхода из системы",
-    "@promptActionOptionAllowUntilLogout": {}
+    "promptActionOptionAllowUntilLogout": "Разрешить до выхода из системы"
 }
