@@ -1,12 +1,8 @@
 {
     "homePromptPermissionsExecute": "Käivitamine",
-    "@homePromptPermissionsExecute": {},
     "homePromptErrorUnknownTitle": "Midagi läks valesti",
-    "@homePromptErrorUnknownTitle": {},
     "securityCenterInfo": "Sa võid alati neid õigusi muuta <Andmeturbekeskuses>",
-    "@securityCenterInfo": {},
     "homePromptMetaDataTitle": "Selle rakenduse teave",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Avaldaja: {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -24,9 +20,7 @@
         }
     },
     "homePromptMoreOptionsLabel": "Lisavalikud...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "Vaata andmeid Rakendustekeskuses",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptSuggestedPermission": "Luba ka „{permission}“ õigused",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -36,11 +30,8 @@
         }
     },
     "homePromptPermissionsTitle": "Õigused",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "Lugemine",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Kirjutamine",
-    "@homePromptPermissionsWrite": {},
     "promptAccessMoreOptionsTitle": "Luba „{snap}“ paketile ligipääs:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -61,39 +52,22 @@
         }
     },
     "promptActionOptionAllow": "Luba",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Luba alati",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionAllowOnce": "Luba üks kord",
-    "@promptActionOptionAllowOnce": {},
     "promptActionOptionDeny": "Keela",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Keela üks kord",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "Tegevus",
-    "@promptActionTitle": {},
     "promptLifespanOptionSession": "Kuni väljalogimiseni",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionForever": "Alatiseks",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSingle": "Vaid üheks korraks",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "Kestus",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Salvesta ja jätka",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Andmeturbeteade",
-    "@promptTitle": {},
     "homePatternInfo": "<Lisateave mustrite kohta>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Sinu kirjeldatud asukohamuster",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "Valid soovitud kaustas",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeHomeDirectory": "Kõik kodukaustas",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeRequestedFile": "Vaid soovitud faili osas",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "Kõik „{topLevelDir}“ kaustas",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -103,9 +77,7 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "Kõik kaustas",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Kõik kaustas",
-    "@homePatternTypeContainingDirectory": {},
     "homePromptDefaultBody": "„{snap}“ pakett soovib „{permissions}“ õigusi asukohas „{path}“",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -185,7 +157,6 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Luba kuni väljalogimiseni",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "Kas lubad „{snapName}“ paketil kasutada kaamerat?",
     "@cameraPromptBody": {
         "placeholders": {
