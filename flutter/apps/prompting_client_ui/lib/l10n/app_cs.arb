@@ -1,18 +1,11 @@
 {
     "promptActionOptionAllow": "Povolit",
-    "@promptActionOptionAllow": {},
     "promptLifespanOptionSingle": "Jednorázově",
-    "@promptLifespanOptionSingle": {},
     "promptSaveAndContinue": "Uložit a pokračovat",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Bezpečnostní upozornění",
-    "@promptTitle": {},
     "homePatternTypeCustomPath": "Uživatelsky určený vzor popisu umístění",
-    "@homePatternTypeCustomPath": {},
     "homePatternInfo": "<Další informace o vzorech popisů umístění>",
-    "@homePatternInfo": {},
     "homePatternTypeRequestedDirectoryContents": "Vše ve složce",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeTopLevelDirectory": "Vše ve složce {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -22,17 +15,11 @@
         }
     },
     "homePatternTypeHomeDirectory": "Vše v domovské složce",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Všechny soubory {fileExtension}",
-    "@homePatternTypeMatchingFileExtension": {},
     "homePromptPermissionsWrite": "Zapisovat",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsRead": "Číst",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsTitle": "Oprávnění",
-    "@homePromptPermissionsTitle": {},
     "homePromptMetaDataTitle": "O této aplikaci",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Publikoval {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -50,11 +37,8 @@
         }
     },
     "homePromptMoreOptionsLabel": "Více možností…",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "Navštivte stránku Centra aplikací",
-    "@homePromptMetaDataAppCenterLink": {},
     "promptActionTitle": "Činnost",
-    "@promptActionTitle": {},
     "promptAccessTitle": "Poskytnout {snap} {permission} přístup k:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -67,7 +51,6 @@
         }
     },
     "securityCenterInfo": "Tato oprávnění můžete kdykoli změnit v <Centru zabezpečení>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "Nastavit přístup pro {snap} na:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -77,25 +60,15 @@
         }
     },
     "promptActionOptionAllowAlways": "Vždy povolit",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "Zamítnout",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Pro teď zamítnout",
-    "@promptActionOptionDenyOnce": {},
     "promptLifespanTitle": "Trvání",
-    "@promptLifespanTitle": {},
     "promptLifespanOptionForever": "Vždy",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Do odhlášení",
-    "@promptLifespanOptionSession": {},
     "homePatternTypeRequestedDirectory": "Pouze požadovaná složka",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Pouze požadovaný soubor",
-    "@homePatternTypeRequestedFile": {},
     "homePromptPermissionsExecute": "Spouštět",
-    "@homePromptPermissionsExecute": {},
     "homePatternTypeContainingDirectory": "Vše ve složce",
-    "@homePatternTypeContainingDirectory": {},
     "homePromptBody": "Povolit aplikaci {snap} mít přístup ke {permissions} k {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -111,7 +84,6 @@
         }
     },
     "promptActionOptionAllowOnce": "Povolit jednou",
-    "@promptActionOptionAllowOnce": {},
     "homePromptSuggestedPermission": "Poskytnout také přístup k {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -121,7 +93,6 @@
         }
     },
     "homePromptErrorUnknownTitle": "Něco se nepovedlo",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptDefaultBody": "{snap} chce získat {permissions} přístup k {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -193,7 +164,6 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Umožnit až do odhlášení",
-    "@promptActionOptionAllowUntilLogout": {},
     "cameraPromptBody": "Umožnit {snapName} přistupovat k vaší kameře?",
     "@cameraPromptBody": {
         "placeholders": {
