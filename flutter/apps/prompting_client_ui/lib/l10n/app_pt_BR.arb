@@ -1,6 +1,5 @@
 {
     "securityCenterInfo": "Você sempre pode alterar essas permissões na <Central de Segurança>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "Defina o acesso do {snap} para:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -21,39 +20,22 @@
         }
     },
     "promptActionOptionAllow": "Permitir",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Permitir sempre",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionAllowOnce": "Permitir uma vez",
-    "@promptActionOptionAllowOnce": {},
     "promptActionOptionDeny": "Negar",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Negar uma vez",
-    "@promptActionOptionDenyOnce": {},
     "promptActionOptionAllowUntilLogout": "Permitir até o logout",
-    "@promptActionOptionAllowUntilLogout": {},
     "promptActionTitle": "Ação",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "Sempre",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Até que você faça logout",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "Uma vez",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "Duração",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Salvar e continuar",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Notificação de segurança",
-    "@promptTitle": {},
     "homePatternInfo": "<Saiba mais sobre padrões de caminho>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Padrão de caminho personalizado",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "Somente a pasta solicitada",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Somente o arquivo solicitado",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "Tudo na pasta {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -63,11 +45,8 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "Tudo na pasta",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Tudo na pasta",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Tudo na pasta Início",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Todos os arquivos {fileExtension}",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -147,7 +126,6 @@
         }
     },
     "homePromptMetaDataTitle": "Sobre este aplicativo",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Publicado por {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -165,9 +143,7 @@
         }
     },
     "homePromptMoreOptionsLabel": "Mais opções...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "Visite a página da Central de Aplicativos",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptSuggestedPermission": "Também conceda acesso {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -177,15 +153,10 @@
         }
     },
     "homePromptPermissionsTitle": "Permissões",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsRead": "Leia",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Escreva",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Execute",
-    "@homePromptPermissionsExecute": {},
     "homePromptErrorUnknownTitle": "Algo deu errado",
-    "@homePromptErrorUnknownTitle": {},
     "cameraPromptBody": "Permitir que {snapName} acesse sua câmera?",
     "@cameraPromptBody": {
         "placeholders": {
