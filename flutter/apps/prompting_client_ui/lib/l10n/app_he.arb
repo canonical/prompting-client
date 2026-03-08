@@ -8,13 +8,9 @@
         }
     },
     "homePatternTypeCustomPath": "תבנית נתיב מותאמת אישית",
-    "@homePatternTypeCustomPath": {},
     "homePromptPermissionsWrite": "כתיבה",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "הפעלה",
-    "@homePromptPermissionsExecute": {},
     "securityCenterInfo": "תמיד אפשר לשנות את ההרשאות האלה ב<מרכז האבטחה>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "הגדרת גישה ל־{snap} אל:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -35,31 +31,18 @@
         }
     },
     "promptActionOptionAllow": "לאפשר",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "לאפשר תמיד",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "לדחות",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "לדחות חד־פעמית",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "פעולה",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "תמיד",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "עד היציאה מהמערכת",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "חד־פעמית",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "משך",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "לשמור ולהמשיך",
-    "@promptSaveAndContinue": {},
     "homePatternTypeRequestedDirectory": "התיקייה המבוקשת בלבד",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "הקובץ המבוקש בלבד",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeRequestedDirectoryContents": "הכול בתיקייה",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeTopLevelDirectory": "הכול בתיקיית {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -69,7 +52,6 @@
         }
     },
     "homePatternTypeHomeDirectory": "הכול בתיקיית הבית",
-    "@homePatternTypeHomeDirectory": {},
     "homePromptBody": "לאפשר ל־{snap} גישת {permissions} אל {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -85,7 +67,6 @@
         }
     },
     "homePromptMetaDataTitle": "על היישום הזה",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "פורסם על ידי {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -103,11 +84,8 @@
         }
     },
     "homePromptPermissionsTitle": "הרשאות",
-    "@homePromptPermissionsTitle": {},
     "homePromptMetaDataAppCenterLink": "ביקור בעמוד מרכז היישומים",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsRead": "קריאה",
-    "@homePromptPermissionsRead": {},
     "homePatternTypeMatchingFileExtension": "כל קובצי ה־{fileExtension}",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -117,17 +95,11 @@
         }
     },
     "promptActionOptionAllowOnce": "לאפשר חד־פעמית",
-    "@promptActionOptionAllowOnce": {},
     "promptTitle": "התראת אבטחה",
-    "@promptTitle": {},
     "homePatternInfo": "<מידע על תבניות נתיבים>",
-    "@homePatternInfo": {},
     "homePatternTypeContainingDirectory": "הכול בתיקייה",
-    "@homePatternTypeContainingDirectory": {},
     "homePromptMoreOptionsLabel": "אפשרויות נוספות…",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptErrorUnknownTitle": "משהו השתבש",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptDefaultBody": "{snap} רוצה לקבל גישת {permissions} אל {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -199,8 +171,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "לאפשר עד ליציאה מהמערכת",
-    "@promptActionOptionAllowUntilLogout": {},
-    "cameraPromptBody": "לאפשר ל־{snapName} לגשת למצלמה שלך?",
+    "cameraPromptBody": "לאפשר ל־{snapName} להשתמש במצלמות שלך?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -208,12 +179,40 @@
             }
         }
     },
-    "microphonePromptBody": "לאפשר ל־{snapName} לגשת למיקרופון שלך?",
+    "microphonePromptBody": "לאפשר ל־{snapName} להשתמש במיקרופונים שלך?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
                 "type": "String"
             }
         }
-    }
+    },
+    "homePromptTitleQuestion": "להעניק ל־{snapName} גישה ל{permissions} קבצים?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "לדחות תמיד",
+    "promptActionOptionDenyUntilLogout": "לדחות עד ליציאה",
+    "homeCustomPathSaveButton": "לשמור נתיב מותאם אישית",
+    "homeCustomPathMustStartWithSlash": "תבנית הנתיב חייבת להיפתח ב־/",
+    "homeCustomPathWildcardStarDescription": "לוכד כל מחרוזת של תווים למעט /",
+    "homeCustomPathWildcardQuestionDescription": "לוכד תו יחיד",
+    "homeCustomPathWildcardDoubleStarDescription": "לוכד אפס תיקיות וקבצים או יותר באופן נסוג",
+    "homeCustomPathWildcardCurlyDescription": "לוכד את א׳ או ב׳",
+    "homeCustomPathWildcardBackslashDescription": "סולק תווים מיוחדים כדי להתייחס אליהם מפורשות",
+    "homePromptMetaDataVerifiedAccountPrefix": "למפיץ הזה יש ",
+    "homePromptMetaDataVerifiedAccountLink": "חשבון מאומת",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "אפשרויות נוספות",
+    "homePromptMetaDataAppCenterButton": "פתיחה במרכז היישומים",
+    "homePromptPermissionsReadOnly": "קריאה בלבד",
+    "homePromptPermissionsWriteOnly": "כתיבה בלבד",
+    "homePromptPermissionsExecuteOnly": "הרצה בלבד"
 }
