@@ -170,7 +170,7 @@
             }
         }
     },
-    "cameraPromptBody": "Разрешить {snapName} доступ к вашей камере?",
+    "cameraPromptBody": "Разрешить {snapName} использование камер?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -178,7 +178,7 @@
             }
         }
     },
-    "microphonePromptBody": "Разрешить {snapName} доступ к вашему микрофону?",
+    "microphonePromptBody": "Разрешить {snapName} использование микрофонов?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -186,5 +186,33 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Разрешить до выхода из системы"
+    "promptActionOptionAllowUntilLogout": "Разрешить до выхода из системы",
+    "promptActionOptionDenyAlways": "Всегда отказывать",
+    "promptActionOptionDenyUntilLogout": "Отказывать до выхода из системы",
+    "homeCustomPathSaveButton": "Сохранить польз. путь",
+    "homeCustomPathMustStartWithSlash": "Шаблон пути должен начинаться с /",
+    "homeCustomPathWildcardStarDescription": "Соответствует любой строке символов, кроме /",
+    "homeCustomPathWildcardQuestionDescription": "Соответствует одному символу",
+    "homeCustomPathWildcardDoubleStarDescription": "Соответствует нулю или более папкам и файлам рекурсивно",
+    "homeCustomPathWildcardCurlyDescription": "Соответствует либо x, либо y",
+    "homeCustomPathWildcardBackslashDescription": "Экранирует специальные символы, чтобы обрабатывать их как литералы",
+    "homePromptMetaDataVerifiedAccountPrefix": "Этот издатель имеет ",
+    "homePromptMetaDataVerifiedAccountLink": "проверенную уч. запись",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Другие параметры",
+    "homePromptMetaDataAppCenterButton": "Открыть в Центре приложений",
+    "homePromptPermissionsReadOnly": "Только чтение",
+    "homePromptPermissionsWriteOnly": "Только запись",
+    "homePromptPermissionsExecuteOnly": "Только выполнение",
+    "homePromptTitleQuestion": "Дать {snapName} доступ уровня «{permissions}» к файлам?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
