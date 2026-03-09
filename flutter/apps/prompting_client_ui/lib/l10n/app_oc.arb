@@ -8,7 +8,6 @@
         }
     },
     "securityCenterInfo": "Podètz totjorn cambiar aquestas permissions al <Centre de seguretat>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "Definir l’accès per {snap} a :",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -29,35 +28,20 @@
         }
     },
     "promptActionOptionAllow": "Autorizar",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Totjorn autorizar",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "Refusar",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Refusar un còp",
-    "@promptActionOptionDenyOnce": {},
     "promptLifespanOptionSingle": "Un còp",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "Durada",
-    "@promptLifespanTitle": {},
     "promptActionTitle": "Accion",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "Totjorn",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Fins la desconnexion",
-    "@promptLifespanOptionSession": {},
     "promptSaveAndContinue": "Salvar e contunhar",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Notificacion de seguretat",
-    "@promptTitle": {},
     "homePatternInfo": "<Ne saber mai tocant los motius>",
-    "@homePatternInfo": {},
     "homePatternTypeCustomPath": "Modèl de motiu personalizat",
-    "@homePatternTypeCustomPath": {},
     "homePatternTypeRequestedDirectory": "Lo dossièr demandat sonque",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Lo fichièr demandat sonque",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeTopLevelDirectory": "Tot dins lo dossièr {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -67,11 +51,8 @@
         }
     },
     "homePatternTypeRequestedDirectoryContents": "Tot dins lo dossièr",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Tot dins lo dossièr",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Tot dins lo repertòri personal",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Totes los fichièrs {fileExtension}",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
@@ -95,7 +76,6 @@
         }
     },
     "homePromptMetaDataTitle": "A prepaus d’aquesta aplicacion",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Publicat per {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -113,22 +93,14 @@
         }
     },
     "homePromptMoreOptionsLabel": "Mai d’opcions…",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptMetaDataAppCenterLink": "Consultar la pagina del Centre d’aplicacions",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "Autorizacions",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsWrite": "Escritura",
-    "@homePromptPermissionsWrite": {},
     "homePromptPermissionsExecute": "Executar",
-    "@homePromptPermissionsExecute": {},
     "promptActionOptionAllowOnce": "Autorizar un còp",
-    "@promptActionOptionAllowOnce": {},
     "homePromptPermissionsRead": "Lectura",
-    "@homePromptPermissionsRead": {},
     "homePromptErrorUnknownTitle": "Quicòm a trucat",
-    "@homePromptErrorUnknownTitle": {},
-    "homePromptHomeDirBody": "{snap} vòl l'accès {permissions} a vòstre repertòri personal.",
+    "homePromptHomeDirBody": "{snap} vòl l’accès {permissions} a vòstre repertòri personal.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -139,7 +111,7 @@
             }
         }
     },
-    "homePromptDefaultBody": "{snap} vòl obténer l'accès {permissions} a {path}",
+    "homePromptDefaultBody": "{snap} vòl obténer l’accès {permissions} a {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
@@ -153,7 +125,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} vòl l'acces {permissions} al dossièr {foldername}.",
+    "homePromptTopLevelDirBody": "{snap} vòl l’acces {permissions} al dossièr {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -167,7 +139,7 @@
             }
         }
     },
-    "homePromptTopLevelDirFileBody": "{snap} vòl l'accès {permissions} a {filename} dins lol dossièr {foldername}.",
+    "homePromptTopLevelDirFileBody": "{snap} vòl l’accès {permissions} a {filename} dins lo dossièr {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -184,7 +156,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} vòl l'accès {permissions} a {filename} dins vòstre repertòri personal.",
+    "homePromptHomeDirFileBody": "{snap} vòl l’accès {permissions} a {filename} dins vòstre repertòri personal.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -198,7 +170,7 @@
             }
         }
     },
-    "microphonePromptBody": "Autorizar {snapName} a accedir al microfòn ?",
+    "microphonePromptBody": "Autorizar {snapName} a utilizar vòstre microfòn ?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -207,11 +179,38 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Autorizar dusca la desconnexion",
-    "@promptActionOptionAllowUntilLogout": {},
-    "cameraPromptBody": "Autorizar {snapName} a accedir a la camèra ?",
+    "cameraPromptBody": "Autorizar {snapName} a utilizar vòstra camèra ?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Totjorn refusar",
+    "promptActionOptionDenyUntilLogout": "Refusar dusca la desconnexion",
+    "homeCustomPathSaveButton": "Salvar l’emplaçament personalizat",
+    "homeCustomPathMustStartWithSlash": "Lo modèl de camin deu començar per /",
+    "homeCustomPathWildcardStarDescription": "Correspond a tota cadena de tèxt levat /",
+    "homeCustomPathWildcardQuestionDescription": "Correspond a un sol caractèr",
+    "homeCustomPathWildcardCurlyDescription": "Correspond a x o y",
+    "homePromptMetaDataVerifiedAccountPrefix": "Aqueste editor a un ",
+    "homePromptMetaDataVerifiedAccountLink": "compte verificat",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Mai d’opcions",
+    "homePromptPermissionsReadOnly": "Lectura sola",
+    "homePromptPermissionsWriteOnly": "Escritura sola",
+    "homePromptPermissionsExecuteOnly": "Executar solament",
+    "homeCustomPathWildcardDoubleStarDescription": "Correspond a zèro o mantun dodsièr e fichièr de biais recursiu",
+    "homeCustomPathWildcardBackslashDescription": "Escapa los caractèrs especials per los tractar coma de literals",
+    "homePromptMetaDataAppCenterButton": "Dobrir dins lo Centre d’aplicacions",
+    "homePromptTitleQuestion": "Permetre a {snapName} {permissions} d’accedir als fichièrs ?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
