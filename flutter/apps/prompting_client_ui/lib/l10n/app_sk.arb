@@ -93,7 +93,7 @@
         }
     },
     "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
-    "homePromptTopLevelDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v priečinku {foldername}.",
+    "homePromptTopLevelDirFileBody": "{snap} žiada o prístup na {permissions} k {filename} v priečinku {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -135,7 +135,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v domovskom priečinku.",
+    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k {filename} v domovskom priečinku.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -164,7 +164,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Povoliť do odhlásenia",
-    "cameraPromptBody": "Povoliť aplikácii {snapName} prístup ku kamere?",
+    "cameraPromptBody": "Povoliť {snapName} prístup ku kamerám?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,10 +172,38 @@
             }
         }
     },
-    "microphonePromptBody": "Povoliť aplikácii {snapName} prístup k mikrofónu?",
+    "microphonePromptBody": "Povoliť {snapName} prístup ku mikrofónom?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Vždy odmietnuť",
+    "promptActionOptionDenyUntilLogout": "Odmietnuť do odhlásenia",
+    "homeCustomPathSaveButton": "Uložiť vlastnú cestu",
+    "homeCustomPathMustStartWithSlash": "Formát cesty musí začínať znakom /",
+    "homeCustomPathWildcardStarDescription": "Zodpovedá ľubovoľnému reťazcu znakov okrem /",
+    "homeCustomPathWildcardQuestionDescription": "Zodpovedá jednému znaku",
+    "homeCustomPathWildcardDoubleStarDescription": "Zodpovedá nule alebo viacerým priečinkom a súborom rekurzívne",
+    "homeCustomPathWildcardCurlyDescription": "Zodpovedá buď x alebo y",
+    "homeCustomPathWildcardBackslashDescription": "Zruší špeciálny význam znakov, aby sa považovali za bežný text",
+    "homePromptMetaDataVerifiedAccountPrefix": "Tento vydavateľ má ",
+    "homePromptMetaDataVerifiedAccountLink": "overený účet",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Viac možností",
+    "homePromptMetaDataAppCenterButton": "Otvoriť v Centre aplikácií",
+    "homePromptPermissionsReadOnly": "Iba na čítanie",
+    "homePromptPermissionsWriteOnly": "Iba na zápis",
+    "homePromptPermissionsExecuteOnly": "Iba na spúšťanie",
+    "homePromptTitleQuestion": "Umožniť {snapName} prístup na {permissions} k súborom?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
