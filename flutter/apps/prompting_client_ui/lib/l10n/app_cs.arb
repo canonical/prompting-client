@@ -179,5 +179,19 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "Vždy zamítnout",
+    "promptActionOptionDenyUntilLogout": "Zamítnout do odhlášení",
+    "homeCustomPathSaveButton": "Uložit uživatelsky určené umístění",
+    "homeCustomPathMustStartWithSlash": "Vzor popisu umístění musí začínat znakem /",
+    "homeCustomPathWildcardStarDescription": "Odpovídá libovolnému řetězci znaků kromě /",
+    "homeCustomPathWildcardQuestionDescription": "Odpovídá jednomu znaku",
+    "homeCustomPathWildcardDoubleStarDescription": "Odpovídá žádné nebo více rekurzivním složkám a souborům",
+    "homeCustomPathWildcardCurlyDescription": "Odpovídá buď x, nebo y",
+    "homeCustomPathWildcardBackslashDescription": "Řídí speciální znaky a zachází s nimi jako s literály",
+    "homePromptMetaDataVerifiedAccountPrefix": "Tento vydavatel má ",
+    "homePromptMetaDataVerifiedAccountLink": "ověřený účet",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Více možností",
+    "homePromptMetaDataAppCenterButton": "Otevřít v Centru aplikací"
 }
