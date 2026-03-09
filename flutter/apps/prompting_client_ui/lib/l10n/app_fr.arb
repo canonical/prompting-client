@@ -198,7 +198,7 @@
     "homeCustomPathWildcardBackslashDescription": "Échappe aux caractères spéciaux pour les traiter comme des littéraux",
     "homePromptMetaDataVerifiedAccountPrefix": "Cet éditeur a un ",
     "homePromptMetaDataVerifiedAccountLink": "compte vérifié",
-    "homePromptMoreOptionsTileLabel": "Davantage d'options",
+    "homePromptMoreOptionsTileLabel": "Plus d’options",
     "homePromptMetaDataAppCenterButton": "Ouvrir dans App Center (centre d'apps)",
     "homePromptPermissionsReadOnly": "Lecture seule",
     "homePromptPermissionsWriteOnly": "Écriture uniquement",
