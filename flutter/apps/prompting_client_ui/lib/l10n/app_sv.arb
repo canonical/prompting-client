@@ -1,6 +1,5 @@
 {
     "securityCenterInfo": "Du kan alltid ändra dessa behörigheter i <Säkerhetscenter>",
-    "@securityCenterInfo": {},
     "promptAccessMoreOptionsTitle": "Ställ in åtkomst för {snap} till:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
@@ -21,41 +20,23 @@
         }
     },
     "promptActionOptionAllow": "Tillåt",
-    "@promptActionOptionAllow": {},
     "promptActionOptionAllowAlways": "Tillåt alltid",
-    "@promptActionOptionAllowAlways": {},
     "promptActionOptionDeny": "Neka",
-    "@promptActionOptionDeny": {},
     "promptActionOptionDenyOnce": "Neka en gång",
-    "@promptActionOptionDenyOnce": {},
     "promptActionTitle": "Åtgärd",
-    "@promptActionTitle": {},
     "promptLifespanOptionForever": "Alltid",
-    "@promptLifespanOptionForever": {},
     "promptLifespanOptionSession": "Tills utloggning",
-    "@promptLifespanOptionSession": {},
     "promptLifespanOptionSingle": "En gång",
-    "@promptLifespanOptionSingle": {},
     "promptLifespanTitle": "Varaktighet",
-    "@promptLifespanTitle": {},
     "promptSaveAndContinue": "Spara och fortsätt",
-    "@promptSaveAndContinue": {},
     "promptTitle": "Säkerhetsavisering",
-    "@promptTitle": {},
     "homePatternTypeRequestedDirectory": "Endast begärd mapp",
-    "@homePatternTypeRequestedDirectory": {},
     "homePatternTypeRequestedFile": "Endast begärd fil",
-    "@homePatternTypeRequestedFile": {},
     "homePatternTypeRequestedDirectoryContents": "Allting i mappen",
-    "@homePatternTypeRequestedDirectoryContents": {},
     "homePatternTypeContainingDirectory": "Allting i mappen",
-    "@homePatternTypeContainingDirectory": {},
     "homePatternTypeHomeDirectory": "Allting i hemkatalogen",
-    "@homePatternTypeHomeDirectory": {},
     "homePatternTypeMatchingFileExtension": "Alla {fileExtension}-filer",
-    "@homePatternTypeMatchingFileExtension": {},
     "homePromptMetaDataTitle": "Om detta program",
-    "@homePromptMetaDataTitle": {},
     "homePromptMetaDataPublishedBy": "Publicerad av {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
@@ -73,15 +54,10 @@
         }
     },
     "homePromptMoreOptionsLabel": "Fler alternativ...",
-    "@homePromptMoreOptionsLabel": {},
     "homePromptPermissionsRead": "Läs",
-    "@homePromptPermissionsRead": {},
     "homePromptPermissionsWrite": "Skriv",
-    "@homePromptPermissionsWrite": {},
     "homePatternTypeCustomPath": "Anpassat sökvägsmönster",
-    "@homePatternTypeCustomPath": {},
     "homePatternInfo": "<Läs mer om sökvägsmönster>",
-    "@homePatternInfo": {},
     "homePatternTypeTopLevelDirectory": "Allting i {topLevelDir}-mappen",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
@@ -105,13 +81,9 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "Visa Appcentral-sidan",
-    "@homePromptMetaDataAppCenterLink": {},
     "homePromptPermissionsTitle": "Behörigheter",
-    "@homePromptPermissionsTitle": {},
     "homePromptPermissionsExecute": "Exekvera",
-    "@homePromptPermissionsExecute": {},
     "promptActionOptionAllowOnce": "Tillåt en gång",
-    "@promptActionOptionAllowOnce": {},
     "homePromptSuggestedPermission": "Ge också {permission}-åtkomst",
     "@homePromptSuggestedPermission": {
         "placeholders": {
@@ -121,7 +93,6 @@
         }
     },
     "homePromptErrorUnknownTitle": "Någonting gick fel",
-    "@homePromptErrorUnknownTitle": {},
     "homePromptTopLevelDirFileBody": "{snap} vill få {permissions}-åtkomst till {filename} i mappen {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
@@ -193,8 +164,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Tillåt fram till utloggning",
-    "@promptActionOptionAllowUntilLogout": {},
-    "cameraPromptBody": "Tillåt {snapName} att komma åt din kamera?",
+    "cameraPromptBody": "Tillåt {snapName} att använda dina kameror?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -202,12 +172,29 @@
             }
         }
     },
-    "microphonePromptBody": "Tillåt {snapName} att komma åt din mikrofon?",
+    "microphonePromptBody": "Tillåt {snapName} att använda dina mikrofoner?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "Neka alltid",
+    "promptActionOptionDenyUntilLogout": "Neka till nästa utloggning",
+    "homeCustomPathSaveButton": "Spara egen sökväg",
+    "homeCustomPathMustStartWithSlash": "Sökvägen måste inledas med /",
+    "homeCustomPathWildcardStarDescription": "Matchar alla teckensträngar förutom /",
+    "homeCustomPathWildcardQuestionDescription": "Matchar enstaka tecken",
+    "homeCustomPathWildcardDoubleStarDescription": "Matchar noll eller flera mappar och filer rekursivt",
+    "homeCustomPathWildcardCurlyDescription": "Matchar antingen x eller y",
+    "homeCustomPathWildcardBackslashDescription": "Gör undantag för specialtecken och behandlar dem som vanlig text",
+    "homePromptMetaDataVerifiedAccountPrefix": "Utgivaren har ett ",
+    "homePromptMetaDataVerifiedAccountLink": "verifierat konto",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Fler alternativ",
+    "homePromptMetaDataAppCenterButton": "Öppna i Appcentralen",
+    "homePromptPermissionsReadOnly": "Läs endast",
+    "homePromptPermissionsWriteOnly": "Skriv endast",
+    "homePromptPermissionsExecuteOnly": "Exekvera endast"
 }
