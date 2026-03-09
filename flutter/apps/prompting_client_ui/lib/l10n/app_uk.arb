@@ -171,7 +171,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Дозволити до виходу з системи",
-    "cameraPromptBody": "Дозволити {snapName} доступ до вашої камери?",
+    "cameraPromptBody": "Дозволити {snapName} використовувати вашу камеру?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -179,7 +179,7 @@
             }
         }
     },
-    "microphonePromptBody": "Дозволити {snapName} доступ до вашого мікрофона?",
+    "microphonePromptBody": "Дозволити {snapName} використовувати ваш мікрофон?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -201,5 +201,18 @@
     "homePromptMetaDataVerifiedAccountSuffix": ".",
     "homePromptMoreOptionsTileLabel": "Інші опції",
     "homePromptMetaDataAppCenterButton": "Відкрити у Центрі програмного забезпечення",
-    "homePromptPermissionsReadOnly": "Тільки читання"
+    "homePromptPermissionsReadOnly": "Тільки читання",
+    "homePromptPermissionsWriteOnly": "Тільки запис",
+    "homePromptPermissionsExecuteOnly": "Тільки виконання",
+    "homePromptTitleQuestion": "Надати {snapName} {permissions} доступ до файлів?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
