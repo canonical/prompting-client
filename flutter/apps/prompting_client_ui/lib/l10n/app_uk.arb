@@ -186,5 +186,20 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "Завжди забороняти",
+    "promptActionOptionDenyUntilLogout": "Заборонити до виходу з системи",
+    "homeCustomPathSaveButton": "Зберегти користувацький шлях",
+    "homeCustomPathMustStartWithSlash": "Шаблон шляху має починатись з /",
+    "homeCustomPathWildcardStarDescription": "Збігається з будь-яким рядком символів, окрім /",
+    "homeCustomPathWildcardQuestionDescription": "Збігається з одним символом",
+    "homeCustomPathWildcardDoubleStarDescription": "Рекурсивно знаходить нуль або більше тек та файлів",
+    "homeCustomPathWildcardCurlyDescription": "Збігається з x, або y",
+    "homeCustomPathWildcardBackslashDescription": "Використовується для екранування спеціальних символів для обробки їх як літералів",
+    "homePromptMetaDataVerifiedAccountPrefix": "Цей видавець має ",
+    "homePromptMetaDataVerifiedAccountLink": "підтверджений обліковий запис",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Інші опції",
+    "homePromptMetaDataAppCenterButton": "Відкрити у Центрі програмного забезпечення",
+    "homePromptPermissionsReadOnly": "Тільки читання"
 }
