@@ -39,7 +39,7 @@
     "homePromptMoreOptionsLabel": "Více možností…",
     "homePromptMetaDataAppCenterLink": "Navštivte stránku Centra aplikací",
     "promptActionTitle": "Činnost",
-    "promptAccessTitle": "Poskytnout {snap} {permission} přístup k:",
+    "promptAccessTitle": "Poskytnout aplikaci {snap} přístup {permission} k:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -51,7 +51,7 @@
         }
     },
     "securityCenterInfo": "Tato oprávnění můžete kdykoli změnit v <Centru zabezpečení>",
-    "promptAccessMoreOptionsTitle": "Nastavit přístup pro {snap} na:",
+    "promptAccessMoreOptionsTitle": "Nastavit přístup pro aplikaci {snap} na:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
             "snap": {
@@ -93,7 +93,7 @@
         }
     },
     "homePromptErrorUnknownTitle": "Něco se nepovedlo",
-    "homePromptDefaultBody": "{snap} chce získat {permissions} přístup k {path}",
+    "homePromptDefaultBody": "Aplikace {snap} chce získat přístup {permissions} k {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
@@ -107,7 +107,7 @@
             }
         }
     },
-    "homePromptTopLevelDirFileBody": "{snap} chce získat {permissions} přístup k {filename} ve složce {foldername}.",
+    "homePromptTopLevelDirFileBody": "Aplikace {snap} chce získat přístup {permissions} k {filename} ve složce {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -124,7 +124,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} chce získat {permissions} přístup ke složce {foldername}.",
+    "homePromptTopLevelDirBody": "Aplikace {snap} chce získat přístup {permissions} ke složce {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -138,7 +138,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} chce získat {permissions} přístup k vaší domovské složce.",
+    "homePromptHomeDirBody": "Aplikace {snap} chce získat přístup {permissions} k vaší domovské složce.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -149,7 +149,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} chce získat {permissions} přístup k {filename} ve vaší domovské složce.",
+    "homePromptHomeDirFileBody": "Aplikace {snap} chce získat přístup {permissions} k {filename} ve vaší domovské složce.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -163,8 +163,8 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Umožnit až do odhlášení",
-    "cameraPromptBody": "Umožnit {snapName} přistupovat k vaší kameře?",
+    "promptActionOptionAllowUntilLogout": "Povolit až do odhlášení",
+    "cameraPromptBody": "Umožnit aplikaci {snapName} používat vaše kamery?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,7 +172,7 @@
             }
         }
     },
-    "microphonePromptBody": "Umožnit {snapName} přistupovat k vašemu mikrofonu?",
+    "microphonePromptBody": "Umožnit aplikaci {snapName} používat vaše mikrofony?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -193,5 +193,19 @@
     "homePromptMetaDataVerifiedAccountLink": "ověřený účet",
     "homePromptMetaDataVerifiedAccountSuffix": ".",
     "homePromptMoreOptionsTileLabel": "Více možností",
-    "homePromptMetaDataAppCenterButton": "Otevřít v Centru aplikací"
+    "homePromptMetaDataAppCenterButton": "Otevřít v Centru aplikací",
+    "homePromptPermissionsReadOnly": "Pouze čtení",
+    "homePromptPermissionsWriteOnly": "Pouze zápis",
+    "homePromptPermissionsExecuteOnly": "Pouze spouštění",
+    "homePromptTitleQuestion": "Poskytnout aplikaci {snapName} přístup {permissions} k souborům?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
