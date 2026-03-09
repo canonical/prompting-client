@@ -196,5 +196,16 @@
     "homePromptMetaDataAppCenterButton": "Öppna i Appcentralen",
     "homePromptPermissionsReadOnly": "Läs endast",
     "homePromptPermissionsWriteOnly": "Skriv endast",
-    "homePromptPermissionsExecuteOnly": "Exekvera endast"
+    "homePromptPermissionsExecuteOnly": "Exekvera endast",
+    "homePromptTitleQuestion": "Ge {snapName} {permissions}-åtkomst till filer?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
