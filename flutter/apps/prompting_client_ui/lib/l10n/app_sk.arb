@@ -1,5 +1,5 @@
 {
-    "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
+    "promptAccessMoreOptionsTitle": "Nastaviť práva pre {snap} na:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
             "snap": {
@@ -17,7 +17,7 @@
     "promptLifespanTitle": "Doba trvania",
     "promptSaveAndContinue": "Uložiť a pokračovať",
     "promptTitle": "Bezpečnostné upozornenie",
-    "homePatternTypeCustomPath": "Vlastný formát cesty",
+    "homePatternTypeCustomPath": "Vlastný vzor cesty",
     "homePatternTypeRequestedDirectory": "Iba požadovaný priečinok",
     "homePatternTypeTopLevelDirectory": "Všetko v priečinku {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
@@ -66,7 +66,7 @@
             }
         }
     },
-    "homePatternInfo": "<Zistiť viac o formátoch ciest>",
+    "homePatternInfo": "<Zistiť viac o vzoroch ciest>",
     "homePatternTypeRequestedFile": "Iba požadovaný súbor",
     "homePromptBody": "Povoliť {snap} mať na {permissions} prístup k {path}?",
     "@homePromptBody": {
@@ -183,7 +183,7 @@
     "promptActionOptionDenyAlways": "Vždy odmietnuť",
     "promptActionOptionDenyUntilLogout": "Odmietnuť do odhlásenia",
     "homeCustomPathSaveButton": "Uložiť vlastnú cestu",
-    "homeCustomPathMustStartWithSlash": "Formát cesty musí začínať znakom /",
+    "homeCustomPathMustStartWithSlash": "Vzor cesty musí začínať znakom /",
     "homeCustomPathWildcardStarDescription": "Zodpovedá ľubovoľnému reťazcu znakov okrem /",
     "homeCustomPathWildcardQuestionDescription": "Zodpovedá jednému znaku",
     "homeCustomPathWildcardDoubleStarDescription": "Zodpovedá nule alebo viacerým priečinkom a súborom rekurzívne",
