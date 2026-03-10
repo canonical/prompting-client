@@ -70,8 +70,8 @@
     "homePatternTypeRequestedDirectoryContents": "Ĉio en la dosierujo",
     "homePatternTypeContainingDirectory": "Ĉio en la dosierujo",
     "homePatternTypeHomeDirectory": "Ĉio en la hejma dosierujo",
-    "homePromptPermissionsWrite": "skribi",
-    "homePromptPermissionsExecute": "ruli",
+    "homePromptPermissionsWrite": "Skribi",
+    "homePromptPermissionsExecute": "Ruli",
     "homePatternTypeRequestedFile": "Nur la petata dosiero",
     "homePatternTypeRequestedDirectory": "Nur la petata dosierujo",
     "securityCenterInfo": "Vi povas iam ajn ŝanĝi tiujn permesojn en la «Sekureca Centro»",
@@ -164,7 +164,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Permesi ĝis adiaŭo",
-    "cameraPromptBody": "Ĉu permesi al {snapName} uzi vian kameraon?",
+    "cameraPromptBody": "Ĉu permesi al {snapName} uzi viajn kameraojn?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,10 +172,38 @@
             }
         }
     },
-    "microphonePromptBody": "Ĉu permesi al {snapName} uzi vian mikrofonon?",
+    "microphonePromptBody": "Ĉu permesi al {snapName} uzi viajn mikrofonojn?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Malpermesi ĉiam",
+    "promptActionOptionDenyUntilLogout": "Malpermesi ĝis adiaŭo",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMetaDataVerifiedAccountLink": "konfirmitan konton",
+    "homePromptMoreOptionsTileLabel": "Pliaj opcioj",
+    "homePromptPermissionsReadOnly": "Nur legi",
+    "homePromptPermissionsWriteOnly": "Nur skribi",
+    "homePromptPermissionsExecuteOnly": "Nur ruli",
+    "homePromptMetaDataAppCenterButton": "Malfermi per Programcentro",
+    "homeCustomPathSaveButton": "Konservi propran dosiervojon",
+    "homeCustomPathMustStartWithSlash": "La dosiervojo devas komenciĝi per /",
+    "homeCustomPathWildcardStarDescription": "Kongruas kun ajna sinsekvo de skribsignoj krom /",
+    "homeCustomPathWildcardQuestionDescription": "Kongruas kun ajna unuopa skribsigno",
+    "homeCustomPathWildcardCurlyDescription": "Kongruas kun aŭ x aŭ y",
+    "homeCustomPathWildcardBackslashDescription": "Eskapigas speciajan signojn, igante ilin traktiĝi kiel laŭliteraĵoj",
+    "homePromptMetaDataVerifiedAccountPrefix": "Ĉi tiu eldonanto havas ",
+    "homeCustomPathWildcardDoubleStarDescription": "Kongruas kun nul aŭ pli da dosierujoj kaj dosieroj rikure",
+    "homePromptTitleQuestion": "Ĉu permesi al {snapName} {permissions} dosierojn?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
