@@ -22,7 +22,7 @@
             }
         }
     },
-    "homePromptMoreOptionsLabel": "Другие параметры…",
+    "homePromptMoreOptionsLabel": "Другие параметры...",
     "homePromptBody": "Разрешить {snap} доступ на {permissions} по пути {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -204,7 +204,7 @@
     "homePromptPermissionsReadOnly": "Только чтение",
     "homePromptPermissionsWriteOnly": "Только запись",
     "homePromptPermissionsExecuteOnly": "Только выполнение",
-    "homePromptTitleQuestion": "Дать {snapName} доступ уровня «{permissions}» к файлам?",
+    "homePromptTitleQuestion": "Дать {snapName} доступ на {permissions} файлов?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
