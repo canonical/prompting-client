@@ -55,7 +55,7 @@
     "homePromptPermissionsExecute": "Spúšťanie",
     "securityCenterInfo": "Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
     "promptActionOptionAllowAlways": "Vždy povoliť",
-    "promptAccessTitle": "Umožniť {snap} prístup na {permission} k:",
+    "promptAccessTitle": "Udeliť {snap} práva na {permission} k:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -84,7 +84,7 @@
     },
     "homePromptMoreOptionsLabel": "Viac možností...",
     "promptActionOptionAllowOnce": "Raz povoliť",
-    "homePromptSuggestedPermission": "Umožniť prístup aj na {permission}",
+    "homePromptSuggestedPermission": "Udeliť práva aj na {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
             "permission": {
@@ -93,7 +93,7 @@
         }
     },
     "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
-    "homePromptTopLevelDirFileBody": "{snap} žiada o prístup na {permissions} k {filename} v priečinku {foldername}.",
+    "homePromptTopLevelDirFileBody": "{snap} žiada o práva na {permissions} k súboru {filename} v priečinku {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -110,7 +110,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} žiada o prístup na {permissions} k domovskému priečinku.",
+    "homePromptHomeDirBody": "{snap} žiada o práva na {permissions} k domovskému priečinku.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -121,7 +121,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} žiada o prístup na {permissions} k priečinku {foldername}.",
+    "homePromptTopLevelDirBody": "{snap} žiada o práva na {permissions} k priečinku {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -135,7 +135,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k {filename} v domovskom priečinku.",
+    "homePromptHomeDirFileBody": "{snap} žiada o práva na {permissions} k súboru {filename} v domovskom priečinku.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -149,7 +149,7 @@
             }
         }
     },
-    "homePromptDefaultBody": "{snap} žiada o prístup na {permissions} k {path}",
+    "homePromptDefaultBody": "{snap} žiada o práva na {permissions} k {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
@@ -172,7 +172,7 @@
             }
         }
     },
-    "microphonePromptBody": "Povoliť {snapName} prístup ku mikrofónom?",
+    "microphonePromptBody": "Povoliť {snapName} prístup k mikrofónom?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -197,7 +197,7 @@
     "homePromptPermissionsReadOnly": "Iba na čítanie",
     "homePromptPermissionsWriteOnly": "Iba na zápis",
     "homePromptPermissionsExecuteOnly": "Iba na spúšťanie",
-    "homePromptTitleQuestion": "Umožniť {snapName} prístup na {permissions} k súborom?",
+    "homePromptTitleQuestion": "Udeliť {snapName} práva na {permissions} k súborom?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
