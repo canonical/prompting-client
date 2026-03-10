@@ -164,7 +164,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Bis zum Abmelden zulassen",
-    "cameraPromptBody": "Zugriff auf Ihre Kamera durch {snapName} zulassen?",
+    "cameraPromptBody": "{snapName} die Verwendung Ihrer Kameras erlauben?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,10 +172,38 @@
             }
         }
     },
-    "microphonePromptBody": "Zugriff auf Ihr Mikrofon durch {snapName} zulassen?",
+    "microphonePromptBody": "{snapName} die Verwendung Ihrer Mikrofone erlauben?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Immer verweigern",
+    "promptActionOptionDenyUntilLogout": "Bis zur Abmeldung verweigern",
+    "homeCustomPathSaveButton": "Benutzerdefinierten Pfad speichern",
+    "homeCustomPathMustStartWithSlash": "Das Pfadmuster muss mit / beginnen",
+    "homeCustomPathWildcardStarDescription": "Entspricht jeder Zeichenkette außer /",
+    "homeCustomPathWildcardQuestionDescription": "Entspricht einem einzelnen Zeichen",
+    "homeCustomPathWildcardDoubleStarDescription": "Entspricht null oder mehr Ordnern und Dateien rekursiv",
+    "homeCustomPathWildcardCurlyDescription": "Entspricht entweder x oder y",
+    "homeCustomPathWildcardBackslashDescription": "Setzt Sonderzeichen außer Kraft, um sie als Literale zu behandeln",
+    "homePromptMetaDataVerifiedAccountPrefix": "Dieser Herausgeber hat ein ",
+    "homePromptMetaDataVerifiedAccountLink": "verifiziertes Konto",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Weitere Optionen",
+    "homePromptMetaDataAppCenterButton": "Im App-Zentrum öffnen",
+    "homePromptPermissionsReadOnly": "Nur lesen",
+    "homePromptPermissionsWriteOnly": "Nur schreiben",
+    "homePromptPermissionsExecuteOnly": "Nur ausführen",
+    "homePromptTitleQuestion": "{snapName} {permissions} Zugriff auf Dateien gewähren?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
