@@ -172,5 +172,13 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "Keela alati",
+    "promptActionOptionDenyUntilLogout": "Keela kuni väljalogimiseni",
+    "homeCustomPathSaveButton": "Salvesta sinu määratud kaust",
+    "homeCustomPathMustStartWithSlash": "Kausta muster peab algama / märgiga",
+    "homeCustomPathWildcardStarDescription": "Vastab igasugustele tähemärkidele, v.a. /",
+    "homeCustomPathWildcardQuestionDescription": "Vastab ühele tähemärgile",
+    "homeCustomPathWildcardDoubleStarDescription": "Vastab nullile või enamale rekursiivsele kaustale ja failile",
+    "homeCustomPathWildcardCurlyDescription": "Vastab kas x-ile või y-le"
 }
