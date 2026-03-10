@@ -32,7 +32,7 @@
             }
         }
     },
-    "homePatternTypeHomeDirectory": "Viską asmeniniame aplanke",
+    "homePatternTypeHomeDirectory": "Viską asmeniniame (Home) aplanke",
     "homePatternTypeContainingDirectory": "Viską aplanke",
     "homePatternTypeRequestedDirectoryContents": "Viską aplanke",
     "homePatternTypeTopLevelDirectory": "Viską {topLevelDir} aplanke",
@@ -86,6 +86,80 @@
                 "type": "String"
             },
             "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} prašo {permissions} prieigos prie jūsų Asmeninio (Home) aplanko.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap}“ prašo {permissions} prieigos prie failo {filename} jūsų Asmeniniame (Home) aplanke.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsRead": "Skaityti",
+    "homePromptPermissionsTitle": "Leidimai",
+    "homePromptMetaDataAppCenterButton": "Atverti „Programų centre“",
+    "homePromptMoreOptionsTileLabel": "Daugiau pasirinkimų",
+    "homePromptMoreOptionsLabel": "Daugiau pasirinkimų...",
+    "promptAccessTitle": "Suteikti {snap} leidimą {permission} prie:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsWrite": "Rašyti",
+    "homePromptPermissionsWriteOnly": "Tik Rašyti",
+    "homePromptPermissionsReadOnly": "Tik skaityti",
+    "homePromptPermissionsExecute": "Vykdyti",
+    "homePromptPermissionsExecuteOnly": "Tik Vykdyti",
+    "homePromptErrorUnknownTitle": "Iškilo problema",
+    "cameraPromptBody": "Leisti „{snapName}“ naudoti šio įrenginio kameras?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Leisti „{snapName}“ naudoti šio įrenginio mikrofonus?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTitleQuestion": "Suteikti {snapName} galimybę {permissions} failus?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
