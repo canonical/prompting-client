@@ -172,5 +172,13 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "ھەمىشە رەت قىل",
+    "promptActionOptionDenyUntilLogout": "تىزىمدىن چىقمىغۇچە رەت قىل",
+    "homeCustomPathSaveButton": "ئىختىيارى يولنى ساقلا",
+    "homeCustomPathMustStartWithSlash": "يول ئەندىزىسى چوقۇم / بىلەن باشلىنىدۇ",
+    "homeCustomPathWildcardStarDescription": "/ دىن باشقا ھەر قانداق ھەرپ تىزىقى ماس كېلىدۇ",
+    "homeCustomPathWildcardQuestionDescription": "يەككە ھەرپ ماس كېلىدۇ",
+    "homeCustomPathWildcardDoubleStarDescription": "نۆل ياكى تېخىمۇ كۆپ قىسقۇچ ۋە ھۆججەتنى قايتا-قايتا ماسلاشتۇرىدۇ",
+    "homeCustomPathWildcardCurlyDescription": "x ياكى y غا ماس كېلىدۇ"
 }
