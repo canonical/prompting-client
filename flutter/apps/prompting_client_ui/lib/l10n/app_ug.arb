@@ -157,7 +157,7 @@
     "homePromptPermissionsWrite": "يېزىش",
     "homePromptPermissionsExecute": "ئىجرا قىلىش",
     "homePromptErrorUnknownTitle": "كاشىلا كۆرۈلدى",
-    "cameraPromptBody": "{snapName} نىڭ كامېرايىڭىزنى زىيارەت قىلىشىغا يول قويامدۇ؟",
+    "cameraPromptBody": "{snapName} نىڭ كامېرايىڭىزنى ئىشلىتىشىگە يول قويامدۇ؟",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -165,7 +165,7 @@
             }
         }
     },
-    "microphonePromptBody": "{snapName} نىڭ مىكروفونىڭىزنى زىيارەت قىلىشىغا يول قويامدۇ؟",
+    "microphonePromptBody": "{snapName} نىڭ مىكروفونىڭىزنى ئىشلىتىشىگە يول قويامدۇ؟",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -180,5 +180,25 @@
     "homeCustomPathWildcardStarDescription": "/ دىن باشقا ھەر قانداق ھەرپ تىزىقى ماس كېلىدۇ",
     "homeCustomPathWildcardQuestionDescription": "يەككە ھەرپ ماس كېلىدۇ",
     "homeCustomPathWildcardDoubleStarDescription": "نۆل ياكى تېخىمۇ كۆپ قىسقۇچ ۋە ھۆججەتنى قايتا-قايتا ماسلاشتۇرىدۇ",
-    "homeCustomPathWildcardCurlyDescription": "x ياكى y غا ماس كېلىدۇ"
+    "homeCustomPathWildcardCurlyDescription": "x ياكى y غا ماس كېلىدۇ",
+    "homePromptMetaDataVerifiedAccountPrefix": "بۇ تارقاتقۇچى ",
+    "homePromptMetaDataVerifiedAccountLink": "دەلىللەنگەن ھېساب",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "تېخىمۇ كۆپ تاللانما",
+    "homePromptMetaDataAppCenterButton": "ئەپ مەركىزىدە ئاچ",
+    "homePromptPermissionsReadOnly": "ئوقۇشقىلا",
+    "homePromptPermissionsWriteOnly": "يېزىشقىلا",
+    "homePromptPermissionsExecuteOnly": "ئىجرا قىلىشقىلا",
+    "homePromptTitleQuestion": "{snapName} نىڭ ھۆججەتنى زىيارەت قىلىشىغا {permissions} ئىجازەت بېرەمدۇ؟",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homeCustomPathWildcardBackslashDescription": "ئۇلارغا يېزىق سۈپىتىدە مۇئامىلە قىلىش ئۈچۈن ئالاھىدە ھەرپنىڭ مەنىسى ئۆزگىرىدۇ"
 }
