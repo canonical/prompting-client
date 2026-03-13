@@ -1,1 +1,204 @@
-{}
+{
+    "securityCenterInfo": "Sempre podes mudar estes permisos no <Centro de seguranza>",
+    "promptAccessMoreOptionsTitle": "Establecer acceso para {snap} a:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "Dalle a {snap}{permission} acceso a:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Permitir",
+    "promptActionOptionAllowAlways": "Permitir sempre",
+    "promptActionOptionAllowOnce": "Permitir unha vez",
+    "promptActionOptionDeny": "Negar",
+    "promptActionOptionDenyOnce": "Negar unha vez",
+    "promptActionOptionDenyAlways": "Negar sempre",
+    "promptActionOptionDenyUntilLogout": "Negar ata pechar sesión",
+    "promptActionOptionAllowUntilLogout": "Permitir ata pechar sesión",
+    "promptActionTitle": "Acción",
+    "promptLifespanOptionForever": "Sempre",
+    "promptLifespanOptionSession": "Ata pechar sesión",
+    "promptLifespanOptionSingle": "Unha vez",
+    "promptLifespanTitle": "Duración",
+    "promptSaveAndContinue": "Gardar e continuar",
+    "promptTitle": "Notificación de seguranza",
+    "homePatternInfo": "<Saber máis sobre os patróns de ruta>",
+    "homePatternTypeCustomPath": "Patrón de ruta personalizado",
+    "homeCustomPathSaveButton": "Gardar ruta personalizada",
+    "homeCustomPathMustStartWithSlash": "O patrón de ruta debe comezar con /",
+    "homeCustomPathWildcardStarDescription": "Coincide con calqueira cadea de caracteres excepto /",
+    "homeCustomPathWildcardQuestionDescription": "Coincide con un só caracter",
+    "homeCustomPathWildcardDoubleStarDescription": "Coincide con cero ou máis cartafoles e arquivos recursivamente",
+    "homeCustomPathWildcardCurlyDescription": "Coincide con x ou y",
+    "homeCustomPathWildcardBackslashDescription": "Escapa os caracteres especiais para tratalos como literais",
+    "homePatternTypeRequestedDirectory": "Só o cartafol solicitado",
+    "homePatternTypeRequestedFile": "Só o ficheiro solicitado",
+    "homePatternTypeTopLevelDirectory": "Todo o contido do cartafol {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Todo no cartafol",
+    "homePatternTypeContainingDirectory": "Todo no cartafol",
+    "homePatternTypeHomeDirectory": "Todo no Cartafol persoal",
+    "homePatternTypeMatchingFileExtension": "Todos os ficheiros {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} quere obter acceso {permissions} a {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} quere obter acceso {permissions} ao cartafol {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} quere obter acceso {permissions} a {filename} no cartafol {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} quere obter acceso {permissions} ao Cartafol persoal.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} quere obter acceso {permissions} a {filename} no teu Cartafol persoal.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Sobre a aplicación",
+    "homePromptMetaDataPublishedBy": "Publicado por {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataVerifiedAccountPrefix": "Este editor ten un ",
+    "homePromptMetaDataVerifiedAccountLink": "conta verificada",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMetaDataLastUpdated": "Última actualización o {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Máis opcións...",
+    "homePromptMoreOptionsTileLabel": "Máis opcións",
+    "homePromptMetaDataAppCenterLink": "Visita a páxina do Centro de Aplicacións",
+    "homePromptMetaDataAppCenterButton": "Abrir no Centro de Aplicacións",
+    "homePromptSuggestedPermission": "Tamén dar acceso {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "Permisos",
+    "homePromptPermissionsRead": "Ler",
+    "homePromptPermissionsReadOnly": "Só lectura",
+    "homePromptPermissionsWrite": "Escribir",
+    "homePromptPermissionsWriteOnly": "Só escritura",
+    "homePromptPermissionsExecute": "Executar",
+    "homePromptPermissionsExecuteOnly": "Executa só",
+    "homePromptErrorUnknownTitle": "Algo fallou",
+    "cameraPromptBody": "Permitir que {snapName} use a túa cámara?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Queres permitir que {snapName} use o teu micrófono?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTitleQuestion": "Queres darlle a {snapName} {permissions} acceso aos ficheiros?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
+}
