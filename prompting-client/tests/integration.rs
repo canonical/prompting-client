@@ -271,6 +271,128 @@ async fn camera_interface_connected_naive(
     Ok(())
 }
 
+// TODO: remove ignore when support for `microphone` interface lands on snapd
+#[ignore = "snapd doesn't have support for microphone prompt"]
+#[test_case(Action::Allow, "Allow access to microphone\n", ""; "allow")]
+#[test_case(Action::Deny, "Deny access to microphone\n", "timeout: failed to open <DEVICE>: Permission denied\n"; "deny")]
+#[tokio::test]
+#[serial]
+async fn microphone_interface_connected(
+    action: Action,
+    expected_stdout: &str,
+    expected_stderr: &str,
+) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let device = "hw:0,0"; // this is the alsa equivalent of /dev/snd/pcmC0D0c
+
+    let rx = spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
+    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
+
+    c.reply_to_prompt(
+        &id,
+        MicrophoneInterface::prompt_to_reply(p.try_into()?, action).into(),
+    )
+    .await?;
+
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
+
+    assert_eq!(output.stdout, expected_stdout, "stdout");
+    assert_eq!(
+        output.stderr,
+        expected_stderr.replace("<DEVICE>", &device),
+        "stderr"
+    );
+
+    assert!(false);
+
+    Ok(())
+}
+
+#[test_case(Action::Allow, "testing testing 1 2 3\n", ""; "allow")]
+#[test_case(Action::Deny, "", "cat: <HOME>/test/<PATH>/test.txt: Permission denied\n"; "deny")]
+#[tokio::test]
+#[serial]
+async fn happy_path_read_single(
+    action: Action,
+    expected_stdout: &str,
+    expected_stderr: &str,
+) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
+
+    let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
+    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+
+    c.reply_to_prompt(
+        &id,
+        HomeInterface::prompt_to_reply(p.try_into()?, action).into(),
+    )
+    .await?;
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
+
+    assert_eq!(output.stdout, expected_stdout, "stdout");
+    assert_eq!(
+        output.stderr,
+        expected_stderr
+            .replace("<HOME>", &get_home())
+            .replace("<PATH>", &prefix),
+        "stderr"
+    );
+
+    Ok(())
+}
+
+#[test_case(Action::Allow, Lifespan::Session; "allow session")]
+#[test_case(Action::Deny, Lifespan::Session; "deny session")]
+#[test_case(Action::Allow, Lifespan::Timespan; "allow timespan")]
+#[test_case(Action::Allow, Lifespan::Forever; "allow forever")]
+#[test_case(Action::Deny, Lifespan::Timespan; "deny timespan")]
+#[test_case(Action::Deny, Lifespan::Forever; "deny forever")]
+#[tokio::test]
+#[serial]
+async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+
+    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let path = format!("{dir_path}/test-1.txt");
+    let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
+    let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
+        .with_custom_path_pattern(format!("{dir_path}/*"));
+
+    reply = match lifespan {
+        Lifespan::Timespan => reply.for_timespan("1s"),
+        Lifespan::Session => reply.for_session(),
+        Lifespan::Forever => reply.for_forever(),
+        Lifespan::Single => {
+            panic!("SETUP ERROR: this test requires actioning multiple prompts with a single reply")
+        }
+    };
+
+    c.reply_to_prompt(&id, reply.into()).await?;
+
+    sleep(Duration::from_millis(50)).await;
+
+    let files = &[
+        ("test-1.txt", "test\n"),
+        ("test-2.txt", "test\n"),
+        ("test-3.txt", "test\n"),
+    ];
+
+    for (p, s) in files {
+        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        match action {
+            Action::Allow => assert_eq!(res.expect("file should exist"), *s),
+            Action::Deny => assert_eq!(
+                res.expect_err(&format!("file {p} should not exist")).kind(),
+                ErrorKind::NotFound
+            ),
+        }
+    }
+
+    Ok(())
+}
+
 #[ignore = "snapd parks the second process for 60s before generating the prompt so this is slow"]
 #[test_case(Action::Allow, Lifespan::Timespan; "allow timespan")]
 #[test_case(Action::Allow, Lifespan::Forever; "allow forever")]
@@ -330,87 +452,21 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
     Ok(())
 }
 
-#[test_case(Action::Allow, Lifespan::Session; "allow session")]
-#[test_case(Action::Deny, Lifespan::Session; "deny session")]
-#[test_case(Action::Allow, Lifespan::Timespan; "allow timespan")]
-#[test_case(Action::Allow, Lifespan::Forever; "allow forever")]
-#[test_case(Action::Deny, Lifespan::Timespan; "deny timespan")]
-#[test_case(Action::Deny, Lifespan::Forever; "deny forever")]
 #[tokio::test]
 #[serial]
-async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
+    let c = SnapdSocketClient::new().await;
+    let res = c
+        .prompt_details(&PromptId("0123456789ABCDEF".to_string()))
+        .await;
 
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let path = format!("{dir_path}/test-1.txt");
-    let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
-    let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
-        .with_custom_path_pattern(format!("{dir_path}/*"));
-
-    reply = match lifespan {
-        Lifespan::Timespan => reply.for_timespan("1s"),
-        Lifespan::Session => reply.for_session(),
-        Lifespan::Forever => reply.for_forever(),
-        Lifespan::Single => {
-            panic!("SETUP ERROR: this test requires actioning multiple prompts with a single reply")
+    match res {
+        Err(Error::SnapdError { message, .. }) => {
+            assert_eq!(message, PROMPT_NOT_FOUND, "unexpected message")
         }
-    };
-
-    c.reply_to_prompt(&id, reply.into()).await?;
-
-    sleep(Duration::from_millis(50)).await;
-
-    let files = &[
-        ("test-1.txt", "test\n"),
-        ("test-2.txt", "test\n"),
-        ("test-3.txt", "test\n"),
-    ];
-
-    for (p, s) in files {
-        let res = fs::read_to_string(format!("{dir_path}/{p}"));
-        match action {
-            Action::Allow => assert_eq!(res.expect("file should exist"), *s),
-            Action::Deny => assert_eq!(
-                res.expect_err(&format!("file {p} should not exist")).kind(),
-                ErrorKind::NotFound
-            ),
-        }
+        Err(e) => panic!("expected a snapd error, got: {e}"),
+        Ok(p) => panic!("expected an error, got {p:?}"),
     }
-
-    Ok(())
-}
-
-#[test_case(Action::Allow, "testing testing 1 2 3\n", ""; "allow")]
-#[test_case(Action::Deny, "", "cat: <HOME>/test/<PATH>/test.txt: Permission denied\n"; "deny")]
-#[tokio::test]
-#[serial]
-async fn happy_path_read_single(
-    action: Action,
-    expected_stdout: &str,
-    expected_stderr: &str,
-) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
-
-    let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
-
-    c.reply_to_prompt(
-        &id,
-        HomeInterface::prompt_to_reply(p.try_into()?, action).into(),
-    )
-    .await?;
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
-
-    assert_eq!(output.stdout, expected_stdout, "stdout");
-    assert_eq!(
-        output.stderr,
-        expected_stderr
-            .replace("<HOME>", &get_home())
-            .replace("<PATH>", &prefix),
-        "stderr"
-    );
 
     Ok(())
 }
@@ -436,6 +492,172 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
         ),
         Err(e) => panic!("expected a snapd error, got: {e:?}"),
         Ok(_) => panic!("should have errored but got an OK response"),
+    }
+
+    cleanup_pending_prompts().await?;
+
+    Ok(())
+}
+
+#[test_case("9d", "cannot parse duration: time: unknown unit"; "unknown unit")]
+#[test_case("foo", "cannot parse duration: time: invalid duration"; "invalid duration")]
+#[test_case("5", "cannot parse duration: time: missing unit in duration"; "missing units")]
+#[test_case("0s", "cannot have zero or negative duration"; "zero value")]
+#[test_case("-12s", "cannot have zero or negative duration"; "negative value")]
+// 9223372036854775807 is i64::MAX https://pkg.go.dev/time#Duration
+#[test_case("9223372037s", "cannot parse duration: time: invalid duration"; "overflow")]
+#[tokio::test]
+#[serial]
+async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &str) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
+
+    let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
+    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
+        .for_timespan(timespan)
+        .into();
+
+    match c.reply_to_prompt(&id, reply).await {
+        Err(Error::SnapdError { message, .. }) => assert!(
+            message.starts_with(&format!(
+                "cannot decode request body into prompt reply: invalid duration: {expected_prefix}"
+            )),
+            "message format not as expected: {message}"
+        ),
+        Err(e) => panic!("expected a snapd error, got: {e}"),
+        Ok(_) => panic!("should have errored but got an OK response"),
+    }
+
+    cleanup_pending_prompts().await?;
+
+    Ok(())
+}
+
+#[test_case(Action::Allow, "testing testing 1 2 3\n", ""; "allow")]
+#[test_case(Action::Deny, "", "cat: <HOME>/test/<PATH>/test.txt: Permission denied\n"; "deny")]
+#[tokio::test]
+#[serial]
+async fn replying_multiple_times_errors(
+    action: Action,
+    expected_stdout: &str,
+    expected_stderr: &str,
+) -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
+
+    let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
+    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+
+    let p: prompting_client::snapd_client::Prompt<HomeInterface> = p.try_into()?;
+
+    // first reply should work fine
+    c.reply_to_prompt(
+        &id,
+        HomeInterface::prompt_to_reply(p.clone(), action).into(),
+    )
+    .await?;
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
+
+    assert_eq!(output.stdout, expected_stdout, "stdout");
+    assert_eq!(
+        output.stderr,
+        expected_stderr
+            .replace("<HOME>", &get_home())
+            .replace("<PATH>", &prefix),
+        "stderr"
+    );
+
+    // second reply should error because the prompt no longer exists in snapd
+    let res = c
+        .reply_to_prompt(
+            &id,
+            HomeInterface::prompt_to_reply(p.clone(), action).into(),
+        )
+        .await;
+
+    match res {
+        Err(Error::SnapdError { message, .. }) => {
+            assert_eq!(message, PROMPT_NOT_FOUND, "unexpected message")
+        }
+        Err(e) => panic!("expected a snapd error, got: {e}"),
+        Ok(p) => panic!("expected an error, got {p:?}"),
+    }
+
+    Ok(())
+}
+
+#[tokio::test]
+#[serial]
+async fn overwriting_a_file_works() -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+
+    let rx = spawn_for_output(
+        "aa-prompting-test.create-single",
+        vec![prefix.clone(), "before".to_string()],
+    );
+    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["write"]).await;
+    let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
+        .for_forever()
+        .into();
+    c.reply_to_prompt(&id, reply).await?;
+    sleep(Duration::from_millis(50)).await;
+
+    // The file should have been created and contain the correct content
+    let res = fs::read_to_string(format!("{dir_path}/test.txt"));
+    assert_eq!(res.expect("file should exist"), "before");
+
+    // Not expecting another prompt due to previous allow always reply
+    let _rx = spawn_for_output(
+        "aa-prompting-test.create-single",
+        vec![prefix, "after".to_string()],
+    );
+    sleep(Duration::from_millis(300)).await;
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
+    assert_eq!(output.stdout, "done\n");
+    assert_eq!(output.stderr, "");
+
+    // The file should now contain the updated content
+    let res = fs::read_to_string(format!("{dir_path}/test.txt"));
+    assert_eq!(res.expect("file should exist"), "after");
+
+    Ok(())
+}
+
+#[tokio::test]
+#[serial]
+async fn scripted_client_works_with_simple_matching() -> Result<()> {
+    let mut c = SnapdSocketClient::new().await;
+    let seq = include_str!("../resources/prompt-sequence-tests/e2e_write_test.json");
+    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+
+    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+
+    let mut scripted_client = ScriptedClient::try_new(
+        format!("{dir_path}/seq.json"),
+        &[("BASE_PATH", &dir_path)],
+        c.clone(),
+    )?;
+
+    let res = scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await;
+    sleep(Duration::from_millis(50)).await;
+
+    if let Err(e) = res {
+        panic!("unexpected error running scripted client: {e}");
+    }
+
+    let files = &[
+        ("test-1.txt", "test\n"),
+        ("test-2.txt", "test\n"),
+        ("test-3.txt", "test\n"),
+    ];
+
+    for (p, s) in files {
+        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        assert_eq!(res.expect("file should exist"), *s);
     }
 
     cleanup_pending_prompts().await?;
@@ -481,112 +703,36 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
     Ok(())
 }
 
-#[test_case("9d", "cannot parse duration: time: unknown unit"; "unknown unit")]
-#[test_case("foo", "cannot parse duration: time: invalid duration"; "invalid duration")]
-#[test_case("5", "cannot parse duration: time: missing unit in duration"; "missing units")]
-#[test_case("0s", "cannot have zero or negative duration"; "zero value")]
-#[test_case("-12s", "cannot have zero or negative duration"; "negative value")]
-// 9223372036854775807 is i64::MAX https://pkg.go.dev/time#Duration
-#[test_case("9223372037s", "cannot parse duration: time: invalid duration"; "overflow")]
 #[tokio::test]
 #[serial]
-async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &str) -> Result<()> {
+async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
+    let seq = include_str!("../resources/prompt-sequence-tests/e2e_wrong_path_test.json");
+    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
-    let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
-        .for_timespan(timespan)
-        .into();
+    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let mut scripted_client = ScriptedClient::try_new(
+        format!("{dir_path}/seq.json"),
+        &[("BASE_PATH", &dir_path)],
+        c.clone(),
+    )?;
 
-    match c.reply_to_prompt(&id, reply).await {
-        Err(Error::SnapdError { message, .. }) => assert!(
-            message.starts_with(&format!(
-                "cannot decode request body into prompt reply: invalid duration: {expected_prefix}"
-            )),
-            "message format not as expected: {message}"
-        ),
-        Err(e) => panic!("expected a snapd error, got: {e}"),
-        Ok(_) => panic!("should have errored but got an OK response"),
+    match scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
+        Err(Error::FailedPromptSequence {
+            error: MatchError::MatchFailures { index, failures },
+        }) => {
+            assert_eq!(index, 1);
+            assert_eq!(failures[0].field, "path");
+            assert_eq!(failures[1].field, "requested_permissions");
+        }
+        Err(e) => panic!("unexpected error: {e}"),
+        Ok(()) => panic!("expected client to error but it ran to completion"),
     }
 
     cleanup_pending_prompts().await?;
-
-    Ok(())
-}
-
-// TODO: remove ignore when support for `microphone` interface lands on snapd
-#[ignore = "snapd doesn't have support for microphone prompt"]
-#[test_case(Action::Allow, "Allow access to microphone\n", ""; "allow")]
-#[test_case(Action::Deny, "Deny access to microphone\n", "timeout: failed to open <DEVICE>: Permission denied\n"; "deny")]
-#[tokio::test]
-#[serial]
-async fn microphone_interface_connected(
-    action: Action,
-    expected_stdout: &str,
-    expected_stderr: &str,
-) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let device = "hw:0,0"; // this is the alsa equivalent of /dev/snd/pcmC0D0c
-
-    let rx = spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
-    let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
-
-    c.reply_to_prompt(
-        &id,
-        MicrophoneInterface::prompt_to_reply(p.try_into()?, action).into(),
-    )
-    .await?;
-
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
-
-    assert_eq!(output.stdout, expected_stdout, "stdout");
-    assert_eq!(
-        output.stderr,
-        expected_stderr.replace("<DEVICE>", &device),
-        "stderr"
-    );
-
-    assert!(false);
-
-    Ok(())
-}
-
-#[tokio::test]
-#[serial]
-async fn overwriting_a_file_works() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
-
-    let rx = spawn_for_output(
-        "aa-prompting-test.create-single",
-        vec![prefix.clone(), "before".to_string()],
-    );
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["write"]).await;
-    let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
-        .for_forever()
-        .into();
-    c.reply_to_prompt(&id, reply).await?;
-    sleep(Duration::from_millis(50)).await;
-
-    // The file should have been created and contain the correct content
-    let res = fs::read_to_string(format!("{dir_path}/test.txt"));
-    assert_eq!(res.expect("file should exist"), "before");
-
-    // Not expecting another prompt due to previous allow always reply
-    let _rx = spawn_for_output(
-        "aa-prompting-test.create-single",
-        vec![prefix, "after".to_string()],
-    );
-    sleep(Duration::from_millis(300)).await;
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
-    assert_eq!(output.stdout, "done\n");
-    assert_eq!(output.stderr, "");
-
-    // The file should now contain the updated content
-    let res = fs::read_to_string(format!("{dir_path}/test.txt"));
-    assert_eq!(res.expect("file should exist"), "after");
 
     Ok(())
 }
@@ -651,78 +797,6 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
     Ok(())
 }
 
-#[test_case(Action::Allow, "testing testing 1 2 3\n", ""; "allow")]
-#[test_case(Action::Deny, "", "cat: <HOME>/test/<PATH>/test.txt: Permission denied\n"; "deny")]
-#[tokio::test]
-#[serial]
-async fn replying_multiple_times_errors(
-    action: Action,
-    expected_stdout: &str,
-    expected_stderr: &str,
-) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
-
-    let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
-
-    let p: prompting_client::snapd_client::Prompt<HomeInterface> = p.try_into()?;
-
-    // first reply should work fine
-    c.reply_to_prompt(
-        &id,
-        HomeInterface::prompt_to_reply(p.clone(), action).into(),
-    )
-    .await?;
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
-
-    assert_eq!(output.stdout, expected_stdout, "stdout");
-    assert_eq!(
-        output.stderr,
-        expected_stderr
-            .replace("<HOME>", &get_home())
-            .replace("<PATH>", &prefix),
-        "stderr"
-    );
-
-    // second reply should error because the prompt no longer exists in snapd
-    let res = c
-        .reply_to_prompt(
-            &id,
-            HomeInterface::prompt_to_reply(p.clone(), action).into(),
-        )
-        .await;
-
-    match res {
-        Err(Error::SnapdError { message, .. }) => {
-            assert_eq!(message, PROMPT_NOT_FOUND, "unexpected message")
-        }
-        Err(e) => panic!("expected a snapd error, got: {e}"),
-        Ok(p) => panic!("expected an error, got {p:?}"),
-    }
-
-    Ok(())
-}
-
-#[tokio::test]
-#[serial]
-async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
-    let c = SnapdSocketClient::new().await;
-    let res = c
-        .prompt_details(&PromptId("0123456789ABCDEF".to_string()))
-        .await;
-
-    match res {
-        Err(Error::SnapdError { message, .. }) => {
-            assert_eq!(message, PROMPT_NOT_FOUND, "unexpected message")
-        }
-        Err(e) => panic!("expected a snapd error, got: {e}"),
-        Ok(p) => panic!("expected an error, got {p:?}"),
-    }
-
-    Ok(())
-}
-
 #[tokio::test]
 #[serial]
 async fn scripted_client_test_allow() -> Result<()> {
@@ -755,82 +829,6 @@ async fn scripted_client_test_allow() -> Result<()> {
     if !exit_status.success() {
         panic!("test failed: {exit_status}");
     }
-
-    cleanup_pending_prompts().await?;
-
-    Ok(())
-}
-
-#[tokio::test]
-#[serial]
-async fn scripted_client_works_with_simple_matching() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let seq = include_str!("../resources/prompt-sequence-tests/e2e_write_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
-
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-
-    let mut scripted_client = ScriptedClient::try_new(
-        format!("{dir_path}/seq.json"),
-        &[("BASE_PATH", &dir_path)],
-        c.clone(),
-    )?;
-
-    let res = scripted_client
-        .run_with_timeout(&mut c, None, TIMEOUT)
-        .await;
-    sleep(Duration::from_millis(50)).await;
-
-    if let Err(e) = res {
-        panic!("unexpected error running scripted client: {e}");
-    }
-
-    let files = &[
-        ("test-1.txt", "test\n"),
-        ("test-2.txt", "test\n"),
-        ("test-3.txt", "test\n"),
-    ];
-
-    for (p, s) in files {
-        let res = fs::read_to_string(format!("{dir_path}/{p}"));
-        assert_eq!(res.expect("file should exist"), *s);
-    }
-
-    cleanup_pending_prompts().await?;
-
-    Ok(())
-}
-
-#[tokio::test]
-#[serial]
-async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
-    let seq = include_str!("../resources/prompt-sequence-tests/e2e_wrong_path_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
-
-    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let mut scripted_client = ScriptedClient::try_new(
-        format!("{dir_path}/seq.json"),
-        &[("BASE_PATH", &dir_path)],
-        c.clone(),
-    )?;
-
-    match scripted_client
-        .run_with_timeout(&mut c, None, TIMEOUT)
-        .await
-    {
-        Err(Error::FailedPromptSequence {
-            error: MatchError::MatchFailures { index, failures },
-        }) => {
-            assert_eq!(index, 1);
-            assert_eq!(failures[0].field, "path");
-            assert_eq!(failures[1].field, "requested_permissions");
-        }
-        Err(e) => panic!("unexpected error: {e}"),
-        Ok(()) => panic!("expected client to error but it ran to completion"),
-    }
-
-    cleanup_pending_prompts().await?;
 
     Ok(())
 }
