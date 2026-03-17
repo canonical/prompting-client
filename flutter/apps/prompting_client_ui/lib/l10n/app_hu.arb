@@ -171,7 +171,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Engedélyezés a kijelentkezésig",
-    "cameraPromptBody": "Engedélyezi a(z) {snapName} számára, hogy hozzáférjen a kamerájához?",
+    "cameraPromptBody": "Engedélyezi a(z) {snapName} alkalmazásnak, hogy használja a kameráit?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -179,10 +179,38 @@
             }
         }
     },
-    "microphonePromptBody": "Engedélyezi a(z) {snapName} számára, hogy hozzáférjen a mikrofonjához?",
+    "microphonePromptBody": "Engedélyezi a(z) {snapName} alkalmazásnak, hogy használja a mikrofonjait?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Tiltás mindig",
+    "promptActionOptionDenyUntilLogout": "Tiltás a kijelentkezésig",
+    "homeCustomPathSaveButton": "Egyéni útvonal mentése",
+    "homeCustomPathMustStartWithSlash": "Az útvonalmintának „/” karakterrel kell kezdődnie",
+    "homeCustomPathWildcardStarDescription": "A / kivételével bármely karakterekből álló karakterláncra illeszkedik",
+    "homeCustomPathWildcardQuestionDescription": "Önálló karakterre illeszkedik",
+    "homeCustomPathWildcardDoubleStarDescription": "Nulla vagy több mappára és fájlra illeszkedik rekurzívan",
+    "homeCustomPathWildcardCurlyDescription": "Vagy x-re, vagy y-ra illeszkedik",
+    "homeCustomPathWildcardBackslashDescription": "Elfedi a különleges karaktereket, hogy literálokként kezelje azokat",
+    "homePromptMetaDataVerifiedAccountPrefix": "Ez a közzétevő rendelkezik ",
+    "homePromptMetaDataVerifiedAccountLink": "ellenőrzött fiókkal",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "További beállítások",
+    "homePromptMetaDataAppCenterButton": "Megnyitás az alkalmazásközpontban",
+    "homePromptPermissionsReadOnly": "Csak olvasás",
+    "homePromptPermissionsWriteOnly": "Csak írás",
+    "homePromptPermissionsExecuteOnly": "Csak végrehajtás",
+    "homePromptTitleQuestion": "Ad a(z) {snapName} alkalmazásnak {permissions} hozzáférést a fájlokhoz?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
