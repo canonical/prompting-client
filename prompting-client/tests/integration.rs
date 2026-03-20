@@ -27,10 +27,16 @@ use std::{
     env, fs,
     io::{self, ErrorKind},
     os::unix::fs::PermissionsExt,
+    process::Stdio,
     sync::mpsc::{channel, Receiver},
     time::Duration,
 };
-use tokio::{process::Command, spawn, time::sleep, time::timeout};
+use tokio::{
+    io::{AsyncReadExt, BufReader},
+    process::Command,
+    spawn,
+    time::{sleep, timeout},
+};
 use uuid::Uuid;
 
 const TEST_SNAP: &str = "aa-prompting-test";
@@ -43,40 +49,133 @@ struct Output {
     stderr: String,
 }
 
-fn spawn_for_output(cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
-    let (tx, rx) = channel();
+struct TestFixture {
+    path: Option<String>,
+    prefix: Option<String>,
+}
 
-    spawn(async move {
-        let mut c = Command::new(cmd);
-        c.args(args);
-        let output = c.output().await.expect("to be able to spawn child process");
-        let stdout = String::from_utf8(output.stdout).expect("valid utf8");
-        let stderr = String::from_utf8(output.stderr).expect("valid utf8");
+impl TestFixture {
+    fn new() -> Self {
+        Self {
+            path: None,
+            prefix: None,
+        }
+    }
 
-        tx.send(Output { stdout, stderr }).expect("send to succeed");
-    });
+    fn with_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<Self> {
+        let prefix = Uuid::new_v4().to_string();
+        let home = get_home();
+        let path = match subdir {
+            Some(s) => format!("{home}/test/{prefix}/{s}"),
+            None => format!("{home}/test/{prefix}"),
+        };
 
-    rx
+        fs::create_dir_all(&path)?;
+        for (fname, contents) in files {
+            let file_path = format!("{path}/{fname}");
+            fs::write(&file_path, contents)?;
+
+            // Set readable permissions for all files so eventually snaps can access them
+            let mut perms = fs::metadata(&file_path)?.permissions();
+            perms.set_mode(0o644); // rw-r--r-- (readable by all)
+            fs::set_permissions(&file_path, perms)?;
+        }
+
+        let prefix = Some(prefix);
+        let path = Some(path);
+
+        Ok(Self { prefix, path })
+    }
+
+    fn path(&self) -> String {
+        let Some(path) = &self.path else {
+            panic!("path doesn't exits for this test")
+        };
+
+        path.clone()
+    }
+
+    fn prefix(&self) -> String {
+        let Some(prefix) = &self.prefix else {
+            panic!("prefix doesn't exits for this test")
+        };
+
+        prefix.clone()
+    }
+
+    fn spawn_for_output(&self, cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
+        let (tx, rx) = channel();
+
+        spawn(async move {
+            let mut c = Command::new(cmd);
+            c.args(args)
+                .stdout(Stdio::piped())
+                .stderr(Stdio::piped())
+                .kill_on_drop(true);
+
+            let mut c = c.spawn().expect("spawn process");
+
+            let stdout_reader = c.stdout.take().map(BufReader::new);
+            let stderr_reader = c.stderr.take().map(BufReader::new);
+
+            let (stdout, stderr) = match timeout(TIMEOUT, c.wait()).await {
+                Ok(Ok(_)) => {
+                    let mut stdout = String::new();
+                    if let Some(mut reader) = stdout_reader {
+                        reader.read_to_string(&mut stdout).await.ok();
+                    }
+
+                    let mut stderr = String::new();
+                    if let Some(mut reader) = stderr_reader {
+                        reader.read_to_string(&mut stderr).await.ok();
+                    }
+
+                    (stdout, stderr)
+                }
+                Ok(Err(e)) => (String::new(), format!("Process exited with error: {e}")),
+                Err(_) => (String::new(), "Process timed out".to_string()),
+            };
+
+            tx.send(Output { stdout, stderr }).expect("send to succeed");
+        });
+
+        rx
+    }
+}
+
+impl Drop for TestFixture {
+    fn drop(&mut self) {
+        // Some prompts can remain pending when testing errors, so we need to clean them up after the test
+        tokio::spawn(async {
+            let c = SnapdSocketClient::new().await;
+
+            // Answering prompts can unlock other prompts (like create.sh), so we need multiple iterations to ensure
+            // all prompts are properly resolved.
+            for _ in 0..5 {
+                let pending = c.all_pending_prompt_details().await?;
+                for p in &pending {
+                    let id = p.id();
+                    let reply = p.clone().into_deny_once();
+
+                    c.reply_to_prompt(id, reply).await?;
+                }
+
+                sleep(Duration::from_millis(10)).await;
+            }
+
+            let pending = c.all_pending_prompt_details().await?;
+            assert!(
+                pending.is_empty(),
+                "expected no pending prompts after clean up"
+            );
+
+            Ok::<(), Error>(())
+        });
+    }
 }
 
 fn get_home() -> String {
     env::var("HOME").expect("HOME env var to be set")
-}
-
-fn setup_test_dir(subdir: Option<&str>, files: &[(&str, &str)]) -> io::Result<(String, String)> {
-    let prefix = Uuid::new_v4().to_string();
-    let home = get_home();
-    let path = match subdir {
-        Some(s) => format!("{home}/test/{prefix}/{s}"),
-        None => format!("{home}/test/{prefix}"),
-    };
-
-    fs::create_dir_all(&path)?;
-    for (fname, contents) in files {
-        fs::write(format!("{path}/{fname}"), contents)?;
-    }
-
-    Ok((prefix, path))
 }
 
 // We have this as a macro rather than a function so that we get the line numbers of the call site
@@ -127,6 +226,9 @@ macro_rules! expect_single_prompt {
     };
 }
 
+// NOTE: the `serial` macro runs test in alphabetical order,
+// so it's important to cleanup the state after each test
+
 // Included as a test to help with identifying when the VM hasn't been set up correctly
 #[tokio::test]
 async fn ensure_prompting_is_enabled() -> Result<()> {
@@ -145,10 +247,12 @@ async fn camera_interface_connected(
     expected_stdout: &str,
     expected_stderr: &str,
 ) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let device = "/dev/video0";
 
-    let rx = spawn_for_output("aa-prompting-test.camera", vec![device.into()]);
+    let test = TestFixture::new();
+    let mut c = SnapdSocketClient::new().await;
+
+    let rx = test.spawn_for_output("aa-prompting-test.camera", vec![device.into()]);
     let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
@@ -178,10 +282,12 @@ async fn camera_interface_connected_naive(
     expected_stdout: &str,
     expected_stderr: &str,
 ) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let device = "/dev/video9"; // No test environments should have 10 camera devices
 
-    let rx = spawn_for_output("aa-prompting-test.camera-naive", vec![device.into()]);
+    let mut c = SnapdSocketClient::new().await;
+    let test = TestFixture::new();
+
+    let rx = test.spawn_for_output("aa-prompting-test.camera-naive", vec![device.into()]);
     let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
@@ -190,7 +296,7 @@ async fn camera_interface_connected_naive(
     )
     .await?;
 
-    let output = rx.recv().expect("to be able to recv");
+    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
 
     assert_eq!(
         output.stdout,
@@ -217,10 +323,12 @@ async fn microphone_interface_connected(
     expected_stdout: &str,
     expected_stderr: &str,
 ) -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let device = "hw:0,0"; // this is the alsa equivalent of /dev/snd/pcmC0D0c
 
-    let rx = spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
+    let test = TestFixture::new();
+    let mut c = SnapdSocketClient::new().await;
+
+    let rx = test.spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
     let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
@@ -253,10 +361,11 @@ async fn happy_path_read_single(
     expected_stderr: &str,
 ) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
+    let test = TestFixture::with_test_dir(None, &[("test.txt", expected_stdout)])?;
 
-    let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let (id, p) =
+        expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
 
     c.reply_to_prompt(
         &id,
@@ -270,7 +379,7 @@ async fn happy_path_read_single(
         output.stderr,
         expected_stderr
             .replace("<HOME>", &get_home())
-            .replace("<PATH>", &prefix),
+            .replace("<PATH>", &test.prefix()),
         "stderr"
     );
 
@@ -287,13 +396,13 @@ async fn happy_path_read_single(
 #[serial]
 async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+    let test = TestFixture::with_test_dir(None, &[])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
-    let path = format!("{dir_path}/test-1.txt");
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let path = format!("{}/test-1.txt", test.path());
     let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
     let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
-        .with_custom_path_pattern(format!("{dir_path}/*"));
+        .with_custom_path_pattern(format!("{}/*", test.path()));
 
     reply = match lifespan {
         Lifespan::Timespan => reply.for_timespan("1s"),
@@ -315,7 +424,7 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
     ];
 
     for (p, s) in files {
-        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        let res = fs::read_to_string(format!("{}/{p}", test.path()));
         match action {
             Action::Allow => assert_eq!(res.expect("file should exist"), *s),
             Action::Deny => assert_eq!(
@@ -336,21 +445,22 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
 #[tokio::test]
 #[serial]
 async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespan) -> Result<()> {
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
-    let _ = spawn_for_output("aa-prompting-test.create", vec![prefix.clone()]);
+    let test = TestFixture::with_test_dir(None, &[])?;
+
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     sleep(Duration::from_millis(400)).await;
 
     let mut c = SnapdSocketClient::new().await;
 
-    let _rx = spawn_for_output(
+    let _rx = test.spawn_for_output(
         "aa-prompting-test.create-single",
-        vec![prefix, "test\n".to_string()],
+        vec![test.prefix(), "test\n".to_string()],
     );
 
-    let path = format!("{dir_path}/test.txt");
+    let path = format!("{}/test.txt", test.prefix());
     let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
     let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
-        .with_custom_path_pattern(format!("{dir_path}/*"));
+        .with_custom_path_pattern(format!("{}/*", test.prefix()));
 
     reply = match lifespan {
         Lifespan::Timespan => reply.for_timespan("1s"),
@@ -374,7 +484,7 @@ async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespa
     ];
 
     for (p, s) in files {
-        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        let res = fs::read_to_string(format!("{}/{p}", test.path()));
         match action {
             Action::Allow => assert_eq!(res.expect("file should exist"), *s),
             Action::Deny => assert_eq!(
@@ -412,10 +522,11 @@ async fn requesting_an_unknown_prompt_id_is_an_error() -> Result<()> {
 #[serial]
 async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
+    let test = TestFixture::with_test_dir(None, &[("test.txt", "test")])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let _rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let (id, p) =
+        expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
         .with_custom_path_pattern(reply_path)
         .into();
@@ -443,10 +554,11 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
 #[serial]
 async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &str) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", "test")])?;
+    let test = TestFixture::with_test_dir(None, &[("test.txt", "test")])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.read", vec![prefix]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let _rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let (id, p) =
+        expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
         .for_timespan(timespan)
         .into();
@@ -475,10 +587,11 @@ async fn replying_multiple_times_errors(
     expected_stderr: &str,
 ) -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[("test.txt", expected_stdout)])?;
+    let test = TestFixture::with_test_dir(None, &[("test.txt", expected_stdout)])?;
 
-    let rx = spawn_for_output("aa-prompting-test.read", vec![prefix.clone()]);
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["read"]).await;
+    let rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let (id, p) =
+        expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
 
     let p: prompting_client::snapd_client::Prompt<HomeInterface> = p.try_into()?;
 
@@ -495,7 +608,7 @@ async fn replying_multiple_times_errors(
         output.stderr,
         expected_stderr
             .replace("<HOME>", &get_home())
-            .replace("<PATH>", &prefix),
+            .replace("<PATH>", &test.prefix()),
         "stderr"
     );
 
@@ -522,13 +635,14 @@ async fn replying_multiple_times_errors(
 #[serial]
 async fn overwriting_a_file_works() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
-    let (prefix, dir_path) = setup_test_dir(None, &[])?;
+    let test = TestFixture::with_test_dir(None, &[])?;
 
-    let rx = spawn_for_output(
+    let rx = test.spawn_for_output(
         "aa-prompting-test.create-single",
-        vec![prefix.clone(), "before".to_string()],
+        vec![test.prefix(), "before".to_string()],
     );
-    let (id, p) = expect_single_prompt!(&mut c, &format!("{dir_path}/test.txt"), &["write"]).await;
+    let (id, p) =
+        expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["write"]).await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
         .for_forever()
         .into();
@@ -536,13 +650,13 @@ async fn overwriting_a_file_works() -> Result<()> {
     sleep(Duration::from_millis(50)).await;
 
     // The file should have been created and contain the correct content
-    let res = fs::read_to_string(format!("{dir_path}/test.txt"));
+    let res = fs::read_to_string(format!("{}/test.txt", test.path()));
     assert_eq!(res.expect("file should exist"), "before");
 
     // Not expecting another prompt due to previous allow always reply
-    let _rx = spawn_for_output(
+    let _rx = test.spawn_for_output(
         "aa-prompting-test.create-single",
-        vec![prefix, "after".to_string()],
+        vec![test.prefix(), "after".to_string()],
     );
     sleep(Duration::from_millis(300)).await;
     let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
@@ -550,7 +664,7 @@ async fn overwriting_a_file_works() -> Result<()> {
     assert_eq!(output.stderr, "");
 
     // The file should now contain the updated content
-    let res = fs::read_to_string(format!("{dir_path}/test.txt"));
+    let res = fs::read_to_string(format!("{}/test.txt", test.path()));
     assert_eq!(res.expect("file should exist"), "after");
 
     Ok(())
@@ -559,15 +673,22 @@ async fn overwriting_a_file_works() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn scripted_client_works_with_simple_matching() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_write_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let mut c = SnapdSocketClient::new().await;
+    let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
 
-    let mut scripted_client =
-        ScriptedClient::try_new(format!("{dir_path}/seq.json"), &[], c.clone())?;
-    let res = scripted_client.run(&mut c, None).await;
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+
+    let mut scripted_client = ScriptedClient::try_new(
+        format!("{}/seq.json", test.path()),
+        &[("BASE_PATH", &test.path())],
+        c.clone(),
+    )?;
+
+    let res = scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await;
     sleep(Duration::from_millis(50)).await;
 
     if let Err(e) = res {
@@ -581,7 +702,7 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
     ];
 
     for (p, s) in files {
-        let res = fs::read_to_string(format!("{dir_path}/{p}"));
+        let res = fs::read_to_string(format!("{}/{p}", test.path()));
         assert_eq!(res.expect("file should exist"), *s);
     }
 
@@ -591,19 +712,23 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_erroring_write_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let mut c = SnapdSocketClient::new().await;
+    let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
+
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
 
     let mut scripted_client = ScriptedClient::try_new(
-        format!("{dir_path}/seq.json"),
-        &[("BASE_PATH", &dir_path)],
+        format!("{}/seq.json", test.path()),
+        &[("BASE_PATH", &test.path())],
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, None).await {
+    match scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedError { error },
         }) => {
@@ -624,18 +749,22 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!("../resources/prompt-sequence-tests/e2e_wrong_path_test.json");
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let mut c = SnapdSocketClient::new().await;
+    let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
+
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let mut scripted_client = ScriptedClient::try_new(
-        format!("{dir_path}/seq.json"),
-        &[("BASE_PATH", &dir_path)],
+        format!("{}/seq.json", test.path()),
+        &[("BASE_PATH", &test.path())],
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, None).await {
+    match scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
         Err(Error::FailedPromptSequence {
             error: MatchError::MatchFailures { index, failures },
         }) => {
@@ -653,55 +782,59 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
 #[tokio::test]
 #[serial]
 async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!(
         "../resources/prompt-sequence-tests/e2e_unexpected_additional_prompt_test.json"
     );
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let mut c = SnapdSocketClient::new().await;
+    let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
+
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let mut scripted_client = ScriptedClient::try_new(
-        format!("{dir_path}/seq.json"),
-        &[("BASE_PATH", &dir_path)],
+        format!("{}/seq.json", test.path()),
+        &[("BASE_PATH", &test.path())],
         c.clone(),
     )?;
 
-    match scripted_client.run(&mut c, Some(5)).await {
+    match scripted_client
+        .run_with_timeout(&mut c, Some(5), TIMEOUT)
+        .await
+    {
         Err(Error::FailedPromptSequence {
             error: MatchError::UnexpectedPrompts { .. },
-        }) => Ok(()),
+        }) => (),
         Err(e) => panic!("unexpected error: {e}"),
         Ok(()) => panic!("expected client to error but it ran to completion"),
     }
+
+    Ok(())
 }
 
 #[tokio::test]
 #[serial]
 async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
-    let mut c = SnapdSocketClient::new().await;
     let seq = include_str!(
         "../resources/prompt-sequence-tests/e2e_unexpected_additional_prompt_test.json"
     );
-    let (prefix, dir_path) = setup_test_dir(None, &[("seq.json", seq)])?;
+    let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = spawn_for_output("aa-prompting-test.create", vec![prefix]);
+    let mut c = SnapdSocketClient::new().await;
+
+    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let mut scripted_client = ScriptedClient::try_new(
-        format!("{dir_path}/seq.json"),
-        &[("BASE_PATH", &dir_path)],
+        format!("{}/seq.json", test.path()),
+        &[("BASE_PATH", &test.path())],
         c.clone(),
     )?;
 
-    let res = scripted_client.run(&mut c, None).await;
-
-    // Sleep to create a gap between this test and the next so that the outstanding prompts do not
-    // get picked up as part of that test. Without this we are racey around what the first prompt
-    // seen by the next test case is.
-    sleep(Duration::from_millis(100)).await;
-
-    match res {
-        Ok(()) => Ok(()),
-        Err(e) => panic!("unexpected error: {e}"),
+    if let Err(e) = scripted_client
+        .run_with_timeout(&mut c, None, TIMEOUT)
+        .await
+    {
+        panic!("unexpected error: {e}")
     }
+
+    Ok(())
 }
 
 #[tokio::test]
@@ -710,7 +843,7 @@ async fn scripted_client_test_allow() -> Result<()> {
     let script = include_str!("../resources/scripted-tests/happy-path-read/test.sh");
     let seq = include_str!("../resources/scripted-tests/happy-path-read/prompt-sequence.json");
 
-    let (prefix, dir_path) = setup_test_dir(
+    let test = TestFixture::with_test_dir(
         None,
         &[
             ("test.txt", "testing testing 1 2 3"),
@@ -719,14 +852,14 @@ async fn scripted_client_test_allow() -> Result<()> {
         ],
     )?;
 
-    let script_path = format!("{dir_path}/test.sh");
+    let script_path = format!("{}/test.sh", test.path());
     let file = fs::File::open(&script_path)?;
     let mut perms = file.metadata()?.permissions();
     perms.set_mode(perms.mode() | 0o111); // Set executable bit for all users (chmod +x)
     file.set_permissions(perms)?;
 
     let res = Command::new(script_path)
-        .args([prefix])
+        .args([test.prefix()])
         .spawn()
         .expect("script to start")
         .wait()

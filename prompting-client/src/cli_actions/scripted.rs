@@ -12,7 +12,7 @@ use crate::{
 };
 use hyper::StatusCode;
 use std::time::Duration;
-use tokio::{select, sync::mpsc::unbounded_channel};
+use tokio::{select, sync::mpsc::unbounded_channel, time::timeout};
 use tracing::{debug, error, info, warn};
 
 /// Poll for outstanding prompts and auto-deny them before returning an error. This function will
@@ -115,10 +115,11 @@ impl ScriptedClient {
 
     /// Run a scripted client that actions prompts based on a predefined sequence of prompts that we
     /// expect to see.
-    pub async fn run(
+    pub async fn run_with_timeout(
         &mut self,
         snapd_client: &mut SnapdSocketClient,
         grace_period: Option<u64>,
+        duration: Duration,
     ) -> Result<()> {
         let (tx_prompts, mut rx_prompts) = unbounded_channel();
 
@@ -130,7 +131,12 @@ impl ScriptedClient {
         info!(script=%self.path, n_prompts=%self.seq.len(), "running provided script");
 
         while self.is_running() {
-            match rx_prompts.recv().await {
+            let Ok(prompt_update) = timeout(duration, rx_prompts.recv()).await else {
+                eprintln!("scriped client timeout expired");
+                break;
+            };
+
+            match prompt_update {
                 Some(PromptUpdate::Add(ep)) if self.should_handle(&ep) => {
                     self.reply(ep, snapd_client).await?
                 }
@@ -188,9 +194,11 @@ impl ScriptedClient {
 
     async fn reply(
         &mut self,
-        EnrichedPrompt { prompt, .. }: EnrichedPrompt,
+        enriched_prompt: EnrichedPrompt,
         snapd_client: &mut SnapdSocketClient,
     ) -> Result<()> {
+        let EnrichedPrompt { prompt, .. } = enriched_prompt;
+
         let mut reply = match self.reply_for_prompt(prompt.clone(), None).await? {
             Some(reply) => reply,
             None => return Ok(()),
