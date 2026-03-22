@@ -1,1 +1,183 @@
-{}
+{
+  "homePromptDefaultBody": "{snap} Θέλει να πάρει {permissions} πρόσβαση στον {path}",
+  "@homePromptDefaultBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptTopLevelDirFileBody": "{snap} Θέλει να πάρει {permissions} πρόσβαση στο {filename} που είναι στον φάκελο.",
+  "@homePromptTopLevelDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Περισσότερες επιλογές...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptPermissionsTitle": "Άδειες",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsWrite": "Γράψε",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Εκτέλεσε",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "Κάτι πήγε στραβά",
+  "@homePromptErrorUnknownTitle": {},
+  "homePromptHomeDirBody": "{snap} Θέλει να πάρει {permissions} πρόσβαση στον Αρχικό σας φάκελο.",
+  "@homePromptHomeDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllowOnce": "Επιτρέψτε μια φορά",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionTitle": "Δράση",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Πάντα",
+  "@promptLifespanOptionForever": {},
+  "homePatternTypeRequestedDirectoryContents": "Όλα μέσα στον φάκελο",
+  "@homePatternTypeRequestedDirectoryContents": {},
+  "homePromptMetaDataAppCenterLink": "Επισκεφτείτε την σελίδα Κέντρο Λογισμικού",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptTopLevelDirBody": "{snap} Θέλει να πάρει {permissions} πρόσβαση στον {foldername} φάκελο.",
+  "@homePromptTopLevelDirBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "foldername": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Τελευταία ενημέρωση {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptSuggestedPermission": "Δώσε επίσης{permission} πρόσβαση",
+  "@homePromptSuggestedPermission": {
+    "placeholders": {
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "securityCenterInfo": "Μπορείτε ανά πάσα στιγμή να αλλάξετε αυτές τις άδειες στο Κέντρο Ασφάλειας",
+  "@securityCenterInfo": {},
+  "promptAccessTitle": "Δώσε{snap}{permission} πρόσβαση σε:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Επιτρέψτε",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Επιτρέψτε πάντα",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionDeny": "Απόρριψη",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Απόρριψη μια φορά",
+  "@promptActionOptionDenyOnce": {},
+  "promptLifespanOptionSession": "Μέχρι να αποσυνδεθείτε",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Μια φόρα",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Διάρκεια",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Αποθήκευση και συνέχεια",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Ειδοποίηση ασφαλείας",
+  "@promptTitle": {},
+  "homePatternTypeTopLevelDirectory": "Όλα μέσα στον {topLevelDir} φάκελο",
+  "@homePatternTypeTopLevelDirectory": {
+    "placeholders": {
+      "topLevelDir": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeContainingDirectory": "Όλα μέσα στο φάκελο",
+  "@homePatternTypeContainingDirectory": {},
+  "homePatternTypeHomeDirectory": "Όλα μέσα στον Αρχικό φάκελο",
+  "@homePatternTypeHomeDirectory": {},
+  "homePromptMetaDataPublishedBy": "Εκδόθηκε από {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptPermissionsRead": "Διάβασε",
+  "@homePromptPermissionsRead": {},
+  "homePatternTypeMatchingFileExtension": "Όλα{fileExtension} αρχεία",
+  "@homePatternTypeMatchingFileExtension": {
+    "placeholders": {
+      "fileExtension": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataTitle": "Σχετικά με την εφαρμογή",
+  "@homePromptMetaDataTitle": {},
+  "promptAccessMoreOptionsTitle": "Δώστε πρόσβαση στο {snap}:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "homePatternTypeRequestedDirectory": "Ο ζητούμενος φάκελος μόνο",
+  "@homePatternTypeRequestedDirectory": {},
+  "homePatternTypeRequestedFile": "Το ζητούμενο αρχείο μόνο",
+  "@homePatternTypeRequestedFile": {},
+  "homePromptHomeDirFileBody": "Το {snap} θέλει να πάρει άδεια για έχει πρόσβαση στο {filename} μέσα στον Αρχικό φάκελο.",
+  "@homePromptHomeDirFileBody": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permissions": {
+        "type": "String"
+      },
+      "filename": {
+        "type": "String"
+      }
+    }
+  }
+}
