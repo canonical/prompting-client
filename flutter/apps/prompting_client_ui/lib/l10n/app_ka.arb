@@ -157,7 +157,7 @@
     },
     "homePromptErrorUnknownTitle": "რაღაც არასწორია",
     "promptActionOptionAllowUntilLogout": "დაშვება გასვლამდე",
-    "cameraPromptBody": "დაუშვებთ, {snapName}-ს ჰქონდეს წვდომა თქვენს კამერასთან?",
+    "cameraPromptBody": "დაუშვებთ, {snapName}-მა გამოიყენოს თქვენი კამერა?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -165,12 +165,18 @@
             }
         }
     },
-    "microphonePromptBody": "დაუშვებთ, {snapName}-ს ჰქონდეს წვდომა თქვენს მიკროფონთან?",
+    "microphonePromptBody": "დაუშვებთ, {snapName}-მა გამოიყენოს თქვენი მიკროფონი?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "ყოველთვის აკრძალვა",
+    "promptActionOptionDenyUntilLogout": "აკრძალვა გასვლამდე",
+    "homeCustomPathSaveButton": "მორგებული ბილიკის შენახვა",
+    "homeCustomPathMustStartWithSlash": "ბილიკის ნიმუში უნდა იწყებოდეს სიმბოლოთი /",
+    "homeCustomPathWildcardStarDescription": "ემთხვევა ყველა სტრიქონის /-ის გარდა",
+    "homeCustomPathWildcardQuestionDescription": "ემთხვევა ერთ სიმბოლოს"
 }
