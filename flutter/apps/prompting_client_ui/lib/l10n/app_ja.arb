@@ -1,51 +1,39 @@
 {
-  "promptAccessMoreOptionsTitle": "{snap} にアクセス権を設定:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
-    }
-  },
-  "securityCenterInfo": "これらのパーミッションは<セキュリティセンター>でいつでも変更できます",
-  "@securityCenterInfo": {},
-  "promptAccessTitle": "{snap} に {permission} アクセス権を設定:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllow": "許可",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionAllowAlways": "常に許可",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionAllowOnce": "一度だけ許可",
-  "@promptActionOptionAllowOnce": {},
-  "promptActionOptionDeny": "拒否",
-  "@promptActionOptionDeny": {},
-  "promptActionOptionDenyOnce": "一度だけ拒否",
-  "@promptActionOptionDenyOnce": {},
-  "promptActionTitle": "アクション",
-  "@promptActionTitle": {},
-  "promptLifespanOptionForever": "常に",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "ログアウトまで",
-  "@promptLifespanOptionSession": {},
-  "promptLifespanOptionSingle": "一度だけ",
-  "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "期間",
-  "@promptLifespanTitle": {},
-  "promptSaveAndContinue": "保存して続ける",
-  "@promptSaveAndContinue": {},
-  "promptTitle": "セキュリティ通知",
-  "@promptTitle": {},
-  "homePromptMetaDataTitle": "このアプリについて",
-  "@homePromptMetaDataTitle": {},
-  "homePromptPermissionsTitle": "パーミッション",
-  "@homePromptPermissionsTitle": {}
+    "promptAccessMoreOptionsTitle": "{snap} にアクセス権を設定:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "securityCenterInfo": "これらのパーミッションは<セキュリティセンター>でいつでも変更できます",
+    "promptAccessTitle": "{snap} に {permission} アクセス権を設定:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "許可",
+    "promptActionOptionAllowAlways": "常に許可",
+    "promptActionOptionAllowOnce": "一度だけ許可",
+    "promptActionOptionDeny": "拒否",
+    "promptActionOptionDenyOnce": "一度だけ拒否",
+    "promptActionTitle": "アクション",
+    "promptLifespanOptionForever": "常に",
+    "promptLifespanOptionSession": "ログアウトまで",
+    "promptLifespanOptionSingle": "一度だけ",
+    "promptLifespanTitle": "期間",
+    "promptSaveAndContinue": "保存して続ける",
+    "promptTitle": "セキュリティ通知",
+    "homePromptMetaDataTitle": "このアプリについて",
+    "homePromptPermissionsTitle": "パーミッション",
+    "promptActionOptionDenyAlways": "常に拒否",
+    "promptActionOptionDenyUntilLogout": "ログアウトまで拒否",
+    "promptActionOptionAllowUntilLogout": "ログアウトまで許可"
 }
