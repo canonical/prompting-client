@@ -55,7 +55,7 @@
     "homePromptPermissionsExecute": "Spúšťanie",
     "securityCenterInfo": "Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
     "promptActionOptionAllowAlways": "Vždy povoliť",
-    "promptAccessTitle": "Udeliť {snap} prístup na {permission} k:",
+    "promptAccessTitle": "Udeliť {snap} prístup na {permission}:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
