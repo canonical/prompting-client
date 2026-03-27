@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install protobuf-compiler linux-modules-extra-$(uname -r) v4l-utils
+          sudo apt-get -y install protobuf-compiler dkms linux-modules-extra-$(uname -r) v4l-utils v4l2loopback-dkms
 
       - name: Setup virtual devices
         run: |
