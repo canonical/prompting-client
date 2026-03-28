@@ -171,7 +171,7 @@
     },
     "homePatternInfo": "<Opi polkukaavoista>",
     "promptActionOptionAllowUntilLogout": "Salli uloskirjautumiseen saakka",
-    "cameraPromptBody": "Sallitaanko sovellukselle {snapName} pääsy kameraan?",
+    "cameraPromptBody": "Sallitaanko sovelluksen {snapName} käyttää kameroita?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -179,10 +179,28 @@
             }
         }
     },
-    "microphonePromptBody": "Sallitaanko sovellukselle {snapName} pääsy mikrofoniin?",
+    "microphonePromptBody": "Sallitaanko sovelluksen {snapName} käyttää mikrofonia?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Kiellä aina",
+    "promptActionOptionDenyUntilLogout": "Kiellä uloskirjautumiseen asti",
+    "homeCustomPathSaveButton": "Tallenna mukautettu polku",
+    "homePromptMetaDataAppCenterButton": "Avaa sovelluskeskuksessa",
+    "homePromptPermissionsReadOnly": "Vain luku",
+    "homePromptPermissionsWriteOnly": "Vain kirjoitus",
+    "homePromptPermissionsExecuteOnly": "Vain suoritus",
+    "homePromptTitleQuestion": "Annetaanko sovellukselle {snapName} pääsy ({permissions}) tiedostoihin?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
