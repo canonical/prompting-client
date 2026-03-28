@@ -68,7 +68,7 @@
     "homePromptPermissionsWrite": "Idatzi",
     "homePromptPermissionsExecute": "Exekutatu",
     "homePromptErrorUnknownTitle": "Zerbaitek huts egin du",
-    "cameraPromptBody": "Baimendu {snapName} aplikazioari kamera atzitzea?",
+    "cameraPromptBody": "Baimendu {snapName} aplikazioari kamerak erabiltzea?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -76,7 +76,7 @@
             }
         }
     },
-    "microphonePromptBody": "Baimendu {snapName} aplikazioari mikrofonoa atzitzea?",
+    "microphonePromptBody": "Baimendu {snapName} aplikazioari mikrofonoak erabiltzea?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,5 +172,33 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "promptActionOptionDenyAlways": "Ukatu beti",
+    "promptActionOptionDenyUntilLogout": "Ukatu saioa amaitu arte",
+    "homeCustomPathSaveButton": "Gorde bide pertsonalizatua",
+    "homeCustomPathMustStartWithSlash": "Bide patroia / batekin hasi behar da",
+    "homeCustomPathWildcardStarDescription": "Bat dator / ez beste edozein karaktere-katerekin",
+    "homeCustomPathWildcardQuestionDescription": "Bat dator karaktere batekin",
+    "homePromptMetaDataVerifiedAccountPrefix": "Argitaratzaileak ",
+    "homePromptMetaDataVerifiedAccountLink": "egiaztatutako kontua",
+    "homePromptMetaDataVerifiedAccountSuffix": "dauka.",
+    "homePromptMoreOptionsTileLabel": "Aukera gehiago",
+    "homePromptMetaDataAppCenterButton": "Ireki Aplikazioen zentroan",
+    "homePromptPermissionsReadOnly": "Irakurri soilik",
+    "homePromptPermissionsWriteOnly": "Idatzi soilik",
+    "homePromptPermissionsExecuteOnly": "Exekutatu soilik",
+    "homePromptTitleQuestion": "Eman {snapName} aplikazioari fitxategientzako {permissions} baimena?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homeCustomPathWildcardDoubleStarDescription": "Bat dator zero edo karpeta eta fitxategi gehiagorekin, errekurtsiboki",
+    "homeCustomPathWildcardCurlyDescription": "Bat dator x edo y-rekin",
+    "homeCustomPathWildcardBackslashDescription": "Karaktere bereziei ihes egiten die, literal gisa tratatuz"
 }
