@@ -62,34 +62,33 @@ pub async fn poll_notices(
 
     match timeout(duration, rx.recv()).await {
         Ok(Ok((mut prompt, Action::New))) => {
-            let (id, key) = {
-                info!("Add a new pending prompt");
+            info!("Add a new pending prompt");
 
-                let mut hm = data.prompts.lock().await;
+            let id = {
                 let mut id = data.last_prompt_id.lock().await;
-
                 *id += 1;
-
-                let key = format!("{:016x}", *id);
-                let timestamp = Prompts::timestamp();
-
-                prompt["id"] = json!(key);
-                prompt["timestamp"] = json!(timestamp);
-
-                hm.insert(key.clone(), prompt.clone());
-
-                (*id, key)
+                *id
             };
+
+            let key = format!("{:016x}", id);
+            let timestamp = Prompts::timestamp();
+
+            prompt["id"] = json!(key);
+            prompt["timestamp"] = json!(timestamp);
+
+            {
+                let mut hm = data.prompts.lock().await;
+                hm.insert(key.clone(), prompt.clone());
+            }
 
             info!("Make a notice for the new pending prompt");
 
-            let notice = {
-                let mut hm = data.notices.lock().await;
-                let notice = Prompts::make_notice(id, &key);
-                hm.insert(key, notice.clone());
+            let notice = Prompts::make_notice(id, &key);
 
-                notice
-            };
+            {
+                let mut hm = data.notices.lock().await;
+                hm.insert(key, notice.clone());
+            }
 
             Ok(make_success(notice))
         }
@@ -105,7 +104,9 @@ pub async fn poll_notices(
 
             info!("Update the notice for prompt: {id}");
 
-            if let Some(obj) = notice.as_array_mut().and_then(|arr| arr.get_mut(0)) {
+            if let Some(arr) = notice.as_array_mut()
+                && let Some(obj) = arr.get_mut(0)
+            {
                 obj["last-data"] = json!({"resolved": "replied"});
             }
 
