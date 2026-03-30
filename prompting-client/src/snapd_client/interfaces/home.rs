@@ -147,11 +147,10 @@ impl PatternOptions {
             PathKind::SubDirFile | PathKind::OutsideOfHomeFile => EnrichedPathKind::SubDirFile,
         };
 
-        if !cpath.is_dir {
-            if let Some(opt) = cpath.matching_extension_pattern() {
+        if !cpath.is_dir
+            && let Some(opt) = cpath.matching_extension_pattern() {
                 options.push(opt);
             }
-        }
 
         Self {
             enriched_path_kind,
@@ -452,15 +451,14 @@ impl ConstraintsFilter for HomeConstraintsFilter {
     fn matches(&self, constraints: &Self::Constraints) -> MatchAttempt {
         let mut failures = Vec::new();
 
-        if let Some(re) = &self.path {
-            if !re.is_match(&constraints.path) {
+        if let Some(re) = &self.path
+            && !re.is_match(&constraints.path) {
                 failures.push(MatchFailure {
                     field: "path",
                     expected: format!("{:?}", re.to_string()),
                     seen: format!("{:?}", constraints.path),
                 });
             }
-        }
 
         field_matches!(self, constraints, failures, requested_permissions);
         field_matches!(self, constraints, failures, available_permissions);

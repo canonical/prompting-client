@@ -7,11 +7,11 @@
 )]
 
 use crate::{
+    Result,
     daemon::{ActionedPrompt, EnrichedPrompt, PromptUpdate, ReplyToPrompt},
     snapd_client::{Cgroup, PromptId, SnapdSocketClient, TypedUiInput},
-    Result,
 };
-use futures::{stream::FuturesUnordered, FutureExt};
+use futures::{FutureExt, stream::FuturesUnordered};
 use std::{
     collections::{HashMap, VecDeque},
     env,
@@ -23,7 +23,7 @@ use std::{
 };
 use tokio::{
     process::{Child, Command},
-    sync::mpsc::{error::TryRecvError, UnboundedReceiver},
+    sync::mpsc::{UnboundedReceiver, error::TryRecvError},
     time::timeout,
 };
 use tokio_context::context::{Context, Handle};
@@ -573,14 +573,14 @@ where
 mod tests {
     use super::*;
     use crate::snapd_client::{
-        interfaces::home::{HomeConstraints, HomeReplyConstraints},
         Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
+        interfaces::home::{HomeConstraints, HomeReplyConstraints},
     };
     use simple_test_case::test_case;
     use std::env;
     use tokio::{
         sync::{
-            mpsc::{unbounded_channel, UnboundedSender},
+            mpsc::{UnboundedSender, unbounded_channel},
             oneshot,
         },
         time::sleep,
@@ -1038,7 +1038,10 @@ mod tests {
 
         // We need this env var set to be able to generate the appropriate UI options
         // for the home interface
-        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        // SAFETY: this is called in a single-threaded test
+        unsafe {
+            env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        }
 
         for update in updates.clone() {
             tx_prompts.send(update).expect("to send an update");
@@ -1123,7 +1126,10 @@ mod tests {
 
         // We need this env var set to be able to generate the appropriate UI options
         // for the home interface
-        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        // SAFETY: this is called in a single-threaded test
+        unsafe {
+            env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        }
         w.step().await.unwrap();
 
         // Strip off the surrounding Arc and Mutex
@@ -1175,7 +1181,10 @@ mod tests {
 
         // We need this env var set to be able to generate the appropriate UI options
         // for the home interface
-        env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        // SAFETY: this is called in a single-threaded test
+        unsafe {
+            env::set_var("SNAP_REAL_HOME", "/home/ubuntu");
+        }
 
         tx_prompts
             .send(add(id, "cgroup_0"))
