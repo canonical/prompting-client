@@ -157,7 +157,7 @@
     "homePromptPermissionsWrite": "ຂຽນ",
     "homePromptPermissionsExecute": "ດຳເນີນການ",
     "homePromptErrorUnknownTitle": "ມີບາງຢ່າງຜິດພາດ",
-    "cameraPromptBody": "ອະນຸຍາດໃຫ້ {snapName} ເຂົ້າເຖິງກ້ອງຂອງທ່ານບໍ່?",
+    "cameraPromptBody": "ອະນຸຍາດໃຫ້ {snapName} ນຳໃຊ້ກ້ອງຂອງທ່ານບໍ?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -165,10 +165,38 @@
             }
         }
     },
-    "microphonePromptBody": "ອະນຸຍາດໃຫ້ {snapName} ເຂົ້າເຖິງໄມໂຄຣໂຟນຂອງທ່ານບໍ່?",
+    "microphonePromptBody": "ອະນຸຍາດໃຫ້ {snapName} ນຳໃຊ້ໄມໂຄຣໂຟນຂອງທ່ານບໍ?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "ປະຕິເສດຕະຫຼອດ",
+    "promptActionOptionDenyUntilLogout": "ປະຕິເສດຈົນກວ່າຈະອອກຈາກລະບົບ",
+    "homeCustomPathSaveButton": "ບັນທຶກເສັ້ນທາງແບບກຳນົດເອງ",
+    "homeCustomPathMustStartWithSlash": "ຮູບແບບເສັ້ນທາງຕ້ອງເລີ່ມຕົ້ນດ້ວຍ /",
+    "homeCustomPathWildcardStarDescription": "ກົງກັບຂໍ້ຄວາມໃດໜຶ່ງ ຍົກເວັ້ນ /",
+    "homeCustomPathWildcardQuestionDescription": "ກົງກັບຕົວອັກສອນດຽວ",
+    "homeCustomPathWildcardDoubleStarDescription": "ກົງກັບໂຟນເດີ ແລະ ໄຟລ໌ທັງໝົດແບບຊ້ອນກັນ",
+    "homeCustomPathWildcardCurlyDescription": "ກົງກັບ x ຫຼື y",
+    "homeCustomPathWildcardBackslashDescription": "ຍົກເວັ້ນຕົວອັກສອນພິເສດເພື່ອໃຫ້ຖືວ່າເປັນຕົວອັກສອນປົກກະຕິ",
+    "homePromptMetaDataVerifiedAccountPrefix": "ຜູ້ເຜີຍແຜ່ນີ້ມີ ",
+    "homePromptMetaDataVerifiedAccountLink": "ບັນຊີທີ່ຜ່ານການຢືນຢັນ",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "ຕົວເລືອກເພີ່ມເຕີມ",
+    "homePromptMetaDataAppCenterButton": "ເປີດໃນ App Center",
+    "homePromptPermissionsReadOnly": "ອ່ານເທົ່ານັ້ນ",
+    "homePromptPermissionsWriteOnly": "ຂຽນເທົ່ານັ້ນ",
+    "homePromptPermissionsExecuteOnly": "ດຳເນີນການເທົ່ານັ້ນ",
+    "homePromptTitleQuestion": "ໃຫ້ {snapName} ເຂົ້າເຖິງ {permissions} ຕໍ່ໄຟລ໌ບໍ່?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
