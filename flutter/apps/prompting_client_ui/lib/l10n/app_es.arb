@@ -23,7 +23,7 @@
     "promptActionOptionDeny": "Denegar",
     "promptActionOptionDenyOnce": "Denegar una vez",
     "promptLifespanOptionForever": "Siempre",
-    "promptLifespanOptionSession": "Hasta cerrar sesión",
+    "promptLifespanOptionSession": "Hasta finalizar sesión",
     "promptLifespanOptionSingle": "Una vez",
     "promptLifespanTitle": "Duración",
     "promptTitle": "Notificación de seguridad",
@@ -58,7 +58,7 @@
     "homePromptPermissionsWrite": "Escribir",
     "homePromptPermissionsExecute": "Ejecutar",
     "homePromptMetaDataAppCenterLink": "Visita la página del Centro de aplicaciones",
-    "securityCenterInfo": "Siempre puedes cambiar estos permisos en el <Centro de seguridad>",
+    "securityCenterInfo": "Siempre puede cambiar estos permisos en el <Centro de seguridad>",
     "homePatternTypeMatchingFileExtension": "Todos los archivos {fileExtension}",
     "promptSaveAndContinue": "Guardar y continuar",
     "homePatternTypeRequestedFile": "Solo el archivo solicitado",
@@ -163,8 +163,8 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Permitir hasta el cierre de sesión",
-    "cameraPromptBody": "¿Permitirle el acceso a tu cámara a {snapName}?",
+    "promptActionOptionAllowUntilLogout": "Permitir hasta finalizar sesión",
+    "cameraPromptBody": "¿Permite que {snapName} use sus cámaras?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,10 +172,38 @@
             }
         }
     },
-    "microphonePromptBody": "¿Permitirle el acceso a tu micrófono a {snapName}?",
+    "microphonePromptBody": "¿Permite que {snapName} use sus micrófonos?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Denegar siempre",
+    "homeCustomPathSaveButton": "Guardar ruta personalizada",
+    "homeCustomPathMustStartWithSlash": "La ruta debe comenzar por /",
+    "homePromptMetaDataVerifiedAccountLink": "cuenta verificada",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Más opciones",
+    "homePromptMetaDataAppCenterButton": "Abrir en Centro de aplicaciones",
+    "homePromptPermissionsReadOnly": "Solo lectura",
+    "homePromptPermissionsWriteOnly": "Solo escritura",
+    "homePromptPermissionsExecuteOnly": "Solo ejecución",
+    "promptActionOptionDenyUntilLogout": "Denegar hasta finalizar sesión",
+    "homeCustomPathWildcardStarDescription": "Encuentra cualquier cadena de caracteres salvo /",
+    "homeCustomPathWildcardQuestionDescription": "Encuentra un único carácter",
+    "homeCustomPathWildcardDoubleStarDescription": "Encuentra cero o más archivos y carpetas de forma recursiva",
+    "homeCustomPathWildcardCurlyDescription": "Encuentra tanto x como y",
+    "homeCustomPathWildcardBackslashDescription": "Trata los caracteres especiales como literales",
+    "homePromptMetaDataVerifiedAccountPrefix": "Este editor cuenta con una ",
+    "homePromptTitleQuestion": "¿Quiere otorgar acceso de {permissions} a {snapName}?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
