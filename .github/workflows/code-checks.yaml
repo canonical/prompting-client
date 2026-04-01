@@ -1,4 +1,4 @@
-name: pre-commit
+name: Code Checks
 
 on:
     pull_request:
@@ -6,7 +6,7 @@ on:
         branches: [main]
 
 jobs:
-    pre-commit:
+    prek:
         runs-on: ubuntu-24.04
         steps:
             - uses: actions/checkout@v4
@@ -24,4 +24,4 @@ jobs:
                   sudo apt-get -y update
                   sudo apt-get -y install protobuf-compiler
 
-            - uses: pre-commit/action@v3.0.1
+            - uses: j178/prek-action@v2

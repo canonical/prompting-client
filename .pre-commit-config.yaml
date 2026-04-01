@@ -7,7 +7,7 @@
 repos:
   # General file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: check-yaml
       - id: check-json
@@ -77,14 +77,14 @@ repos:
 
   # Protocol Buffers
   - repo: https://github.com/bufbuild/buf
-    rev: v1.28.1
+    rev: v1.66.1
     hooks:
       - id: buf-format
         files: ^protos/.*\.proto$
 
   # Markdown linting
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.37.0
+    rev: v0.48.0
     hooks:
       - id: markdownlint
         args: ["--fix"]
@@ -92,7 +92,7 @@ repos:
 
   # YAML linting
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.33.0
+    rev: v1.38.0
     hooks:
       - id: yamllint
         args: ["-d", "relaxed"]
