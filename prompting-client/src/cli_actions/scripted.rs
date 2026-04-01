@@ -1,14 +1,14 @@
 use crate::{
+    Error, Result, SNAP_NAME,
     daemon::{EnrichedPrompt, PollLoop, PromptUpdate},
     prompt_sequence::{MatchError, PromptFilter, PromptSequence},
     snapd_client::{
-        interfaces::{
-            home::{HomeConstraintsFilter, HomeInterface},
-            SnapInterface,
-        },
         Action, PromptId, PromptNotice, SnapdSocketClient, TypedPrompt, TypedPromptReply,
+        interfaces::{
+            SnapInterface,
+            home::{HomeConstraintsFilter, HomeInterface},
+        },
     },
-    Error, Result, SNAP_NAME,
 };
 use hyper::StatusCode;
 use std::time::Duration;

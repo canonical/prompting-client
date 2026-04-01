@@ -1,9 +1,9 @@
 use crate::snapd_client::{
-    interfaces::{
-        camera::CameraInterface, home::HomeInterface, microphone::MicrophoneInterface,
-        ConstraintsFilter, ReplyConstraintsOverrides, SnapInterface,
-    },
     Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
+    interfaces::{
+        ConstraintsFilter, ReplyConstraintsOverrides, SnapInterface, camera::CameraInterface,
+        home::HomeInterface, microphone::MicrophoneInterface,
+    },
 };
 use serde::{Deserialize, Deserializer, Serialize};
 use std::{collections::VecDeque, fs};
@@ -324,8 +324,8 @@ where
 mod tests {
     use super::*;
     use crate::snapd_client::{
-        interfaces::home::{HomeConstraints, HomeConstraintsFilter},
         Cgroup, PromptId,
+        interfaces::home::{HomeConstraints, HomeConstraintsFilter},
     };
     use simple_test_case::{dir_cases, test_case};
 

@@ -1,15 +1,15 @@
 //! Parsing of snapd API responses
 use crate::{
-    socket_client::{body_json, body_raw},
     Error, Result,
+    socket_client::{body_json, body_raw},
 };
 use hyper::{
-    body::{Bytes, Incoming},
     Response, StatusCode,
+    body::{Bytes, Incoming},
 };
 use serde::{
-    de::{self, DeserializeOwned, Deserializer},
     Deserialize, Serialize,
+    de::{self, DeserializeOwned, Deserializer},
 };
 use serde_json::Value;
 use tracing::error;

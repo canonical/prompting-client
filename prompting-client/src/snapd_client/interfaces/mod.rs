@@ -9,20 +9,19 @@
 //! using the [TypedPrompt], [TypedUiInput] and [TypedPromptReply] types rather than making use of
 //! implementations of [SnapInterface] directly.
 use crate::{
+    Error, Result,
     daemon::EnrichedPrompt,
     prompt_sequence::MatchAttempt,
     protos::apparmor_prompting::{
-        self, get_current_prompt_response::Prompt as ProtoPrompt,
-        prompt_reply::PromptReply as ProtoConstraints, PromptReply as ProtoPromptReply,
+        self, PromptReply as ProtoPromptReply, get_current_prompt_response::Prompt as ProtoPrompt,
+        prompt_reply::PromptReply as ProtoConstraints,
     },
     snapd_client::{
-        self,
+        self, Action, Cgroup, PromptId, PromptReply, SnapMeta,
         prompt::{Prompt, RawPrompt, UiInput},
-        Action, Cgroup, PromptId, PromptReply, SnapMeta,
     },
-    Error, Result,
 };
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::fmt;
 use tonic::{Code, Status};
 

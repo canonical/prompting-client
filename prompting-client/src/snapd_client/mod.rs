@@ -1,17 +1,16 @@
 #![cfg_attr(feature = "dry-run", allow(unused_variables))]
 
 use crate::{
-    exit_with,
+    Error, ExitStatus, Result, exit_with,
     snapd_client::{
         prompt::RawPrompt,
         response::{parse_raw_response, parse_response},
     },
     socket_client::UnixSocketClient,
-    Error, ExitStatus, Result,
 };
 use chrono::{DateTime, SecondsFormat, Utc};
-use hyper::{body::Bytes, Uri};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use hyper::{Uri, body::Bytes};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::{collections::HashMap, env, str::FromStr};
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
@@ -152,7 +151,9 @@ impl SnapdSocketClient {
                 .await
                 .is_ok()
             {
-                info!("using the abstract snapd snap socket at address: @{SNAPD_ABSTRACT_SNAP_SOCKET}");
+                info!(
+                    "using the abstract snapd snap socket at address: @{SNAPD_ABSTRACT_SNAP_SOCKET}"
+                );
                 SNAPD_ABSTRACT_SNAP_SOCKET
             } else {
                 info!("using the snapd snap socket at address: {SNAPD_SNAP_SOCKET}");

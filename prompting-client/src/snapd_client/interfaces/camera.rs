@@ -1,16 +1,16 @@
 use crate::{
     prompt_sequence::MatchAttempt,
     protos::{
-        apparmor_prompting::{CameraPromptReply, DevicePermission, MetaData},
         CameraPrompt as ProtoCameraPrompt,
+        apparmor_prompting::{CameraPromptReply, DevicePermission, MetaData},
     },
     snapd_client::{
+        Action, Error, Lifespan, Result, SnapMeta,
         interfaces::{
             ConstraintsFilter, Prompt, PromptReply, ProtoPrompt, ReplyConstraintsOverrides,
             SnapInterface,
         },
         prompt::UiInput,
-        Action, Error, Lifespan, Result, SnapMeta,
     },
 };
 use serde::{Deserialize, Serialize};

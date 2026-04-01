@@ -1,7 +1,7 @@
 //! The daemon prompting client for apparmor prompting
 use prompting_client::{
-    daemon::run_daemon, exit_with, log_filter, snapd_client::SnapdSocketClient, ExitStatus, Result,
-    DEFAULT_LOG_LEVEL,
+    DEFAULT_LOG_LEVEL, ExitStatus, Result, daemon::run_daemon, exit_with, log_filter,
+    snapd_client::SnapdSocketClient,
 };
 use std::{env, io::stdout};
 use tracing::{info, subscriber::set_global_default};
