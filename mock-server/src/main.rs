@@ -88,12 +88,12 @@ async fn main() -> Result<()> {
     tokio::spawn(async move {
         info!("Initializing pipe at address: {pipe_path}");
 
-        let pipe = Pipe::create(&pipe_path).await.unwrap();
+        let pipe = Pipe::create(&pipe_path).await.expect("to create the pipe");
         let mut reader = BufReader::new(pipe);
 
         loop {
             let mut buf = String::new();
-            reader.read_to_string(&mut buf).await.unwrap();
+            let _ = reader.read_to_string(&mut buf).await;
 
             if let Ok(json) = serde_json::from_str::<serde_json::Value>(&buf) {
                 info!("Sending data into the pipe: {json}");
