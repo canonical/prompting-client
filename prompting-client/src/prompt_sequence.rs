@@ -116,7 +116,7 @@ enum TypedPromptCase {
     Microphone(PromptCase<MicrophoneInterface>),
 }
 
-/// Deserializes a PromptFilter by manually set the `interface` field.
+/// Deserializes a PromptFilter by manually setting the `interface` field.
 /// This function is necessary because when `interface` is used as a tag to
 /// deserialize the enum `TypedPromptFilter` variants, that information gets
 /// lost during deserialization and must be manually set into the struct.
