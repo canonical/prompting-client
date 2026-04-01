@@ -5,10 +5,10 @@
 //! enriched prompts themselves are simply passed off on a channel for downstream consumption and
 //! mapping into the data required for the prompt UI.
 use crate::{
+    Error, ExitStatus, Result,
     daemon::{EnrichedPrompt, PromptUpdate},
     exit_with,
     snapd_client::{PromptId, PromptNotice, SnapMeta, SnapdSocketClient, TypedPrompt},
-    Error, ExitStatus, Result,
 };
 use cached::proc_macro::cached;
 use hyper::StatusCode;

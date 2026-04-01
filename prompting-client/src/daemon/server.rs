@@ -1,24 +1,24 @@
 //! The GRPC server that handles incoming connections from client UIs.
 use crate::{
-    daemon::{worker::RefActivePrompts, ActionedPrompt, ReplyToPrompt},
+    Error,
+    daemon::{ActionedPrompt, ReplyToPrompt, worker::RefActivePrompts},
     log_filter,
     protos::{
-        apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
         AppArmorPrompting, AppArmorPromptingServer, GetCurrentPromptResponse, PromptReplyResponse,
         ResolveHomePatternTypeResponse,
+        apparmor_prompting::{HomePermission, PromptReply, SetLoggingFilterResponse},
     },
     snapd_client::{Cgroup, PromptId, SnapdError, TypedPromptReply},
-    Error,
 };
 use std::sync::Arc;
 use tokio::{
     net::UnixListener,
-    sync::mpsc::{channel, UnboundedSender},
+    sync::mpsc::{UnboundedSender, channel},
 };
 use tokio_stream::wrappers::ReceiverStream;
-use tonic::{async_trait, Code, Request, Response, Status};
+use tonic::{Code, Request, Response, Status, async_trait};
 use tracing::{debug, error, info, warn};
-use tracing_subscriber::{reload::Handle, EnvFilter};
+use tracing_subscriber::{EnvFilter, reload::Handle};
 
 pub fn new_server_and_listener<R, S>(
     client: R,
@@ -300,30 +300,28 @@ fn map_permissions(perms: Vec<String>) -> Result<Vec<i32>, Status> {
 mod tests {
     use super::*;
     use crate::{
+        Error,
         daemon::{
-            worker::{ActivePrompt, RefActivePrompts},
             EnrichedPrompt,
+            worker::{ActivePrompt, RefActivePrompts},
         },
         protos::apparmor_prompting::{
-            self,
+            self, Action, EnrichedPathKind as ProtoEnrichedPathKind, HomeDir, HomePrompt, Lifespan,
+            MetaData,
             app_armor_prompting_client::AppArmorPromptingClient,
             enriched_path_kind::Kind,
             get_current_prompt_response::Prompt,
             prompt_reply::{self, PromptReply::HomePromptReply},
             prompt_reply_response::PromptReplyType,
-            Action, EnrichedPathKind as ProtoEnrichedPathKind, HomeDir, HomePrompt, Lifespan,
-            MetaData,
         },
         snapd_client::{
-            self,
+            self, Cgroup, Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapIcon,
+            SnapMeta, TypedPrompt, TypedPromptReply, TypedUiInput, UiInput,
             interfaces::home::{
                 EnrichedPathKind, HomeConstraints, HomeInterface, HomeReplyConstraints,
                 HomeUiInputData,
             },
-            Cgroup, Prompt as SnapPrompt, PromptId, PromptReply as SnapPromptReply, SnapIcon,
-            SnapMeta, TypedPrompt, TypedPromptReply, TypedUiInput, UiInput,
         },
-        Error,
     };
     use simple_test_case::test_case;
     use std::{
@@ -331,13 +329,12 @@ mod tests {
         fs, io,
         ops::{Deref, DerefMut},
     };
-    use tokio::sync::mpsc::{unbounded_channel, UnboundedSender};
+    use tokio::sync::mpsc::{UnboundedSender, unbounded_channel};
     use tokio_context::context::Context;
     use tokio_stream::wrappers::UnixListenerStream;
     use tonic::{
-        async_trait,
+        Request, async_trait,
         transport::{Channel, Server},
-        Request,
     };
     use uuid::Uuid;
 

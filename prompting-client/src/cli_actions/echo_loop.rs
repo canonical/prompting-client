@@ -1,8 +1,8 @@
 use crate::{
+    Result,
     daemon::{PollLoop, PromptUpdate},
     recording::PromptRecording,
     snapd_client::{PromptId, SnapdSocketClient, TypedPrompt},
-    Result,
 };
 use tokio::sync::mpsc::unbounded_channel;
 use tracing::info;

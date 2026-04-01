@@ -2,19 +2,19 @@ use crate::{
     field_matches, map_enum,
     prompt_sequence::{MatchAttempt, MatchFailure},
     protos::{
-        apparmor_prompting::{
-            home_prompt::PatternOption, EnrichedPathKind as ProtoEnrichedPathKind, HomePatternType,
-            HomePermission, HomePromptReply, MetaData,
-        },
         HomePrompt as ProtoHomePrompt,
+        apparmor_prompting::{
+            EnrichedPathKind as ProtoEnrichedPathKind, HomePatternType, HomePermission,
+            HomePromptReply, MetaData, home_prompt::PatternOption,
+        },
     },
     snapd_client::{
+        Action, Error, Lifespan, Result, SnapMeta,
         interfaces::{
             ConstraintsFilter, Prompt, PromptReply, ProtoPrompt, ReplyConstraintsOverrides,
             SnapInterface,
         },
         prompt::UiInput,
-        Action, Error, Lifespan, Result, SnapMeta,
     },
     util::serde_option_regex,
 };
@@ -147,10 +147,10 @@ impl PatternOptions {
             PathKind::SubDirFile | PathKind::OutsideOfHomeFile => EnrichedPathKind::SubDirFile,
         };
 
-        if !cpath.is_dir {
-            if let Some(opt) = cpath.matching_extension_pattern() {
-                options.push(opt);
-            }
+        if !cpath.is_dir
+            && let Some(opt) = cpath.matching_extension_pattern()
+        {
+            options.push(opt);
         }
 
         Self {
@@ -452,14 +452,14 @@ impl ConstraintsFilter for HomeConstraintsFilter {
     fn matches(&self, constraints: &Self::Constraints) -> MatchAttempt {
         let mut failures = Vec::new();
 
-        if let Some(re) = &self.path {
-            if !re.is_match(&constraints.path) {
-                failures.push(MatchFailure {
-                    field: "path",
-                    expected: format!("{:?}", re.to_string()),
-                    seen: format!("{:?}", constraints.path),
-                });
-            }
+        if let Some(re) = &self.path
+            && !re.is_match(&constraints.path)
+        {
+            failures.push(MatchFailure {
+                field: "path",
+                expected: format!("{:?}", re.to_string()),
+                seen: format!("{:?}", constraints.path),
+            });
         }
 
         field_matches!(self, constraints, failures, requested_permissions);
@@ -509,8 +509,8 @@ pub enum EnrichedPathKind {
 impl From<EnrichedPathKind> for ProtoEnrichedPathKind {
     fn from(k: EnrichedPathKind) -> Self {
         use crate::protos::apparmor_prompting::{
-            enriched_path_kind::Kind, HomeDir, HomeDirFile, SubDir, SubDirFile, TopLevelDir,
-            TopLevelDirFile,
+            HomeDir, HomeDirFile, SubDir, SubDirFile, TopLevelDir, TopLevelDirFile,
+            enriched_path_kind::Kind,
         };
 
         match k {
@@ -679,8 +679,8 @@ pub enum PatternType {
 mod tests {
     use super::*;
     use crate::snapd_client::{RawPrompt, TypedPrompt};
-    use simple_test_case::test_case;
     use PathKind::*;
+    use simple_test_case::test_case;
 
     const HOME_PROMPT: &str = r#"{
       "id": "C7OUCCDWCE6CC===",

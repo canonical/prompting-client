@@ -4,14 +4,14 @@
 #![cfg(feature = "dry-run")]
 
 use prompting_client::{
-    snapd_client::{
-        interfaces::{
-            camera::CameraInterface, home::HomeInterface, microphone::MicrophoneInterface,
-            SnapInterface,
-        },
-        Action, SnapdSocketClient, TypedPrompt,
-    },
     Result,
+    snapd_client::{
+        Action, SnapdSocketClient, TypedPrompt,
+        interfaces::{
+            SnapInterface, camera::CameraInterface, home::HomeInterface,
+            microphone::MicrophoneInterface,
+        },
+    },
 };
 use serde_json::Value;
 use serial_test::serial;
@@ -27,10 +27,10 @@ use tokio::{
     io::{self, AsyncBufReadExt, AsyncWriteExt, BufReader, BufWriter},
     process::Command,
     spawn,
-    sync::mpsc::{unbounded_channel, UnboundedReceiver},
+    sync::mpsc::{UnboundedReceiver, unbounded_channel},
     time::sleep,
 };
-use tokio_stream::{wrappers::LinesStream, StreamExt};
+use tokio_stream::{StreamExt, wrappers::LinesStream};
 
 struct TestFixture {
     pipe_path: String,
@@ -73,8 +73,11 @@ impl TestFixture {
                 let stderr = String::from_utf8_lossy(&output.stderr);
                 let stdout = String::from_utf8_lossy(&output.stdout);
                 panic!(
-                "Failed to build mock-server in directory {:?}\nExit code: {:?}\nStdout:\n{}\nStderr:\n{}",
-                mock_server_path, output.status.code(), stdout, stderr
+                    "Failed to build mock-server in directory {:?}\nExit code: {:?}\nStdout:\n{}\nStderr:\n{}",
+                    mock_server_path,
+                    output.status.code(),
+                    stdout,
+                    stderr
                 );
             }
         }
@@ -83,7 +86,10 @@ impl TestFixture {
     }
 
     fn start_mock_server(&self) -> UnboundedReceiver<String> {
-        env::set_var("SNAPD_SOCKET_OVERRIDE", &self.socket_path);
+        // SAFETY: this is called in a single-threaded test
+        unsafe {
+            env::set_var("SNAPD_SOCKET_OVERRIDE", &self.socket_path);
+        }
 
         let (tx, rx) = unbounded_channel();
         let binary_path = self.get_mock_server_path();

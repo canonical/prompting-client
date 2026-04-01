@@ -10,16 +10,16 @@
 #![cfg(not(feature = "dry-run"))]
 
 use prompting_client::{
+    Error, Result,
     cli_actions::ScriptedClient,
     prompt_sequence::MatchError,
     snapd_client::{
-        interfaces::{
-            camera::CameraInterface, home::HomeInterface, microphone::MicrophoneInterface,
-            SnapInterface,
-        },
         Action, Lifespan, PromptId, PromptNotice, SnapdSocketClient, TypedPrompt,
+        interfaces::{
+            SnapInterface, camera::CameraInterface, home::HomeInterface,
+            microphone::MicrophoneInterface,
+        },
     },
-    Error, Result,
 };
 use serial_test::serial;
 use simple_test_case::test_case;
@@ -27,7 +27,7 @@ use std::{
     env, fs,
     io::{self, ErrorKind},
     os::unix::fs::PermissionsExt,
-    sync::mpsc::{channel, Receiver},
+    sync::mpsc::{Receiver, channel},
     time::Duration,
 };
 use tokio::{process::Command, spawn, time::sleep, time::timeout};

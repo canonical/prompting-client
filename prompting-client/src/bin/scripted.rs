@@ -1,7 +1,7 @@
 //! A simple command line prompting client
 use clap::Parser;
 use prompting_client::{
-    cli_actions::ScriptedClient, snapd_client::SnapdSocketClient, Error, Result,
+    Error, Result, cli_actions::ScriptedClient, snapd_client::SnapdSocketClient,
 };
 use std::{io::stderr, process::exit};
 use tracing::subscriber::set_global_default;

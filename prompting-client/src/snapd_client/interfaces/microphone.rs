@@ -1,16 +1,16 @@
 use crate::{
     prompt_sequence::MatchAttempt,
     protos::{
-        apparmor_prompting::{DevicePermission, MetaData, MicrophonePromptReply},
         MicrophonePrompt as ProtoMicrophonePrompt,
+        apparmor_prompting::{DevicePermission, MetaData, MicrophonePromptReply},
     },
     snapd_client::{
+        Action, Error, Lifespan, Result, SnapMeta,
         interfaces::{
             ConstraintsFilter, Prompt, PromptReply, ProtoPrompt, ReplyConstraintsOverrides,
             SnapInterface,
         },
         prompt::UiInput,
-        Action, Error, Lifespan, Result, SnapMeta,
     },
 };
 use serde::{Deserialize, Serialize};
