@@ -1,195 +1,211 @@
 {
-  "securityCenterInfo": "Te uprawnienia możesz zawsze zmienić w <Centrum zabezpieczeń>",
-  "@securityCenterInfo": {},
-  "promptAccessMoreOptionsTitle": "Ustaw dostęp dla {snap} na:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
+    "securityCenterInfo": "Te uprawnienia możesz zawsze zmienić w <Centrum zabezpieczeń>",
+    "promptAccessMoreOptionsTitle": "Ustaw dostęp dla {snap} na:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowAlways": "Zezwalaj zawsze",
+    "promptAccessTitle": "Udziel {snap} dostępu {permission} do:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyOnce": "Odmów raz",
+    "promptActionOptionDeny": "Odmów",
+    "promptLifespanOptionSingle": "Raz",
+    "promptLifespanTitle": "Czas trwania",
+    "promptSaveAndContinue": "Zapisz i kontynuuj",
+    "homePatternTypeTopLevelDirectory": "Wszystko w katalogu {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Wszystko w katalogu",
+    "homePromptMetaDataTitle": "O tym programie",
+    "promptTitle": "Powiadomienie o zabezpieczeniach",
+    "homePatternTypeCustomPath": "Niestandardowy wzorzec ścieżki",
+    "homePatternTypeRequestedDirectory": "Tylko żądany katalog",
+    "homePromptMetaDataPublishedBy": "Opublikowany przez {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeMatchingFileExtension": "Wszystkie pliki {fileExtension}",
+    "homePromptBody": "Czy zezwolić {snap} na dostęp do {path} na poziomie {permissions}?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataAppCenterLink": "Odwiedź stronę Centrum oprogramowania",
+    "promptActionOptionAllow": "Zezwól",
+    "promptActionTitle": "Czynność",
+    "promptLifespanOptionForever": "Zawsze",
+    "promptLifespanOptionSession": "Do czasu wylogowania",
+    "homePatternInfo": "<Dowiedz się więcej o wzorcach ścieżek>",
+    "homePatternTypeRequestedFile": "Tylko żądany plik",
+    "homePatternTypeContainingDirectory": "Wszystko w katalogu",
+    "homePatternTypeHomeDirectory": "Wszystko w katalogu domowym",
+    "homePromptMetaDataLastUpdated": "Ostatnio zaktualizowany dnia {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Więcej opcji...",
+    "homePromptPermissionsTitle": "Uprawnienia",
+    "homePromptPermissionsRead": "Odczyt",
+    "homePromptPermissionsWrite": "Zapis",
+    "homePromptPermissionsExecute": "Wykonywanie",
+    "promptActionOptionAllowOnce": "Zezwól raz",
+    "homePromptSuggestedPermission": "Udziel także dostępu {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "Wystąpił problem",
+    "homePromptTopLevelDirBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do katalogu {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do {filename} w katalogu {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do Twojego folderu domowego.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do {filename} w Twoim folderze domowym.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Czy zezwolić programowi {snapName} na używanie mikrofonów?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "cameraPromptBody": "Czy zezwolić programowi {snapName} na używanie kamer?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Zezwalaj do momentu wylogowania",
+    "promptActionOptionDenyAlways": "Odmawiaj zawsze",
+    "promptActionOptionDenyUntilLogout": "Odmawiaj do momentu wylogowania",
+    "homeCustomPathSaveButton": "Zapisz ścieżkę niestandardową",
+    "homeCustomPathMustStartWithSlash": "Wzór ścieżki musi zaczynać się od /",
+    "homeCustomPathWildcardStarDescription": "Dopasowuje dowolny ciąg znaków z wyjątkiem /",
+    "homeCustomPathWildcardQuestionDescription": "Dopasowuje pojedynczy znak",
+    "homeCustomPathWildcardDoubleStarDescription": "Dopasowuje rekurencyjnie zero lub więcej katalogów i plików",
+    "homeCustomPathWildcardCurlyDescription": "Dopasowuje x lub y",
+    "homeCustomPathWildcardBackslashDescription": "Uwalnia znaki specjalne od traktowania ich jako znaki dosłowne",
+    "homePromptMetaDataVerifiedAccountPrefix": "Ten wydawca ma ",
+    "homePromptMetaDataVerifiedAccountLink": "zweryfikowane konto",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Więcej opcji",
+    "homePromptMetaDataAppCenterButton": "Otwórz w Centrum oprogramowania",
+    "homePromptPermissionsReadOnly": "Tylko do odczytu",
+    "homePromptPermissionsWriteOnly": "Tylko do zapisu",
+    "homePromptPermissionsExecuteOnly": "Tylko do wykonywania",
+    "homePromptTitleQuestion": "Czy udzielić programowi {snapName} dostępu {permissions} do plików?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptActionOptionAllowAlways": "Zezwalaj zawsze",
-  "@promptActionOptionAllowAlways": {},
-  "promptAccessTitle": "Udziel {snap} dostępu {permission} do:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionDenyOnce": "Odmów raz",
-  "@promptActionOptionDenyOnce": {},
-  "promptActionOptionDeny": "Odmów",
-  "@promptActionOptionDeny": {},
-  "promptLifespanOptionSingle": "Raz",
-  "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "Czas trwania",
-  "@promptLifespanTitle": {},
-  "promptSaveAndContinue": "Zapisz i kontynuuj",
-  "@promptSaveAndContinue": {},
-  "homePatternTypeTopLevelDirectory": "Wszystko w katalogu {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeRequestedDirectoryContents": "Wszystko w katalogu",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePromptMetaDataTitle": "O tym programie",
-  "@homePromptMetaDataTitle": {},
-  "promptTitle": "Powiadomienie o zabezpieczeniach",
-  "@promptTitle": {},
-  "homePatternTypeCustomPath": "Niestandardowy wzorzec ścieżki",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "Tylko żądany katalog",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePromptMetaDataPublishedBy": "Opublikowany przez {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeMatchingFileExtension": "Wszystkie pliki {fileExtension}",
-  "@homePatternTypeMatchingFileExtension": {},
-  "homePromptBody": "Czy zezwolić {snap} na dostęp do {path} na poziomie {permissions}?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataAppCenterLink": "Odwiedź stronę Centrum oprogramowania",
-  "@homePromptMetaDataAppCenterLink": {},
-  "promptActionOptionAllow": "Zezwól",
-  "@promptActionOptionAllow": {},
-  "promptActionTitle": "Działanie",
-  "@promptActionTitle": {},
-  "promptLifespanOptionForever": "Zawsze",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Do czasu wylogowania",
-  "@promptLifespanOptionSession": {},
-  "homePatternInfo": "<Dowiedz się więcej o wzorcach ścieżek>",
-  "@homePatternInfo": {},
-  "homePatternTypeRequestedFile": "Tylko żądany plik",
-  "@homePatternTypeRequestedFile": {},
-  "homePatternTypeContainingDirectory": "Wszystko w katalogu",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeHomeDirectory": "Wszystko w katalogu domowym",
-  "@homePatternTypeHomeDirectory": {},
-  "homePromptMetaDataLastUpdated": "Ostatnio zaktualizowany dnia {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "Więcej opcji...",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptPermissionsTitle": "Uprawnienia",
-  "@homePromptPermissionsTitle": {},
-  "homePromptPermissionsRead": "Odczyt",
-  "@homePromptPermissionsRead": {},
-  "homePromptPermissionsWrite": "Zapis",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Wykonywanie",
-  "@homePromptPermissionsExecute": {},
-  "promptActionOptionAllowOnce": "Zezwól raz",
-  "@promptActionOptionAllowOnce": {},
-  "homePromptSuggestedPermission": "Udziel także dostępu {permission}",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptErrorUnknownTitle": "Wystąpił problem",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptTopLevelDirBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do katalogu {foldername}.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptDefaultBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do {path}",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do {filename} w katalogu {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do Twojego folderu domowego.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} chce uzyskać dostęp na poziomie {permissions} do {filename} w Twoim folderze domowym.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  }
 }
