@@ -204,5 +204,15 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "homeCustomPathMustStartWithSlash": "Polun tulee alkaa /:lla",
+    "homeCustomPathWildcardStarDescription": "Täsmää kaikkia merkkejä paitsi /:aa sisältäviä merkkijonoja",
+    "homeCustomPathWildcardQuestionDescription": "Täsmää yhteen merkkiin",
+    "homeCustomPathWildcardDoubleStarDescription": "Täsmää ei yhteenkään tai useampaan kansioon ja tiedostoon rekursiivisesti",
+    "homeCustomPathWildcardCurlyDescription": "Täsmää joko x:ään tai y:hyn",
+    "homePromptMetaDataVerifiedAccountLink": "vahvistettu tili",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Lisää valintoja",
+    "homePromptMetaDataVerifiedAccountPrefix": "Tällä julkaisijalla on ",
+    "homeCustomPathWildcardBackslashDescription": "Eristää erikoismerkit jotta niitä käsitellään kirjainmerkkeinä"
 }
