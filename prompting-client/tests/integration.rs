@@ -28,14 +28,13 @@ use std::{
     io::{self, ErrorKind},
     os::unix::fs::PermissionsExt,
     process::Stdio,
-    sync::mpsc::{Receiver, channel},
     time::Duration,
 };
 use tokio::{
-    io::{AsyncReadExt, BufReader},
     process::Command,
     runtime::Runtime,
     spawn,
+    task::JoinHandle,
     time::{sleep, timeout},
 };
 use uuid::Uuid;
@@ -102,9 +101,7 @@ impl TestFixture {
             .clone()
     }
 
-    fn spawn_for_output(&self, cmd: &'static str, args: Vec<String>) -> Receiver<Output> {
-        let (tx, rx) = channel();
-
+    fn spawn_for_output(&self, cmd: &'static str, args: Vec<String>) -> JoinHandle<Output> {
         spawn(async move {
             let mut c = Command::new(cmd);
             c.args(args)
@@ -112,33 +109,22 @@ impl TestFixture {
                 .stderr(Stdio::piped())
                 .kill_on_drop(true);
 
-            let mut c = c.spawn().expect("spawn process");
-
-            let stdout_reader = c.stdout.take().map(BufReader::new);
-            let stderr_reader = c.stderr.take().map(BufReader::new);
-
-            let (stdout, stderr) = match timeout(TIMEOUT, c.wait()).await {
-                Ok(Ok(_)) => {
-                    let mut stdout = String::new();
-                    if let Some(mut reader) = stdout_reader {
-                        reader.read_to_string(&mut stdout).await.ok();
-                    }
-
-                    let mut stderr = String::new();
-                    if let Some(mut reader) = stderr_reader {
-                        reader.read_to_string(&mut stderr).await.ok();
-                    }
-
-                    (stdout, stderr)
-                }
-                Ok(Err(e)) => (String::new(), format!("Process exited with error: {e}")),
-                Err(_) => (String::new(), "Process timed out".to_string()),
-            };
-
-            tx.send(Output { stdout, stderr }).expect("send to succeed");
-        });
-
-        rx
+            let child = c.spawn().expect("spawn process");
+            match timeout(TIMEOUT, child.wait_with_output()).await {
+                Ok(Ok(output)) => Output {
+                    stdout: String::from_utf8_lossy(&output.stdout).into_owned(),
+                    stderr: String::from_utf8_lossy(&output.stderr).into_owned(),
+                },
+                Ok(Err(e)) => Output {
+                    stdout: String::new(),
+                    stderr: format!("Process exited with error: {e}"),
+                },
+                Err(_) => Output {
+                    stdout: String::new(),
+                    stderr: "Process timed out".to_string(),
+                },
+            }
+        })
     }
 }
 
@@ -267,7 +253,10 @@ async fn camera_interface_connected(
     )
     .await?;
 
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
+    let output = timeout(TIMEOUT, rx)
+        .await
+        .expect("to be able to recv")
+        .expect("join to succeed");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -302,7 +291,10 @@ async fn camera_interface_connected_naive(
     )
     .await?;
 
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
+    let output = timeout(TIMEOUT, rx)
+        .await
+        .expect("to be able to recv")
+        .expect("join to succeed");
 
     assert_eq!(
         output.stdout,
@@ -343,7 +335,10 @@ async fn microphone_interface_connected(
     )
     .await?;
 
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able to recv");
+    let output = timeout(TIMEOUT, rx)
+        .await
+        .expect("to be able to recv")
+        .expect("join to succeed");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -376,7 +371,10 @@ async fn happy_path_read_single(
         HomeInterface::prompt_to_reply(p.try_into()?, action).into(),
     )
     .await?;
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
+    let output = timeout(TIMEOUT, rx)
+        .await
+        .expect("to be able to recv")
+        .expect("join to succeed");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -605,7 +603,10 @@ async fn replying_multiple_times_errors(
         HomeInterface::prompt_to_reply(p.clone(), action).into(),
     )
     .await?;
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
+    let output = timeout(TIMEOUT, rx)
+        .await
+        .expect("to be able to recv")
+        .expect("join to succeed");
 
     assert_eq!(output.stdout, expected_stdout, "stdout");
     assert_eq!(
@@ -663,7 +664,10 @@ async fn overwriting_a_file_works() -> Result<()> {
         vec![test.prefix(), "after".to_string()],
     );
     sleep(Duration::from_millis(300)).await;
-    let output = rx.recv_timeout(TIMEOUT).expect("to be able recv");
+    let output = timeout(TIMEOUT, rx)
+        .await
+        .expect("to be able to recv")
+        .expect("join to succeed");
     assert_eq!(output.stdout, "done\n");
     assert_eq!(output.stderr, "");
 
