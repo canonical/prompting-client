@@ -244,7 +244,7 @@ async fn camera_interface_connected(
     let test = TestFixture::new();
     let mut c = SnapdSocketClient::new().await;
 
-    let rx = test.spawn_for_output("aa-prompting-test.camera", vec![device.into()]);
+    let handle = test.spawn_for_output("aa-prompting-test.camera", vec![device.into()]);
     let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
@@ -253,7 +253,7 @@ async fn camera_interface_connected(
     )
     .await?;
 
-    let output = timeout(TIMEOUT, rx)
+    let output = timeout(TIMEOUT, handle)
         .await
         .expect("to be able to recv")
         .expect("join to succeed");
@@ -282,7 +282,7 @@ async fn camera_interface_connected_naive(
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::new();
 
-    let rx = test.spawn_for_output("aa-prompting-test.camera-naive", vec![device.into()]);
+    let handle = test.spawn_for_output("aa-prompting-test.camera-naive", vec![device.into()]);
     let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
@@ -291,7 +291,7 @@ async fn camera_interface_connected_naive(
     )
     .await?;
 
-    let output = timeout(TIMEOUT, rx)
+    let output = timeout(TIMEOUT, handle)
         .await
         .expect("to be able to recv")
         .expect("join to succeed");
@@ -326,7 +326,7 @@ async fn microphone_interface_connected(
     let test = TestFixture::new();
     let mut c = SnapdSocketClient::new().await;
 
-    let rx = test.spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
+    let handle = test.spawn_for_output("aa-prompting-test.microphone", vec![device.into()]);
     let (id, p) = expect_single_prompt!(&mut c, "", &["access"]).await;
 
     c.reply_to_prompt(
@@ -335,7 +335,7 @@ async fn microphone_interface_connected(
     )
     .await?;
 
-    let output = timeout(TIMEOUT, rx)
+    let output = timeout(TIMEOUT, handle)
         .await
         .expect("to be able to recv")
         .expect("join to succeed");
@@ -362,7 +362,7 @@ async fn happy_path_read_single(
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("test.txt", expected_stdout)])?;
 
-    let rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let handle = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
     let (id, p) =
         expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
 
@@ -371,7 +371,7 @@ async fn happy_path_read_single(
         HomeInterface::prompt_to_reply(p.try_into()?, action).into(),
     )
     .await?;
-    let output = timeout(TIMEOUT, rx)
+    let output = timeout(TIMEOUT, handle)
         .await
         .expect("to be able to recv")
         .expect("join to succeed");
@@ -400,7 +400,7 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let path = format!("{}/test-1.txt", test.path());
     let (id, p) = expect_single_prompt!(&mut c, &path, &["write"]).await;
     let mut reply = HomeInterface::prompt_to_reply(p.try_into()?, action)
@@ -449,12 +449,12 @@ async fn happy_path_create_multiple(action: Action, lifespan: Lifespan) -> Resul
 async fn create_multiple_actioned_by_other_pid(action: Action, lifespan: Lifespan) -> Result<()> {
     let test = TestFixture::with_test_dir(None, &[])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     sleep(Duration::from_millis(400)).await;
 
     let mut c = SnapdSocketClient::new().await;
 
-    let _rx = test.spawn_for_output(
+    let _handle = test.spawn_for_output(
         "aa-prompting-test.create-single",
         vec![test.prefix(), "test\n".to_string()],
     );
@@ -526,7 +526,7 @@ async fn incorrect_custom_paths_error(reply_path: &str, expected_prefix: &str) -
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("test.txt", "test")])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
     let (id, p) =
         expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
@@ -558,7 +558,7 @@ async fn invalid_timeperiod_duration_errors(timespan: &str, expected_prefix: &st
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("test.txt", "test")])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
     let (id, p) =
         expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
     let reply = HomeInterface::prompt_to_reply(p.try_into()?, Action::Allow)
@@ -591,7 +591,7 @@ async fn replying_multiple_times_errors(
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("test.txt", expected_stdout)])?;
 
-    let rx = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
+    let handle = test.spawn_for_output("aa-prompting-test.read", vec![test.prefix()]);
     let (id, p) =
         expect_single_prompt!(&mut c, &format!("{}/test.txt", test.path()), &["read"]).await;
 
@@ -603,7 +603,7 @@ async fn replying_multiple_times_errors(
         HomeInterface::prompt_to_reply(p.clone(), action).into(),
     )
     .await?;
-    let output = timeout(TIMEOUT, rx)
+    let output = timeout(TIMEOUT, handle)
         .await
         .expect("to be able to recv")
         .expect("join to succeed");
@@ -642,7 +642,7 @@ async fn overwriting_a_file_works() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[])?;
 
-    let rx = test.spawn_for_output(
+    let handle = test.spawn_for_output(
         "aa-prompting-test.create-single",
         vec![test.prefix(), "before".to_string()],
     );
@@ -659,12 +659,12 @@ async fn overwriting_a_file_works() -> Result<()> {
     assert_eq!(res.expect("file should exist"), "before");
 
     // Not expecting another prompt due to previous allow always reply
-    let _rx = test.spawn_for_output(
+    let _handle = test.spawn_for_output(
         "aa-prompting-test.create-single",
         vec![test.prefix(), "after".to_string()],
     );
     sleep(Duration::from_millis(300)).await;
-    let output = timeout(TIMEOUT, rx)
+    let output = timeout(TIMEOUT, handle)
         .await
         .expect("to be able to recv")
         .expect("join to succeed");
@@ -686,7 +686,7 @@ async fn scripted_client_works_with_simple_matching() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
 
     let mut scripted_client = ScriptedClient::try_new(
         format!("{}/seq.json", test.path()),
@@ -725,7 +725,7 @@ async fn invalid_prompt_sequence_reply_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
 
     let mut scripted_client = ScriptedClient::try_new(
         format!("{}/seq.json", test.path()),
@@ -762,7 +762,7 @@ async fn unexpected_prompt_in_sequence_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let mut scripted_client = ScriptedClient::try_new(
         format!("{}/seq.json", test.path()),
         &[("BASE_PATH", &test.path())],
@@ -797,7 +797,7 @@ async fn prompt_after_a_sequence_with_grace_period_errors() -> Result<()> {
     let mut c = SnapdSocketClient::new().await;
     let test = TestFixture::with_test_dir(None, &[("seq.json", seq)])?;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let mut scripted_client = ScriptedClient::try_new(
         format!("{}/seq.json", test.path()),
         &[("BASE_PATH", &test.path())],
@@ -828,7 +828,7 @@ async fn prompt_after_a_sequence_without_grace_period_is_ok() -> Result<()> {
 
     let mut c = SnapdSocketClient::new().await;
 
-    let _rx = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
+    let _handle = test.spawn_for_output("aa-prompting-test.create", vec![test.prefix()]);
     let mut scripted_client = ScriptedClient::try_new(
         format!("{}/seq.json", test.path()),
         &[("BASE_PATH", &test.path())],
