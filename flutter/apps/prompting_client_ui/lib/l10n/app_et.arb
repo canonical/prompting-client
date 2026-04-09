@@ -157,7 +157,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Luba kuni väljalogimiseni",
-    "cameraPromptBody": "Kas lubad „{snapName}“ paketil kasutada kaamerat?",
+    "cameraPromptBody": "Kas lubad „{snapName}“ paketil kasutada kaameraid?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -165,7 +165,7 @@
             }
         }
     },
-    "microphonePromptBody": "Kas lubad „{snapName}“ paketil kasutada mikrofoni?",
+    "microphonePromptBody": "Kas lubad „{snapName}“ paketil kasutada mikrofone?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -180,5 +180,25 @@
     "homeCustomPathWildcardStarDescription": "Vastab igasugustele tähemärkidele, v.a. /",
     "homeCustomPathWildcardQuestionDescription": "Vastab ühele tähemärgile",
     "homeCustomPathWildcardDoubleStarDescription": "Vastab nullile või enamale rekursiivsele kaustale ja failile",
-    "homeCustomPathWildcardCurlyDescription": "Vastab kas x-ile või y-le"
+    "homeCustomPathWildcardCurlyDescription": "Vastab kas x-ile või y-le",
+    "homeCustomPathWildcardBackslashDescription": "Asendab erimärgid, et käsitleda neid otseseste tähemärkidena",
+    "homePromptMetaDataVerifiedAccountPrefix": "Sellel väljaandjal on ",
+    "homePromptMetaDataVerifiedAccountLink": "verifitseeritud kasutajakonto",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Lisavalikud",
+    "homePromptMetaDataAppCenterButton": "Vaata Rakendustekeskuses",
+    "homePromptPermissionsReadOnly": "Ainult loetav",
+    "homePromptPermissionsWriteOnly": "Ainult kirjutatav",
+    "homePromptPermissionsExecuteOnly": "Ainult käivitatav",
+    "homePromptTitleQuestion": "Kas annad „{snapName}“ paketile järgnevad õigused ligipääsuks failidele: „{permissions}“?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
