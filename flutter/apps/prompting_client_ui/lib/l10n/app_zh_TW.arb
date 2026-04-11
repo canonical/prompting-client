@@ -171,7 +171,7 @@
     "homePatternTypeRequestedDirectory": "僅請求的資料夾",
     "homePatternTypeRequestedFile": "僅請求的檔案",
     "promptActionOptionAllowUntilLogout": "允許直至登出",
-    "cameraPromptBody": "要允許 {snapName} 存取您的相機嗎？",
+    "cameraPromptBody": "要允許 {snapName} 使用您的相機嗎？",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -179,10 +179,38 @@
             }
         }
     },
-    "microphonePromptBody": "要允許 {snapName} 存取您的麥克風？",
+    "microphonePromptBody": "要允許 {snapName} 使用您的麥克風？",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "始終拒絕",
+    "promptActionOptionDenyUntilLogout": "登出前皆拒絕",
+    "homeCustomPathSaveButton": "儲存自訂路徑",
+    "homeCustomPathMustStartWithSlash": "路徑模式必須以 / 開頭",
+    "homeCustomPathWildcardStarDescription": "匹配任何字元串，但 / 除外",
+    "homeCustomPathWildcardQuestionDescription": "匹配單一字元",
+    "homeCustomPathWildcardDoubleStarDescription": "遞迴匹配零個或多個資料夾和檔案",
+    "homeCustomPathWildcardCurlyDescription": "匹配 x 或 y",
+    "homeCustomPathWildcardBackslashDescription": "將特殊字元轉義，使其被視為字面值",
+    "homePromptMetaDataVerifiedAccountPrefix": "此發布者有 ",
+    "homePromptMetaDataVerifiedAccountLink": "已驗證帳戶",
+    "homePromptMetaDataVerifiedAccountSuffix": "。",
+    "homePromptMoreOptionsTileLabel": "更多選項",
+    "homePromptMetaDataAppCenterButton": "在 App Center 中開啟",
+    "homePromptPermissionsReadOnly": "僅限讀取",
+    "homePromptPermissionsWriteOnly": "僅限寫入",
+    "homePromptPermissionsExecuteOnly": "僅限執行",
+    "homePromptTitleQuestion": "允許 {snapName} {permissions} 存取檔案？",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
