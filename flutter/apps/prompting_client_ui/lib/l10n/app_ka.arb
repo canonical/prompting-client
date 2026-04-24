@@ -178,5 +178,27 @@
     "homeCustomPathSaveButton": "მორგებული ბილიკის შენახვა",
     "homeCustomPathMustStartWithSlash": "ბილიკის ნიმუში უნდა იწყებოდეს სიმბოლოთი /",
     "homeCustomPathWildcardStarDescription": "ემთხვევა ყველა სტრიქონის /-ის გარდა",
-    "homeCustomPathWildcardQuestionDescription": "ემთხვევა ერთ სიმბოლოს"
+    "homeCustomPathWildcardQuestionDescription": "ემთხვევა ერთ სიმბოლოს",
+    "homeCustomPathWildcardDoubleStarDescription": "ახდენს ნული, ან მეტი საქაღალდისა და ფაილის დამთხვევას რეკურსიულად",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMetaDataVerifiedAccountLink": "გადამოწმებული ანგარიში",
+    "homePromptMoreOptionsTileLabel": "მეტი პარამეტრი",
+    "homePromptPermissionsReadOnly": "მხოლოდ წაკითხვადი",
+    "homePromptPermissionsWriteOnly": "მხოლოდ ჩაწერადი",
+    "homePromptPermissionsExecuteOnly": "მხოლოდ გაშვებადი",
+    "homePromptMetaDataVerifiedAccountPrefix": "ამ გამომცემელს აქვს ",
+    "homePromptMetaDataAppCenterButton": "გახსნა აპების ცენტრში",
+    "homeCustomPathWildcardCurlyDescription": "ემთხვევა x-ს, ან y-ს",
+    "homePromptTitleQuestion": "მიეცეს {snapName} {permissions} წვდომა ფაილებზე?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homeCustomPathWildcardBackslashDescription": "გადაამუშავებს სპეციალურ სიმბოლოებს ასოებად"
 }
