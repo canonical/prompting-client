@@ -108,7 +108,7 @@ fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
     content
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 enum TypedPromptCase {
     Camera(PromptCase<CameraInterface>),
     Home(PromptCase<HomeInterface>),
@@ -181,7 +181,7 @@ impl<'de> Deserialize<'de> for TypedPromptCase {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug)]
 enum TypedPromptFilter {
     Camera(PromptFilter<CameraInterface>),
     Home(PromptFilter<HomeInterface>),
@@ -445,7 +445,7 @@ mod tests {
 
     #[dir_cases("resources/filter-serialize-tests")]
     #[test]
-    fn simple_serialize_works(path: &str, data: &str) {
+    fn simple_deserialize_works(path: &str, data: &str) {
         let res = serde_json::from_str::<'_, PromptFilter<HomeInterface>>(data);
 
         assert!(res.is_ok(), "error parsing {path}: {res:?}");
