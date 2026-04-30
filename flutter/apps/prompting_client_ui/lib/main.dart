@@ -123,6 +123,7 @@ Future<void> main(List<String> args) async {
 
   await windowManager
       .waitUntilReadyToShow(WindowOptions(size: defaultWindowSize), () async {
+    await windowManager.setAlwaysOnTop(true);
     await windowManager.setResizable(false);
     await windowManager.setMinimumSize(const Size(kWindowWidth, 0));
     await windowManager
