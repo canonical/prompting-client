@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "prompt-filter": {
+    "snap": "prompting-client",
+    "interface": "camera"
+  },
+  "prompts": [
+    {
+      "prompt-filter": { "interface": "camera" },
+      "reply": {
+        "action": "allow",
+        "lifespan": "single",
+        "constraints": { "permissions": [ "access" ] }
+      }
+    }
+  ]
+}
