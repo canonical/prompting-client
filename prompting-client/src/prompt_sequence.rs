@@ -5,7 +5,7 @@ use crate::snapd_client::{
         home::HomeInterface, microphone::MicrophoneInterface,
     },
 };
-use serde::{Deserialize, Deserializer, Serialize, de::DeserializeOwned};
+use serde::{Deserialize, Deserializer, Serialize};
 use std::{collections::VecDeque, fs};
 
 #[allow(dead_code)]
@@ -108,90 +108,136 @@ fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
     content
 }
 
-/// Deserializes a `PromptCase` and infers the interface when possible.
-///
-/// If `prompt-filter.interface` is present, it must match `T::NAME`.
-/// If it is missing, only the `home` interface can be inferred from a
-/// path constraint; otherwise deserialization fails as ambiguous.
-fn deserialize_prompt_case<'de, D, T>(de: D) -> Result<PromptCase<T>, D::Error>
-where
-    D: Deserializer<'de>,
-    T: SnapInterface + DeserializeOwned,
-{
-    use serde::de;
-    use serde_json::Value;
-
-    let value = Value::deserialize(de)?;
-    let prompt_filter = value.get("prompt-filter");
-    let interface = prompt_filter
-        .and_then(|filter| filter.get("interface"))
-        .and_then(Value::as_str);
-    let has_path = prompt_filter
-        .and_then(|filter| filter.get("constraints"))
-        .and_then(|constraints| constraints.get("path"))
-        .is_some();
-
-    match interface {
-        Some(name) if name == T::NAME => {}
-
-        // Deserialized with the wrong interface type.
-        Some(name) => {
-            return Err(de::Error::invalid_value(
-                de::Unexpected::Str(name),
-                &"matching interface",
-            ));
-        }
-
-        // Only the `home` interface has path constraints.
-        None if has_path && T::NAME == HomeInterface::NAME => {}
-
-        // Without an explicit `interface` field, it is impossible to
-        // distinguish `camera` and `microphone` interfaces.
-        None => {
-            return Err(de::Error::missing_field("prompt-filter.interface"));
-        }
-    }
-
-    let mut prompt_case: PromptCase<T> =
-        serde_json::from_value(value).map_err(de::Error::custom)?;
-    prompt_case.prompt_filter.interface = Some(T::NAME.to_string());
-    Ok(prompt_case)
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(untagged)]
+#[derive(Debug, Serialize)]
 enum TypedPromptCase {
-    #[serde(deserialize_with = "deserialize_prompt_case")]
     Camera(PromptCase<CameraInterface>),
-    #[serde(deserialize_with = "deserialize_prompt_case")]
     Home(PromptCase<HomeInterface>),
-    #[serde(deserialize_with = "deserialize_prompt_case")]
     Microphone(PromptCase<MicrophoneInterface>),
 }
 
-/// Deserializes a PromptFilter by manually setting the `interface` field.
-/// This function is necessary because when `interface` is used as a tag to
-/// deserialize the enum `TypedPromptFilter` variants, that information gets
-/// lost during deserialization and must be manually set into the struct.
-fn deserialize_interface<'de, D, T>(de: D) -> Result<PromptFilter<T>, D::Error>
-where
-    D: Deserializer<'de>,
-    T: SnapInterface,
-{
-    let mut filter = PromptFilter::deserialize(de)?;
-    filter.interface = Some(T::NAME.to_string());
-    Ok(filter)
+impl<'de> Deserialize<'de> for TypedPromptCase {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        use serde::de;
+        use serde_json::Value;
+
+        let value = Value::deserialize(deserializer)?;
+        let prompt_filter = value.get("prompt-filter");
+        let interface = prompt_filter
+            .and_then(|f| f.get("interface"))
+            .and_then(Value::as_str);
+        let has_path = prompt_filter
+            .and_then(|f| f.get("constraints"))
+            .and_then(|c| c.get("path"))
+            .is_some();
+
+        let mut case = match interface {
+            Some(CameraInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptCase::Camera)
+                .map_err(de::Error::custom)?,
+            Some(HomeInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptCase::Home)
+                .map_err(de::Error::custom)?,
+            Some(MicrophoneInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptCase::Microphone)
+                .map_err(de::Error::custom)?,
+
+            Some(name) => {
+                return Err(de::Error::unknown_variant(
+                    name,
+                    &[
+                        CameraInterface::NAME,
+                        HomeInterface::NAME,
+                        MicrophoneInterface::NAME,
+                    ],
+                ));
+            }
+
+            // Only the `home` interface has path constraints, so a missing
+            // `interface` field can be inferred from the presence of `path`.
+            None if has_path => serde_json::from_value(value)
+                .map(TypedPromptCase::Home)
+                .map_err(de::Error::custom)?,
+
+            // Without an explicit `interface` field, it is impossible to distinguish interfaces.
+            None => return Err(de::Error::missing_field("prompt-filter.interface")),
+        };
+
+        match &mut case {
+            TypedPromptCase::Camera(c) => {
+                c.prompt_filter.interface = Some(CameraInterface::NAME.to_string());
+            }
+            TypedPromptCase::Home(c) => {
+                c.prompt_filter.interface = Some(HomeInterface::NAME.to_string());
+            }
+            TypedPromptCase::Microphone(c) => {
+                c.prompt_filter.interface = Some(MicrophoneInterface::NAME.to_string());
+            }
+        }
+
+        Ok(case)
+    }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(tag = "interface", rename_all = "kebab-case")]
+#[derive(Debug, Serialize)]
 enum TypedPromptFilter {
-    #[serde(deserialize_with = "deserialize_interface")]
     Camera(PromptFilter<CameraInterface>),
-    #[serde(deserialize_with = "deserialize_interface")]
     Home(PromptFilter<HomeInterface>),
-    #[serde(deserialize_with = "deserialize_interface")]
     Microphone(PromptFilter<MicrophoneInterface>),
+}
+
+impl<'de> Deserialize<'de> for TypedPromptFilter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        use serde::de;
+        use serde_json::Value;
+
+        let value = Value::deserialize(deserializer)?;
+        let interface = value.get("interface").and_then(Value::as_str);
+
+        let mut filter = match interface {
+            Some(CameraInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptFilter::Camera)
+                .map_err(de::Error::custom)?,
+            Some(HomeInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptFilter::Home)
+                .map_err(de::Error::custom)?,
+            Some(MicrophoneInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptFilter::Microphone)
+                .map_err(de::Error::custom)?,
+
+            Some(name) => {
+                return Err(de::Error::unknown_variant(
+                    name,
+                    &[
+                        CameraInterface::NAME,
+                        HomeInterface::NAME,
+                        MicrophoneInterface::NAME,
+                    ],
+                ));
+            }
+
+            None => return Err(de::Error::missing_field("interface")),
+        };
+
+        match &mut filter {
+            TypedPromptFilter::Camera(f) => {
+                f.interface = Some(CameraInterface::NAME.to_string());
+            }
+            TypedPromptFilter::Home(f) => {
+                f.interface = Some(HomeInterface::NAME.to_string());
+            }
+            TypedPromptFilter::Microphone(f) => {
+                f.interface = Some(MicrophoneInterface::NAME.to_string());
+            }
+        }
+
+        Ok(filter)
+    }
 }
 
 impl TypedPromptFilter {
