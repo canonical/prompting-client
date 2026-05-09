@@ -1,6 +1,6 @@
 {
-    "homePatternInfo": "<Pelajari tentang pola path>",
-    "homePromptSuggestedPermission": "Berikan juga akses {permission}",
+    "homePatternInfo": "<Learn about path patterns>",
+    "homePromptSuggestedPermission": "Juga beri akses {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
             "permission": {
@@ -9,7 +9,7 @@
         }
     },
     "securityCenterInfo": "Anda selalu dapat mengubah izin ini di <Security Center>",
-    "promptAccessMoreOptionsTitle": "Mengatur akses untuk {snap} ke:",
+    "promptAccessMoreOptionsTitle": "Atur akses untuk {snap} ke:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
             "snap": {
@@ -17,7 +17,7 @@
             }
         }
     },
-    "promptAccessTitle": "Berikan akses {permission} {snap} ke:",
+    "promptAccessTitle": "Beri {snap} akses {permission} ke:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -32,13 +32,13 @@
     "promptActionOptionAllowAlways": "Selalu izinkan",
     "promptActionOptionDeny": "Tolak",
     "promptActionOptionDenyOnce": "Tolak sekali",
-    "promptLifespanOptionSession": "Sampai log keluar",
-    "promptActionTitle": "Aksi",
+    "promptLifespanOptionSession": "Hingga keluar",
+    "promptActionTitle": "Tindakan",
     "promptLifespanOptionForever": "Selalu",
     "promptLifespanOptionSingle": "Sekali",
-    "promptTitle": "Pemberitahuan keamanan",
-    "homePatternTypeRequestedFile": "Hanya berkas yang diminta",
-    "homePatternTypeTopLevelDirectory": "Semua dalam folder {topLevelDir}",
+    "promptTitle": "Notifikasi keamanan",
+    "homePatternTypeRequestedFile": "Hanya file yang diminta",
+    "homePatternTypeTopLevelDirectory": "Semua yang ada di folder {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
             "topLevelDir": {
@@ -46,8 +46,8 @@
             }
         }
     },
-    "homePatternTypeContainingDirectory": "Semua dalam folder",
-    "homePatternTypeHomeDirectory": "Semua dalam folder Rumah",
+    "homePatternTypeContainingDirectory": "Semua yang ada di folder",
+    "homePatternTypeHomeDirectory": "Semua yang ada di folder Home",
     "homePromptBody": "Izinkan {snap} memiliki akses {permissions} ke {path}?",
     "@homePromptBody": {
         "placeholders": {
@@ -63,7 +63,7 @@
         }
     },
     "homePromptMetaDataTitle": "Tentang aplikasi ini",
-    "homePromptMetaDataPublishedBy": "Dipublikasikan oleh {publisher}",
+    "homePromptMetaDataPublishedBy": "Diterbitkan oleh {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
             "publisher": {
@@ -79,17 +79,17 @@
             }
         }
     },
-    "homePromptMoreOptionsLabel": "Opsi tambahan...",
-    "homePromptMetaDataAppCenterLink": "Kunjungi halaman Pusat App",
+    "homePromptMoreOptionsLabel": "Opsi lainnya...",
+    "homePromptMetaDataAppCenterLink": "Kunjungi halaman App Center",
     "homePromptPermissionsRead": "Baca",
     "homePromptPermissionsWrite": "Tulis",
     "promptActionOptionAllowOnce": "Izinkan sekali",
     "promptLifespanTitle": "Durasi",
     "promptSaveAndContinue": "Simpan dan lanjutkan",
-    "homePatternTypeCustomPath": "Pola path ubahan",
+    "homePatternTypeCustomPath": "Pola jalur kustom",
     "homePatternTypeRequestedDirectory": "Hanya folder yang diminta",
-    "homePatternTypeRequestedDirectoryContents": "Semua dalam folder",
-    "homePatternTypeMatchingFileExtension": "Semua berkas {fileExtension}",
+    "homePatternTypeRequestedDirectoryContents": "Semua yang ada di folder",
+    "homePatternTypeMatchingFileExtension": "Semua file {fileExtension}",
     "@homePatternTypeMatchingFileExtension": {
         "placeholders": {
             "fileExtension": {
@@ -99,7 +99,7 @@
     },
     "homePromptPermissionsTitle": "Izin",
     "homePromptPermissionsExecute": "Jalankan",
-    "homePromptErrorUnknownTitle": "Ada yang tidak beres",
+    "homePromptErrorUnknownTitle": "Terjadi kesalahan",
     "homePromptDefaultBody": "{snap} ingin mendapatkan akses {permissions} ke {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
@@ -114,7 +114,7 @@
             }
         }
     },
-    "homePromptTopLevelDirFileBody": "{snap} ingin mendapatkan akses {permissions} ke {filename} dalam folder {foldername}.",
+    "homePromptTopLevelDirFileBody": "{snap} ingin mendapatkan akses {permissions} ke {filename} di folder {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -131,7 +131,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} ingin mendapatkan akses {permissions} ke folder Rumah Anda.",
+    "homePromptHomeDirBody": "{snap} ingin mendapatkan akses {permissions} ke folder Home Anda.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -142,7 +142,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} ingin mendapatkan akses {permissions} ke {filename} di folder Rumah Anda.",
+    "homePromptHomeDirFileBody": "{snap} ingin mendapatkan akses {permissions} ke {filename} di folder Home Anda.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -170,8 +170,8 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Izinkan sampai log keluar",
-    "cameraPromptBody": "Izinkan {snapName} untuk mengakses kamera Anda?",
+    "promptActionOptionAllowUntilLogout": "Izinkan hingga keluar",
+    "cameraPromptBody": "Izinkan {snapName} menggunakan kamera Anda?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -179,10 +179,38 @@
             }
         }
     },
-    "microphonePromptBody": "Izinkan {snapName} untuk mengakses mikrofon Anda?",
+    "microphonePromptBody": "Izinkan {snapName} menggunakan mikrofon Anda?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Selalu tolak",
+    "promptActionOptionDenyUntilLogout": "Tolak hingga keluar",
+    "homeCustomPathSaveButton": "Simpan jalur kustom",
+    "homeCustomPathMustStartWithSlash": "Pola jalur harus dimulai dengan /",
+    "homeCustomPathWildcardStarDescription": "Cocok dengan sembarang string karakter kecuali /",
+    "homeCustomPathWildcardQuestionDescription": "Cocok dengan satu karakter",
+    "homeCustomPathWildcardDoubleStarDescription": "Cocok dengan nol atau lebih folder dan file secara rekursif",
+    "homeCustomPathWildcardCurlyDescription": "Cocok dengan x atau y",
+    "homeCustomPathWildcardBackslashDescription": "Meng-escape karakter khusus agar diperlakukan sebagai literal",
+    "homePromptMetaDataVerifiedAccountPrefix": "Penerbit ini memiliki ",
+    "homePromptMetaDataVerifiedAccountLink": "akun terverifikasi",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Opsi lainnya",
+    "homePromptMetaDataAppCenterButton": "Buka di App Center",
+    "homePromptPermissionsReadOnly": "Hanya baca",
+    "homePromptPermissionsWriteOnly": "Hanya tulis",
+    "homePromptPermissionsExecuteOnly": "Hanya jalankan",
+    "homePromptTitleQuestion": "Beri {snapName} akses {permissions} ke file?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
