@@ -1,30 +1,167 @@
 {
-  "promptActionOptionDenyOnce": "Drausti tik šįkart",
-  "@promptActionOptionDenyOnce": {},
-  "promptActionTitle": "Veiksmas",
-  "@promptActionTitle": {},
-  "promptAccessMoreOptionsTitle": "Leisti {snap} prieiti prie:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
+    "promptActionOptionDenyOnce": "Drausti tik šįkart",
+    "promptActionTitle": "Veiksmas",
+    "promptAccessMoreOptionsTitle": "Leisti {snap} prieiti prie:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Leisti",
+    "promptActionOptionAllowAlways": "Visada leisti",
+    "promptActionOptionDeny": "Drausti",
+    "promptLifespanOptionForever": "Visada",
+    "promptLifespanOptionSingle": "Šį kartą",
+    "promptLifespanTitle": "Trukmė",
+    "promptActionOptionAllowOnce": "Leisti tik šįkart",
+    "promptSaveAndContinue": "Įrašyti ir tęsti",
+    "securityCenterInfo": "Šiuos leidimus bet kada galite pakeisti <Saugumo Centre>",
+    "promptActionOptionDenyAlways": "Drausti visada",
+    "promptActionOptionDenyUntilLogout": "Drausti kol esate prisijungęs",
+    "promptActionOptionAllowUntilLogout": "Leisti kol esate prisijungęs",
+    "promptLifespanOptionSession": "Iki atsijungimo",
+    "promptTitle": "Saugos pranešimas",
+    "homePromptMetaDataTitle": "Apie šią programą",
+    "homePatternTypeMatchingFileExtension": "Visus {fileExtension} failus",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeHomeDirectory": "Viską asmeniniame (Home) aplanke",
+    "homePatternTypeContainingDirectory": "Viską aplanke",
+    "homePatternTypeRequestedDirectoryContents": "Viską aplanke",
+    "homePatternTypeTopLevelDirectory": "Viską {topLevelDir} aplanke",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedFile": "Tik nurodytą failą",
+    "homePatternTypeRequestedDirectory": "Tik nurodytą aplanką",
+    "homePromptDefaultBody": "{snap} prašo {permissions} prieigos prie {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} prašo {permissions} prieigos prie aplanko {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap}“ prašo {permissions} prieigos prie failo {filename} esančio aplanke {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} prašo {permissions} prieigos prie jūsų Asmeninio (Home) aplanko.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap}“ prašo {permissions} prieigos prie failo {filename} jūsų Asmeniniame (Home) aplanke.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsRead": "Skaityti",
+    "homePromptPermissionsTitle": "Leidimai",
+    "homePromptMetaDataAppCenterButton": "Atverti „Programų centre“",
+    "homePromptMoreOptionsTileLabel": "Daugiau pasirinkimų",
+    "homePromptMoreOptionsLabel": "Daugiau pasirinkimų...",
+    "promptAccessTitle": "Suteikti {snap} leidimą {permission} prie:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsWrite": "Rašyti",
+    "homePromptPermissionsWriteOnly": "Tik Rašyti",
+    "homePromptPermissionsReadOnly": "Tik skaityti",
+    "homePromptPermissionsExecute": "Vykdyti",
+    "homePromptPermissionsExecuteOnly": "Tik Vykdyti",
+    "homePromptErrorUnknownTitle": "Iškilo problema",
+    "cameraPromptBody": "Leisti „{snapName}“ naudoti šio įrenginio kameras?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Leisti „{snapName}“ naudoti šio įrenginio mikrofonus?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTitleQuestion": "Suteikti {snapName} galimybę {permissions} failus?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptActionOptionAllow": "Leisti",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionAllowAlways": "Visada leisti",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionDeny": "Drausti",
-  "@promptActionOptionDeny": {},
-  "promptLifespanOptionForever": "Visada",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSingle": "Šį kartą",
-  "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "Trukmė",
-  "@promptLifespanTitle": {},
-  "promptActionOptionAllowOnce": "Leisti tik šįkart",
-  "@promptActionOptionAllowOnce": {},
-  "promptSaveAndContinue": "Įrašyti ir tęsti",
-  "@promptSaveAndContinue": {}
 }

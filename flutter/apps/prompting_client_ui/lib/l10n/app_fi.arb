@@ -1,150 +1,218 @@
 {
-  "homePromptSuggestedPermission": "Anna myös käyttöoikeus \"{permission}\"",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "securityCenterInfo": "Voit muuttaa käyttöoikeuksia <Tietoturvakeskuksessa>",
-  "@securityCenterInfo": {},
-  "promptAccessTitle": "Anna sovellukselle {snap} käyttöoikeus \"{permission}\":",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllow": "Salli",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionAllowAlways": "Salli aina",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionDeny": "Estä",
-  "@promptActionOptionDeny": {},
-  "promptActionOptionDenyOnce": "Estä kerran",
-  "@promptActionOptionDenyOnce": {},
-  "promptActionTitle": "Toiminto",
-  "@promptActionTitle": {},
-  "promptLifespanTitle": "Kesto",
-  "@promptLifespanTitle": {},
-  "promptSaveAndContinue": "Tallenna ja jatka",
-  "@promptSaveAndContinue": {},
-  "promptTitle": "Tietoturvailmoitus",
-  "@promptTitle": {},
-  "homePatternTypeCustomPath": "Mukautettu polkukaava",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "Vain pyydetty kansio",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeRequestedFile": "Vain pyydetty tiedosto",
-  "@homePatternTypeRequestedFile": {},
-  "homePatternTypeTopLevelDirectory": "Kaikki kansiossa {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeContainingDirectory": "Kaikki kansiossa",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeRequestedDirectoryContents": "Kaikki kansiossa",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePromptBody": "Sallitko sovellukselle {snap} käyttöoikeuden \"{permissions}\" polkuun {path}?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataTitle": "Tietoja tästä sovelluksesta",
-  "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "Julkaisija {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataAppCenterLink": "Käy sovelluskeskuksen sivulla",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePromptPermissionsTitle": "Oikeudet",
-  "@homePromptPermissionsTitle": {},
-  "homePromptMetaDataLastUpdated": "Viimeksi päivitetty {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "Lisää valintoja...",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptPermissionsRead": "Lue",
-  "@homePromptPermissionsRead": {},
-  "homePromptPermissionsWrite": "Kirjoita",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Suorita",
-  "@homePromptPermissionsExecute": {},
-  "promptActionOptionAllowOnce": "Salli kerran",
-  "@promptActionOptionAllowOnce": {},
-  "promptLifespanOptionForever": "Aina",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Uloskirjautumiseen asti",
-  "@promptLifespanOptionSession": {},
-  "promptLifespanOptionSingle": "Kerran",
-  "@promptLifespanOptionSingle": {},
-  "homePatternTypeHomeDirectory": "Kaikki kotikansiossa",
-  "@homePatternTypeHomeDirectory": {},
-  "homePatternTypeMatchingFileExtension": "Kaikki {fileExtension}-tiedostot",
-  "@homePatternTypeMatchingFileExtension": {
-    "placeholders": {
-      "fileExtension": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} haluaa saada {permissions} pääsyn kohteeseen {filename} kohteessa {foldername}.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} haluaa saada {permissions} pääsyn kohteeseen {filename} kotikansiossasi.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  }
+    "homePromptSuggestedPermission": "Anna myös käyttöoikeus \"{permission}\"",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "securityCenterInfo": "Voit muuttaa käyttöoikeuksia <Tietoturvakeskuksessa>",
+    "promptAccessTitle": "Anna sovellukselle {snap} käyttöoikeus \"{permission}\":",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Salli",
+    "promptActionOptionAllowAlways": "Salli aina",
+    "promptActionOptionDeny": "Estä",
+    "promptActionOptionDenyOnce": "Estä kerran",
+    "promptActionTitle": "Toiminto",
+    "promptLifespanTitle": "Kesto",
+    "promptSaveAndContinue": "Tallenna ja jatka",
+    "promptTitle": "Tietoturvailmoitus",
+    "homePatternTypeCustomPath": "Mukautettu polkukaava",
+    "homePatternTypeRequestedDirectory": "Vain pyydetty kansio",
+    "homePatternTypeRequestedFile": "Vain pyydetty tiedosto",
+    "homePatternTypeTopLevelDirectory": "Kaikki kansiossa {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeContainingDirectory": "Kaikki kansiossa",
+    "homePatternTypeRequestedDirectoryContents": "Kaikki kansiossa",
+    "homePromptBody": "Sallitko sovellukselle {snap} käyttöoikeuden \"{permissions}\" polkuun {path}?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Tietoja tästä sovelluksesta",
+    "homePromptMetaDataPublishedBy": "Julkaisija {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataAppCenterLink": "Käy sovelluskeskuksen sivulla",
+    "homePromptPermissionsTitle": "Oikeudet",
+    "homePromptMetaDataLastUpdated": "Viimeksi päivitetty {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Lisää valintoja...",
+    "homePromptPermissionsRead": "Lue",
+    "homePromptPermissionsWrite": "Kirjoita",
+    "homePromptPermissionsExecute": "Suorita",
+    "promptActionOptionAllowOnce": "Salli kerran",
+    "promptLifespanOptionForever": "Aina",
+    "promptLifespanOptionSession": "Uloskirjautumiseen asti",
+    "promptLifespanOptionSingle": "Kerran",
+    "homePatternTypeHomeDirectory": "Kaikki kotikansiossa",
+    "homePatternTypeMatchingFileExtension": "Kaikki {fileExtension}-tiedostot",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} haluaa saada {permissions} pääsyn kohteeseen {filename} kohteessa {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} haluaa saada {permissions} pääsyn kohteeseen {filename} kotikansiossasi.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} haluaa oikeudet {permissions} kohteeseen {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "Tapahtui virhe",
+    "homePromptTopLevelDirBody": "{snap} haluaa oikeudet {permissions} kansioon {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} haluaa oikeudet {permissions} kotikansioon.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessMoreOptionsTitle": "Aseta snap-paketin {snap} käyttöoikeuksiksi:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternInfo": "<Opi polkukaavoista>",
+    "promptActionOptionAllowUntilLogout": "Salli uloskirjautumiseen saakka",
+    "cameraPromptBody": "Sallitaanko sovelluksen {snapName} käyttää kameroita?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Sallitaanko sovelluksen {snapName} käyttää mikrofonia?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Kiellä aina",
+    "promptActionOptionDenyUntilLogout": "Kiellä uloskirjautumiseen asti",
+    "homeCustomPathSaveButton": "Tallenna mukautettu polku",
+    "homePromptMetaDataAppCenterButton": "Avaa sovelluskeskuksessa",
+    "homePromptPermissionsReadOnly": "Vain luku",
+    "homePromptPermissionsWriteOnly": "Vain kirjoitus",
+    "homePromptPermissionsExecuteOnly": "Vain suoritus",
+    "homePromptTitleQuestion": "Annetaanko sovellukselle {snapName} pääsy ({permissions}) tiedostoihin?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homeCustomPathMustStartWithSlash": "Polun tulee alkaa /:lla",
+    "homeCustomPathWildcardStarDescription": "Täsmää kaikkia merkkejä paitsi /:aa sisältäviä merkkijonoja",
+    "homeCustomPathWildcardQuestionDescription": "Täsmää yhteen merkkiin",
+    "homeCustomPathWildcardDoubleStarDescription": "Täsmää ei yhteenkään tai useampaan kansioon ja tiedostoon rekursiivisesti",
+    "homeCustomPathWildcardCurlyDescription": "Täsmää joko x:ään tai y:hyn",
+    "homePromptMetaDataVerifiedAccountLink": "vahvistettu tili",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Lisää valintoja",
+    "homePromptMetaDataVerifiedAccountPrefix": "Tällä julkaisijalla on ",
+    "homeCustomPathWildcardBackslashDescription": "Eristää erikoismerkit jotta niitä käsitellään kirjainmerkkeinä"
 }

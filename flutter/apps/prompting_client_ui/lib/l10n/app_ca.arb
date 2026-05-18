@@ -1,1 +1,204 @@
-{}
+{
+    "homePromptTopLevelDirBody": "{snap} vol obtenir accés de {permissions} per a la carpeta {foldername}.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} vol obtenir accés de {permissions} a la vostra carpeta de inici.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptSuggestedPermission": "També dona accés de {permission}",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsRead": "Lectura",
+    "homePromptPermissionsWrite": "Escriptura",
+    "homePromptPermissionsExecute": "Execució",
+    "homePromptErrorUnknownTitle": "Alguna cosa ha fallat",
+    "securityCenterInfo": "Sempre podeu canviar aquests permisos al <Centre de seguretat>",
+    "promptAccessMoreOptionsTitle": "Estableix l'accés per a {snap} a:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "Atorga a {snap} accés de {permission} a:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Permet",
+    "promptActionOptionAllowAlways": "Permet sempre",
+    "promptActionOptionAllowOnce": "Permet un cop",
+    "promptActionOptionDeny": "Denega",
+    "promptActionOptionDenyOnce": "Denega un cop",
+    "promptActionTitle": "Acció",
+    "promptLifespanOptionForever": "Sempre",
+    "promptLifespanOptionSession": "Fins que es tanqui la sessió",
+    "promptLifespanOptionSingle": "Un cop",
+    "promptLifespanTitle": "Duració",
+    "promptSaveAndContinue": "Desa i continua",
+    "promptTitle": "Notificació de seguretat",
+    "homePatternInfo": "<Apreneu més sobre els patrons de camins>",
+    "homePatternTypeCustomPath": "Patró personalitzat de camí",
+    "homePatternTypeRequestedDirectory": "Sols la carpeta sol·licitada",
+    "homePatternTypeRequestedFile": "Sols el fitxer sol·licitat",
+    "homePromptMetaDataPublishedBy": "Publicat per {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "Última actualització el {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeTopLevelDirectory": "Tot a la carpeta {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Tot a la carpeta",
+    "homePatternTypeHomeDirectory": "Tota a la carpeta personal",
+    "homePatternTypeMatchingFileExtension": "Tots els fitxers {fileExtension}",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Quant a aquesta aplicació",
+    "homePromptMoreOptionsLabel": "Més opcoins...",
+    "homePromptMetaDataAppCenterLink": "Visita la pàgina del Centre d'aplicacions",
+    "homePromptPermissionsTitle": "Permisos",
+    "homePatternTypeContainingDirectory": "Tot a la carpeta",
+    "homePromptDefaultBody": "{snap} vol obtenir accés de {permissions} per a {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} vol obtenir accés de {permissions} per a {filename} a la vostra carpeta d'inici.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} vol obtenir accés de {permissions} per a {filename} a la carpeta {foldername}.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Denega sempre",
+    "promptActionOptionDenyUntilLogout": "Denega fins al tancament de la sessió",
+    "promptActionOptionAllowUntilLogout": "Permet fins al tancament de la sessió",
+    "homeCustomPathSaveButton": "Desa el camí personalitzat",
+    "homeCustomPathMustStartWithSlash": "El patró del camí ha de començar amb /",
+    "homeCustomPathWildcardStarDescription": "Concorda totes les cadenes de caràcters excepte /",
+    "homeCustomPathWildcardQuestionDescription": "Concorda amb un caràcter únic",
+    "homeCustomPathWildcardDoubleStarDescription": "Concorda amb zero o més carpetes i fitxers recursivament",
+    "homeCustomPathWildcardCurlyDescription": "Concorda amb x o y",
+    "homeCustomPathWildcardBackslashDescription": "Tracta els caràcters especials com a literals",
+    "homePromptMetaDataVerifiedAccountPrefix": "Aquest editor té un ",
+    "homePromptMetaDataVerifiedAccountLink": "compte verificat",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Més opcions",
+    "homePromptMetaDataAppCenterButton": "Obre al Centre d'aplicacions",
+    "homePromptPermissionsReadOnly": "Sols lectura",
+    "homePromptPermissionsWriteOnly": "Sols escriptura",
+    "homePromptPermissionsExecuteOnly": "Sols execució",
+    "cameraPromptBody": "Voleu permetre a {snapName} fer servir la càmera?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Voleu permetre a {snapName} fer servir els micròfons?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTitleQuestion": "Voleu donar a {snapName} permissos de {permissions} als fitxers?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
+}

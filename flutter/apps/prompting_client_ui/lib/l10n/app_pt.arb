@@ -1,4 +1,83 @@
 {
-  "securityCenterInfo": "Você sempre pode alterar essas permissões na <Central de Segurança>",
-  "@securityCenterInfo": {}
+  "securityCenterInfo": "Pode alterar sempre estas permissões no <Centro de Segurança>",
+  "@securityCenterInfo": {},
+  "promptAccessMoreOptionsTitle": "Defina o acesso de {snap} para:",
+  "@promptAccessMoreOptionsTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAccessTitle": "Dar {snap} {permission} para aceder a:",
+  "@promptAccessTitle": {
+    "placeholders": {
+      "snap": {
+        "type": "String"
+      },
+      "permission": {
+        "type": "String"
+      }
+    }
+  },
+  "promptActionOptionAllow": "Permitir",
+  "@promptActionOptionAllow": {},
+  "promptActionOptionAllowAlways": "Permitir sempre",
+  "@promptActionOptionAllowAlways": {},
+  "promptActionOptionAllowOnce": "Permitir uma vez",
+  "@promptActionOptionAllowOnce": {},
+  "promptActionOptionDeny": "Negar",
+  "@promptActionOptionDeny": {},
+  "promptActionOptionDenyOnce": "Negar uma vez",
+  "@promptActionOptionDenyOnce": {},
+  "promptActionTitle": "Ação",
+  "@promptActionTitle": {},
+  "promptLifespanOptionForever": "Sempre",
+  "@promptLifespanOptionForever": {},
+  "promptLifespanOptionSession": "Até terminar a sessão",
+  "@promptLifespanOptionSession": {},
+  "promptLifespanOptionSingle": "Uma vez",
+  "@promptLifespanOptionSingle": {},
+  "promptLifespanTitle": "Duração",
+  "@promptLifespanTitle": {},
+  "promptSaveAndContinue": "Guardar e continuar",
+  "@promptSaveAndContinue": {},
+  "promptTitle": "Notificação de segurança",
+  "@promptTitle": {},
+  "homePatternInfo": "<Saiba sobre os padrões de caminho>",
+  "@homePatternInfo": {},
+  "homePatternTypeCustomPath": "Padrão de caminho personalizado",
+  "@homePatternTypeCustomPath": {},
+  "homePromptMetaDataTitle": "Sobre esta aplicação",
+  "@homePromptMetaDataTitle": {},
+  "homePromptMetaDataPublishedBy": "Publicado por {publisher}",
+  "@homePromptMetaDataPublishedBy": {
+    "placeholders": {
+      "publisher": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMetaDataLastUpdated": "Última atualização em {date}",
+  "@homePromptMetaDataLastUpdated": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "homePromptMoreOptionsLabel": "Mais opções...",
+  "@homePromptMoreOptionsLabel": {},
+  "homePromptMetaDataAppCenterLink": "Visite a página do \"Centro de Aplicações\"",
+  "@homePromptMetaDataAppCenterLink": {},
+  "homePromptPermissionsTitle": "Permissões",
+  "@homePromptPermissionsTitle": {},
+  "homePromptPermissionsRead": "Ler",
+  "@homePromptPermissionsRead": {},
+  "homePromptPermissionsWrite": "Gravar",
+  "@homePromptPermissionsWrite": {},
+  "homePromptPermissionsExecute": "Executar",
+  "@homePromptPermissionsExecute": {},
+  "homePromptErrorUnknownTitle": "Ocorreu algo de errado",
+  "@homePromptErrorUnknownTitle": {}
 }

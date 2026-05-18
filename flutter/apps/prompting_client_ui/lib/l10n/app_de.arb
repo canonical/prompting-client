@@ -1,195 +1,211 @@
 {
-  "promptActionOptionAllow": "Erlauben",
-  "@promptActionOptionAllow": {},
-  "promptAccessMoreOptionsTitle": "Zugriff für {snap} festlegen auf:",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
+    "promptActionOptionAllow": "Erlauben",
+    "promptAccessMoreOptionsTitle": "Zugriff für {snap} festlegen auf:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "{snap} den Zugriff {permission} geben zu:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowAlways": "Immer zulassen",
+    "promptActionOptionDeny": "Verweigern",
+    "promptActionTitle": "Aktion",
+    "promptLifespanOptionForever": "Immer",
+    "promptLifespanOptionSession": "Bis zur Abmeldung",
+    "promptSaveAndContinue": "Speichern und fortfahren",
+    "homePatternInfo": "<Etwas über Pfadmuster erfahren>",
+    "homePatternTypeCustomPath": "Benutzerdefiniertes Pfadmuster",
+    "homePatternTypeRequestedDirectory": "Nur der angeforderte Ordner",
+    "homePatternTypeRequestedFile": "Nur die angeforderte Datei",
+    "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-Dateien",
+    "homePromptBody": "{snap} den {permissions}-Zugriff auf {path} erlauben?",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "Über diese App",
+    "homePromptMetaDataPublishedBy": "Herausgegeben von {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeHomeDirectory": "Alles im Benutzerordner",
+    "homePromptMetaDataLastUpdated": "Zuletzt aktualisiert am {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "Weitere Optionen ...",
+    "homePromptPermissionsTitle": "Berechtigungen",
+    "homePromptPermissionsRead": "Lesen",
+    "homePromptMetaDataAppCenterLink": "Seite des App-Zentrums besuchen",
+    "homePromptPermissionsWrite": "Schreiben",
+    "homePromptPermissionsExecute": "Ausführen",
+    "securityCenterInfo": "Sie können diese Berechtigungen jederzeit im <Sicherheitszentrum> ändern",
+    "promptActionOptionDenyOnce": "Einmal verweigern",
+    "promptLifespanOptionSingle": "Einmal",
+    "promptTitle": "Sicherheitsbenachrichtigung",
+    "promptLifespanTitle": "Dauer",
+    "homePatternTypeTopLevelDirectory": "Alles im Ordner {topLevelDir}",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeContainingDirectory": "Alles im Ordner",
+    "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
+    "promptActionOptionAllowOnce": "Einmal zulassen",
+    "homePromptErrorUnknownTitle": "Etwas ist schiefgelaufen",
+    "homePromptSuggestedPermission": "Auch Zugriff für {permission} geben",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} möchte Zugriff zum {permissions} auf {path} erhalten",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} möchte Zugriff zum {permissions} auf Ihren Benutzerordner erhalten.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} möchte Zugriff zum {permissions} auf Ordner {foldername} erhalten.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} möchte Zugriff zum {permissions} auf {filename} im Ordner {foldername} erhalten.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} möchte Zugriff zum {permissions} auf {filename} in Ihrem Benutzerordner erhalten.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllowUntilLogout": "Bis zum Abmelden zulassen",
+    "cameraPromptBody": "{snapName} die Verwendung Ihrer Kameras erlauben?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "{snapName} die Verwendung Ihrer Mikrofone erlauben?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Immer verweigern",
+    "promptActionOptionDenyUntilLogout": "Bis zur Abmeldung verweigern",
+    "homeCustomPathSaveButton": "Benutzerdefinierten Pfad speichern",
+    "homeCustomPathMustStartWithSlash": "Das Pfadmuster muss mit / beginnen",
+    "homeCustomPathWildcardStarDescription": "Entspricht jeder Zeichenkette außer /",
+    "homeCustomPathWildcardQuestionDescription": "Entspricht einem einzelnen Zeichen",
+    "homeCustomPathWildcardDoubleStarDescription": "Entspricht null oder mehr Ordnern und Dateien rekursiv",
+    "homeCustomPathWildcardCurlyDescription": "Entspricht entweder x oder y",
+    "homeCustomPathWildcardBackslashDescription": "Setzt Sonderzeichen außer Kraft, um sie als Literale zu behandeln",
+    "homePromptMetaDataVerifiedAccountPrefix": "Dieser Herausgeber hat ein ",
+    "homePromptMetaDataVerifiedAccountLink": "verifiziertes Konto",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Weitere Optionen",
+    "homePromptMetaDataAppCenterButton": "Im App-Zentrum öffnen",
+    "homePromptPermissionsReadOnly": "Nur lesen",
+    "homePromptPermissionsWriteOnly": "Nur schreiben",
+    "homePromptPermissionsExecuteOnly": "Nur ausführen",
+    "homePromptTitleQuestion": "{snapName} {permissions} Zugriff auf Dateien gewähren?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "promptAccessTitle": "{snap} den Zugriff {permission} geben zu:",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptActionOptionAllowAlways": "Immer zulassen",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionDeny": "Verweigern",
-  "@promptActionOptionDeny": {},
-  "promptActionTitle": "Aktion",
-  "@promptActionTitle": {},
-  "promptLifespanOptionForever": "Immer",
-  "@promptLifespanOptionForever": {},
-  "promptLifespanOptionSession": "Bis zur Abmeldung",
-  "@promptLifespanOptionSession": {},
-  "promptSaveAndContinue": "Speichern und fortfahren",
-  "@promptSaveAndContinue": {},
-  "homePatternInfo": "<Etwas über Pfadmuster erfahren>",
-  "@homePatternInfo": {},
-  "homePatternTypeCustomPath": "Benutzerdefiniertes Pfadmuster",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "Nur der angeforderte Ordner",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeRequestedFile": "Nur die angeforderte Datei",
-  "@homePatternTypeRequestedFile": {},
-  "homePatternTypeMatchingFileExtension": "Alle {fileExtension}-Dateien",
-  "@homePatternTypeMatchingFileExtension": {},
-  "homePromptBody": "{snap} den {permissions}-Zugriff auf {path} erlauben?",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataTitle": "Über diese App",
-  "@homePromptMetaDataTitle": {},
-  "homePromptMetaDataPublishedBy": "Herausgegeben von {publisher}",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeHomeDirectory": "Alles im Benutzerordner",
-  "@homePatternTypeHomeDirectory": {},
-  "homePromptMetaDataLastUpdated": "Zuletzt aktualisiert am {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "Weitere Optionen ...",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptPermissionsTitle": "Berechtigungen",
-  "@homePromptPermissionsTitle": {},
-  "homePromptPermissionsRead": "Lesen",
-  "@homePromptPermissionsRead": {},
-  "homePromptMetaDataAppCenterLink": "Seite des App-Zentrums besuchen",
-  "@homePromptMetaDataAppCenterLink": {},
-  "homePromptPermissionsWrite": "Schreiben",
-  "@homePromptPermissionsWrite": {},
-  "homePromptPermissionsExecute": "Ausführen",
-  "@homePromptPermissionsExecute": {},
-  "securityCenterInfo": "Sie können diese Berechtigungen jederzeit im <Sicherheitszentrum> ändern",
-  "@securityCenterInfo": {},
-  "promptActionOptionDenyOnce": "Einmal verweigern",
-  "@promptActionOptionDenyOnce": {},
-  "promptLifespanOptionSingle": "Einmal",
-  "@promptLifespanOptionSingle": {},
-  "promptTitle": "Sicherheitsbenachrichtigung",
-  "@promptTitle": {},
-  "promptLifespanTitle": "Dauer",
-  "@promptLifespanTitle": {},
-  "homePatternTypeTopLevelDirectory": "Alles im Ordner {topLevelDir}",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeContainingDirectory": "Alles im Ordner",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeRequestedDirectoryContents": "Alles im Ordner",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "promptActionOptionAllowOnce": "Einmal zulassen",
-  "@promptActionOptionAllowOnce": {},
-  "homePromptErrorUnknownTitle": "Etwas ist schiefgelaufen",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptSuggestedPermission": "Auch Zugriff für {permission} geben",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptDefaultBody": "{snap} möchte Zugriff zum {permissions} auf {path} erhalten",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} möchte Zugriff zum {permissions} auf Ihren Benutzerordner erhalten.",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirBody": "{snap} möchte Zugriff zum {permissions} auf Ordner {foldername} erhalten.",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} möchte Zugriff zum {permissions} auf {filename} im Ordner {foldername} erhalten.",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} möchte Zugriff zum {permissions} auf {filename} in Ihrem Benutzerordner erhalten.",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  }
 }
