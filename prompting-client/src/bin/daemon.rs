@@ -7,6 +7,26 @@ use std::{env, io::stdout};
 use tracing::{info, subscriber::set_global_default};
 use tracing_subscriber::FmtSubscriber;
 
+unsafe extern "C" {
+    fn geteuid() -> u32;
+}
+
+fn is_effective_root() -> bool {
+    unsafe { geteuid() == 0 }
+}
+
+fn is_loginable_graphical_session() -> bool {
+    if env::var("XDG_SESSION_CLASS").as_deref() != Ok("user") {
+        return false;
+    }
+
+    match env::var("XDG_SESSION_TYPE").as_deref() {
+        Ok("wayland") => env::var_os("WAYLAND_DISPLAY").is_some(),
+        Ok("x11") => env::var_os("DISPLAY").is_some(),
+        _ => false,
+    }
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
     let log_level = std::env::var("RUST_LOG").unwrap_or(DEFAULT_LOG_LEVEL.to_string());
@@ -21,6 +41,16 @@ async fn main() -> Result<()> {
 
     set_global_default(subscriber).expect("unable to set a global tracing subscriber");
 
+    if is_effective_root() {
+        info!("running as root, failing daemon startup");
+        exit_with(ExitStatus::Failure);
+    }
+
+    if !is_loginable_graphical_session() {
+        info!("not running in a loginable graphical session, failing daemon startup");
+        exit_with(ExitStatus::Failure);
+    }
+
     // Shutdown the daemon when running in the CI since there's no display to connect to.
     if std::env::var("PROMPTING_CI").is_ok() {
         info!("running in CI, shutting down the daemon");
@@ -29,16 +59,6 @@ async fn main() -> Result<()> {
 
     let c = SnapdSocketClient::new().await;
     c.exit_if_prompting_not_enabled().await?;
-
-    // If we can't see a valid X11 or Wayland display then we need to exit with an error code
-    // and wait for systemd to restart us again until it is there. We are deliberately not
-    // logging anything here so that we avoid spamming the system log while we wait for the
-    // display environment variable to be set.
-    let have_display = env::vars().any(|(k, _)| k == "DISPLAY" || k == "WAYLAND_DISPLAY");
-    if !have_display {
-        info!("no X11 or wayland display set, exiting");
-        exit_with(ExitStatus::Failure);
-    }
 
     run_daemon(c, reload_handle).await
 }
