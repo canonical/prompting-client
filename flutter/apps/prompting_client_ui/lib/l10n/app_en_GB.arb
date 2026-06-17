@@ -1,1 +1,204 @@
-{}
+{
+    "securityCenterInfo": "You can always change these permissions in the <Security Center>",
+    "promptAccessMoreOptionsTitle": "Set access for {snap} to:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "Give {snap} {permission} access to:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "Allow",
+    "promptActionOptionAllowAlways": "Allow always",
+    "promptActionOptionAllowOnce": "Allow once",
+    "promptActionOptionDeny": "Deny",
+    "promptActionOptionDenyOnce": "Deny once",
+    "promptActionOptionDenyAlways": "Deny always",
+    "promptActionOptionDenyUntilLogout": "Deny until logout",
+    "promptActionOptionAllowUntilLogout": "Allow until logout",
+    "promptActionTitle": "Action",
+    "promptLifespanOptionForever": "Always",
+    "promptLifespanOptionSession": "Until logout",
+    "promptLifespanOptionSingle": "Once",
+    "promptLifespanTitle": "Duration",
+    "promptSaveAndContinue": "Save and continue",
+    "promptTitle": "Security notification",
+    "homePatternInfo": "<Learn about path patterns>",
+    "homePatternTypeCustomPath": "Custom path pattern",
+    "homeCustomPathSaveButton": "Save custom path",
+    "homeCustomPathMustStartWithSlash": "The path pattern must start with /",
+    "homeCustomPathWildcardStarDescription": "Matches any string of characters except /",
+    "homeCustomPathWildcardQuestionDescription": "Matches a single character",
+    "homeCustomPathWildcardDoubleStarDescription": "Matches zero or more folders and files recursively",
+    "homeCustomPathWildcardCurlyDescription": "Matches either x or y",
+    "homeCustomPathWildcardBackslashDescription": "Escapes special characters to treat them as literals",
+    "homePatternTypeRequestedDirectory": "The requested folder only",
+    "homePatternTypeRequestedFile": "The requested file only",
+    "homePatternTypeTopLevelDirectory": "Everything in the {topLevelDir} folder",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "Everything in the folder",
+    "homePatternTypeContainingDirectory": "Everything in the folder",
+    "homePatternTypeHomeDirectory": "Everything in the Home folder",
+    "homePatternTypeMatchingFileExtension": "All {fileExtension} files",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} wants to get {permissions} access to {path}",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} wants to get {permissions} access to {filename} in the {foldername} folder.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} wants to get {permissions} access to your Home folder.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} wants to get {permissions} access to {filename} in your Home folder.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "About this app",
+    "homePromptMetaDataPublishedBy": "Published by {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataVerifiedAccountPrefix": "This publisher has a ",
+    "homePromptMetaDataVerifiedAccountLink": "verified account",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMetaDataLastUpdated": "Last updated on {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "More options...",
+    "homePromptMoreOptionsTileLabel": "More options",
+    "homePromptMetaDataAppCenterLink": "Visit App Centre page",
+    "homePromptMetaDataAppCenterButton": "Open in App Centre",
+    "homePromptSuggestedPermission": "Also give {permission} access",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "Permissions",
+    "homePromptPermissionsRead": "Read",
+    "homePromptPermissionsReadOnly": "Read only",
+    "homePromptPermissionsWrite": "Write",
+    "homePromptPermissionsWriteOnly": "Write only",
+    "homePromptPermissionsExecute": "Execute",
+    "homePromptPermissionsExecuteOnly": "Execute only",
+    "homePromptErrorUnknownTitle": "Something went wrong",
+    "cameraPromptBody": "Allow {snapName} to use your cameras?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "Allow {snapName} to use your microphones?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTitleQuestion": "Give {snapName} {permissions} access to files?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
+}
