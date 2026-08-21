@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
 import 'package:yaru/yaru.dart';
 
 class TileList extends StatelessWidget {
