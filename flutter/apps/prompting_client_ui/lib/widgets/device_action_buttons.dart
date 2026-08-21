@@ -60,42 +60,44 @@ class DeviceActionButtons extends ConsumerWidget {
       ),
     ];
 
-    return Center(
-      child: Wrap(
-        runSpacing: 16,
-        spacing: 16,
-        alignment: WrapAlignment.center,
-        children: [
-          YaruSplitButton.filled(
-            items: allowButtons
-                .map(
-                  (item) => PopupMenuItem(
-                    onTap: () =>
-                        _handleAction(context, Action.allow, item.lifespan),
-                    child: Text(item.label),
-                  ),
-                )
-                .toList(),
-            onPressed: () =>
-                _handleAction(context, Action.allow, Lifespan.forever),
-            child: Text(l10n.promptActionOptionAllowAlways),
-          ),
-          YaruSplitButton.filled(
-            items: denyButtons
-                .map(
-                  (item) => PopupMenuItem(
-                    onTap: () =>
-                        _handleAction(context, Action.deny, item.lifespan),
-                    child: Text(item.label),
-                  ),
-                )
-                .toList(),
-            onPressed: () =>
-                _handleAction(context, Action.deny, Lifespan.single),
-            child: Text(l10n.promptActionOptionDenyOnce),
-          ),
-        ],
-      ),
+    // `expanded` lets each split button fill the width the Column stretches it
+    // to instead of hugging its label, so longer localized strings still get
+    // buttons that span the whole prompt.
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: 16,
+      children: [
+        YaruSplitButton.filled(
+          expanded: true,
+          items: allowButtons
+              .map(
+                (item) => PopupMenuItem(
+                  onTap: () =>
+                      _handleAction(context, Action.allow, item.lifespan),
+                  child: Text(item.label),
+                ),
+              )
+              .toList(),
+          onPressed: () =>
+              _handleAction(context, Action.allow, Lifespan.forever),
+          child: Text(l10n.promptActionOptionAllowAlways),
+        ),
+        YaruSplitButton.filled(
+          expanded: true,
+          items: denyButtons
+              .map(
+                (item) => PopupMenuItem(
+                  onTap: () =>
+                      _handleAction(context, Action.deny, item.lifespan),
+                  child: Text(item.label),
+                ),
+              )
+              .toList(),
+          onPressed: () => _handleAction(context, Action.deny, Lifespan.single),
+          child: Text(l10n.promptActionOptionDenyOnce),
+        ),
+      ],
     );
   }
 }
