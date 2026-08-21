@@ -141,8 +141,9 @@ class PromptDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return YaruTheme(
       builder: (context, yaru, child) => MaterialApp(
-        theme: yaru.theme?.customize(),
-        darkTheme: yaru.darkTheme?.customize(),
+        // Non-nullable as of yaru 10.2.0, so no `?.` here.
+        theme: yaru.theme.customize(),
+        darkTheme: yaru.darkTheme.customize(),
         highContrastTheme: yaruHighContrastLight.customize(),
         highContrastDarkTheme: yaruHighContrastDark.customize(),
         debugShowCheckedModeBanner: false,
