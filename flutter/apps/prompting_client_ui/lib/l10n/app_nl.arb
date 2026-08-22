@@ -157,7 +157,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Toestaan tot uitloggen",
-    "cameraPromptBody": "Toestaan dat {snapName} toegang krijgt tot uw camera?",
+    "cameraPromptBody": "Toestaan dat {snapName} toegang krijgt tot uw camera's?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -165,10 +165,38 @@
             }
         }
     },
-    "microphonePromptBody": "Toestaan dat {snapName} toegang krijgt tot uw microfoon?",
+    "microphonePromptBody": "Toestaan dat {snapName} toegang krijgt tot uw microfonen?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Altijd afwijzen",
+    "promptActionOptionDenyUntilLogout": "Afwijzen tot uitloggen",
+    "homeCustomPathSaveButton": "Aangepast pad opslaan",
+    "homeCustomPathMustStartWithSlash": "Het padpatroon moet met een / beginnen",
+    "homeCustomPathWildcardStarDescription": "Komt overeen met elke reeks tekens, behalve /",
+    "homeCustomPathWildcardQuestionDescription": "Komt overeen met één enkel teken",
+    "homeCustomPathWildcardDoubleStarDescription": "Komt recursief overeen met nul of meer mappen en bestanden",
+    "homeCustomPathWildcardCurlyDescription": "Komt overeen met x of y",
+    "homeCustomPathWildcardBackslashDescription": "Ontsnapt speciale tekens om hen als normale tekens te beschouwen",
+    "homePromptMetaDataVerifiedAccountPrefix": "Deze ontwikkelaar heeft een ",
+    "homePromptMetaDataVerifiedAccountLink": "Geverifieerd account",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Meer opties",
+    "homePromptMetaDataAppCenterButton": "Openen in Appcentrum",
+    "homePromptPermissionsReadOnly": "Enkel te lezen",
+    "homePromptPermissionsWriteOnly": "Enkel naar te schrijven",
+    "homePromptPermissionsExecuteOnly": "Enkel uit te voeren",
+    "homePromptTitleQuestion": "Toestaan dat {snapName} {permissions} toegang krijgt tot bestanden?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
