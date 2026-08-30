@@ -213,5 +213,6 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "homePromptMetaDataVerifiedAccountSuffix": "."
 }
