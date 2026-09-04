@@ -7,15 +7,25 @@ import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:yaru/yaru.dart';
 
+/// Pumps the buttons with [width] to lay out in, inside a surface that is
+/// exactly the prompt page around them.
+///
+/// Menu placement depends on where the buttons sit within the overlay, not just
+/// on how wide they are, so the surface has to be the window rather than the
+/// test default.
 Future<void> _pumpButtons(WidgetTester tester, double width) {
+  tester.view.devicePixelRatio = 1;
+  tester.view.physicalSize = Size(width + 2 * kPagePadding, 600);
+  addTearDown(tester.view.reset);
+
   return tester.pumpWidget(
     ProviderScope(
       child: MaterialApp(
         theme: yaruLight.customize(),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: Scaffold(
-          body: SizedBox(
-            width: width,
+          body: Padding(
+            padding: const EdgeInsets.all(kPagePadding),
             child: DeviceActionButtons(
               onAction: ({required action, required lifespan}) async =>
                   PromptReplyResponse.success(),
@@ -33,6 +43,33 @@ Finder _dropdownOf(Finder splitButton) => find.descendant(
     );
 
 void main() {
+  for (final layout in [
+    (name: 'stacked', width: kWindowWidth - 2 * kPagePadding),
+    (name: 'side by side', width: 800.0),
+  ]) {
+    for (final button in [
+      (name: 'allow', index: 0),
+      (name: 'deny', index: 1),
+    ]) {
+      testWidgets(
+          'the ${button.name} menu opens under its own arrow when the buttons '
+          'are ${layout.name}', (tester) async {
+        await _pumpButtons(tester, layout.width);
+
+        final dropdown =
+            _dropdownOf(find.byType(YaruSplitButton).at(button.index));
+        final arrow = tester.getRect(dropdown);
+        await tester.tap(dropdown);
+        await tester.pumpAndSettle();
+
+        final menu =
+            tester.getRect(find.bySubtype<PopupMenuItem<dynamic>>().first);
+        expect(menu.left, lessThanOrEqualTo(arrow.center.dx));
+        expect(menu.right, greaterThanOrEqualTo(arrow.center.dx));
+      });
+    }
+  }
+
   testWidgets('action buttons stack and fill the prompt width', (tester) async {
     const availableWidth = kWindowWidth - 2 * kPagePadding;
     await _pumpButtons(tester, availableWidth);
