@@ -67,14 +67,13 @@ class DeviceActionButtons extends ConsumerWidget {
       ),
     ];
 
-    // `expanded` is what makes each split button fill the width it is given
-    // rather than hug its label, so a long translation still gets a button
-    // spanning its share whether the bar lays them out side by side or stacked.
     return AdaptiveButtonBar(
       spacing: 16,
       children: [
-        YaruSplitButton.filled(
-          expanded: true,
+        _SplitButton(
+          label: l10n.promptActionOptionAllowAlways,
+          onPressed: () =>
+              _handleAction(context, Action.allow, Lifespan.forever),
           items: allowButtons
               .map(
                 (item) => PopupMenuItem(
@@ -84,12 +83,10 @@ class DeviceActionButtons extends ConsumerWidget {
                 ),
               )
               .toList(),
-          onPressed: () =>
-              _handleAction(context, Action.allow, Lifespan.forever),
-          child: Text(l10n.promptActionOptionAllowAlways),
         ),
-        YaruSplitButton.filled(
-          expanded: true,
+        _SplitButton(
+          label: l10n.promptActionOptionDenyOnce,
+          onPressed: () => _handleAction(context, Action.deny, Lifespan.single),
           items: denyButtons
               .map(
                 (item) => PopupMenuItem(
@@ -99,10 +96,70 @@ class DeviceActionButtons extends ConsumerWidget {
                 ),
               )
               .toList(),
-          onPressed: () => _handleAction(context, Action.deny, Lifespan.single),
-          child: Text(l10n.promptActionOptionDenyOnce),
         ),
       ],
     );
   }
+}
+
+/// A split button that fills the width it is given, with a dropdown menu as
+/// wide as the button.
+///
+/// `expanded` is what stretches the button, so that a long translation still
+/// gets a button spanning its share whether the bar lays the buttons out side
+/// by side or stacked.
+///
+/// The menu is sized and placed here rather than by [YaruSplitButton] because
+/// Yaru anchors it to the whole split button and leaves Material to choose an
+/// edge of that anchor to align to. That choice only lands under the arrow
+/// while the button hugs its label; stretched, the anchor is far wider than the
+/// menu, and a full-width button leaves both edges equidistant, so the menu
+/// opens at the end of the button opposite the arrow that was pressed. A menu
+/// as wide as its anchor sits in the same place whichever edge Material picks.
+class _SplitButton extends StatelessWidget {
+  const _SplitButton({
+    required this.label,
+    required this.onPressed,
+    required this.items,
+  });
+
+  final String label;
+  final VoidCallback onPressed;
+  final List<PopupMenuEntry<Object?>> items;
+
+  void _showMenu(BuildContext context) {
+    final button = context.findRenderObject()! as RenderBox;
+    final overlay =
+        Overlay.of(context).context.findRenderObject()! as RenderBox;
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromRect(
+        Rect.fromPoints(
+          button.localToGlobal(
+            button.size.bottomLeft(Offset.zero),
+            ancestor: overlay,
+          ),
+          button.localToGlobal(
+            button.size.bottomRight(Offset.zero),
+            ancestor: overlay,
+          ),
+        ),
+        Offset.zero & overlay.size,
+      ),
+      constraints: BoxConstraints.tightFor(width: button.size.width),
+      // Matches the padding Yaru gives the menu it would have shown itself.
+      menuPadding: const EdgeInsets.symmetric(vertical: kYaruButtonRadius),
+      items: items,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) => YaruSplitButton.filled(
+        expanded: true,
+        items: items,
+        onPressed: onPressed,
+        onOptionsPressed: () => _showMenu(context),
+        child: Text(label),
+      );
 }
