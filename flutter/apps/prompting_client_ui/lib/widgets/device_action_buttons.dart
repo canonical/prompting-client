@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
+import 'package:prompting_client_ui/widgets/adaptive_button_bar.dart';
 import 'package:yaru/yaru.dart';
 
 typedef DeviceActionCallback = Future<PromptReplyResponse> Function({
@@ -29,7 +31,12 @@ class DeviceActionButtons extends ConsumerWidget {
     if (response is PromptReplyResponseSuccess ||
         response is PromptReplyResponsePromptNotFound) {
       if (context.mounted) {
-        await YaruWindow.of(context).close();
+        // Closing the window destroys the GL context with it, so let the frame
+        // the button press scheduled finish first -- otherwise the raster
+        // thread goes to draw into a surface that is already gone.
+        final window = YaruWindow.of(context);
+        await SchedulerBinding.instance.endOfFrame;
+        await window.close();
       }
     }
   }
@@ -60,12 +67,10 @@ class DeviceActionButtons extends ConsumerWidget {
       ),
     ];
 
-    // `expanded` lets each split button fill the width the Column stretches it
-    // to instead of hugging its label, so longer localized strings still get
-    // buttons that span the whole prompt.
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    // `expanded` is what makes each split button fill the width it is given
+    // rather than hug its label, so a long translation still gets a button
+    // spanning its share whether the bar lays them out side by side or stacked.
+    return AdaptiveButtonBar(
       spacing: 16,
       children: [
         YaruSplitButton.filled(
