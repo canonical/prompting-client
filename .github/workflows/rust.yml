@@ -29,12 +29,15 @@ jobs:
       - name: Build prompting-client snap
         id: snapcraft-client
         uses: snapcore/action-build@v1
+        with:
+          snapcraft-channel: 8.x/stable
 
       - name: Build testing snap
         id: snapcraft-testing
         uses: snapcore/action-build@v1
         with:
           path: testing-snap
+          snapcraft-channel: 8.x/stable
 
       - name: Setup snapd and snaps
         run: |
