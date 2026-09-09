@@ -61,30 +61,20 @@ class HomePermissions extends ConsumerWidget {
                         fontWeight: FontWeight.normal,
                       ),
                 ),
-                // The title takes what it needs and the summary ellipsizes into
-                // what is left: at the prompt's width, selecting every
-                // permission would otherwise overflow the tile.
-                Flexible(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 8,
-                    children: [
-                      if (selectedSummary != null)
-                        Flexible(
-                          child: Text(
-                            selectedSummary,
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge
-                                ?.copyWith(
-                                  letterSpacing: kTileTitleLetterSpacing,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                          ),
-                        ),
-                      const Icon(YaruIcons.pan_down, size: kTrailingIconSize),
-                    ],
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  spacing: 8,
+                  children: [
+                    if (selectedSummary != null)
+                      Text(
+                        selectedSummary,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                              letterSpacing: kTileTitleLetterSpacing,
+                              fontWeight: FontWeight.normal,
+                            ),
+                      ),
+                    const Icon(YaruIcons.pan_down, size: kTrailingIconSize),
+                  ],
                 ),
               ],
             ),

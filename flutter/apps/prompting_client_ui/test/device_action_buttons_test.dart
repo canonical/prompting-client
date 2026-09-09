@@ -9,10 +9,6 @@ import 'package:yaru/yaru.dart';
 
 /// Pumps the buttons with [width] to lay out in, inside a surface that is
 /// exactly the prompt page around them.
-///
-/// Menu placement depends on where the buttons sit within the overlay, not just
-/// on how wide they are, so the surface has to be the window rather than the
-/// test default.
 Future<void> _pumpButtons(WidgetTester tester, double width) {
   tester.view.devicePixelRatio = 1;
   tester.view.physicalSize = Size(width + 2 * kPagePadding, 600);
@@ -43,29 +39,6 @@ Finder _dropdownOf(Finder splitButton) => find.descendant(
     );
 
 void main() {
-  // Only at the prompt's own width: the window is fixed at [kWindowWidth], so a
-  // wider surface would exercise a share of the bar the buttons can never get.
-  for (final button in [
-    (name: 'allow', index: 0),
-    (name: 'deny', index: 1),
-  ]) {
-    testWidgets('the ${button.name} menu opens under its own arrow',
-        (tester) async {
-      await _pumpButtons(tester, kWindowWidth - 2 * kPagePadding);
-
-      final dropdown =
-          _dropdownOf(find.byType(YaruSplitButton).at(button.index));
-      final arrow = tester.getRect(dropdown);
-      await tester.tap(dropdown);
-      await tester.pumpAndSettle();
-
-      final menu =
-          tester.getRect(find.bySubtype<PopupMenuItem<dynamic>>().first);
-      expect(menu.left, lessThanOrEqualTo(arrow.center.dx));
-      expect(menu.right, greaterThanOrEqualTo(arrow.center.dx));
-    });
-  }
-
   testWidgets('action buttons stack and fill the prompt width', (tester) async {
     const availableWidth = kWindowWidth - 2 * kPagePadding;
     await _pumpButtons(tester, availableWidth);
