@@ -1,6 +1,9 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:measure_size_builder/measure_size_builder.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/app/prompt_model.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_page.dart';
@@ -12,88 +15,129 @@ import 'package:window_manager/window_manager.dart';
 
 final _log = Logger('prompt_page');
 
-class PromptPage extends ConsumerWidget {
+class PromptPage extends ConsumerStatefulWidget {
   const PromptPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PromptPage> createState() => _PromptPageState();
+}
+
+class _PromptPageState extends ConsumerState<PromptPage> {
+  double? _appliedHeight;
+
+  /// Settles in a single step because only the height is ever changed and the
+  /// content is measured under unbounded height, so its height cannot depend on
+  /// the window size we derive from it.
+  Future<void> _fitWindowTo(double contentHeight) async {
+    final height = contentHeight.roundToDouble();
+    if (height <= 0 || height == _appliedHeight) return;
+    final isFirstFit = _appliedHeight == null;
+    _appliedHeight = height;
+
+    _log.debug('Sizing window to ($kWindowWidth, $height)');
+    await windowManager.setSize(Size(kWindowWidth, height));
+
+    if (isFirstFit) {
+      await windowManager.show();
+      await windowManager.focus();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final prompt = ref.watch(currentPromptProvider);
-
-    // Home prompts use dynamic resize (min 400x670), camera/mic prompts use fixed size.
-    final allowDynamicResize = prompt is PromptDetailsHome;
-
-    final minWidth = allowDynamicResize
-        ? homePromptWindowSize.width
-        : defaultWindowSize.width;
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: MeasureSizeBuilder(
-          builder: (context, size) {
-            _log.debug(
-              'SizeChangedLayoutNotification received: (${size.width}, ${size.height})',
-            );
-            if (allowDynamicResize) {
-              final constrainedSize = Size(
-                size.width.clamp(homePromptWindowSize.width, double.infinity),
-                size.height.clamp(homePromptWindowSize.height, double.infinity),
-              );
-              _ensureWindowSize(constrainedSize);
-            } else {
-              _ensureWindowSize(defaultWindowSize);
-            }
-
-            return Consumer(
-              builder: (context, ref, _) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (context.size != null && allowDynamicResize) {
-                    final constrainedSize = Size(
-                      context.size!.width
-                          .clamp(homePromptWindowSize.width, double.infinity),
-                      context.size!.height
-                          .clamp(homePromptWindowSize.height, double.infinity),
-                    );
-                    _ensureWindowSize(constrainedSize);
-                  }
-                });
-                return SizeChangedLayoutNotifier(
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: minWidth),
-                    child: Padding(
-                      padding: const EdgeInsets.all(kPagePadding),
-                      child: switch (prompt) {
-                        PromptDetailsHome() => const HomeStandardPage(),
-                        PromptDetailsCamera() => const CameraPromptPage(),
-                        PromptDetailsMicrophone() =>
-                          const MicrophonePromptPage(),
-                      },
-                    ),
-                  ),
-                );
-              },
-            );
-          },
+        child: _MeasureHeight(
+          width: kWindowWidth,
+          onHeightChanged: _fitWindowTo,
+          child: Padding(
+            padding: const EdgeInsets.all(kPagePadding),
+            child: switch (prompt) {
+              PromptDetailsHome() => const HomeStandardPage(),
+              PromptDetailsCamera() => const CameraPromptPage(),
+              PromptDetailsMicrophone() => const MicrophonePromptPage(),
+            },
+          ),
         ),
       ),
     );
   }
 }
 
-Future<void> _ensureWindowSize(Size size) async {
-  const delay = Duration(milliseconds: 100);
-  const maxRetries = 10;
-  var retries = 0;
+/// Lays [child] out no narrower than [width] and reports the height it takes.
+///
+/// A render object rather than a [SizeChangedLayoutNotifier] so that measuring
+/// costs no extra layout pass and never rebuilds the subtree being measured.
+class _MeasureHeight extends SingleChildRenderObjectWidget {
+  const _MeasureHeight({
+    required this.width,
+    required this.onHeightChanged,
+    required Widget super.child,
+  });
 
-  if (size.width < 100 || size.height < 100) return;
+  final double width;
 
-  do {
-    _log.debug('Setting window size to (${size.width}, ${size.height})');
-    await windowManager.setSize(size);
-    await Future.delayed(delay);
-  } while (await windowManager.getSize() != size && retries++ < maxRetries);
-  if (retries >= maxRetries) {
-    _log.error('Failed to set window size to (${size.width}, ${size.height})');
-  } else {
-    _log.debug('Window size set to (${size.width}, ${size.height})');
+  /// Called after every layout that changes the child's height.
+  final ValueChanged<double> onHeightChanged;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) =>
+      _RenderMeasureHeight(width: width, onHeightChanged: onHeightChanged);
+
+  @override
+  void updateRenderObject(
+    BuildContext context,
+    _RenderMeasureHeight renderObject,
+  ) {
+    renderObject
+      ..width = width
+      ..onHeightChanged = onHeightChanged;
+  }
+}
+
+class _RenderMeasureHeight extends RenderProxyBox {
+  _RenderMeasureHeight({
+    required double width,
+    required this.onHeightChanged,
+  }) : _width = width;
+
+  ValueChanged<double> onHeightChanged;
+
+  double get width => _width;
+  double _width;
+  set width(double value) {
+    if (_width == value) return;
+    _width = value;
+    markNeedsLayout();
+  }
+
+  double? _reported;
+
+  @override
+  void performLayout() {
+    // A floor, not a fixed width: the content still fills whatever width it is
+    // offered (the window in the app, an arbitrary surface in tests), it just
+    // never wraps below the prompt's width.
+    child!.layout(
+      BoxConstraints(
+        minWidth: width,
+        maxWidth: math.max(width, constraints.maxWidth),
+        minHeight: constraints.minHeight,
+        maxHeight: constraints.maxHeight,
+      ),
+      parentUsesSize: true,
+    );
+    size = constraints.constrain(child!.size);
+
+    final height = child!.size.height;
+    if (height == _reported) return;
+    _reported = height;
+
+    // Resizing the window from inside layout would re-enter it, so hand the
+    // height over once the frame is done.
+    SchedulerBinding.instance
+        .addPostFrameCallback((_) => onHeightChanged(height));
   }
 }

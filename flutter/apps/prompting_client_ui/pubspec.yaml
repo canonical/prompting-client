@@ -23,8 +23,6 @@ dependencies:
   jovial_svg: ^1.1.28
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
-  measure_size: ^4.0.0
-  measure_size_builder: ^1.0.3
   prompting_client: ^1.0.0
   riverpod_annotation: ^2.3.5
   ubuntu_lints: ^0.4.1
@@ -33,7 +31,7 @@ dependencies:
   ubuntu_service: ^0.4.0
   url_launcher: ^6.3.0
   window_manager: ^0.5.1
-  yaru: ^8.3.0
+  yaru: ^10.2.0
 
 dev_dependencies:
   build_runner: ^2.4.9

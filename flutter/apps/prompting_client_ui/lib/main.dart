@@ -121,15 +121,20 @@ Future<void> main(List<String> args) async {
 
   await initDefaultLocale();
 
-  await windowManager
-      .waitUntilReadyToShow(WindowOptions(size: defaultWindowSize), () async {
-    await windowManager.setResizable(false);
-    await windowManager.setMinimumSize(const Size(kWindowWidth, 0));
-    await windowManager
-        .setMaximumSize(const Size(kWindowWidth, double.infinity));
-    await windowManager.show();
-    await windowManager.focus();
-  });
+  // No waitUntilReadyToShow, deliberately: it probes the window state on the
+  // way through, and on Linux an off-screen window reads back as iconified, so
+  // it "restores" it -- putting the window on screen at the bootstrap size,
+  // which is exactly what hide_on_first_map() in linux/my_application.cc took
+  // it off screen to avoid.
+  //
+  // No minimum or maximum size either: window_manager applies those as
+  // GdkWindow geometry hints, which are measured across the client-side
+  // decoration shadow, while setSize and getSize speak the logical window size.
+  // Mixing the two pinned the frame to kWindowWidth and left the Flutter
+  // viewport 52px narrower, so the measured height never settled.
+  //
+  // PromptPage sizes and shows the window once it has measured the prompt.
+  await windowManager.setResizable(false);
 
   runApp(const ProviderScope(child: PromptDialog()));
 }
@@ -141,8 +146,9 @@ class PromptDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return YaruTheme(
       builder: (context, yaru, child) => MaterialApp(
-        theme: yaru.theme?.customize(),
-        darkTheme: yaru.darkTheme?.customize(),
+        // Non-nullable as of yaru 10.2.0, so no `?.` here.
+        theme: yaru.theme.customize(),
+        darkTheme: yaru.darkTheme.customize(),
         highContrastTheme: yaruHighContrastLight.customize(),
         highContrastDarkTheme: yaruHighContrastDark.customize(),
         debugShowCheckedModeBanner: false,
