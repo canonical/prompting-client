@@ -73,7 +73,6 @@ class HomePermissions extends ConsumerWidget {
                         Flexible(
                           child: Text(
                             selectedSummary,
-                            overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)
                                 .textTheme
                                 .labelLarge
