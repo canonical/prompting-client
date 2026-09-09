@@ -22,7 +22,7 @@ const RETRY_SLEEP_DURATION: Duration = Duration::from_millis(200);
 #[cached(
     time = 3600,  // seconds
     option = true,
-    sync_writes = true,
+    sync_writes = "default",
     key = "String",
     convert = r#"{ String::from(snap) }"#
 )]

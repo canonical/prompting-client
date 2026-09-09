@@ -1,0 +1,33 @@
+name: Setup FVM
+description: Install FVM and the Flutter SDK version pinned in .fvmrc
+
+inputs:
+  fvm-version:
+    description: FVM version to install
+    required: false
+    default: 4.3.1
+
+runs:
+  using: composite
+  steps:
+    - uses: kuhnroyal/flutter-fvm-config-action/config@v2
+      id: fvm-config
+
+    - uses: subosito/flutter-action@v2
+      with:
+        cache: true
+        flutter-version: ${{ steps.fvm-config.outputs.FLUTTER_VERSION }}
+        channel: ${{ steps.fvm-config.outputs.FLUTTER_CHANNEL }}
+
+    - name: Install FVM
+      shell: bash
+      working-directory: ${{ runner.temp }}
+      run: |
+        set -euo pipefail
+        bash "$GITHUB_WORKSPACE/scripts/fvm/install.sh" "${{ inputs.fvm-version }}"
+        echo "$HOME/.fvm_flutter/bin" >> "$GITHUB_PATH"
+
+    - name: Install Flutter SDK
+      shell: bash
+      run: |
+        "$HOME/.fvm_flutter/bin/fvm" install
