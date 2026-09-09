@@ -48,29 +48,11 @@ void signal_prompting_to_gnome_shell(char *snap_name, guint64 app_pid) {
   }
 }
 
-// handy_window shows the window from inside fl_register_plugins(), and refuses
-// to set itself up at all if the window was already visible before that call,
-// so we cannot simply postpone showing it ourselves. It also shows the FlView
-// last, and showing the view is what boots the Flutter engine -- meaning the
-// window would otherwise sit on screen at the bootstrap size for the whole of
-// engine startup and then visibly jump once Dart has measured the prompt.
-//
-// PromptPage shows the window again once it has resized it to fit its content.
-static void hide_on_first_map(GtkWidget* window, gpointer user_data) {
-  g_signal_handlers_disconnect_by_func(window, (gpointer)hide_on_first_map,
-                                       user_data);
-  gtk_widget_hide(window);
-}
-
 // Implements GApplication::activate.
 static void my_application_activate(GApplication* application) {
   MyApplication* self = MY_APPLICATION(application);
   GtkWindow* window =
       GTK_WINDOW(gtk_application_window_new(GTK_APPLICATION(application)));
-
-  // Must be connected before the first map, which fl_register_plugins() below
-  // triggers by way of handy_window.
-  g_signal_connect(window, "map", G_CALLBACK(hide_on_first_map), nullptr);
 
   // Use a header bar when running in GNOME as this is the common style used
   // by applications and is the setup most users will be using (e.g. Ubuntu
@@ -102,12 +84,14 @@ static void my_application_activate(GApplication* application) {
   // Retrieve parsed arguments
   char *snap_name = (char*)g_object_get_data(G_OBJECT(application), "snap_name");
   guint64 app_pid = GPOINTER_TO_UINT(g_object_get_data(G_OBJECT(application), "app_pid"));
+  char *interface_name = (char*)g_object_get_data(G_OBJECT(application), "interface_name");
 
-  // Bootstrap size only. The Dart side measures the prompt content and resizes
-  // the window to fit it before revealing the window, so this is never seen on
-  // screen -- it only has to give the first frame a sane width to lay out
-  // against. Keep the width in sync with kWindowWidth in lib/theme.dart.
-  gtk_window_set_default_size(window, 382, 230);
+  // Set window size based on interface type: home prompts need more height
+  int window_height = 230;
+  if (interface_name != NULL && strcmp(interface_name, "home") == 0) {
+    window_height = 690;
+  }
+  gtk_window_set_default_size(window, 372, window_height);
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();
   fl_dart_project_set_dart_entrypoint_arguments(project, self->dart_entrypoint_arguments);
@@ -121,12 +105,8 @@ static void my_application_activate(GApplication* application) {
   if (session && strstr (session, "GNOME"))
       signal_prompting_to_gnome_shell(snap_name, app_pid);
 
+  gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
-
-  // Boots the Flutter engine. handy_window would have done this by showing the
-  // view while the window was still mapped; doing it by hand keeps the startup
-  // cost off screen.
-  gtk_widget_realize(GTK_WIDGET(view));
 
   gtk_window_set_skip_taskbar_hint(window, TRUE);
   gtk_window_set_skip_pager_hint(window, TRUE);
@@ -142,12 +122,12 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   // Parse command line arguments
   g_autofree char *snap_name = NULL;
   guint64 app_pid = 0;
+  g_autofree char *interface_name = NULL;
 
-  // --interface-name is parsed on the Dart side only; unknown options are
-  // ignored here and the full argv is forwarded below either way.
   static const GOptionEntry entries[] = {
     { "snap", 0, 0, G_OPTION_ARG_STRING, &snap_name, "Snap name", NULL },
     { "app-pid", 0, 0, G_OPTION_ARG_INT64, &app_pid, "Application PID", NULL },
+    { "interface-name", 0, 0, G_OPTION_ARG_STRING, &interface_name, "Interface name (home, camera, audio-record)", NULL },
     { NULL }
   };
 
@@ -168,6 +148,7 @@ static gboolean my_application_local_command_line(GApplication* application, gch
   // Store parsed values for activate callback
   g_object_set_data_full(G_OBJECT(application), "snap_name", g_steal_pointer(&snap_name), g_free);
   g_object_set_data(G_OBJECT(application), "app_pid", GUINT_TO_POINTER(app_pid));
+  g_object_set_data_full(G_OBJECT(application), "interface_name", g_steal_pointer(&interface_name), g_free);
 
   g_autoptr(GError) error = nullptr;
   if (!g_application_register(application, nullptr, &error)) {

@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/adaptive_button_bar.dart';
 import 'package:yaru/yaru.dart';
 
@@ -67,11 +68,18 @@ class DeviceActionButtons extends ConsumerWidget {
       ),
     ];
 
+    // `expanded` stretches each button to the width the bar gives it, so that a
+    // long translation still spans its share whether the buttons end up side by
+    // side or stacked. `menuWidth` matches the menu to the button, because Yaru
+    // anchors the menu to the whole split button and leaves Material to pick an
+    // edge of that anchor to align to; only a menu as wide as its anchor sits
+    // under the arrow whichever edge Material picks.
     return AdaptiveButtonBar(
       spacing: 16,
       children: [
-        _SplitButton(
-          label: l10n.promptActionOptionAllowAlways,
+        YaruSplitButton.filled(
+          expanded: true,
+          menuWidth: kWindowWidth - 2 * kPagePadding,
           onPressed: () =>
               _handleAction(context, Action.allow, Lifespan.forever),
           items: allowButtons
@@ -83,9 +91,11 @@ class DeviceActionButtons extends ConsumerWidget {
                 ),
               )
               .toList(),
+          child: Text(l10n.promptActionOptionAllowAlways),
         ),
-        _SplitButton(
-          label: l10n.promptActionOptionDenyOnce,
+        YaruSplitButton.filled(
+          expanded: true,
+          menuWidth: kWindowWidth - 2 * kPagePadding,
           onPressed: () => _handleAction(context, Action.deny, Lifespan.single),
           items: denyButtons
               .map(
@@ -96,70 +106,9 @@ class DeviceActionButtons extends ConsumerWidget {
                 ),
               )
               .toList(),
+          child: Text(l10n.promptActionOptionDenyOnce),
         ),
       ],
     );
   }
-}
-
-/// A split button that fills the width it is given, with a dropdown menu as
-/// wide as the button.
-///
-/// `expanded` is what stretches the button, so that a long translation still
-/// gets a button spanning its share whether the bar lays the buttons out side
-/// by side or stacked.
-///
-/// The menu is sized and placed here rather than by [YaruSplitButton] because
-/// Yaru anchors it to the whole split button and leaves Material to choose an
-/// edge of that anchor to align to. That choice only lands under the arrow
-/// while the button hugs its label; stretched, the anchor is far wider than the
-/// menu, and a full-width button leaves both edges equidistant, so the menu
-/// opens at the end of the button opposite the arrow that was pressed. A menu
-/// as wide as its anchor sits in the same place whichever edge Material picks.
-class _SplitButton extends StatelessWidget {
-  const _SplitButton({
-    required this.label,
-    required this.onPressed,
-    required this.items,
-  });
-
-  final String label;
-  final VoidCallback onPressed;
-  final List<PopupMenuEntry<Object?>> items;
-
-  void _showMenu(BuildContext context) {
-    final button = context.findRenderObject()! as RenderBox;
-    final overlay =
-        Overlay.of(context).context.findRenderObject()! as RenderBox;
-
-    showMenu(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromPoints(
-          button.localToGlobal(
-            button.size.bottomLeft(Offset.zero),
-            ancestor: overlay,
-          ),
-          button.localToGlobal(
-            button.size.bottomRight(Offset.zero),
-            ancestor: overlay,
-          ),
-        ),
-        Offset.zero & overlay.size,
-      ),
-      constraints: BoxConstraints.tightFor(width: button.size.width),
-      // Matches the padding Yaru gives the menu it would have shown itself.
-      menuPadding: const EdgeInsets.symmetric(vertical: kYaruButtonRadius),
-      items: items,
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) => YaruSplitButton.filled(
-        expanded: true,
-        items: items,
-        onPressed: onPressed,
-        onOptionsPressed: () => _showMenu(context),
-        child: Text(label),
-      );
 }
