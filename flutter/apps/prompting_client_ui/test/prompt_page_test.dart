@@ -49,4 +49,28 @@ void main() {
       lessThan(1000),
     );
   });
+
+  testWidgets(
+      'lets its content grow past the window width when given more room',
+      (tester) async {
+    final container = createContainer();
+    registerMockPromptDetails(
+      promptDetails: mockPromptDetailsHome(
+        requestedPath: '/home/ubuntu/Documents/foo.txt',
+      ),
+    );
+    // A floor, not a fixed width: on a wider surface (the test default) the
+    // content takes what it is offered instead of stopping at kWindowWidth.
+    const surfaceWidth = 760.0;
+    await tester.pumpApp(
+      (_) => const SizedBox(width: surfaceWidth, child: PromptPage()),
+      container: container,
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      tester.getSize(find.byType(HomeStandardPage)).width,
+      surfaceWidth - 2 * kPagePadding,
+    );
+  });
 }
