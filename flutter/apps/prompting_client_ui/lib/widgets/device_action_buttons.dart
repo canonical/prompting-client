@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
-import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/adaptive_button_bar.dart';
 import 'package:yaru/yaru.dart';
 
@@ -70,16 +69,12 @@ class DeviceActionButtons extends ConsumerWidget {
 
     // `expanded` stretches each button to the width the bar gives it, so that a
     // long translation still spans its share whether the buttons end up side by
-    // side or stacked. `menuWidth` matches the menu to the button, because Yaru
-    // anchors the menu to the whole split button and leaves Material to pick an
-    // edge of that anchor to align to; only a menu as wide as its anchor sits
-    // under the arrow whichever edge Material picks.
+    // side or stacked.
     return AdaptiveButtonBar(
       spacing: 16,
       children: [
         YaruSplitButton.filled(
           expanded: true,
-          menuWidth: kWindowWidth - 2 * kPagePadding,
           onPressed: () =>
               _handleAction(context, Action.allow, Lifespan.forever),
           items: allowButtons
@@ -95,7 +90,6 @@ class DeviceActionButtons extends ConsumerWidget {
         ),
         YaruSplitButton.filled(
           expanded: true,
-          menuWidth: kWindowWidth - 2 * kPagePadding,
           onPressed: () => _handleAction(context, Action.deny, Lifespan.single),
           items: denyButtons
               .map(

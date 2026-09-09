@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
@@ -23,9 +25,9 @@ class PromptPage extends ConsumerStatefulWidget {
 class _PromptPageState extends ConsumerState<PromptPage> {
   double? _appliedHeight;
 
-  /// Settles in a single step because the content is measured at a fixed width
-  /// under unbounded height, so its height cannot depend on the window size we
-  /// derive from it.
+  /// Settles in a single step because only the height is ever changed and the
+  /// content is measured under unbounded height, so its height cannot depend on
+  /// the window size we derive from it.
   Future<void> _fitWindowTo(double contentHeight) async {
     final height = contentHeight.roundToDouble();
     if (height <= 0 || height == _appliedHeight) return;
@@ -36,11 +38,6 @@ class _PromptPageState extends ConsumerState<PromptPage> {
     await windowManager.setSize(Size(kWindowWidth, height));
 
     if (isFirstFit) {
-      // The window is off screen until now -- see hide_on_first_map() in
-      // linux/my_application.cc -- so the resize above lands before it is ever
-      // mapped and the first thing on screen is already the right size. We
-      // cannot wait for a frame in between, because an unmapped window is never
-      // sent one.
       await windowManager.show();
       await windowManager.focus();
     }
@@ -69,15 +66,10 @@ class _PromptPageState extends ConsumerState<PromptPage> {
   }
 }
 
-/// Lays [child] out at [width] and reports the height it takes.
+/// Lays [child] out no narrower than [width] and reports the height it takes.
 ///
 /// A render object rather than a [SizeChangedLayoutNotifier] so that measuring
 /// costs no extra layout pass and never rebuilds the subtree being measured.
-///
-/// [width] is imposed rather than inherited because the window is off screen
-/// until the first height is reported, and GTK allocates an unmapped window's
-/// contents 1px wide. Inheriting that would wrap every line and measure a
-/// height in the thousands.
 class _MeasureHeight extends SingleChildRenderObjectWidget {
   const _MeasureHeight({
     required this.width,
@@ -85,7 +77,6 @@ class _MeasureHeight extends SingleChildRenderObjectWidget {
     required Widget super.child,
   });
 
-  /// The width the child is laid out at, whatever width this widget is offered.
   final double width;
 
   /// Called after every layout that changes the child's height.
@@ -126,8 +117,16 @@ class _RenderMeasureHeight extends RenderProxyBox {
 
   @override
   void performLayout() {
+    // A floor, not a fixed width: the content still fills whatever width it is
+    // offered (the window in the app, an arbitrary surface in tests), it just
+    // never wraps below the prompt's width.
     child!.layout(
-      BoxConstraints.tightFor(width: width),
+      BoxConstraints(
+        minWidth: width,
+        maxWidth: math.max(width, constraints.maxWidth),
+        minHeight: constraints.minHeight,
+        maxHeight: constraints.maxHeight,
+      ),
       parentUsesSize: true,
     );
     size = constraints.constrain(child!.size);
