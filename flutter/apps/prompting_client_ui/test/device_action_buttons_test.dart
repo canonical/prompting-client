@@ -43,31 +43,27 @@ Finder _dropdownOf(Finder splitButton) => find.descendant(
     );
 
 void main() {
-  for (final layout in [
-    (name: 'stacked', width: kWindowWidth - 2 * kPagePadding),
-    (name: 'side by side', width: 800.0),
+  // Only at the prompt's own width: the window is fixed at [kWindowWidth], so a
+  // wider surface would exercise a share of the bar the buttons can never get.
+  for (final button in [
+    (name: 'allow', index: 0),
+    (name: 'deny', index: 1),
   ]) {
-    for (final button in [
-      (name: 'allow', index: 0),
-      (name: 'deny', index: 1),
-    ]) {
-      testWidgets(
-          'the ${button.name} menu opens under its own arrow when the buttons '
-          'are ${layout.name}', (tester) async {
-        await _pumpButtons(tester, layout.width);
+    testWidgets('the ${button.name} menu opens under its own arrow',
+        (tester) async {
+      await _pumpButtons(tester, kWindowWidth - 2 * kPagePadding);
 
-        final dropdown =
-            _dropdownOf(find.byType(YaruSplitButton).at(button.index));
-        final arrow = tester.getRect(dropdown);
-        await tester.tap(dropdown);
-        await tester.pumpAndSettle();
+      final dropdown =
+          _dropdownOf(find.byType(YaruSplitButton).at(button.index));
+      final arrow = tester.getRect(dropdown);
+      await tester.tap(dropdown);
+      await tester.pumpAndSettle();
 
-        final menu =
-            tester.getRect(find.bySubtype<PopupMenuItem<dynamic>>().first);
-        expect(menu.left, lessThanOrEqualTo(arrow.center.dx));
-        expect(menu.right, greaterThanOrEqualTo(arrow.center.dx));
-      });
-    }
+      final menu =
+          tester.getRect(find.bySubtype<PopupMenuItem<dynamic>>().first);
+      expect(menu.left, lessThanOrEqualTo(arrow.center.dx));
+      expect(menu.right, greaterThanOrEqualTo(arrow.center.dx));
+    });
   }
 
   testWidgets('action buttons stack and fill the prompt width', (tester) async {
