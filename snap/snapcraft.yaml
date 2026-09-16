@@ -71,17 +71,33 @@ parts:
       - zip
     override-prime: ""
 
+  rust-deps:
+    plugin: nil
+    build-snaps:
+      - rustup
+    build-environment:
+      - PATH: /snap/bin:$PATH
+    override-build: |
+      set -eux
+      env -u LD_LIBRARY_PATH rustup toolchain install stable --profile minimal
+      toolchain="$(env -u LD_LIBRARY_PATH rustup toolchain list | awk 'NR == 1 {print $1}')"
+      mkdir -p "$CRAFT_PART_INSTALL/usr/lib/rust"
+      cp -a "$HOME/.rustup/toolchains/$toolchain/." "$CRAFT_PART_INSTALL/usr/lib/rust/"
+
   prompting-client:
+    after: [rust-deps]
     plugin: rust
+    rust-channel: none
     source: .
     source-type: git
     source-subdir: prompting-client
     override-build: |
       set -e
-      rustup default stable
       mkdir -p $(dirname $CRAFT_PART_SRC)/protos
       cp $CRAFT_PROJECT_DIR/protos/* $(dirname $CRAFT_PART_SRC)/protos/
       craftctl default
+    build-environment:
+      - PATH: $CRAFT_STAGE/usr/lib/rust/bin:$PATH
     build-packages:
       - libssl-dev
       - pkg-config
