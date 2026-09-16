@@ -271,7 +271,7 @@ where
             Err(err) => err.into_inner(),
         };
 
-        for (_, active_prompt) in guard.iter_mut() {
+        for active_prompt in guard.values_mut() {
             if active_prompt.typed_ui_input.id() == &id {
                 active_prompt.ui_handle.take();
             }
