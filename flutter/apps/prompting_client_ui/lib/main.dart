@@ -139,12 +139,16 @@ class PromptDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = resolveFontLocale(
+      WidgetsBinding.instance.platformDispatcher.locales,
+    );
+
     return YaruTheme(
       builder: (context, yaru, child) => MaterialApp(
-        theme: yaru.theme?.customize(),
-        darkTheme: yaru.darkTheme?.customize(),
-        highContrastTheme: yaruHighContrastLight.customize(),
-        highContrastDarkTheme: yaruHighContrastDark.customize(),
+        theme: yaru.theme?.customize(locale: locale),
+        darkTheme: yaru.darkTheme?.customize(locale: locale),
+        highContrastTheme: yaruHighContrastLight.customize(locale: locale),
+        highContrastDarkTheme: yaruHighContrastDark.customize(locale: locale),
         debugShowCheckedModeBanner: false,
         localizationsDelegates: localizationsDelegates,
         supportedLocales: supportedLocales,
