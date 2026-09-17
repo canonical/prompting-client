@@ -83,6 +83,8 @@ parts:
       toolchain="$(env -u LD_LIBRARY_PATH rustup toolchain list | awk 'NR == 1 {print $1}')"
       mkdir -p "$CRAFT_PART_INSTALL/usr/lib/rust"
       cp -a "$HOME/.rustup/toolchains/$toolchain/." "$CRAFT_PART_INSTALL/usr/lib/rust/"
+    # The toolchain is only needed to build the prompting-client part, keep it out of the snap
+    override-prime: ""
 
   prompting-client:
     after: [rust-deps]
