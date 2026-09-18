@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/rendering.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
 /// A row of equal-width children that becomes a column of full-width children
@@ -18,6 +19,7 @@ class AdaptiveButtonBar extends MultiChildRenderObjectWidget {
   const AdaptiveButtonBar({
     super.key,
     this.spacing = 0.0,
+    this.onChildWidthChanged,
     super.children,
   });
 
@@ -25,11 +27,22 @@ class AdaptiveButtonBar extends MultiChildRenderObjectWidget {
   /// column.
   final double spacing;
 
+  /// Invoked after each layout that changes the width the children were
+  /// allotted: the equal share of a row, or the full width of a column.
+  ///
+  /// Children are stretched to that width, so a popover anchored to a child
+  /// wants to be that wide too. Delivered after the frame closes because a
+  /// listener typically rebuilds with the value, and rebuilding during layout
+  /// is forbidden. Children at their natural widths (unbounded constraints)
+  /// have no single width to report.
+  final ValueChanged<double>? onChildWidthChanged;
+
   @override
   RenderAdaptiveButtonBar createRenderObject(BuildContext context) {
     return RenderAdaptiveButtonBar(
       spacing: spacing,
       textDirection: Directionality.of(context),
+      onChildWidthChanged: onChildWidthChanged,
     );
   }
 
@@ -40,7 +53,8 @@ class AdaptiveButtonBar extends MultiChildRenderObjectWidget {
   ) {
     renderObject
       ..spacing = spacing
-      ..textDirection = Directionality.of(context);
+      ..textDirection = Directionality.of(context)
+      ..onChildWidthChanged = onChildWidthChanged;
   }
 }
 
@@ -54,6 +68,7 @@ class RenderAdaptiveButtonBar extends RenderBox
   RenderAdaptiveButtonBar({
     required double spacing,
     required TextDirection textDirection,
+    this.onChildWidthChanged,
   })  : _spacing = spacing,
         _textDirection = textDirection;
 
@@ -75,6 +90,17 @@ class RenderAdaptiveButtonBar extends RenderBox
     _textDirection = value;
     markNeedsLayout();
   }
+
+  // A plain field, not a markNeedsLayout setter: the listener does not affect
+  // layout, and notifying a fresh listener of the current width would loop a
+  // listener that rebuilds with the value.
+  ValueChanged<double>? onChildWidthChanged;
+
+  /// The width every child was laid out at, or null when there is no single
+  /// such width. Only real layout records it; dry layout runs under arbitrary
+  /// constraints and must not clobber it.
+  double? _allottedChildWidth;
+  double? _reportedChildWidth;
 
   @override
   void setupParentData(RenderBox child) {
@@ -109,10 +135,15 @@ class RenderAdaptiveButtonBar extends RenderBox
     ChildLayouter layoutChild, {
     required bool assignOffsets,
   }) {
-    if (childCount == 0) return constraints.smallest;
+    if (childCount == 0) {
+      if (assignOffsets) _allottedChildWidth = null;
+      return constraints.smallest;
+    }
 
     if (!constraints.maxWidth.isFinite) {
-      // Nothing a column could gain when there is no width to divide up.
+      // Nothing a column could gain when there is no width to divide up, and
+      // no single width either: children lay out at their natural widths.
+      if (assignOffsets) _allottedChildWidth = null;
       return _layoutRow(
         constraints,
         layoutChild,
@@ -125,6 +156,7 @@ class RenderAdaptiveButtonBar extends RenderBox
     // field would survive a text-scale change, which invalidates the children's
     // intrinsics without invalidating this object's layout.
     final share = _rowShare(constraints.maxWidth);
+    if (assignOffsets) _allottedChildWidth = share ?? constraints.maxWidth;
     return share != null
         ? _layoutRow(
             constraints,
@@ -198,6 +230,18 @@ class RenderAdaptiveButtonBar extends RenderBox
       ChildLayoutHelper.layoutChild,
       assignOffsets: true,
     );
+    _reportAllottedChildWidth();
+  }
+
+  void _reportAllottedChildWidth() {
+    if (_allottedChildWidth == _reportedChildWidth) return;
+    _reportedChildWidth = _allottedChildWidth;
+    final listener = onChildWidthChanged;
+    final width = _allottedChildWidth;
+    if (listener == null || width == null) return;
+    // Calling back from layout would re-enter it, so hand the width over once
+    // the frame is done.
+    SchedulerBinding.instance.addPostFrameCallback((_) => listener(width));
   }
 
   @override
