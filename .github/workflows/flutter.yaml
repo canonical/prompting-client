@@ -9,11 +9,9 @@ on:
 
 jobs:
   setup:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: Atsumi3/actions-setup-fvm@0.0.3
-      - uses: bluefireteam/melos-action@v3
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@2db611c684665808acf24723ea8fc6d2050f5f99
       - run: melos generate
       - run: melos gen-l10n
       - uses: actions/cache@v4
@@ -22,17 +20,18 @@ jobs:
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
 
   l10n:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Restore repository cache
         uses: actions/cache@v4
         with:
           path: .
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
-      - uses: Atsumi3/actions-setup-fvm@0.0.3
-      - uses: bluefireteam/melos-action@v3
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@2db611c684665808acf24723ea8fc6d2050f5f99
+        with:
+          checkout: false
       - run: melos gen-l10n
       - name: Check for outdated l10n
         if: github.event_name == 'pull_request'
@@ -48,10 +47,10 @@ jobs:
           delete-branch: true
 
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Restore repository cache
         uses: actions/cache@v4
         with:
@@ -59,8 +58,9 @@ jobs:
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
           restore-keys: |
             ${{ runner.os }}-repo-
-      - uses: Atsumi3/actions-setup-fvm@0.0.3
-      - uses: bluefireteam/melos-action@v3
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@2db611c684665808acf24723ea8fc6d2050f5f99
+        with:
+          checkout: false
       - run: sudo apt update && sudo apt install -y lcov
       - run: melos coverage
       - uses: codecov/codecov-action@v5
@@ -68,10 +68,10 @@ jobs:
           token: ${{secrets.CODECOV_TOKEN}}
 
   prompting-client-ui:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: setup
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Restore repository cache
         uses: actions/cache@v4
         with:
@@ -79,8 +79,9 @@ jobs:
           key: ${{ runner.os }}-repo-${{ github.sha }}-generated
           restore-keys: |
             ${{ runner.os }}-repo-
-      - uses: Atsumi3/actions-setup-fvm@0.0.3
-      - uses: bluefireteam/melos-action@v3
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@2db611c684665808acf24723ea8fc6d2050f5f99
+        with:
+          checkout: false
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y clang cmake libglib2.0-dev libgtk-3-dev liblzma-dev ninja-build pkg-config xvfb
       - name: Run integration tests
