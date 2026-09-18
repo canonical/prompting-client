@@ -11,7 +11,7 @@ typedef DeviceActionCallback = Future<PromptReplyResponse> Function({
   required Lifespan lifespan,
 });
 
-class DeviceActionButtons extends ConsumerWidget {
+class DeviceActionButtons extends ConsumerStatefulWidget {
   const DeviceActionButtons({
     required this.onAction,
     super.key,
@@ -19,12 +19,24 @@ class DeviceActionButtons extends ConsumerWidget {
 
   final DeviceActionCallback onAction;
 
+  @override
+  ConsumerState<DeviceActionButtons> createState() =>
+      _DeviceActionButtonsState();
+}
+
+class _DeviceActionButtonsState extends ConsumerState<DeviceActionButtons> {
+  /// The width the bar has stretched the buttons to, reported after layout.
+  /// A [YaruSplitButton] menu anchors to its button, so sizing the menu to
+  /// the same width keeps it within the button whether the bar laid the
+  /// buttons out in a row or a column.
+  double? _menuWidth;
+
   Future<void> _handleAction(
     BuildContext context,
     Action action,
     Lifespan lifespan,
   ) async {
-    final response = await onAction(
+    final response = await widget.onAction(
       action: action,
       lifespan: lifespan,
     );
@@ -42,7 +54,7 @@ class DeviceActionButtons extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
     final allowButtons = [
@@ -72,9 +84,13 @@ class DeviceActionButtons extends ConsumerWidget {
     // side or stacked.
     return AdaptiveButtonBar(
       spacing: 16,
+      onChildWidthChanged: (width) {
+        if (mounted) setState(() => _menuWidth = width);
+      },
       children: [
         YaruSplitButton.filled(
           expanded: true,
+          menuWidth: _menuWidth,
           onPressed: () =>
               _handleAction(context, Action.allow, Lifespan.forever),
           items: allowButtons
@@ -90,6 +106,7 @@ class DeviceActionButtons extends ConsumerWidget {
         ),
         YaruSplitButton.filled(
           expanded: true,
+          menuWidth: _menuWidth,
           onPressed: () => _handleAction(context, Action.deny, Lifespan.single),
           items: denyButtons
               .map(

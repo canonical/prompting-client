@@ -87,4 +87,29 @@ void main() {
       allow.right,
     );
   });
+
+  testWidgets('menus match the width of the button that opened them',
+      (tester) async {
+    const availableWidth = kWindowWidth - 2 * kPagePadding;
+    await _pumpButtons(tester, availableWidth);
+    // The bar reports the allotted width after the frame that laid the
+    // buttons out, so give the rebuild it triggers a frame of its own.
+    await tester.pump();
+
+    final splitButtons = find.byType(YaruSplitButton);
+    await tester.tap(_dropdownOf(splitButtons.at(1)));
+    await tester.pumpAndSettle();
+
+    final deny = tester.getRect(splitButtons.at(1));
+    final menu = tester.getRect(
+      find.descendant(
+        of: find.byType(CustomSingleChildLayout),
+        matching: find.byType(Material),
+      ),
+    );
+
+    expect(menu.left, deny.left);
+    expect(menu.width, deny.width);
+    expect(menu.top, deny.bottom);
+  });
 }
