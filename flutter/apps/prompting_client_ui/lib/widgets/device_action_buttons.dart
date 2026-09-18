@@ -25,10 +25,8 @@ class DeviceActionButtons extends ConsumerStatefulWidget {
 }
 
 class _DeviceActionButtonsState extends ConsumerState<DeviceActionButtons> {
-  /// The width the bar has stretched the buttons to, reported after layout.
-  /// A [YaruSplitButton] menu anchors to its button, so sizing the menu to
-  /// the same width keeps it within the button whether the bar laid the
-  /// buttons out in a row or a column.
+  /// The menu anchors to the button, so it is sized to the width the bar
+  /// stretched the buttons to. Null until the bar reports it after layout.
   double? _menuWidth;
 
   Future<void> _handleAction(
