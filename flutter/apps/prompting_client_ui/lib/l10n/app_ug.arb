@@ -1,1 +1,204 @@
-{}
+{
+    "securityCenterInfo": "سىز بۇ ئىجازەتلەرنى خالىغان ۋاقىتتا ‹بىخەتەرلىك مەركىزى› دىن ئۆزگەرتەلەيسىز",
+    "promptAccessMoreOptionsTitle": "{snap} ئىجازىتىنى تەڭشەيدۇ:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "{snap} غا {permission} ئىجازىتى بېرىلىدۇ:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "يول قوي",
+    "promptActionOptionAllowAlways": "ھەمىشە يول قوي",
+    "promptActionOptionAllowOnce": "بىر قېتىم يول قوي",
+    "promptActionOptionDeny": "رەت قىل",
+    "promptActionOptionDenyOnce": "بىر قېتىم رەت قىل",
+    "promptActionOptionAllowUntilLogout": "تىزىمدىن چىققۇچە يول قوي",
+    "promptActionTitle": "مەشغۇلات",
+    "promptLifespanOptionForever": "ھەمىشە",
+    "promptLifespanOptionSession": "تىزىمدىن چىققۇچە",
+    "promptLifespanOptionSingle": "بىر قېتىم",
+    "promptLifespanTitle": "مۇددىتى",
+    "promptSaveAndContinue": "ساقلاپ داۋاملاشتۇر",
+    "promptTitle": "بىخەتەرلىك ئۇقتۇرۇشى",
+    "homePatternInfo": "‹يول ئەندىزىسى ھەققىدىكى بىلىم›",
+    "homePatternTypeCustomPath": "ئىختىيارى يول ئەندىزىسى",
+    "homePatternTypeRequestedDirectory": "ئىلتىماس قىلىنغان قىسقۇچلا",
+    "homePatternTypeRequestedFile": "ئىلتىماس قىلىنغان ھۆججەتلا",
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} قىسقۇچتىكى ھەممىسى",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "قىسقۇچتىكى ھەممىسى",
+    "homePatternTypeContainingDirectory": "قىسقۇچتىكى ھەممىسى",
+    "homePatternTypeHomeDirectory": "باش قىسقۇچتىكى ھەممىسى",
+    "homePatternTypeMatchingFileExtension": "{fileExtension} ھۆججەتنىڭ ھەممىسى",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} نىڭ ئېرىشمەكچى بولغىنى {path} نىڭ {permissions} ئىجازىتى",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} نىڭ ئېرىشمەكچى بولغىنى {foldername} قىسقۇچنىڭ {permissions} ئىجازىتى.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} نىڭ ئېرىشمەكچى بولغىنى {foldername} قىسقۇچتىكى {filename} نىڭ {permissions} ئىجازىتى.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} نىڭ ئېرىشمەكچى بولغىنى باش قىسقۇچنىڭ {permissions} ئىجازىتى.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} نىڭ ئېرىشمەكچى بولغىنى باش قىسقۇچتىكى {filename} نىڭ {permissions} ئىجازىتى.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "بۇ ئەپ ھەققىدە",
+    "homePromptMetaDataPublishedBy": "تارقاتقۇچى {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "ئاخىرقى قېتىم يېڭىلانغان ۋاقىت {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "تېخىمۇ كۆپ تاللانما…",
+    "homePromptMetaDataAppCenterLink": "ئەپ مەركىزى بېتىنى زىيارەت قىلىدۇ",
+    "homePromptSuggestedPermission": "يەنە {permission} ئىجازىتى بېرىدۇ",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "ئىجازەت",
+    "homePromptPermissionsRead": "ئوقۇش",
+    "homePromptPermissionsWrite": "يېزىش",
+    "homePromptPermissionsExecute": "ئىجرا قىلىش",
+    "homePromptErrorUnknownTitle": "كاشىلا كۆرۈلدى",
+    "cameraPromptBody": "{snapName} نىڭ كامېرايىڭىزنى ئىشلىتىشىگە يول قويامدۇ؟",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "{snapName} نىڭ مىكروفونىڭىزنى ئىشلىتىشىگە يول قويامدۇ؟",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "ھەمىشە رەت قىل",
+    "promptActionOptionDenyUntilLogout": "تىزىمدىن چىقمىغۇچە رەت قىل",
+    "homeCustomPathSaveButton": "ئىختىيارى يولنى ساقلا",
+    "homeCustomPathMustStartWithSlash": "يول ئەندىزىسى چوقۇم / بىلەن باشلىنىدۇ",
+    "homeCustomPathWildcardStarDescription": "/ دىن باشقا ھەر قانداق ھەرپ تىزىقى ماس كېلىدۇ",
+    "homeCustomPathWildcardQuestionDescription": "يەككە ھەرپ ماس كېلىدۇ",
+    "homeCustomPathWildcardDoubleStarDescription": "نۆل ياكى تېخىمۇ كۆپ قىسقۇچ ۋە ھۆججەتنى قايتا-قايتا ماسلاشتۇرىدۇ",
+    "homeCustomPathWildcardCurlyDescription": "x ياكى y غا ماس كېلىدۇ",
+    "homePromptMetaDataVerifiedAccountPrefix": "بۇ تارقاتقۇچى ",
+    "homePromptMetaDataVerifiedAccountLink": "دەلىللەنگەن ھېساب",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "تېخىمۇ كۆپ تاللانما",
+    "homePromptMetaDataAppCenterButton": "ئەپ مەركىزىدە ئاچ",
+    "homePromptPermissionsReadOnly": "ئوقۇشقىلا",
+    "homePromptPermissionsWriteOnly": "يېزىشقىلا",
+    "homePromptPermissionsExecuteOnly": "ئىجرا قىلىشقىلا",
+    "homePromptTitleQuestion": "{snapName} نىڭ ھۆججەتنى زىيارەت قىلىشىغا {permissions} ئىجازەت بېرەمدۇ؟",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homeCustomPathWildcardBackslashDescription": "ئۇلارغا يېزىق سۈپىتىدە مۇئامىلە قىلىش ئۈچۈن ئالاھىدە ھەرپنىڭ مەنىسى ئۆزگىرىدۇ"
+}

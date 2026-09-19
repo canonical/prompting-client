@@ -1,1 +1,176 @@
-{}
+{
+    "securityCenterInfo": "ನೀವು ಯಾವಾಗಲೂ ಈ ಅನುಮತಿಗಳನ್ನು <ಭದ್ರತಾ ಕೇಂದ್ರ> ದಲ್ಲಿ ಬದಲಾಯಿಸಬಹುದು",
+    "promptAccessMoreOptionsTitle": "{snap} ಗೆ ಪ್ರವೇಶವನ್ನು ಹೊಂದಿಸಿ:",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "ಇದಕ್ಕೆ {snap} {permission} ಪ್ರವೇಶವನ್ನು ನೀಡಿ:",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionAllow": "ಅನುಮತಿಸಿ",
+    "promptActionOptionAllowAlways": "ಯಾವಾಗಲೂ ಅನುಮತಿಸಿ",
+    "promptActionOptionAllowOnce": "ಒಮ್ಮೆ ಅನುಮತಿಸಿ",
+    "promptActionOptionDeny": "ನಿರಾಕರಿಸು",
+    "promptLifespanOptionSession": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ",
+    "promptLifespanOptionSingle": "ಒಮ್ಮೆ",
+    "promptLifespanTitle": "ಅವಧಿ",
+    "promptSaveAndContinue": "ಉಳಿಸಿ ಮತ್ತು ಮುಂದುವರಿಸಿ",
+    "promptTitle": "ಭದ್ರತಾ ಅಧಿಸೂಚನೆ",
+    "homePatternInfo": "<ಮಾರ್ಗದ ಮಾದರಿಗಳ ಬಗ್ಗೆ ತಿಳಿಯಿರಿ>",
+    "homePatternTypeCustomPath": "ಕಸ್ಟಮ್ ಮಾರ್ಗದ ಮಾದರಿ",
+    "homePatternTypeRequestedDirectory": "ವಿನಂತಿಸಿದ ಫೋಲ್ಡರ್ ಮಾತ್ರ",
+    "homePatternTypeRequestedFile": "ವಿನಂತಿಸಿದ ಫೈಲ್ ಮಾತ್ರ",
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "homePatternTypeContainingDirectory": "ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "homePatternTypeHomeDirectory": "ಹೋಮ್ ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಎಲ್ಲವೂ",
+    "homePatternTypeMatchingFileExtension": "ಎಲ್ಲಾ {fileExtension} ಫೈಲ್‌ಗಳು",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyOnce": "ಒಮ್ಮೆ ನಿರಾಕರಿಸಿ",
+    "promptActionOptionAllowUntilLogout": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ ಅನುಮತಿಸಿ",
+    "promptActionTitle": "ಕ್ರಿಯೆ",
+    "promptLifespanOptionForever": "ಯಾವಾಗಲೂ",
+    "homePromptDefaultBody": "{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{foldername} ಫೋಲ್ಡರ್‌ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{foldername} ಫೋಲ್ಡರ್‌ನಲ್ಲಿ {filename} ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "ನಿಮ್ಮ ಹೋಮ್ ಫೋಲ್ಡರ್‌ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "ನಿಮ್ಮ ಹೋಮ್ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ {filename} ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು {snap} ಬಯಸುತ್ತದೆ.",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataTitle": "ಈ ಅಪ್ಲಿಕೇಶನ್ ಬಗ್ಗೆ",
+    "homePromptMetaDataPublishedBy": "ಪ್ರಕಟಿಸಿದವರು {publisher}",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "{date} ರಂದು ಕೊನೆಯದಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು...",
+    "homePromptMetaDataAppCenterLink": "ಅಪ್ಲಿಕೇಶನ್ ಕೇಂದ್ರ ಪುಟಕ್ಕೆ ಭೇಟಿ ನೀಡಿ",
+    "homePromptSuggestedPermission": "{permission} ಪ್ರವೇಶವನ್ನು ಸಹ ನೀಡಿ",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "ಅನುಮತಿಗಳು",
+    "homePromptPermissionsRead": "ಓದು",
+    "homePromptPermissionsWrite": "ಬರೆಯಿರಿ",
+    "homePromptPermissionsExecute": "ಕಾರ್ಯಗತಗೊಳಿಸಿ",
+    "homePromptErrorUnknownTitle": "ಏನೋ ತಪ್ಪಾಗಿದೆ",
+    "cameraPromptBody": "ನಿಮ್ಮ ಕ್ಯಾಮರಾವನ್ನು ಪ್ರವೇಶಿಸಲು {snapName} ಗೆ ಅನುಮತಿಸುವುದೇ?",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು {snapName} ಗೆ ಅನುಮತಿಸುವುದೇ?",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    }
+}

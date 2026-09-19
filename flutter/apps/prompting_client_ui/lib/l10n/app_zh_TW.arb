@@ -1,201 +1,218 @@
 {
-  "promptActionOptionAllow": "允許",
-  "@promptActionOptionAllow": {},
-  "promptActionOptionAllowAlways": "總是允許",
-  "@promptActionOptionAllowAlways": {},
-  "promptActionOptionAllowOnce": "允許一次",
-  "@promptActionOptionAllowOnce": {},
-  "promptActionOptionDeny": "拒絕",
-  "@promptActionOptionDeny": {},
-  "promptActionOptionDenyOnce": "拒絕一次",
-  "@promptActionOptionDenyOnce": {},
-  "promptLifespanOptionForever": "總是",
-  "@promptLifespanOptionForever": {},
-  "promptSaveAndContinue": "儲存並繼續",
-  "@promptSaveAndContinue": {},
-  "homePromptMetaDataTitle": "關於此應用程式",
-  "@homePromptMetaDataTitle": {},
-  "homePromptPermissionsExecute": "執行",
-  "@homePromptPermissionsExecute": {},
-  "homePromptMetaDataPublishedBy": "由 {publisher} 發布",
-  "@homePromptMetaDataPublishedBy": {
-    "placeholders": {
-      "publisher": {
-        "type": "String"
-      }
+    "promptActionOptionAllow": "允許",
+    "promptActionOptionAllowAlways": "總是允許",
+    "promptActionOptionAllowOnce": "允許一次",
+    "promptActionOptionDeny": "拒絕",
+    "promptActionOptionDenyOnce": "拒絕一次",
+    "promptLifespanOptionForever": "總是",
+    "promptSaveAndContinue": "儲存並繼續",
+    "homePromptMetaDataTitle": "關於此應用程式",
+    "homePromptPermissionsExecute": "執行",
+    "homePromptMetaDataPublishedBy": "由 {publisher} 發布",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptErrorUnknownTitle": "發生一些問題",
+    "homePromptMetaDataAppCenterLink": "造訪《應用中心》頁面",
+    "promptAccessMoreOptionsTitle": "設定 {snap} 的存取權限為：",
+    "@promptAccessMoreOptionsTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            }
+        }
+    },
+    "promptLifespanOptionSession": "直到登出",
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} 資料夾中的所有內容",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeRequestedDirectoryContents": "資料夾中的所有內容",
+    "homePatternTypeContainingDirectory": "資料夾中的所有內容",
+    "homePatternTypeMatchingFileExtension": "所有 {fileExtension} 檔案",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptBody": "允許 {snap} 擁有對 {path} 的 {permissions} 存取權限嗎？",
+    "@homePromptBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataLastUpdated": "最後更新日期為 {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "更多選項...",
+    "homePromptSuggestedPermission": "同時給予{permission}存取權限",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsTitle": "權限",
+    "homePromptPermissionsRead": "讀取",
+    "homePromptPermissionsWrite": "寫入",
+    "homePromptDefaultBody": "{snap} 想要取得對 {path} 的 {permissions} 存取權限",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} 想要取得 {foldername} 資料夾的 {permissions} 存取權限。",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} 想要取得 {foldername} 資料夾中 {filename} 的 {permissions} 存取權限。",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} 想要取得您「家目錄」的 {permissions} 存取權限。",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} 想要取得您家目錄中 {filename} 的 {permissions} 存取權限。",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "promptAccessTitle": "允許 {snap} {permission} 權限存取：",
+    "@promptAccessTitle": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "promptTitle": "安全性通知",
+    "homePatternTypeHomeDirectory": "家目錄中的所有內容",
+    "securityCenterInfo": "您可以隨時在<安全中心>中變更這些權限",
+    "promptActionTitle": "動作",
+    "promptLifespanOptionSingle": "一次",
+    "promptLifespanTitle": "持續時間",
+    "homePatternInfo": "<了解路徑樣式>",
+    "homePatternTypeCustomPath": "自訂路徑樣式",
+    "homePatternTypeRequestedDirectory": "僅請求的資料夾",
+    "homePatternTypeRequestedFile": "僅請求的檔案",
+    "promptActionOptionAllowUntilLogout": "允許直至登出",
+    "cameraPromptBody": "要允許 {snapName} 使用您的相機嗎？",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "要允許 {snapName} 使用您的麥克風？",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "始終拒絕",
+    "promptActionOptionDenyUntilLogout": "登出前皆拒絕",
+    "homeCustomPathSaveButton": "儲存自訂路徑",
+    "homeCustomPathMustStartWithSlash": "路徑模式必須以 / 開頭",
+    "homeCustomPathWildcardStarDescription": "匹配任何字元串，但 / 除外",
+    "homeCustomPathWildcardQuestionDescription": "匹配單一字元",
+    "homeCustomPathWildcardDoubleStarDescription": "遞迴匹配零個或多個資料夾和檔案",
+    "homeCustomPathWildcardCurlyDescription": "匹配 x 或 y",
+    "homeCustomPathWildcardBackslashDescription": "將特殊字元轉義，使其被視為字面值",
+    "homePromptMetaDataVerifiedAccountPrefix": "此發布者有 ",
+    "homePromptMetaDataVerifiedAccountLink": "已驗證帳戶",
+    "homePromptMetaDataVerifiedAccountSuffix": "。",
+    "homePromptMoreOptionsTileLabel": "更多選項",
+    "homePromptMetaDataAppCenterButton": "在 App Center 中開啟",
+    "homePromptPermissionsReadOnly": "僅限讀取",
+    "homePromptPermissionsWriteOnly": "僅限寫入",
+    "homePromptPermissionsExecuteOnly": "僅限執行",
+    "homePromptTitleQuestion": "允許 {snapName} {permissions} 存取檔案？",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
     }
-  },
-  "homePromptErrorUnknownTitle": "發生一些問題",
-  "@homePromptErrorUnknownTitle": {},
-  "homePromptMetaDataAppCenterLink": "造訪《應用中心》頁面",
-  "@homePromptMetaDataAppCenterLink": {},
-  "promptAccessMoreOptionsTitle": "設定 {snap} 的存取權限為：",
-  "@promptAccessMoreOptionsTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      }
-    }
-  },
-  "promptLifespanOptionSession": "直到登出",
-  "@promptLifespanOptionSession": {},
-  "homePatternTypeTopLevelDirectory": "{topLevelDir} 資料夾中的所有內容",
-  "@homePatternTypeTopLevelDirectory": {
-    "placeholders": {
-      "topLevelDir": {
-        "type": "String"
-      }
-    }
-  },
-  "homePatternTypeRequestedDirectoryContents": "資料夾中的所有內容",
-  "@homePatternTypeRequestedDirectoryContents": {},
-  "homePatternTypeContainingDirectory": "資料夾中的所有內容",
-  "@homePatternTypeContainingDirectory": {},
-  "homePatternTypeMatchingFileExtension": "所有 {fileExtension} 檔案",
-  "@homePatternTypeMatchingFileExtension": {
-    "placeholders": {
-      "fileExtension": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptBody": "允許 {snap} 擁有對 {path} 的 {permissions} 存取權限嗎？",
-  "@homePromptBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMetaDataLastUpdated": "最後更新日期為 {date}",
-  "@homePromptMetaDataLastUpdated": {
-    "placeholders": {
-      "date": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptMoreOptionsLabel": "更多選項...",
-  "@homePromptMoreOptionsLabel": {},
-  "homePromptSuggestedPermission": "同時給予{permission}存取權限",
-  "@homePromptSuggestedPermission": {
-    "placeholders": {
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptPermissionsTitle": "權限",
-  "@homePromptPermissionsTitle": {},
-  "homePromptPermissionsRead": "讀取",
-  "@homePromptPermissionsRead": {},
-  "homePromptPermissionsWrite": "寫入",
-  "@homePromptPermissionsWrite": {},
-  "homePromptDefaultBody": "{snap} 想要取得對 {path} 的 {permissions} 存取權限",
-  "@homePromptDefaultBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "path": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirBody": "{snap} 想要取得 {foldername} 資料夾的 {permissions} 存取權限。",
-  "@homePromptTopLevelDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptTopLevelDirFileBody": "{snap} 想要取得 {foldername} 資料夾中 {filename} 的 {permissions} 存取權限。",
-  "@homePromptTopLevelDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      },
-      "foldername": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirBody": "{snap} 想要取得您「家目錄」的 {permissions} 存取權限。",
-  "@homePromptHomeDirBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      }
-    }
-  },
-  "homePromptHomeDirFileBody": "{snap} 想要取得您家目錄中 {filename} 的 {permissions} 存取權限。",
-  "@homePromptHomeDirFileBody": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permissions": {
-        "type": "String"
-      },
-      "filename": {
-        "type": "String"
-      }
-    }
-  },
-  "promptAccessTitle": "允許 {snap} {permission} 權限存取：",
-  "@promptAccessTitle": {
-    "placeholders": {
-      "snap": {
-        "type": "String"
-      },
-      "permission": {
-        "type": "String"
-      }
-    }
-  },
-  "promptTitle": "安全性通知",
-  "@promptTitle": {},
-  "homePatternTypeHomeDirectory": "家目錄中的所有內容",
-  "@homePatternTypeHomeDirectory": {},
-  "securityCenterInfo": "您可以隨時在<安全中心>中變更這些權限",
-  "@securityCenterInfo": {},
-  "promptActionTitle": "動作",
-  "@promptActionTitle": {},
-  "promptLifespanOptionSingle": "一次",
-  "@promptLifespanOptionSingle": {},
-  "promptLifespanTitle": "持續時間",
-  "@promptLifespanTitle": {},
-  "homePatternInfo": "<了解路徑樣式>",
-  "@homePatternInfo": {},
-  "homePatternTypeCustomPath": "自訂路徑樣式",
-  "@homePatternTypeCustomPath": {},
-  "homePatternTypeRequestedDirectory": "僅請求的資料夾",
-  "@homePatternTypeRequestedDirectory": {},
-  "homePatternTypeRequestedFile": "僅請求的檔案",
-  "@homePatternTypeRequestedFile": {}
 }
