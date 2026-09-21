@@ -8,7 +8,6 @@ target
 .packages
 .pub-cache/
 .pub/
-pubspec.lock
 build/
 coverage/
 *.g.dart
