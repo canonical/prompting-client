@@ -9,9 +9,7 @@ jobs:
     prek:
         runs-on: ubuntu-24.04
         steps:
-            - uses: actions/checkout@v4
-            - uses: Atsumi3/actions-setup-fvm@0.0.3
-            - uses: bluefireteam/melos-action@v3
+            - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
             - run: melos generate
 
             - uses: dtolnay/rust-toolchain@stable
