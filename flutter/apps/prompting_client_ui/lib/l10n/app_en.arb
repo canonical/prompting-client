@@ -118,20 +118,6 @@
             "permissions": {
                 "type": "String"
             },
-            "folder": {
-                "type": "String"
-            }
-        }
-    },
-    "homePromptTopLevelDirBody": "{snap} wants to get {permissions} access to the {foldername} folder.",
-    "@homePromptTopLevelDirBody": {
-        "placeholders": {
-            "snap": {
-                "type": "String"
-            },
-            "permissions": {
-                "type": "String"
-            },
             "foldername": {
                 "type": "String"
             }
