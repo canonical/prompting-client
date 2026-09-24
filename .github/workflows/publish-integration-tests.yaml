@@ -26,7 +26,7 @@ jobs:
           )
           cp $FNAME integration-tests
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: integration-tests
           path: prompting-client/integration-tests
@@ -38,7 +38,7 @@ jobs:
         with:
           path: testing-snap
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: aa-prompting-test
           path: ${{ steps.snapcraft-testing.outputs.snap }}
