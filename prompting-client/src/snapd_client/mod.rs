@@ -152,7 +152,8 @@ impl SnapdSocketClient {
                 .is_ok()
             {
                 info!(
-                    "using the abstract snapd snap socket at address: @{SNAPD_ABSTRACT_SNAP_SOCKET}"
+                    "using the abstract snapd snap socket at address: @{}",
+                    &SNAPD_ABSTRACT_SNAP_SOCKET[1..]
                 );
                 SNAPD_ABSTRACT_SNAP_SOCKET
             } else {
@@ -494,5 +495,20 @@ mod tests {
             Err(Error::NotAvailable) => (),
             res => panic!("expected NotAvailable, got {res:?}"),
         }
+    }
+
+    #[test]
+    fn abstract_socket_display_format() {
+        // Verify that the abstract socket constant starts with null byte
+        assert_eq!(SNAPD_ABSTRACT_SNAP_SOCKET.as_bytes()[0], 0);
+
+        // Verify that skipping the first character gives us the expected path
+        let display_path = &SNAPD_ABSTRACT_SNAP_SOCKET[1..];
+        assert_eq!(display_path, "/snapd/snapd-snap.socket");
+
+        // Verify the formatted string for logging doesn't contain null byte
+        let log_message = format!("@{}", display_path);
+        assert_eq!(log_message, "@/snapd/snapd-snap.socket");
+        assert!(!log_message.contains('\0'));
     }
 }
