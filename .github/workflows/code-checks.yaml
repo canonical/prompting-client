@@ -22,4 +22,4 @@ jobs:
                   sudo apt-get -y update
                   sudo apt-get -y install protobuf-compiler
 
-            - uses: j178/prek-action@v2
+            - uses: j178/prek-action@v3.0.0
