@@ -9,7 +9,7 @@ on:
 
 jobs:
   l10n:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
       - run: melos generate
@@ -28,7 +28,7 @@ jobs:
           delete-branch: true
 
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
       - run: sudo apt update && sudo apt install -y lcov
@@ -39,7 +39,7 @@ jobs:
           token: ${{secrets.CODECOV_TOKEN}}
 
   prompting-client-ui:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     steps:
       - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
       - run: melos generate
