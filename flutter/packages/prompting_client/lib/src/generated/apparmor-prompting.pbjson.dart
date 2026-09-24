@@ -630,6 +630,13 @@ const MetaData$json = {
       '5': 9,
       '10': 'snapIconMimeType'
     },
+    {
+      '1': 'publisher_verified',
+      '3': 8,
+      '4': 1,
+      '5': 8,
+      '10': 'publisherVerified'
+    },
   ],
 };
 
@@ -639,7 +646,8 @@ final $typed_data.Uint8List metaDataDescriptor = $convert.base64Decode(
     'EoCVIIc25hcE5hbWUSGwoJc3RvcmVfdXJsGAMgASgJUghzdG9yZVVybBIcCglwdWJsaXNoZXIY'
     'BCABKAlSCXB1Ymxpc2hlchIdCgp1cGRhdGVkX2F0GAUgASgJUgl1cGRhdGVkQXQSGwoJc25hcF'
     '9pY29uGAYgASgMUghzbmFwSWNvbhItChNzbmFwX2ljb25fbWltZV90eXBlGAcgASgJUhBzbmFw'
-    'SWNvbk1pbWVUeXBl');
+    'SWNvbk1pbWVUeXBlEi0KEnB1Ymxpc2hlcl92ZXJpZmllZBgIIAEoCFIRcHVibGlzaGVyVmVyaW'
+    'ZpZWQ=');
 
 @$core.Deprecated('Use resolveHomePatternTypeResponseDescriptor instead')
 const ResolveHomePatternTypeResponse$json = {

@@ -1,6 +1,6 @@
 pub mod serde_option_regex {
     use regex::Regex;
-    use serde::{de, Deserialize, Deserializer, Serializer};
+    use serde::{Deserialize, Deserializer, Serializer, de};
 
     pub fn deserialize<'de, D>(deserializer: D) -> Result<Option<Regex>, D::Error>
     where

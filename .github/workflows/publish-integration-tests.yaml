@@ -9,14 +9,15 @@ on:
 
 jobs:
   publish:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: compile
         working-directory: ./prompting-client
         run: |
-          sudo apt-get install protobuf-compiler
+          sudo apt-get -y update
+          sudo apt-get -y install protobuf-compiler
           cargo test --no-run
           FNAME=$(
             ls -ht target/debug/deps/integration* |
@@ -25,7 +26,7 @@ jobs:
           )
           cp $FNAME integration-tests
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: integration-tests
           path: prompting-client/integration-tests
@@ -37,7 +38,7 @@ jobs:
         with:
           path: testing-snap
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: aa-prompting-test
           path: ${{ steps.snapcraft-testing.outputs.snap }}

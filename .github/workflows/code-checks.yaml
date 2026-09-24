@@ -1,4 +1,4 @@
-name: pre-commit
+name: Code Checks
 
 on:
     pull_request:
@@ -6,12 +6,10 @@ on:
         branches: [main]
 
 jobs:
-    pre-commit:
-        runs-on: ubuntu-24.04
+    prek:
+        runs-on: ubuntu-26.04
         steps:
-            - uses: actions/checkout@v4
-            - uses: Atsumi3/actions-setup-fvm@0.0.3
-            - uses: bluefireteam/melos-action@v3
+            - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
             - run: melos generate
 
             - uses: dtolnay/rust-toolchain@stable
@@ -21,6 +19,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  sudo apt-get install protobuf-compiler
+                  sudo apt-get -y update
+                  sudo apt-get -y install protobuf-compiler
 
-            - uses: pre-commit/action@v3.0.1
+            - uses: j178/prek-action@v3.0.0

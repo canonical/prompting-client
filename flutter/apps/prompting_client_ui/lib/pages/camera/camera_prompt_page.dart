@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_data_model.dart';
 import 'package:prompting_client_ui/pages/camera/camera_prompt_error.dart';
+import 'package:prompting_client_ui/theme.dart';
 import 'package:prompting_client_ui/widgets/device_action_buttons.dart';
 import 'package:prompting_client_ui/widgets/iterable_extensions.dart';
+import 'package:prompting_client_ui/widgets/snap_icon.dart';
 import 'package:yaru/yaru.dart';
 
 class CameraPromptPage extends ConsumerWidget {
@@ -14,14 +16,21 @@ class CameraPromptPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final error =
         ref.watch(cameraPromptDataModelProvider.select((m) => m.error));
+    final snapIcon = ref.watch(
+      cameraPromptDataModelProvider.select((m) => m.details.metaData.snapIcon),
+    );
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (snapIcon != null)
+          Center(
+            child: SnapIcon(snapIcon: snapIcon, dimension: kSnapIconDimension),
+          ),
         const CameraHeader(),
         if (error != null) CameraErrorBox(error),
         CameraActionButtons(),
-      ].withSpacing(20),
+      ].withSpacing(kContentSpacing),
     );
   }
 }
@@ -54,7 +63,15 @@ class CameraHeader extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     final text = l10n.cameraPromptBody(details.metaData.snapName);
-    return Text(text);
+    return Center(
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+      ),
+    );
   }
 }
 

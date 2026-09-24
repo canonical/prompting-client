@@ -17,7 +17,7 @@ apps:
     extensions: [gnome]
     environment: &env
       PROMPTING_CLIENT_SOCKET: "${XDG_RUNTIME_DIR}/prompting.sock"
-      TOKIO_WORKER_THREADS: 2
+      TOKIO_WORKER_THREADS: "2"
     plugs: &plugs
       - home
       - camera
@@ -37,10 +37,11 @@ apps:
     environment: *env
     plugs: *plugs
     daemon: simple
+    success-exit-status: [8]
     passthrough: # TODO: Remove once daemon-scope lands in snapcraft
       daemon-scope: user
     restart-condition: on-failure
-    restart-delay: 2s
+    restart-delay: 1s
 
   # Doesn't need access to home or snapd
   logging-level:
@@ -70,17 +71,35 @@ parts:
       - zip
     override-prime: ""
 
+  rust-deps:
+    plugin: nil
+    build-snaps:
+      - rustup
+    build-environment:
+      - PATH: /snap/bin:$PATH
+    override-build: |
+      set -eux
+      env -u LD_LIBRARY_PATH rustup toolchain install stable --profile minimal
+      toolchain="$(env -u LD_LIBRARY_PATH rustup toolchain list | awk 'NR == 1 {print $1}')"
+      mkdir -p "$CRAFT_PART_INSTALL/usr/lib/rust"
+      cp -a "$HOME/.rustup/toolchains/$toolchain/." "$CRAFT_PART_INSTALL/usr/lib/rust/"
+    # The toolchain is only needed to build the prompting-client part, keep it out of the snap
+    override-prime: ""
+
   prompting-client:
+    after: [rust-deps]
     plugin: rust
+    rust-channel: none
     source: .
     source-type: git
     source-subdir: prompting-client
     override-build: |
       set -e
-      rustup default stable
       mkdir -p $(dirname $CRAFT_PART_SRC)/protos
       cp $CRAFT_PROJECT_DIR/protos/* $(dirname $CRAFT_PART_SRC)/protos/
       craftctl default
+    build-environment:
+      - PATH: $CRAFT_STAGE/usr/lib/rust/bin:$PATH
     build-packages:
       - libssl-dev
       - pkg-config
@@ -104,3 +123,6 @@ parts:
       fvm flutter build linux --release -v
       mkdir -p $CRAFT_PART_INSTALL/bin/
       cp -r build/linux/*/release/bundle/* $CRAFT_PART_INSTALL/bin/
+    stage-packages:
+      - to arm64:
+          - fonts-noto-cjk

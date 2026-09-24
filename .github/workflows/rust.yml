@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
@@ -46,6 +46,8 @@ jobs:
           sudo snap pack squashfs-root
           sudo snap install --dangerous snapd_1337.*.snap
 
+          echo 'PROMPTING_CI=1' | sudo tee -a /etc/environment
+          echo 'SNAPD_DEBUG=1' | sudo tee -a /etc/environment
           sudo snap set system experimental.user-daemons=true
           sudo snap install --dangerous ${{ steps.snapcraft-client.outputs.snap }}
           sudo snap install --dangerous ${{ steps.snapcraft-testing.outputs.snap }}
@@ -55,7 +57,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install protobuf-compiler linux-modules-extra-$(uname -r) v4l-utils
+          sudo apt-get -y update
+          sudo apt-get -y install protobuf-compiler dkms linux-modules-extra-$(uname -r) v4l-utils v4l2loopback-dkms
 
       - name: Setup virtual devices
         run: |
@@ -63,6 +66,7 @@ jobs:
           sudo adduser $USER video && newgrp video
           sudo chmod 666 /dev/video0
           v4l2-ctl --list-devices
+          sudo touch /dev/video9
 
       - name: Check generated files are up to date
         working-directory: ./prompting-client
@@ -82,3 +86,10 @@ jobs:
         run: |
           cargo test
           cargo test --test mock_server --features dry-run
+
+      - name: Print journal on failure
+        if: ${{ failure() }}
+        run: |
+          echo "::group::journalctl"
+          journalctl -b0 --no-pager
+          echo "::endgroup::"

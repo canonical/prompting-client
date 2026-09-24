@@ -1,14 +1,14 @@
 use crate::{
+    Error, Result, SNAP_NAME,
     daemon::PromptUpdate,
     prompt_sequence::PromptFilter,
     snapd_client::{
-        interfaces::{
-            home::{HomeConstraintsFilter, HomeInterface},
-            SnapInterface,
-        },
         Action, Prompt, SnapdSocketClient, TypedPrompt, TypedPromptReply,
+        interfaces::{
+            SnapInterface,
+            home::{HomeConstraintsFilter, HomeInterface},
+        },
     },
-    Error, Result, SNAP_NAME,
 };
 use serde::{Deserialize, Serialize};
 use std::{fs, process::exit};

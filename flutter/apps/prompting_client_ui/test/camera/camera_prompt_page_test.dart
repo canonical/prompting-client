@@ -1,4 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
@@ -25,19 +24,13 @@ void main() {
       replyResponse: PromptReplyResponse.success(),
     );
     await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
-        container: container,
-        child: const PromptPage(),
-      ),
+      (_) => const PromptPage(),
+      container: container,
     );
 
     expect(find.text(tester.l10n.cameraPromptBody('firefox')), findsOneWidget);
     expect(
       find.text(tester.l10n.promptActionOptionAllowAlways),
-      findsOneWidget,
-    );
-    expect(
-      find.text(tester.l10n.promptActionOptionAllowUntilLogout),
       findsOneWidget,
     );
     expect(find.text(tester.l10n.promptActionOptionDenyOnce), findsOneWidget);
@@ -47,11 +40,13 @@ void main() {
     for (final testCase in <({
       String name,
       String Function(AppLocalizations l10) label,
+      String Function(AppLocalizations l10)? splitButtonParent,
       PromptReply expectedReply,
     })>[
       (
         name: 'allow always',
         label: (l10) => l10.promptActionOptionAllowAlways,
+        splitButtonParent: null,
         expectedReply: PromptReply.camera(
           promptId: 'promptId',
           action: Action.allow,
@@ -62,6 +57,7 @@ void main() {
       (
         name: 'allow until logout',
         label: (l10) => l10.promptActionOptionAllowUntilLogout,
+        splitButtonParent: (l10) => l10.promptActionOptionAllowAlways,
         expectedReply: PromptReply.camera(
           promptId: 'promptId',
           action: Action.allow,
@@ -70,12 +66,46 @@ void main() {
         ),
       ),
       (
+        name: 'allow once',
+        label: (l10) => l10.promptActionOptionAllowOnce,
+        splitButtonParent: (l10) => l10.promptActionOptionAllowAlways,
+        expectedReply: PromptReply.camera(
+          promptId: 'promptId',
+          action: Action.allow,
+          lifespan: Lifespan.single,
+          permissions: {DevicePermission.access},
+        ),
+      ),
+      (
         name: 'deny once',
         label: (l10) => l10.promptActionOptionDenyOnce,
+        splitButtonParent: null,
         expectedReply: PromptReply.camera(
           promptId: 'promptId',
           action: Action.deny,
           lifespan: Lifespan.single,
+          permissions: {DevicePermission.access},
+        ),
+      ),
+      (
+        name: 'deny always',
+        label: (l10) => l10.promptActionOptionDenyAlways,
+        splitButtonParent: (l10) => l10.promptActionOptionDenyOnce,
+        expectedReply: PromptReply.camera(
+          promptId: 'promptId',
+          action: Action.deny,
+          lifespan: Lifespan.forever,
+          permissions: {DevicePermission.access},
+        ),
+      ),
+      (
+        name: 'deny until logout',
+        label: (l10) => l10.promptActionOptionDenyUntilLogout,
+        splitButtonParent: (l10) => l10.promptActionOptionDenyOnce,
+        expectedReply: PromptReply.camera(
+          promptId: 'promptId',
+          action: Action.deny,
+          lifespan: Lifespan.session,
           permissions: {DevicePermission.access},
         ),
       ),
@@ -88,15 +118,20 @@ void main() {
           replyResponse: PromptReplyResponse.success(),
         );
         await tester.pumpApp(
-          (_) => UncontrolledProviderScope(
-            container: container,
-            child: const PromptPage(),
-          ),
+          (_) => const PromptPage(),
+          container: container,
         );
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text(testCase.label(tester.l10n)));
-        await tester.pumpAndSettle();
+        if (testCase.splitButtonParent != null) {
+          await tester.tapSplitButtonMenuItem(
+            testCase.splitButtonParent!(tester.l10n),
+            testCase.label(tester.l10n),
+          );
+        } else {
+          await tester.tap(find.text(testCase.label(tester.l10n)));
+          await tester.pumpAndSettle();
+        }
 
         verify(
           client.replyToPrompt(testCase.expectedReply),
@@ -115,10 +150,8 @@ void main() {
           PromptReplyResponse.unknown(message: expectedError.message),
     );
     await tester.pumpApp(
-      (_) => UncontrolledProviderScope(
-        container: container,
-        child: const PromptPage(),
-      ),
+      (_) => const PromptPage(),
+      container: container,
     );
 
     await tester.tap(find.text(tester.l10n.promptActionOptionAllowAlways));

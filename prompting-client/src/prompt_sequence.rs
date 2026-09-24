@@ -1,9 +1,9 @@
 use crate::snapd_client::{
-    interfaces::{
-        camera::CameraInterface, home::HomeInterface, microphone::MicrophoneInterface,
-        ConstraintsFilter, ReplyConstraintsOverrides, SnapInterface,
-    },
     Action, Lifespan, Prompt, PromptReply, TypedPrompt, TypedPromptReply,
+    interfaces::{
+        ConstraintsFilter, ReplyConstraintsOverrides, SnapInterface, camera::CameraInterface,
+        home::HomeInterface, microphone::MicrophoneInterface,
+    },
 };
 use serde::{Deserialize, Deserializer, Serialize};
 use std::{collections::VecDeque, fs};
@@ -13,7 +13,7 @@ use std::{collections::VecDeque, fs};
 #[serde(rename_all = "kebab-case")]
 pub struct PromptSequence {
     version: u8,
-    filter: Option<TypedPromptFilter>,
+    prompt_filter: Option<TypedPromptFilter>,
     prompts: VecDeque<TypedPromptCase>,
     #[serde(skip, default)]
     index: usize,
@@ -35,7 +35,7 @@ impl PromptSequence {
     }
 
     pub fn should_handle(&self, p: &TypedPrompt) -> bool {
-        match &self.filter {
+        match &self.prompt_filter {
             Some(f) => f.matches(p),
             None => true,
         }
@@ -108,20 +108,136 @@ fn apply_vars(mut content: String, vars: &[(&str, &str)]) -> String {
     content
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(untagged)]
+#[derive(Debug)]
 enum TypedPromptCase {
-    Home(PromptCase<HomeInterface>),
     Camera(PromptCase<CameraInterface>),
+    Home(PromptCase<HomeInterface>),
     Microphone(PromptCase<MicrophoneInterface>),
 }
 
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(untagged)]
+impl<'de> Deserialize<'de> for TypedPromptCase {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        use serde::de;
+        use serde_json::Value;
+
+        let value = Value::deserialize(deserializer)?;
+        let prompt_filter = value.get("prompt-filter");
+        let interface = prompt_filter
+            .and_then(|f| f.get("interface"))
+            .and_then(Value::as_str);
+        let has_path = prompt_filter
+            .and_then(|f| f.get("constraints"))
+            .and_then(|c| c.get("path"))
+            .is_some();
+
+        let mut case = match interface {
+            Some(CameraInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptCase::Camera)
+                .map_err(de::Error::custom)?,
+            Some(HomeInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptCase::Home)
+                .map_err(de::Error::custom)?,
+            Some(MicrophoneInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptCase::Microphone)
+                .map_err(de::Error::custom)?,
+
+            Some(name) => {
+                return Err(de::Error::unknown_variant(
+                    name,
+                    &[
+                        CameraInterface::NAME,
+                        HomeInterface::NAME,
+                        MicrophoneInterface::NAME,
+                    ],
+                ));
+            }
+
+            // Only the `home` interface has path constraints, so a missing
+            // `interface` field can be inferred from the presence of `path`.
+            None if has_path => serde_json::from_value(value)
+                .map(TypedPromptCase::Home)
+                .map_err(de::Error::custom)?,
+
+            // Without an explicit `interface` field, it is impossible to distinguish interfaces.
+            None => return Err(de::Error::missing_field("prompt-filter.interface")),
+        };
+
+        match &mut case {
+            TypedPromptCase::Camera(c) => {
+                c.prompt_filter.interface = Some(CameraInterface::NAME.to_string());
+            }
+            TypedPromptCase::Home(c) => {
+                c.prompt_filter.interface = Some(HomeInterface::NAME.to_string());
+            }
+            TypedPromptCase::Microphone(c) => {
+                c.prompt_filter.interface = Some(MicrophoneInterface::NAME.to_string());
+            }
+        }
+
+        Ok(case)
+    }
+}
+
+#[derive(Debug)]
 enum TypedPromptFilter {
     Camera(PromptFilter<CameraInterface>),
     Home(PromptFilter<HomeInterface>),
     Microphone(PromptFilter<MicrophoneInterface>),
+}
+
+impl<'de> Deserialize<'de> for TypedPromptFilter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        use serde::de;
+        use serde_json::Value;
+
+        let value = Value::deserialize(deserializer)?;
+        let interface = value.get("interface").and_then(Value::as_str);
+
+        let mut filter = match interface {
+            Some(CameraInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptFilter::Camera)
+                .map_err(de::Error::custom)?,
+            Some(HomeInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptFilter::Home)
+                .map_err(de::Error::custom)?,
+            Some(MicrophoneInterface::NAME) => serde_json::from_value(value)
+                .map(TypedPromptFilter::Microphone)
+                .map_err(de::Error::custom)?,
+
+            Some(name) => {
+                return Err(de::Error::unknown_variant(
+                    name,
+                    &[
+                        CameraInterface::NAME,
+                        HomeInterface::NAME,
+                        MicrophoneInterface::NAME,
+                    ],
+                ));
+            }
+
+            None => return Err(de::Error::missing_field("interface")),
+        };
+
+        match &mut filter {
+            TypedPromptFilter::Camera(f) => {
+                f.interface = Some(CameraInterface::NAME.to_string());
+            }
+            TypedPromptFilter::Home(f) => {
+                f.interface = Some(HomeInterface::NAME.to_string());
+            }
+            TypedPromptFilter::Microphone(f) => {
+                f.interface = Some(MicrophoneInterface::NAME.to_string());
+            }
+        }
+
+        Ok(filter)
+    }
 }
 
 impl TypedPromptFilter {
@@ -307,8 +423,8 @@ where
 mod tests {
     use super::*;
     use crate::snapd_client::{
-        interfaces::home::{HomeConstraints, HomeConstraintsFilter},
         Cgroup, PromptId,
+        interfaces::home::{HomeConstraints, HomeConstraintsFilter},
     };
     use simple_test_case::{dir_cases, test_case};
 
@@ -329,7 +445,7 @@ mod tests {
 
     #[dir_cases("resources/filter-serialize-tests")]
     #[test]
-    fn simple_serialize_works(path: &str, data: &str) {
+    fn simple_deserialize_works(path: &str, data: &str) {
         let res = serde_json::from_str::<'_, PromptFilter<HomeInterface>>(data);
 
         assert!(res.is_ok(), "error parsing {path}: {res:?}");

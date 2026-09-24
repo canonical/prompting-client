@@ -290,6 +290,18 @@ abstract class AppLocalizations {
   /// **'Deny once'**
   String get promptActionOptionDenyOnce;
 
+  /// No description provided for @promptActionOptionDenyAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny always'**
+  String get promptActionOptionDenyAlways;
+
+  /// No description provided for @promptActionOptionDenyUntilLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Deny until logout'**
+  String get promptActionOptionDenyUntilLogout;
+
   /// No description provided for @promptActionOptionAllowUntilLogout.
   ///
   /// In en, this message translates to:
@@ -349,6 +361,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Custom path pattern'**
   String get homePatternTypeCustomPath;
+
+  /// No description provided for @homeCustomPathSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save custom path'**
+  String get homeCustomPathSaveButton;
+
+  /// No description provided for @homeCustomPathMustStartWithSlash.
+  ///
+  /// In en, this message translates to:
+  /// **'The path pattern must start with /'**
+  String get homeCustomPathMustStartWithSlash;
+
+  /// No description provided for @homeCustomPathWildcardStarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches any string of characters except /'**
+  String get homeCustomPathWildcardStarDescription;
+
+  /// No description provided for @homeCustomPathWildcardQuestionDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches a single character'**
+  String get homeCustomPathWildcardQuestionDescription;
+
+  /// No description provided for @homeCustomPathWildcardDoubleStarDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches zero or more folders and files recursively'**
+  String get homeCustomPathWildcardDoubleStarDescription;
+
+  /// No description provided for @homeCustomPathWildcardCurlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Matches either x or y'**
+  String get homeCustomPathWildcardCurlyDescription;
+
+  /// No description provided for @homeCustomPathWildcardBackslashDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Escapes special characters to treat them as literals'**
+  String get homeCustomPathWildcardBackslashDescription;
 
   /// No description provided for @homePatternTypeRequestedDirectory.
   ///
@@ -437,6 +491,24 @@ abstract class AppLocalizations {
   /// **'Published by {publisher}'**
   String homePromptMetaDataPublishedBy(String publisher);
 
+  /// No description provided for @homePromptMetaDataVerifiedAccountPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'This publisher has a '**
+  String get homePromptMetaDataVerifiedAccountPrefix;
+
+  /// No description provided for @homePromptMetaDataVerifiedAccountLink.
+  ///
+  /// In en, this message translates to:
+  /// **'verified account'**
+  String get homePromptMetaDataVerifiedAccountLink;
+
+  /// No description provided for @homePromptMetaDataVerifiedAccountSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get homePromptMetaDataVerifiedAccountSuffix;
+
   /// No description provided for @homePromptMetaDataLastUpdated.
   ///
   /// In en, this message translates to:
@@ -449,11 +521,23 @@ abstract class AppLocalizations {
   /// **'More options...'**
   String get homePromptMoreOptionsLabel;
 
+  /// No description provided for @homePromptMoreOptionsTileLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get homePromptMoreOptionsTileLabel;
+
   /// No description provided for @homePromptMetaDataAppCenterLink.
   ///
   /// In en, this message translates to:
   /// **'Visit App Center page'**
   String get homePromptMetaDataAppCenterLink;
+
+  /// No description provided for @homePromptMetaDataAppCenterButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in App Center'**
+  String get homePromptMetaDataAppCenterButton;
 
   /// No description provided for @homePromptSuggestedPermission.
   ///
@@ -473,17 +557,35 @@ abstract class AppLocalizations {
   /// **'Read'**
   String get homePromptPermissionsRead;
 
+  /// No description provided for @homePromptPermissionsReadOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Read only'**
+  String get homePromptPermissionsReadOnly;
+
   /// No description provided for @homePromptPermissionsWrite.
   ///
   /// In en, this message translates to:
   /// **'Write'**
   String get homePromptPermissionsWrite;
 
+  /// No description provided for @homePromptPermissionsWriteOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Write only'**
+  String get homePromptPermissionsWriteOnly;
+
   /// No description provided for @homePromptPermissionsExecute.
   ///
   /// In en, this message translates to:
   /// **'Execute'**
   String get homePromptPermissionsExecute;
+
+  /// No description provided for @homePromptPermissionsExecuteOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Execute only'**
+  String get homePromptPermissionsExecuteOnly;
 
   /// No description provided for @homePromptErrorUnknownTitle.
   ///
@@ -494,14 +596,20 @@ abstract class AppLocalizations {
   /// No description provided for @cameraPromptBody.
   ///
   /// In en, this message translates to:
-  /// **'Allow {snapName} to access your camera?'**
+  /// **'Allow {snapName} to use your cameras?'**
   String cameraPromptBody(String snapName);
 
   /// No description provided for @microphonePromptBody.
   ///
   /// In en, this message translates to:
-  /// **'Allow {snapName} to access your microphone?'**
+  /// **'Allow {snapName} to use your microphones?'**
   String microphonePromptBody(String snapName);
+
+  /// No description provided for @homePromptTitleQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Give {snapName} {permissions} access to files?'**
+  String homePromptTitleQuestion(String snapName, String permissions);
 }
 
 class _AppLocalizationsDelegate

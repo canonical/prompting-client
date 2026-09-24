@@ -136,6 +136,7 @@ ensure-client-in-vm:
 		echo ":: Installing $(SNAP_NAME) in $(VM_NAME)..." ; \
 		[ -n "$$OLD" ] && lxc exec $(VM_NAME) -- rm /home/ubuntu/$$OLD ; \
 		lxc file push $$FILE_NAME $(VM_NAME)/home/ubuntu/ ; \
+		lxc exec $(VM_NAME) -- sh -c 'echo "PROMPTING_CI=1" | tee -a /etc/environment' ; \
 		lxc exec $(VM_NAME) -- snap set system experimental.user-daemons=true ; \
 		lxc exec $(VM_NAME) -- snap install --dangerous /home/ubuntu/$$FILE_NAME ; \
 		lxc exec $(VM_NAME) -- snap connect $(SNAP_NAME):snap-interfaces-requests-control ; \
@@ -164,6 +165,7 @@ ensure-test-snap:
 		lxc exec $(VM_NAME) -- apt install -y linux-modules-extra-$$(lxc exec $(VM_NAME) -- uname -r) v4l-utils ; \
 		lxc exec $(VM_NAME) -- modprobe v4l2loopback ; \
 		lxc exec $(VM_NAME) -- modprobe snd-aloop ; \
+		lxc exec $(VM_NAME) -- touch /dev/video9 ; \
 	fi
 
 .PHONY: update-test-snap

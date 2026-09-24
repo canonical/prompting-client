@@ -6,6 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:prompting_client/prompting_client.dart';
 import 'package:prompting_client_ui/l10n.dart';
 import 'package:ubuntu_service/ubuntu_service.dart';
+import 'package:yaru/yaru.dart';
 
 import 'test_utils.mocks.dart';
 
@@ -13,16 +14,48 @@ extension WidgetTesterX on WidgetTester {
   BuildContext get context => element(find.byType(Scaffold).first);
   AppLocalizations get l10n => AppLocalizations.of(context);
 
-  Future<void> pumpApp(WidgetBuilder builder) async {
+  Future<void> pumpApp(
+    WidgetBuilder builder, {
+    ProviderContainer? container,
+  }) async {
+    // Make hit test warnings fatal so overlay positioning issues are caught
+    WidgetController.hitTestWarningShouldBeFatal = true;
+
     // The intended minimum size of the window.
     // TODO: (dloose) Revert to actual window size after fixing overflow issues
     view.physicalSize = (const Size(760, 990)) * view.devicePixelRatio;
-    return pumpWidget(
-      MaterialApp(
-        home: Scaffold(body: Builder(builder: builder)),
-        localizationsDelegates: localizationsDelegates,
-      ),
+    Widget app = MaterialApp(
+      home: Scaffold(body: Builder(builder: builder)),
+      localizationsDelegates: localizationsDelegates,
     );
+    if (container != null) {
+      app = UncontrolledProviderScope(
+        container: container,
+        child: app,
+      );
+    }
+    return pumpWidget(app);
+  }
+}
+
+extension WidgetTesterSplitButton on WidgetTester {
+  /// Opens a [YaruSplitButton] popup menu and taps a menu item.
+  ///
+  /// [mainButtonText] is the label of the main split button (e.g. "Allow always").
+  /// [menuItemText] is the popup menu item to tap (e.g. "Allow until logout").
+  Future<void> tapSplitButtonMenuItem(
+    String mainButtonText,
+    String menuItemText,
+  ) async {
+    final button = find.widgetWithText(YaruSplitButton, mainButtonText);
+    final dropdown = find.descendant(
+      of: button,
+      matching: find.byIcon(YaruIcons.pan_down),
+    );
+    await tap(dropdown, warnIfMissed: false);
+    await pumpAndSettle();
+    await tap(find.text(menuItemText), warnIfMissed: false);
+    await pumpAndSettle();
   }
 }
 

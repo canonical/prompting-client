@@ -113,7 +113,7 @@ pub type Result<T, E = Error> = std::result::Result<T, E>;
 pub enum ExitStatus {
     Success = 0,
     Failure = 1,
-    PromptingDisabled = 8,
+    Disabled = 8,
 }
 
 pub fn exit_with(status: ExitStatus) -> ! {

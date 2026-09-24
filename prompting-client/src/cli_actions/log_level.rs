@@ -1,6 +1,6 @@
 use crate::{
-    protos::apparmor_prompting::app_armor_prompting_client::AppArmorPromptingClient, Error, Result,
-    SOCKET_ENV_VAR,
+    Error, Result, SOCKET_ENV_VAR,
+    protos::apparmor_prompting::app_armor_prompting_client::AppArmorPromptingClient,
 };
 use std::env;
 use tonic::transport::Channel;

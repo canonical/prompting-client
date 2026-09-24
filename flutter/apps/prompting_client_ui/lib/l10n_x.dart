@@ -44,4 +44,10 @@ extension PermissionL10n on HomePermission {
         HomePermission.write => l10n.homePromptPermissionsWrite,
         HomePermission.execute => l10n.homePromptPermissionsExecute,
       };
+
+  String localizeOnly(AppLocalizations l10n) => switch (this) {
+        HomePermission.read => l10n.homePromptPermissionsReadOnly,
+        HomePermission.write => l10n.homePromptPermissionsWriteOnly,
+        HomePermission.execute => l10n.homePromptPermissionsExecuteOnly,
+      };
 }

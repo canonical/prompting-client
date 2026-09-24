@@ -1,12 +1,13 @@
 [package]
 name = "prompting-client"
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 default-run = "prompting-client-echo"
 
 [profile.release]
 strip = true
 lto = true
+codegen-units = 1
 
 [features]
 dry-run = []
@@ -44,8 +45,8 @@ prost-types = "0.13.1"
 regex = "1.10.5"
 serde_json = "1.0.117"
 serde = { version = "1.0.202", features = ["derive"] }
-strum = { version = "0.27.0", features = ["derive"] }
-thiserror = "1.0.61"
+strum = { version = "0.28.0", features = ["derive"] }
+thiserror = "2.0.0"
 tokio-stream = { version = "0.1.15", features = ["io-util"] }
 tokio = { version = "1.43.1", features = [
     "fs",

@@ -1,5 +1,5 @@
 use clap::Parser;
-use prompting_client::{cli_actions::run_echo_loop, snapd_client::SnapdSocketClient, Result};
+use prompting_client::{Result, cli_actions::run_echo_loop, snapd_client::SnapdSocketClient};
 
 /// A simple echo prompting client for apparmor prompting that echos all prompts seen on the system
 /// for the user running it.

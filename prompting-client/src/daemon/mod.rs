@@ -1,7 +1,6 @@
 use crate::{
-    exit_with,
+    Result, SOCKET_ENV_VAR, exit_with,
     snapd_client::{PromptId, SnapMeta, SnapdSocketClient, TypedPrompt, TypedPromptReply},
-    Result, SOCKET_ENV_VAR,
 };
 use serde::Serialize;
 use std::{env, fmt::Debug, fs, sync::Arc};
@@ -9,7 +8,7 @@ use tokio::{sync::mpsc::unbounded_channel, task::JoinSet};
 use tokio_stream::wrappers::UnixListenerStream;
 use tonic::{async_trait, transport::Server};
 use tracing::{debug, error};
-use tracing_subscriber::{reload::Handle, EnvFilter};
+use tracing_subscriber::{EnvFilter, reload::Handle};
 
 mod poll;
 mod server;

@@ -1515,6 +1515,7 @@ class MetaData extends $pb.GeneratedMessage {
     $core.String? updatedAt,
     $core.List<$core.int>? snapIcon,
     $core.String? snapIconMimeType,
+    $core.bool? publisherVerified,
   }) {
     final result = create();
     if (promptId != null) result.promptId = promptId;
@@ -1524,6 +1525,7 @@ class MetaData extends $pb.GeneratedMessage {
     if (updatedAt != null) result.updatedAt = updatedAt;
     if (snapIcon != null) result.snapIcon = snapIcon;
     if (snapIconMimeType != null) result.snapIconMimeType = snapIconMimeType;
+    if (publisherVerified != null) result.publisherVerified = publisherVerified;
     return result;
   }
 
@@ -1549,6 +1551,7 @@ class MetaData extends $pb.GeneratedMessage {
     ..a<$core.List<$core.int>>(
         6, _omitFieldNames ? '' : 'snapIcon', $pb.PbFieldType.OY)
     ..aOS(7, _omitFieldNames ? '' : 'snapIconMimeType')
+    ..aOB(8, _omitFieldNames ? '' : 'publisherVerified')
     ..hasRequiredFields = false;
 
   @$core.Deprecated('See https://github.com/google/protobuf.dart/issues/998.')
@@ -1632,6 +1635,15 @@ class MetaData extends $pb.GeneratedMessage {
   $core.bool hasSnapIconMimeType() => $_has(6);
   @$pb.TagNumber(7)
   void clearSnapIconMimeType() => $_clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.bool get publisherVerified => $_getBF(7);
+  @$pb.TagNumber(8)
+  set publisherVerified($core.bool value) => $_setBool(7, value);
+  @$pb.TagNumber(8)
+  $core.bool hasPublisherVerified() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearPublisherVerified() => $_clearField(8);
 }
 
 class ResolveHomePatternTypeResponse extends $pb.GeneratedMessage {

@@ -1,11 +1,11 @@
 use crate::{Error, Result};
 use http_body_util::{BodyExt, Empty, Full};
 use hyper::{
+    Request, Response, Uri,
     body::{Body, Bytes, Incoming},
     client::conn::http1,
     header::{CONTENT_TYPE, HOST},
     http::request::Builder,
-    Request, Response, Uri,
 };
 use hyper_util::rt::TokioIo;
 use serde::de::DeserializeOwned;

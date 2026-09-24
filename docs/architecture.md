@@ -7,7 +7,7 @@ of the permissions prompting feature as a whole. This document is split into two
 main sections covering the user facing functionality provided by the snap, and the
 internal architecture of the daemon. If you are interested in the packaging of the
 client you are encouraged to read through the `/snap/snapcraft.yaml` file in this
-repository. For more details on using the scripted client please see [here][1].
+repository. For more details on using the scripted client please see [`running-the-scripted-client.md`][1].
 
 ## Functionality offered by the prompting-client snap
 
@@ -36,7 +36,7 @@ If the provided prompt sequence completes cleanly the client will print "success
 out. If there are any errors then the first error will be printed as "error: $errorMessage" on
 standard out and the client will exit with a non-zero exit code.
 
-For more details on the structure of the config file please see [here][1].
+For more details on the structure of the config file please see [`running-the-scripted-client.md`][1].
 
 ### Viewing prompts on the system
 
@@ -61,7 +61,7 @@ default level being info.
 
 The logging framework used by the prompting client supports a rich syntax for specifying
 more targetted filters when needed. As and when you need to use this in anger it is best
-to refer to the documentation found [here][5] along with the source code of the client
+to refer to the [documentation][5] along with the source code of the client
 itself to see what log messages can be targetted.
 
 ## Design of the daemon

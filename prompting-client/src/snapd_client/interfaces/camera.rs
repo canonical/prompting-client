@@ -1,16 +1,16 @@
 use crate::{
     prompt_sequence::MatchAttempt,
     protos::{
-        apparmor_prompting::{CameraPromptReply, DevicePermission, MetaData},
         CameraPrompt as ProtoCameraPrompt,
+        apparmor_prompting::{CameraPromptReply, DevicePermission, MetaData},
     },
     snapd_client::{
+        Action, Error, Lifespan, Result, SnapMeta,
         interfaces::{
             ConstraintsFilter, Prompt, PromptReply, ProtoPrompt, ReplyConstraintsOverrides,
             SnapInterface,
         },
         prompt::UiInput,
-        Action, Error, Lifespan, Result, SnapMeta,
     },
 };
 use serde::{Deserialize, Serialize};
@@ -78,6 +78,7 @@ impl SnapInterface for CameraInterface {
             updated_at: String::default(),
             store_url: String::default(),
             publisher: String::default(),
+            publisher_verified: false,
             snap_icon: None,
         });
 
@@ -94,6 +95,7 @@ impl SnapInterface for CameraInterface {
             updated_at,
             store_url,
             publisher,
+            publisher_verified,
             snap_icon,
         } = input.meta;
 
@@ -107,6 +109,7 @@ impl SnapInterface for CameraInterface {
                 snap_name: name,
                 store_url,
                 publisher,
+                publisher_verified,
                 updated_at,
                 snap_icon,
                 snap_icon_mime_type,

@@ -36,6 +36,11 @@ apps:
     plugs:
       - camera
 
+  camera-naive:
+    command: ./camera-naive.sh
+    plugs:
+      - camera
+
   microphone:
     command: ./microphone.sh
     plugs:

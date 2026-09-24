@@ -1,17 +1,16 @@
 #![cfg_attr(feature = "dry-run", allow(unused_variables))]
 
 use crate::{
-    exit_with,
+    Error, ExitStatus, Result, exit_with,
     snapd_client::{
         prompt::RawPrompt,
         response::{parse_raw_response, parse_response},
     },
     socket_client::UnixSocketClient,
-    Error, ExitStatus, Result,
 };
 use chrono::{DateTime, SecondsFormat, Utc};
-use hyper::{body::Bytes, Uri};
-use serde::{de::DeserializeOwned, Deserialize, Serialize};
+use hyper::{Uri, body::Bytes};
+use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use std::{collections::HashMap, env, str::FromStr};
 use tokio::net::UnixStream;
 use tracing::{debug, error, info, warn};
@@ -198,8 +197,7 @@ where
     pub async fn exit_if_prompting_not_enabled(&self) -> Result<()> {
         if !self.is_prompting_enabled().await? {
             warn!("the prompting feature is not enabled: exiting");
-            // TODO: use `ExitStatus::PromptingDisabled` code when support for `SuccessExitStatus=` lands in snapcraft: https://github.com/canonical/snapcraft/issues/5692
-            exit_with(ExitStatus::Success);
+            exit_with(ExitStatus::Disabled);
         }
 
         Ok(())
@@ -363,6 +361,7 @@ where
                     .unwrap_or(install_date),
                 store_url: format!("snap://{name}"),
                 publisher: publisher.display_name,
+                publisher_verified: publisher.validation.as_deref() == Some("verified"),
                 snap_icon,
             }),
 
@@ -385,6 +384,7 @@ where
         #[serde(rename_all = "kebab-case")]
         struct Publisher {
             display_name: String,
+            validation: Option<String>,
         }
     }
 }
@@ -418,6 +418,7 @@ pub struct SnapMeta {
     pub updated_at: String,
     pub store_url: String,
     pub publisher: String,
+    pub publisher_verified: bool,
     pub snap_icon: Option<SnapIcon>,
 }
 

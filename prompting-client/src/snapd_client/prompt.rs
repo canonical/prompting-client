@@ -14,8 +14,8 @@
 //!
 //!   [0]: crate::snapd_client::interfaces
 use crate::{
-    snapd_client::{interfaces::SnapInterface, Cgroup, PromptId, SnapMeta},
     Result,
+    snapd_client::{Cgroup, PromptId, SnapMeta, interfaces::SnapInterface},
 };
 use serde::{Deserialize, Serialize};
 use strum::{Display, EnumString};
