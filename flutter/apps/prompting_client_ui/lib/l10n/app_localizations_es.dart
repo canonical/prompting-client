@@ -10,7 +10,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'Siempre puedes cambiar estos permisos en el <Centro de seguridad>';
+      'Siempre puede cambiar estos permisos en el <Centro de seguridad>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -38,13 +38,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Denegar una vez';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Denegar siempre';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Denegar hasta finalizar sesión';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Permitir hasta finalizar sesión';
 
   @override
   String get promptActionTitle => 'Acción';
@@ -53,7 +55,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get promptLifespanOptionForever => 'Siempre';
 
   @override
-  String get promptLifespanOptionSession => 'Hasta cerrar sesión';
+  String get promptLifespanOptionSession => 'Hasta finalizar sesión';
 
   @override
   String get promptLifespanOptionSingle => 'Una vez';
@@ -74,30 +76,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Patrón de ruta personalizado';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Guardar ruta personalizada';
 
   @override
-  String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+  String get homeCustomPathMustStartWithSlash => 'La ruta debe comenzar por /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Encuentra cualquier cadena de caracteres salvo /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Encuentra un único carácter';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Encuentra cero o más archivos y carpetas de forma recursiva';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Encuentra tanto x como y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Trata los caracteres especiales como literales';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Solo la carpeta solicitada';
@@ -161,10 +163,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Este editor cuenta con una ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'cuenta verificada';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +181,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Más opciones...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Más opciones';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Visita la página del Centro de aplicaciones';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Abrir en Centro de aplicaciones';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +203,35 @@ class AppLocalizationsEs extends AppLocalizations {
   String get homePromptPermissionsRead => 'Leer';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Solo lectura';
 
   @override
   String get homePromptPermissionsWrite => 'Escribir';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Solo escritura';
 
   @override
   String get homePromptPermissionsExecute => 'Ejecutar';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Solo ejecución';
 
   @override
   String get homePromptErrorUnknownTitle => 'Algo ha ido mal';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return '¿Permite que $snapName use sus cámaras?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return '¿Permite que $snapName use sus micrófonos?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return '¿Quiere otorgar acceso de $permissions a $snapName?';
   }
 }

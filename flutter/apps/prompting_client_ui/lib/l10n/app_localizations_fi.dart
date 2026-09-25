@@ -14,7 +14,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Set access for $snap to:';
+    return 'Aseta snap-paketin $snap käyttöoikeuksiksi:';
   }
 
   @override
@@ -38,13 +38,15 @@ class AppLocalizationsFi extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Estä kerran';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Kiellä aina';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Kiellä uloskirjautumiseen asti';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Salli uloskirjautumiseen saakka';
 
   @override
   String get promptActionTitle => 'Toiminto';
@@ -68,36 +70,36 @@ class AppLocalizationsFi extends AppLocalizations {
   String get promptTitle => 'Tietoturvailmoitus';
 
   @override
-  String get homePatternInfo => '<Learn about path patterns>';
+  String get homePatternInfo => '<Opi polkukaavoista>';
 
   @override
   String get homePatternTypeCustomPath => 'Mukautettu polkukaava';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Tallenna mukautettu polku';
 
   @override
-  String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+  String get homeCustomPathMustStartWithSlash => 'Polun tulee alkaa /:lla';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Täsmää kaikkia merkkejä paitsi /:aa sisältäviä merkkijonoja';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Täsmää yhteen merkkiin';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Täsmää ei yhteenkään tai useampaan kansioon ja tiedostoon rekursiivisesti';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Täsmää joko x:ään tai y:hyn';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Eristää erikoismerkit jotta niitä käsitellään kirjainmerkkeinä';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Vain pyydetty kansio';
@@ -126,13 +128,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap haluaa oikeudet $permissions kohteeseen $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap haluaa oikeudet $permissions kansioon $foldername.';
   }
 
   @override
@@ -143,7 +145,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap haluaa oikeudet $permissions kotikansioon.';
   }
 
   @override
@@ -161,10 +163,11 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Tällä julkaisijalla on ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'vahvistettu tili';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,13 +181,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Lisää valintoja...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Lisää valintoja';
 
   @override
   String get homePromptMetaDataAppCenterLink => 'Käy sovelluskeskuksen sivulla';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Avaa sovelluskeskuksessa';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -198,35 +201,35 @@ class AppLocalizationsFi extends AppLocalizations {
   String get homePromptPermissionsRead => 'Lue';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Vain luku';
 
   @override
   String get homePromptPermissionsWrite => 'Kirjoita';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Vain kirjoitus';
 
   @override
   String get homePromptPermissionsExecute => 'Suorita';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Vain suoritus';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'Tapahtui virhe';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Sallitaanko sovelluksen $snapName käyttää kameroita?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Sallitaanko sovelluksen $snapName käyttää mikrofonia?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Annetaanko sovellukselle $snapName pääsy ($permissions) tiedostoihin?';
   }
 }

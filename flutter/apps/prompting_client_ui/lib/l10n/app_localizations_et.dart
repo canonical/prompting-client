@@ -38,13 +38,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Keela üks kord';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Keela alati';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'Keela kuni väljalogimiseni';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'Luba kuni väljalogimiseni';
 
   @override
   String get promptActionTitle => 'Tegevus';
@@ -74,30 +74,31 @@ class AppLocalizationsEt extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Sinu kirjeldatud asukohamuster';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Salvesta sinu määratud kaust';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Kausta muster peab algama / märgiga';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Vastab igasugustele tähemärkidele, v.a. /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Vastab ühele tähemärgile';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Vastab nullile või enamale rekursiivsele kaustale ja failile';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Vastab kas x-ile või y-le';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Asendab erimärgid, et käsitleda neid otseseste tähemärkidena';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Valid soovitud kaustas';
@@ -161,10 +162,12 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Sellel väljaandjal on ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink =>
+      'verifitseeritud kasutajakonto';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +181,14 @@ class AppLocalizationsEt extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Lisavalikud...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Lisavalikud';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Vaata andmeid Rakendustekeskuses';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Vaata Rakendustekeskuses';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +202,35 @@ class AppLocalizationsEt extends AppLocalizations {
   String get homePromptPermissionsRead => 'Lugemine';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Ainult loetav';
 
   @override
   String get homePromptPermissionsWrite => 'Kirjutamine';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Ainult kirjutatav';
 
   @override
   String get homePromptPermissionsExecute => 'Käivitamine';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Ainult käivitatav';
 
   @override
   String get homePromptErrorUnknownTitle => 'Midagi läks valesti';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Kas lubad „$snapName“ paketil kasutada kaameraid?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Kas lubad „$snapName“ paketil kasutada mikrofone?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Kas annad „$snapName“ paketile „$permissions“ tüüpi õigused ligipääsuks failidele?';
   }
 }

@@ -38,13 +38,13 @@ class AppLocalizationsKa extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'ერთხელ აკრძალვა';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'ყოველთვის აკრძალვა';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'აკრძალვა გასვლამდე';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'დაშვება გასვლამდე';
 
   @override
   String get promptActionTitle => 'ქმედება';
@@ -74,30 +74,30 @@ class AppLocalizationsKa extends AppLocalizations {
   String get homePatternTypeCustomPath => 'მორგებული ბილიკის ნიმუში';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'მორგებული ბილიკის შენახვა';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'ბილიკის ნიმუში უნდა იწყებოდეს სიმბოლოთი /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'ემთხვევა სიმბოლოების ნებისმიერ სტრიქონს, /-ის გარდა';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'ემთხვევა ერთ სიმბოლოს';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'ახდენს ნული, ან მეტი საქაღალდისა და ფაილის დამთხვევას რეკურსიულად';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'ემთხვევა x-ს, ან y-ს';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'გადაამუშავებს სპეციალურ სიმბოლოებს ასოებად';
 
   @override
   String get homePatternTypeRequestedDirectory => 'მხოლოდ მოთხოვნილი საქაღალდე';
@@ -162,10 +162,10 @@ class AppLocalizationsKa extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'ამ გამომცემელს აქვს ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'გადამოწმებული ანგარიში';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -179,14 +179,14 @@ class AppLocalizationsKa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'მეტი პარამეტრი...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'მეტი პარამეტრი';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'აპების ცენტრის გვერდზე გადასვლა';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'გახსნა აპების ცენტრში';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -200,35 +200,35 @@ class AppLocalizationsKa extends AppLocalizations {
   String get homePromptPermissionsRead => 'წაკითხვა';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'მხოლოდ წაკითხვადი';
 
   @override
   String get homePromptPermissionsWrite => 'ჩაწერა';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'მხოლოდ ჩაწერადი';
 
   @override
   String get homePromptPermissionsExecute => 'გაშვება';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'მხოლოდ გაშვებადი';
 
   @override
   String get homePromptErrorUnknownTitle => 'რაღაც არასწორია';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'დაუშვებთ, $snapName-მა გამოიყენოს თქვენი კამერა?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'დაუშვებთ, $snapName-მა გამოიყენოს თქვენი მიკროფონი?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'მიეცეს $snapName $permissions წვდომა ფაილებზე?';
   }
 }

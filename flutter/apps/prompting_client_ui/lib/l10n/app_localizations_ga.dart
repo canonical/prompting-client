@@ -38,13 +38,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Séanadh uair amháin';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Diúltaigh i gcónaí';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Diúltaigh go dtí go logálfar amach';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Ceadaigh go dtí go logáil amach';
 
   @override
   String get promptActionTitle => 'Gníomh';
@@ -74,30 +76,30 @@ class AppLocalizationsGa extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Patrún cosán saincheaptha';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Sábháil cosán saincheaptha';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Caithfidh patrún na cosáin tosú le /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Meaitseálann aon teaghrán carachtar seachas /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Meaitseálann carachtar aonair';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Meaitseálann sé nialas nó níos mó fillteán agus comhad go hathchúrsach';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Meaitseálann x nó y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Éalaíonn carachtair speisialta chun iad a chóireáil mar litriúla';
 
   @override
   String get homePatternTypeRequestedDirectory => 'An fillteán iarrtha amháin';
@@ -162,10 +164,11 @@ class AppLocalizationsGa extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Tá ag an bhfoilsitheoir seo ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'cuntas fíoraithe';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -179,14 +182,15 @@ class AppLocalizationsGa extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Tuilleadh roghanna...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Tuilleadh roghanna';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Tabhair cuairt ar leathanach App Centre';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Oscail in Ionad na nAipeanna';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -200,35 +204,35 @@ class AppLocalizationsGa extends AppLocalizations {
   String get homePromptPermissionsRead => 'Léigh';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Léamh amháin';
 
   @override
   String get homePromptPermissionsWrite => 'Scríobh';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Scríobh amháin';
 
   @override
   String get homePromptPermissionsExecute => 'Rith';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Forghníomhaigh amháin';
 
   @override
   String get homePromptErrorUnknownTitle => 'Chuaigh rud éigin mícheart';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Ceadaigh do $snapName do cheamaraí a úsáid?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Ceadaigh do $snapName do mhicreafóin a úsáid?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'An dtugann tú ceadanna do $snapName $permissions rochtain ar chomhaid?';
   }
 }

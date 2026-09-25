@@ -38,13 +38,15 @@ class AppLocalizationsOc extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Refusar un còp';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Totjorn refusar';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Refusar dusca la desconnexion';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Autorizar dusca la desconnexion';
 
   @override
   String get promptActionTitle => 'Accion';
@@ -74,30 +76,30 @@ class AppLocalizationsOc extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Modèl de motiu personalizat';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Salvar l’emplaçament personalizat';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Lo modèl de camin deu començar per /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Correspond a tota cadena de tèxt levat /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Correspond a un sol caractèr';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Correspond a zèro o mantun dodsièr e fichièr de biais recursiu';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Correspond a x o y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Escapa los caractèrs especials per los tractar coma de literals';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Lo dossièr demandat sonque';
@@ -126,30 +128,30 @@ class AppLocalizationsOc extends AppLocalizations {
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap vòl obténer l\'accès $permissions a $path';
+    return '$snap vòl obténer l’accès $permissions a $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap vòl l\'acces $permissions al dossièr $foldername.';
+    return '$snap vòl l’acces $permissions al dossièr $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap vòl l\'accès $permissions a $filename dins lol dossièr $foldername.';
+    return '$snap vòl l’accès $permissions a $filename dins lo dossièr $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap vòl l\'accès $permissions a vòstre repertòri personal.';
+    return '$snap vòl l’accès $permissions a vòstre repertòri personal.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap vòl l\'accès $permissions a $filename dins vòstre repertòri personal.';
+    return '$snap vòl l’accès $permissions a $filename dins vòstre repertòri personal.';
   }
 
   @override
@@ -161,10 +163,10 @@ class AppLocalizationsOc extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Aqueste editor a un ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'compte verificat';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +180,15 @@ class AppLocalizationsOc extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Mai d’opcions…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Mai d’opcions';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Consultar la pagina del Centre d’aplicacions';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Dobrir dins lo Centre d’aplicacions';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +202,35 @@ class AppLocalizationsOc extends AppLocalizations {
   String get homePromptPermissionsRead => 'Lectura';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Lectura sola';
 
   @override
   String get homePromptPermissionsWrite => 'Escritura';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Escritura sola';
 
   @override
   String get homePromptPermissionsExecute => 'Executar';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Executar solament';
 
   @override
   String get homePromptErrorUnknownTitle => 'Quicòm a trucat';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Autorizar $snapName a utilizar vòstra camèra ?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Autorizar $snapName a utilizar vòstre microfòn ?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Permetre a $snapName $permissions d’accedir als fichièrs ?';
   }
 }

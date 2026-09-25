@@ -231,3 +231,231 @@ class AppLocalizationsEn extends AppLocalizations {
     return 'Give $snapName $permissions access to files?';
   }
 }
+
+/// The translations for English, as used in the United Kingdom (`en_GB`).
+class AppLocalizationsEnGb extends AppLocalizationsEn {
+  AppLocalizationsEnGb() : super('en_GB');
+
+  @override
+  String get securityCenterInfo =>
+      'You can always change these permissions in the <Security Center>';
+
+  @override
+  String promptAccessMoreOptionsTitle(String snap) {
+    return 'Set access for $snap to:';
+  }
+
+  @override
+  String promptAccessTitle(String snap, String permission) {
+    return 'Give $snap $permission access to:';
+  }
+
+  @override
+  String get promptActionOptionAllow => 'Allow';
+
+  @override
+  String get promptActionOptionAllowAlways => 'Allow always';
+
+  @override
+  String get promptActionOptionAllowOnce => 'Allow once';
+
+  @override
+  String get promptActionOptionDeny => 'Deny';
+
+  @override
+  String get promptActionOptionDenyOnce => 'Deny once';
+
+  @override
+  String get promptActionOptionDenyAlways => 'Deny always';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+
+  @override
+  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+
+  @override
+  String get promptActionTitle => 'Action';
+
+  @override
+  String get promptLifespanOptionForever => 'Always';
+
+  @override
+  String get promptLifespanOptionSession => 'Until logout';
+
+  @override
+  String get promptLifespanOptionSingle => 'Once';
+
+  @override
+  String get promptLifespanTitle => 'Duration';
+
+  @override
+  String get promptSaveAndContinue => 'Save and continue';
+
+  @override
+  String get promptTitle => 'Security notification';
+
+  @override
+  String get homePatternInfo => '<Learn about path patterns>';
+
+  @override
+  String get homePatternTypeCustomPath => 'Custom path pattern';
+
+  @override
+  String get homeCustomPathSaveButton => 'Save custom path';
+
+  @override
+  String get homeCustomPathMustStartWithSlash =>
+      'The path pattern must start with /';
+
+  @override
+  String get homeCustomPathWildcardStarDescription =>
+      'Matches any string of characters except /';
+
+  @override
+  String get homeCustomPathWildcardQuestionDescription =>
+      'Matches a single character';
+
+  @override
+  String get homeCustomPathWildcardDoubleStarDescription =>
+      'Matches zero or more folders and files recursively';
+
+  @override
+  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+
+  @override
+  String get homeCustomPathWildcardBackslashDescription =>
+      'Escapes special characters to treat them as literals';
+
+  @override
+  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+
+  @override
+  String get homePatternTypeRequestedFile => 'The requested file only';
+
+  @override
+  String homePatternTypeTopLevelDirectory(String topLevelDir) {
+    return 'Everything in the $topLevelDir folder';
+  }
+
+  @override
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Everything in the folder';
+
+  @override
+  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+
+  @override
+  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+
+  @override
+  String homePatternTypeMatchingFileExtension(String fileExtension) {
+    return 'All $fileExtension files';
+  }
+
+  @override
+  String homePromptDefaultBody(String snap, String permissions, String path) {
+    return '$snap wants to get $permissions access to $path';
+  }
+
+  @override
+  String homePromptTopLevelDirBody(
+      String snap, String permissions, String foldername) {
+    return '$snap wants to get $permissions access to the $foldername folder.';
+  }
+
+  @override
+  String homePromptTopLevelDirFileBody(
+      String snap, String permissions, String filename, String foldername) {
+    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+  }
+
+  @override
+  String homePromptHomeDirBody(String snap, String permissions) {
+    return '$snap wants to get $permissions access to your Home folder.';
+  }
+
+  @override
+  String homePromptHomeDirFileBody(
+      String snap, String permissions, String filename) {
+    return '$snap wants to get $permissions access to $filename in your Home folder.';
+  }
+
+  @override
+  String get homePromptMetaDataTitle => 'About this app';
+
+  @override
+  String homePromptMetaDataPublishedBy(String publisher) {
+    return 'Published by $publisher';
+  }
+
+  @override
+  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+
+  @override
+  String homePromptMetaDataLastUpdated(String date) {
+    return 'Last updated on $date';
+  }
+
+  @override
+  String get homePromptMoreOptionsLabel => 'More options...';
+
+  @override
+  String get homePromptMoreOptionsTileLabel => 'More options';
+
+  @override
+  String get homePromptMetaDataAppCenterLink => 'Visit App Centre page';
+
+  @override
+  String get homePromptMetaDataAppCenterButton => 'Open in App Centre';
+
+  @override
+  String homePromptSuggestedPermission(String permission) {
+    return 'Also give $permission access';
+  }
+
+  @override
+  String get homePromptPermissionsTitle => 'Permissions';
+
+  @override
+  String get homePromptPermissionsRead => 'Read';
+
+  @override
+  String get homePromptPermissionsReadOnly => 'Read only';
+
+  @override
+  String get homePromptPermissionsWrite => 'Write';
+
+  @override
+  String get homePromptPermissionsWriteOnly => 'Write only';
+
+  @override
+  String get homePromptPermissionsExecute => 'Execute';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Execute only';
+
+  @override
+  String get homePromptErrorUnknownTitle => 'Something went wrong';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return 'Allow $snapName to use your cameras?';
+  }
+
+  @override
+  String microphonePromptBody(String snapName) {
+    return 'Allow $snapName to use your microphones?';
+  }
+
+  @override
+  String homePromptTitleQuestion(String snapName, String permissions) {
+    return 'Give $snapName $permissions access to files?';
+  }
+}

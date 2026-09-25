@@ -10,7 +10,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'Šiuos leidimus bet kada galite pakeisti <Saugumo Centre>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
@@ -19,7 +19,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Give $snap $permission access to:';
+    return 'Suteikti $snap leidimą $permission prie:';
   }
 
   @override
@@ -38,13 +38,15 @@ class AppLocalizationsLt extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Drausti tik šįkart';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Drausti visada';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Drausti kol esate prisijungęs';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Leisti kol esate prisijungęs';
 
   @override
   String get promptActionTitle => 'Veiksmas';
@@ -53,7 +55,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get promptLifespanOptionForever => 'Visada';
 
   @override
-  String get promptLifespanOptionSession => 'Until logout';
+  String get promptLifespanOptionSession => 'Iki atsijungimo';
 
   @override
   String get promptLifespanOptionSingle => 'Šį kartą';
@@ -65,7 +67,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get promptSaveAndContinue => 'Įrašyti ir tęsti';
 
   @override
-  String get promptTitle => 'Security notification';
+  String get promptTitle => 'Saugos pranešimas';
 
   @override
   String get homePatternInfo => '<Learn about path patterns>';
@@ -100,61 +102,60 @@ class AppLocalizationsLt extends AppLocalizations {
       'Escapes special characters to treat them as literals';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+  String get homePatternTypeRequestedDirectory => 'Tik nurodytą aplanką';
 
   @override
-  String get homePatternTypeRequestedFile => 'The requested file only';
+  String get homePatternTypeRequestedFile => 'Tik nurodytą failą';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Everything in the $topLevelDir folder';
+    return 'Viską $topLevelDir aplanke';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents =>
-      'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents => 'Viską aplanke';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+  String get homePatternTypeContainingDirectory => 'Viską aplanke';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+  String get homePatternTypeHomeDirectory => 'Viską asmeniniame (Home) aplanke';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'All $fileExtension files';
+    return 'Visus $fileExtension failus';
   }
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap prašo $permissions prieigos prie $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap prašo $permissions prieigos prie aplanko $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return '$snap“ prašo $permissions prieigos prie failo $filename esančio aplanke $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap prašo $permissions prieigos prie jūsų Asmeninio (Home) aplanko.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap“ prašo $permissions prieigos prie failo $filename jūsų Asmeniniame (Home) aplanke.';
   }
 
   @override
-  String get homePromptMetaDataTitle => 'About this app';
+  String get homePromptMetaDataTitle => 'Apie šią programą';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
@@ -176,16 +177,16 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'More options...';
+  String get homePromptMoreOptionsLabel => 'Daugiau pasirinkimų...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Daugiau pasirinkimų';
 
   @override
   String get homePromptMetaDataAppCenterLink => 'Visit App Center page';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Atverti „Programų centre“';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -193,41 +194,41 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Permissions';
+  String get homePromptPermissionsTitle => 'Leidimai';
 
   @override
-  String get homePromptPermissionsRead => 'Read';
+  String get homePromptPermissionsRead => 'Skaityti';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Tik skaityti';
 
   @override
-  String get homePromptPermissionsWrite => 'Write';
+  String get homePromptPermissionsWrite => 'Rašyti';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Tik Rašyti';
 
   @override
-  String get homePromptPermissionsExecute => 'Execute';
+  String get homePromptPermissionsExecute => 'Vykdyti';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Tik Vykdyti';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'Iškilo problema';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Leisti „$snapName“ naudoti šio įrenginio kameras?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Leisti „$snapName“ naudoti šio įrenginio mikrofonus?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Suteikti $snapName galimybę $permissions failus?';
   }
 }

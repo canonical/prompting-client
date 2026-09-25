@@ -14,12 +14,12 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Nastaviť prístup pre $snap na:';
+    return 'Nastaviť prístup pre $snap:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Udeľte $snap na $permission prístup k:';
+    return 'Udeliť $snap $permission prístup k:';
   }
 
   @override
@@ -38,13 +38,13 @@ class AppLocalizationsSk extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Raz odmietnuť';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Vždy odmietnuť';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'Odmietnuť do odhlásenia';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'Povoliť do odhlásenia';
 
   @override
   String get promptActionTitle => 'Akcia';
@@ -53,7 +53,7 @@ class AppLocalizationsSk extends AppLocalizations {
   String get promptLifespanOptionForever => 'Vždy';
 
   @override
-  String get promptLifespanOptionSession => 'Do ukončenia';
+  String get promptLifespanOptionSession => 'Do odhlásenia';
 
   @override
   String get promptLifespanOptionSingle => 'Raz';
@@ -68,36 +68,37 @@ class AppLocalizationsSk extends AppLocalizations {
   String get promptTitle => 'Bezpečnostné upozornenie';
 
   @override
-  String get homePatternInfo => '<Ďalšie informácie o formátoch ciest>';
+  String get homePatternInfo => '<Zistiť viac o vzoroch ciest>';
 
   @override
-  String get homePatternTypeCustomPath => 'Vlastný formát cesty';
+  String get homePatternTypeCustomPath => 'Vlastný vzor cesty';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Uložiť vlastnú cestu';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Vzor cesty musí začínať znakom /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Zodpovedá ľubovoľnému reťazcu znakov okrem /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Zodpovedá jednému znaku';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Zodpovedá nule alebo viacerým priečinkom a súborom rekurzívne';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Zodpovedá buď x alebo y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Zruší špeciálny význam znakov, aby sa považovali za bežný text';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Iba požadovaný priečinok';
@@ -117,7 +118,7 @@ class AppLocalizationsSk extends AppLocalizations {
   String get homePatternTypeContainingDirectory => 'Všetko v priečinku';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Všetko v priečinku Domov';
+  String get homePatternTypeHomeDirectory => 'Všetko v domovskom priečinku';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
@@ -126,30 +127,30 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap chce získať na $permissions prístup k $path';
+    return '$snap žiada o prístup na $permissions k $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap chce získať na $permissions prístup k priečinku $foldername.';
+    return '$snap žiada o prístup na $permissions k priečinku $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap chce získať na $permissions prístup k $filename v priečinku $foldername.';
+    return '$snap žiada o prístup na $permissions k súboru $filename v priečinku $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap chce získať na $permissions prístup k priečinku Domov.';
+    return '$snap žiada o prístup na $permissions k domovskému priečinku.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap chce získať na $permissions prístup k $filename v priečinku Domov.';
+    return '$snap žiada o prístup na $permissions k súboru $filename v domovskom priečinku.';
   }
 
   @override
@@ -157,14 +158,14 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Vydal $publisher';
+    return 'Vydavateľ $publisher';
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Tento vydavateľ má ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'overený účet';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +179,14 @@ class AppLocalizationsSk extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Viac možností...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Viac možností';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Navštíviť stránku Centra aplikácií';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Otvoriť v Centre aplikácií';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +200,35 @@ class AppLocalizationsSk extends AppLocalizations {
   String get homePromptPermissionsRead => 'Čítanie';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Iba na čítanie';
 
   @override
   String get homePromptPermissionsWrite => 'Zápis';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Iba na zápis';
 
   @override
   String get homePromptPermissionsExecute => 'Spúšťanie';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Iba na spúšťanie';
 
   @override
   String get homePromptErrorUnknownTitle => 'Niečo sa pokazilo';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Povoliť $snapName prístup ku kamerám?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Povoliť $snapName prístup k mikrofónom?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Udeliť $snapName prístup na $permissions k súborom?';
   }
 }

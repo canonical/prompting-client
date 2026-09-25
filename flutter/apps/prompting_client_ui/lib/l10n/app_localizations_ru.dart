@@ -38,13 +38,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Отказать один раз';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Всегда отказывать';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Отказывать до выхода из системы';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Разрешить до выхода из системы';
 
   @override
   String get promptActionTitle => 'Действие';
@@ -74,30 +76,31 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Пользовательский шаблон пути';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Сохранить польз. путь';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Шаблон пути должен начинаться с /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Соответствует любой строке символов, кроме /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Соответствует одному символу';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Соответствует нулю или более папкам и файлам рекурсивно';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Соответствует либо x, либо y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Экранирует специальные символы, чтобы обрабатывать их как литералы';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Только запрашиваемая папка';
@@ -127,30 +130,30 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap запрашивает разрешение $permissions на доступ к $path';
+    return '$snap запрашивает разрешение на $permissions по пути $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap запрашивает разрешение $permissions на доступ к папке $foldername.';
+    return '$snap запрашивает разрешение на $permissions папки $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap запрашивает разрешение $permissions на доступ к $filename в папке $foldername.';
+    return '$snap запрашивает разрешение на $permissions файла $filename в папке $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap запрашивает разрешение $permissions на доступ к вашей «Домашней папке».';
+    return '$snap запрашивает разрешение на $permissions в вашей «Домашней папке».';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap запрашивает разрешение $permissions на доступ к файлу $filename, расположенному в вашей домашней папке.';
+    return '$snap запрашивает разрешение на $permissions файла $filename, расположенного в вашей «Домашней папке».';
   }
 
   @override
@@ -162,10 +165,10 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Этот издатель имеет ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'проверенную уч. запись';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -176,17 +179,17 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'Больше опций…';
+  String get homePromptMoreOptionsLabel => 'Другие параметры...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Другие параметры';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Открыть страницу в Центре приложений';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Открыть в Центре приложений';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -200,35 +203,35 @@ class AppLocalizationsRu extends AppLocalizations {
   String get homePromptPermissionsRead => 'Чтение';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Только чтение';
 
   @override
   String get homePromptPermissionsWrite => 'Запись';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Только запись';
 
   @override
   String get homePromptPermissionsExecute => 'Выполнение';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Только выполнение';
 
   @override
   String get homePromptErrorUnknownTitle => 'Что-то пошло не так';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Разрешить $snapName использование камер?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Разрешить $snapName использование микрофонов?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Дать $snapName доступ на $permissions файлов?';
   }
 }

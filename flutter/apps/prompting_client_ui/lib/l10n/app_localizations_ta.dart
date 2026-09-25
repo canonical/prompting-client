@@ -44,7 +44,7 @@ class AppLocalizationsTa extends AppLocalizations {
   String get promptActionOptionDenyUntilLogout => 'Deny until logout';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'வெளியேறும் வரை இசைவு';
 
   @override
   String get promptActionTitle => 'செயல்';
@@ -129,7 +129,7 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$pathக்கான $permissions அணுகலை $snap பெற விரும்புகிறது';
   }
 
   @override
@@ -152,7 +152,7 @@ class AppLocalizationsTa extends AppLocalizations {
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap உங்கள் முகப்பு கோப்புறையில் உள்ள $filename க்கு $permissions அணுகலைப் பெற விரும்புகிறது.';
   }
 
   @override
@@ -221,12 +221,12 @@ class AppLocalizationsTa extends AppLocalizations {
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'உங்கள் கேமராவை அணுக $snapNameஐ அனுமதிக்கவா?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'உங்கள் மைக்ரோஃபோனை அணுக $snapNameஐ அனுமதிக்கவா?';
   }
 
   @override

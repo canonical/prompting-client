@@ -10,224 +10,231 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'Μπορείτε ανά πάσα στιγμή να αλλάξετε αυτά τα δικαιώματα στο <Κέντρο Ασφάλειας>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Set access for $snap to:';
+    return 'Ορίστε την πρόσβαση για το $snap σε:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Give $snap $permission access to:';
+    return 'Παραχωρήστε στο $snap πρόσβαση $permission σε:';
   }
 
   @override
-  String get promptActionOptionAllow => 'Allow';
+  String get promptActionOptionAllow => 'Να επιτρέπεται';
 
   @override
-  String get promptActionOptionAllowAlways => 'Allow always';
+  String get promptActionOptionAllowAlways => 'Να επιτρέπεται πάντα';
 
   @override
-  String get promptActionOptionAllowOnce => 'Allow once';
+  String get promptActionOptionAllowOnce => 'Να επιτραπεί μία φορά';
 
   @override
-  String get promptActionOptionDeny => 'Deny';
+  String get promptActionOptionDeny => 'Να μην επιτρέπεται';
 
   @override
-  String get promptActionOptionDenyOnce => 'Deny once';
+  String get promptActionOptionDenyOnce => 'Να μην επιτραπεί μία φορά';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Να μην επιτρέπεται ποτέ';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Να μην επιτρέπεται μέχρι την αποσύνδεση';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Να επιτρέπεται μέχρι την αποσύνδεση';
 
   @override
-  String get promptActionTitle => 'Action';
+  String get promptActionTitle => 'Ενέργεια';
 
   @override
-  String get promptLifespanOptionForever => 'Always';
+  String get promptLifespanOptionForever => 'Πάντα';
 
   @override
-  String get promptLifespanOptionSession => 'Until logout';
+  String get promptLifespanOptionSession => 'Μέχρι την αποσύνδεση';
 
   @override
-  String get promptLifespanOptionSingle => 'Once';
+  String get promptLifespanOptionSingle => 'Μια φόρα';
 
   @override
-  String get promptLifespanTitle => 'Duration';
+  String get promptLifespanTitle => 'Διάρκεια';
 
   @override
-  String get promptSaveAndContinue => 'Save and continue';
+  String get promptSaveAndContinue => 'Αποθήκευση και συνέχεια';
 
   @override
-  String get promptTitle => 'Security notification';
+  String get promptTitle => 'Ειδοποίηση ασφάλειας';
 
   @override
-  String get homePatternInfo => '<Learn about path patterns>';
+  String get homePatternInfo => '<Μάθετε για τα μοτίβα διαδρομών>';
 
   @override
-  String get homePatternTypeCustomPath => 'Custom path pattern';
+  String get homePatternTypeCustomPath => 'Προσαρμοσμένο μοτίβο διαδρομής';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Αποθήκευση προσαρμοσμένης διαδρομής';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Το μοτίβο διαδρομής πρέπει να ξεκινάει με /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Ταιριάζει οποιαδήποτε συμβολοσειρά χαρακτήρων εκτός από /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Ταιριάζει έναν μόνο χαρακτήρα';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Ταιριάζει μηδέν ή περισσότερους φακέλους και αρχεία αναδρομικά';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Ταιριάζει είτε στο x είτε στο y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Διαφεύγει τους ειδικούς χαρακτήρες για να τους χειριστεί ως κυριολεκτικούς';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+  String get homePatternTypeRequestedDirectory => 'Μόνο ο φάκελος που ζητήθηκε';
 
   @override
-  String get homePatternTypeRequestedFile => 'The requested file only';
+  String get homePatternTypeRequestedFile => 'Μόνο το αρχείο που ζητήθηκε';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Everything in the $topLevelDir folder';
+    return 'Όλα τα περιεχόμενα στον φάκελο $topLevelDir';
   }
 
   @override
   String get homePatternTypeRequestedDirectoryContents =>
-      'Everything in the folder';
+      'Όλα τα περιεχόμενα στον φάκελο';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+  String get homePatternTypeContainingDirectory =>
+      'Όλα τα περιεχόμενα στον φάκελο';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+  String get homePatternTypeHomeDirectory =>
+      'Όλα τα περιεχόμενα στον Προσωπικό σας φάκελο';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'All $fileExtension files';
+    return 'Όλα τα αρχεία $fileExtension';
   }
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return 'Το πακέτο $snap θέλει να αποκτήσει πρόσβαση $permissions στο $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return 'Το πακέτο $snap θέλει να αποκτήσει πρόσβαση $permissions στον φάκελο $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return 'Το πακέτο $snap θέλει να αποκτήσει πρόσβαση $permissions στο αρχείο $filename στον φάκελο $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return 'Το πακέτο $snap θέλει να αποκτήσει πρόσβαση $permissions στον Προσωπικό σας φάκελο (Home).';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return 'Το πακέτο $snap θέλει να αποκτήσει πρόσβαση $permissions στο αρχείο $filename στον Προσωπικό σας φάκελο.';
   }
 
   @override
-  String get homePromptMetaDataTitle => 'About this app';
+  String get homePromptMetaDataTitle => 'Σχετικά με αυτήν την εφαρμογή';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Published by $publisher';
+    return 'Εκδόθηκε από $publisher';
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Αυτός ο εκδότης έχει ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'επαληθευμένο λογαριασμό';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
 
   @override
   String homePromptMetaDataLastUpdated(String date) {
-    return 'Last updated on $date';
+    return 'Τελευταία ενημέρωση στις $date';
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'More options...';
+  String get homePromptMoreOptionsLabel => 'Περισσότερες επιλογές...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Περισσότερες επιλογές';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visit App Center page';
+  String get homePromptMetaDataAppCenterLink =>
+      'Επισκεφτείτε τη σελίδα του Κέντρου Εφαρμογών';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Άνοιγμα στο Κέντρο Εφαρμογών';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Also give $permission access';
+    return 'Επίσης παροχή πρόσβασης $permission';
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Permissions';
+  String get homePromptPermissionsTitle => 'Δικαιώματα';
 
   @override
-  String get homePromptPermissionsRead => 'Read';
+  String get homePromptPermissionsRead => 'Ανάγνωση';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Μόνο ανάγνωση';
 
   @override
-  String get homePromptPermissionsWrite => 'Write';
+  String get homePromptPermissionsWrite => 'Εγγραφή';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Μόνο εγγραφή';
 
   @override
-  String get homePromptPermissionsExecute => 'Execute';
+  String get homePromptPermissionsExecute => 'Εκτέλεση';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Μόνο εκτέλεση';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'Κάτι πήγε στραβά';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Να επιτρέπεται στο $snapName να χρησιμοποιεί τις κάμερές σας;';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Να επιτρέπεται στο $snapName να χρησιμοποιεί τα μικρόφωνά σας;';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Να δοθεί στο $snapName πρόσβαση $permissions σε αρχεία;';
   }
 }

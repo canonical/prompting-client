@@ -38,13 +38,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Eenmaal weigeren';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Altijd afwijzen';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'Afwijzen tot uitloggen';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'Toestaan tot uitloggen';
 
   @override
   String get promptActionTitle => 'Actie';
@@ -74,30 +74,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Aangepast padpatroon';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Aangepast pad opslaan';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Het padpatroon moet met een / beginnen';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Komt overeen met elke reeks tekens, behalve /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Komt overeen met één enkel teken';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Komt recursief overeen met nul of meer mappen en bestanden';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Komt overeen met x of y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Ontsnapt speciale tekens om hen als normale tekens te beschouwen';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Alleen de gevraagde map';
@@ -143,13 +144,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wil $permissions toegang krijgen tot jouw thuismap.';
+    return '$snap wil $permissions toegang krijgen tot uw thuismap.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wil $permissions toegang krijgen tot $filename in jouw thuismap.';
+    return '$snap wil $permissions toegang krijgen tot $filename in uw thuismap.';
   }
 
   @override
@@ -161,10 +162,11 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Deze ontwikkelaar heeft een ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'Geverifieerd account';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +180,14 @@ class AppLocalizationsNl extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Meer opties…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Meer opties';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Pagina met App-centrale bezoeken';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Openen in Appcentrum';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +201,35 @@ class AppLocalizationsNl extends AppLocalizations {
   String get homePromptPermissionsRead => 'Lezen';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Enkel te lezen';
 
   @override
   String get homePromptPermissionsWrite => 'Schrijven';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Enkel naar te schrijven';
 
   @override
   String get homePromptPermissionsExecute => 'Uitvoeren';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Enkel uit te voeren';
 
   @override
   String get homePromptErrorUnknownTitle => 'Er is iets misgegaan';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Toestaan dat $snapName toegang krijgt tot uw camera\'s?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Toestaan dat $snapName toegang krijgt tot uw microfonen?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Toestaan dat $snapName $permissions toegang krijgt tot bestanden?';
   }
 }

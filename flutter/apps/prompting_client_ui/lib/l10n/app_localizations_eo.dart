@@ -38,13 +38,13 @@ class AppLocalizationsEo extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Malpermesi unu fojon';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Malpermesi ĉiam';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'Malpermesi ĝis adiaŭo';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'Permesi ĝis adiaŭo';
 
   @override
   String get promptActionTitle => 'Ago';
@@ -74,30 +74,30 @@ class AppLocalizationsEo extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Propra dosierloka ŝablono';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Konservi propran dosiervojon';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'La dosiervojo devas komenciĝi per /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Kongruas kun ajna sinsekvo de skribsignoj krom /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Kongruas kun ajna unuopa skribsigno';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Kongruas kun nul aŭ pli da dosierujoj kaj dosieroj rikure';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Kongruas kun aŭ x aŭ y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Eskapigas speciajan signojn, igante ilin traktiĝi kiel laŭliteraĵoj';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Nur la petata dosierujo';
@@ -161,10 +161,11 @@ class AppLocalizationsEo extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Ĉi tiu eldonanto havas ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'konfirmitan konton';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,13 +179,13 @@ class AppLocalizationsEo extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Pli da opcioj…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Pliaj opcioj';
 
   @override
   String get homePromptMetaDataAppCenterLink => 'Viziti paĝon ĉe App Center';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Malfermi per Programcentro';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -198,35 +199,35 @@ class AppLocalizationsEo extends AppLocalizations {
   String get homePromptPermissionsRead => 'legi';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Nur legi';
 
   @override
-  String get homePromptPermissionsWrite => 'skribi';
+  String get homePromptPermissionsWrite => 'Skribi';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Nur skribi';
 
   @override
-  String get homePromptPermissionsExecute => 'ruli';
+  String get homePromptPermissionsExecute => 'Ruli';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Nur ruli';
 
   @override
   String get homePromptErrorUnknownTitle => 'Io fiaskis';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Ĉu permesi al $snapName uzi viajn kameraojn?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Ĉu permesi al $snapName uzi viajn mikrofonojn?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Ĉu permesi al $snapName $permissions dosierojn?';
   }
 }
