@@ -55,7 +55,7 @@
     "promptActionOptionAllowUntilLogout": "ಲಾಗ್‌ಔಟ್ ಆಗುವವರೆಗೆ ಅನುಮತಿಸಿ",
     "promptActionTitle": "ಕ್ರಿಯೆ",
     "promptLifespanOptionForever": "ಯಾವಾಗಲೂ",
-    "homePromptDefaultBody": "{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ{snap} {path} ಗೆ {ಅನುಮತಿಗಳ} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ",
+    "homePromptDefaultBody": "{snap} {path} ಗೆ {permissions} ಪ್ರವೇಶವನ್ನು ಪಡೆಯಲು ಬಯಸುತ್ತದೆ",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
