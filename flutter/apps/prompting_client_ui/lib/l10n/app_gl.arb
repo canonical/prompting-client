@@ -8,7 +8,7 @@
             }
         }
     },
-    "promptAccessTitle": "Dalle a {snap}{permission} acceso a:",
+    "promptAccessTitle": "Dalle a {snap} {permission} acceso a:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
