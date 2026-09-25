@@ -187,7 +187,7 @@
             }
         }
     },
-    "homePromptTitleQuestion": "להעניק ל־{snapName} גישה ל{permissions} קבצים?",
+    "homePromptTitleQuestion": "להעניק ל־{snapName} גישת {permissions} לקבצים?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
