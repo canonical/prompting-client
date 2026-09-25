@@ -19,7 +19,7 @@
             }
         }
     },
-    "promptAccessTitle": "{snap}'e şu erişim iznini verin:",
+    "promptAccessTitle": "{snap}'e {permission} erişim izni verin:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -153,8 +153,8 @@
     },
     "homePromptPermissionsTitle": "İzinler",
     "homePromptPermissionsRead": "Okuma",
-    "homePromptPermissionsWrite": "Yazma",
-    "homePromptPermissionsExecute": "Çalıştırma",
+    "homePromptPermissionsWrite": "Yaz",
+    "homePromptPermissionsExecute": "Çalıştır",
     "homePromptErrorUnknownTitle": "Bir şeyler ters gitti",
     "homePromptMoreOptionsTileLabel": "Daha fazla seçenek",
     "homePromptMetaDataAppCenterButton": "Uygulama Merkezi'nde aç",
