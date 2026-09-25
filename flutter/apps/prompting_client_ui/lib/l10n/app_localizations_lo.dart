@@ -10,224 +10,223 @@ class AppLocalizationsLo extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'ທ່ານສາມາດປ່ຽນການອະນຸຍາດເຫຼົ່ານີ້ໄດ້ຕະຫຼອດເວລາໃນ <ສູນຄວາມປອດໄພ>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Set access for $snap to:';
+    return 'ກຳນົດການເຂົ້າເຖິງສຳລັບ $snap ໄປທີ່:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Give $snap $permission access to:';
+    return 'ໃຫ້ $snap ເຂົ້າເຖິງ $permission ຕໍ່:';
   }
 
   @override
-  String get promptActionOptionAllow => 'Allow';
+  String get promptActionOptionAllow => 'ອະນຸຍາດ';
 
   @override
-  String get promptActionOptionAllowAlways => 'Allow always';
+  String get promptActionOptionAllowAlways => 'ອະນຸຍາດຕະຫຼອດ';
 
   @override
-  String get promptActionOptionAllowOnce => 'Allow once';
+  String get promptActionOptionAllowOnce => 'ອະນຸຍາດເທື່ອດຽວ';
 
   @override
-  String get promptActionOptionDeny => 'Deny';
+  String get promptActionOptionDeny => 'ປະຕິເສດ';
 
   @override
-  String get promptActionOptionDenyOnce => 'Deny once';
+  String get promptActionOptionDenyOnce => 'ປະຕິເສດເທື່ອດຽວ';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'ປະຕິເສດຕະຫຼອດ';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'ປະຕິເສດຈົນກວ່າຈະອອກຈາກລະບົບ';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'ອະນຸຍາດຈົນກວ່າຈະອອກຈາກລະບົບ';
 
   @override
-  String get promptActionTitle => 'Action';
+  String get promptActionTitle => 'ການກະທຳ';
 
   @override
-  String get promptLifespanOptionForever => 'Always';
+  String get promptLifespanOptionForever => 'ຕະຫຼອດໄປ';
 
   @override
-  String get promptLifespanOptionSession => 'Until logout';
+  String get promptLifespanOptionSession => 'ຈົນກວ່າຈະອອກຈາກລະບົບ';
 
   @override
-  String get promptLifespanOptionSingle => 'Once';
+  String get promptLifespanOptionSingle => 'ເທື່ອດຽວ';
 
   @override
-  String get promptLifespanTitle => 'Duration';
+  String get promptLifespanTitle => 'ໄລຍະເວລາ';
 
   @override
-  String get promptSaveAndContinue => 'Save and continue';
+  String get promptSaveAndContinue => 'ບັນທຶກ ແລະ ສືບຕໍ່';
 
   @override
-  String get promptTitle => 'Security notification';
+  String get promptTitle => 'ການແຈ້ງເຕືອນຄວາມປອດໄພ';
 
   @override
-  String get homePatternInfo => '<Learn about path patterns>';
+  String get homePatternInfo => '<ຮຽນຮູ້ກ່ຽວກັບຮູບແບບເສັ້ນທາງ>';
 
   @override
-  String get homePatternTypeCustomPath => 'Custom path pattern';
+  String get homePatternTypeCustomPath => 'ຮູບແບບເສັ້ນທາງແບບກຳນົດເອງ';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'ບັນທຶກເສັ້ນທາງແບບກຳນົດເອງ';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'ຮູບແບບເສັ້ນທາງຕ້ອງເລີ່ມຕົ້ນດ້ວຍ /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'ກົງກັບຂໍ້ຄວາມໃດໜຶ່ງ ຍົກເວັ້ນ /';
 
   @override
-  String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+  String get homeCustomPathWildcardQuestionDescription => 'ກົງກັບຕົວອັກສອນດຽວ';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'ກົງກັບໂຟນເດີ ແລະ ໄຟລ໌ທັງໝົດແບບຊ້ອນກັນ';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'ກົງກັບ x ຫຼື y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'ຍົກເວັ້ນຕົວອັກສອນພິເສດເພື່ອໃຫ້ຖືວ່າເປັນຕົວອັກສອນປົກກະຕິ';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+  String get homePatternTypeRequestedDirectory => 'ໂຟນເດີທີ່ຮ້ອງຂໍເທົ່ານັ້ນ';
 
   @override
-  String get homePatternTypeRequestedFile => 'The requested file only';
+  String get homePatternTypeRequestedFile => 'ໄຟລ໌ທີ່ຮ້ອງຂໍເທົ່ານັ້ນ';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Everything in the $topLevelDir folder';
+    return 'ທຸກຢ່າງໃນໂຟນເດີ $topLevelDir';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents =>
-      'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents => 'ທຸກຢ່າງໃນໂຟນເດີ';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+  String get homePatternTypeContainingDirectory => 'ທຸກຢ່າງໃນໂຟນເດີ';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+  String get homePatternTypeHomeDirectory => 'ທຸກຢ່າງໃນໂຟນເດີ Home';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'All $fileExtension files';
+    return 'ໄຟລ໌ $fileExtension ທັງໝົດ';
   }
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap ຕ້ອງການສິດເຂົ້າເຖິງ $permissions ຕໍ່ $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap ຕ້ອງການສິດເຂົ້າເຖິງ $permissions ຕໍ່ໂຟນເດີ $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return '$snap ຕ້ອງການສິດເຂົ້າເຖິງ $permissions ຕໍ່ $filename ໃນໂຟນເດີ $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap ຕ້ອງການສິດເຂົ້າເຖິງ $permissions ຕໍ່ໂຟນເດີ Home ຂອງທ່ານ.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap ຕ້ອງການສິດເຂົ້າເຖິງ $permissions ຕໍ່ $filename ໃນໂຟນເດີ Home ຂອງທ່ານ.';
   }
 
   @override
-  String get homePromptMetaDataTitle => 'About this app';
+  String get homePromptMetaDataTitle => 'ກ່ຽວກັບແອັບນີ້';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Published by $publisher';
+    return 'ເຜີຍແຜ່ໂດຍ $publisher';
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'ຜູ້ເຜີຍແຜ່ນີ້ມີ ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'ບັນຊີທີ່ຜ່ານການຢືນຢັນ';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
 
   @override
   String homePromptMetaDataLastUpdated(String date) {
-    return 'Last updated on $date';
+    return 'ອັບເດດລ້າສຸດເມື່ອ $date';
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'More options...';
+  String get homePromptMoreOptionsLabel => 'ຕົວເລືອກເພີ່ມເຕີມ...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'ຕົວເລືອກເພີ່ມເຕີມ';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visit App Center page';
+  String get homePromptMetaDataAppCenterLink => 'ເຂົ້າຊົມໜ້າ App Center';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'ເປີດໃນ App Center';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Also give $permission access';
+    return 'ໃຫ້ສິດເຂົ້າເຖິງ $permission ນຳ';
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Permissions';
+  String get homePromptPermissionsTitle => 'ການອະນຸຍາດ';
 
   @override
-  String get homePromptPermissionsRead => 'Read';
+  String get homePromptPermissionsRead => 'ອ່ານ';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'ອ່ານເທົ່ານັ້ນ';
 
   @override
-  String get homePromptPermissionsWrite => 'Write';
+  String get homePromptPermissionsWrite => 'ຂຽນ';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'ຂຽນເທົ່ານັ້ນ';
 
   @override
-  String get homePromptPermissionsExecute => 'Execute';
+  String get homePromptPermissionsExecute => 'ດຳເນີນການ';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'ດຳເນີນການເທົ່ານັ້ນ';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'ມີບາງຢ່າງຜິດພາດ';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'ອະນຸຍາດໃຫ້ $snapName ນຳໃຊ້ກ້ອງຂອງທ່ານບໍ?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'ອະນຸຍາດໃຫ້ $snapName ນຳໃຊ້ໄມໂຄຣໂຟນຂອງທ່ານບໍ?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'ໃຫ້ $snapName ເຂົ້າເຖິງ $permissions ຕໍ່ໄຟລ໌ບໍ່?';
   }
 }

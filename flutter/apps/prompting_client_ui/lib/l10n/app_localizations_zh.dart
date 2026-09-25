@@ -37,13 +37,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get promptActionOptionDenyOnce => '拒绝一次';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => '始终拒绝';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => '直到登出前都拒绝';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => '直到登出前都允许';
 
   @override
   String get promptActionTitle => '动作';
@@ -73,30 +73,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePatternTypeCustomPath => '自定义路径';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => '保存自定义路径';
 
   @override
-  String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+  String get homeCustomPathMustStartWithSlash => '路径必须以 / 开头';
 
   @override
-  String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+  String get homeCustomPathWildcardStarDescription => '匹配除 / 以外的所有字符';
 
   @override
-  String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+  String get homeCustomPathWildcardQuestionDescription => '匹配单一字符';
 
   @override
-  String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+  String get homeCustomPathWildcardDoubleStarDescription => '递归匹配零个或多个文件夹和文件';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => '匹配 x 或 y';
 
   @override
-  String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+  String get homeCustomPathWildcardBackslashDescription => '转义特殊字符，将其视为字面值';
 
   @override
   String get homePatternTypeRequestedDirectory => '仅请求的文件夹';
@@ -160,13 +155,13 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => '此发布者有 ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => '已验证账户';
 
   @override
-  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+  String get homePromptMetaDataVerifiedAccountSuffix => '。';
 
   @override
   String homePromptMetaDataLastUpdated(String date) {
@@ -177,13 +172,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePromptMoreOptionsLabel => '更多选项…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => '更多选项';
 
   @override
   String get homePromptMetaDataAppCenterLink => '访问应用中心页面';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => '在应用中心中打开';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -197,36 +192,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get homePromptPermissionsRead => '读取';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => '仅读取';
 
   @override
   String get homePromptPermissionsWrite => '写入';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => '仅写入';
 
   @override
   String get homePromptPermissionsExecute => '执行';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => '仅执行';
 
   @override
   String get homePromptErrorUnknownTitle => '出现了一些问题';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return '允许 $snapName 使用您的相机？';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return '允许 $snapName 使用您的麦克风？';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return '授予 $snapName 对文件的 $permissions 访问权限？';
   }
 }
 
@@ -263,6 +258,15 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get promptActionOptionDenyOnce => '拒絕一次';
 
   @override
+  String get promptActionOptionDenyAlways => '始終拒絕';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => '登出前皆拒絕';
+
+  @override
+  String get promptActionOptionAllowUntilLogout => '允許直至登出';
+
+  @override
   String get promptActionTitle => '動作';
 
   @override
@@ -288,6 +292,27 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get homePatternTypeCustomPath => '自訂路徑樣式';
+
+  @override
+  String get homeCustomPathSaveButton => '儲存自訂路徑';
+
+  @override
+  String get homeCustomPathMustStartWithSlash => '路徑模式必須以 / 開頭';
+
+  @override
+  String get homeCustomPathWildcardStarDescription => '匹配任何字元串，但 / 除外';
+
+  @override
+  String get homeCustomPathWildcardQuestionDescription => '匹配單一字元';
+
+  @override
+  String get homeCustomPathWildcardDoubleStarDescription => '遞迴匹配零個或多個資料夾和檔案';
+
+  @override
+  String get homeCustomPathWildcardCurlyDescription => '匹配 x 或 y';
+
+  @override
+  String get homeCustomPathWildcardBackslashDescription => '將特殊字元轉義，使其被視為字面值';
 
   @override
   String get homePatternTypeRequestedDirectory => '僅請求的資料夾';
@@ -351,6 +376,15 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   }
 
   @override
+  String get homePromptMetaDataVerifiedAccountPrefix => '此發布者有 ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => '已驗證帳戶';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '。';
+
+  @override
   String homePromptMetaDataLastUpdated(String date) {
     return '最後更新日期為 $date';
   }
@@ -359,7 +393,13 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get homePromptMoreOptionsLabel => '更多選項...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => '更多選項';
+
+  @override
   String get homePromptMetaDataAppCenterLink => '造訪《應用中心》頁面';
+
+  @override
+  String get homePromptMetaDataAppCenterButton => '在 App Center 中開啟';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -373,11 +413,35 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get homePromptPermissionsRead => '讀取';
 
   @override
+  String get homePromptPermissionsReadOnly => '僅限讀取';
+
+  @override
   String get homePromptPermissionsWrite => '寫入';
+
+  @override
+  String get homePromptPermissionsWriteOnly => '僅限寫入';
 
   @override
   String get homePromptPermissionsExecute => '執行';
 
   @override
+  String get homePromptPermissionsExecuteOnly => '僅限執行';
+
+  @override
   String get homePromptErrorUnknownTitle => '發生一些問題';
+
+  @override
+  String cameraPromptBody(String snapName) {
+    return '要允許 $snapName 使用您的相機嗎？';
+  }
+
+  @override
+  String microphonePromptBody(String snapName) {
+    return '要允許 $snapName 使用您的麥克風？';
+  }
+
+  @override
+  String homePromptTitleQuestion(String snapName, String permissions) {
+    return '允許 $snapName $permissions 存取檔案？';
+  }
 }

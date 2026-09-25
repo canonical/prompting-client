@@ -10,7 +10,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'Puoi sempre cambiare questi permessi nel <Security Center>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {

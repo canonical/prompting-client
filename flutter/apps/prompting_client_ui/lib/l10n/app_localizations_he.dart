@@ -38,13 +38,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'לדחות חד־פעמית';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'לדחות תמיד';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'לדחות עד ליציאה';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'לאפשר עד ליציאה מהמערכת';
 
   @override
   String get promptActionTitle => 'פעולה';
@@ -74,30 +74,28 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homePatternTypeCustomPath => 'תבנית נתיב מותאמת אישית';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'לשמור נתיב מותאם אישית';
 
   @override
-  String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+  String get homeCustomPathMustStartWithSlash => 'תבנית הנתיב חייבת להיפתח ב־/';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'לוכד כל מחרוזת של תווים למעט /';
 
   @override
-  String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+  String get homeCustomPathWildcardQuestionDescription => 'לוכד תו יחיד';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'לוכד אפס תיקיות וקבצים או יותר באופן נסוג';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'לוכד את א׳ או ב׳';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'סולק תווים מיוחדים כדי להתייחס אליהם מפורשות';
 
   @override
   String get homePatternTypeRequestedDirectory => 'התיקייה המבוקשת בלבד';
@@ -161,10 +159,10 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'למפיץ הזה יש ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'חשבון מאומת';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,13 +176,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'אפשרויות נוספות…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'אפשרויות נוספות';
 
   @override
   String get homePromptMetaDataAppCenterLink => 'ביקור בעמוד מרכז היישומים';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'פתיחה במרכז היישומים';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -198,35 +196,35 @@ class AppLocalizationsHe extends AppLocalizations {
   String get homePromptPermissionsRead => 'קריאה';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'קריאה בלבד';
 
   @override
   String get homePromptPermissionsWrite => 'כתיבה';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'כתיבה בלבד';
 
   @override
   String get homePromptPermissionsExecute => 'הפעלה';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'הרצה בלבד';
 
   @override
   String get homePromptErrorUnknownTitle => 'משהו השתבש';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'לאפשר ל־$snapName להשתמש במצלמות שלך?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'לאפשר ל־$snapName להשתמש במיקרופונים שלך?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'להעניק ל־$snapName גישת $permissions לקבצים?';
   }
 }

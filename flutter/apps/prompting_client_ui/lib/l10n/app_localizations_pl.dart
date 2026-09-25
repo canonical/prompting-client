@@ -38,16 +38,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Odmów raz';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Odmawiaj zawsze';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Odmawiaj do momentu wylogowania';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Zezwalaj do momentu wylogowania';
 
   @override
-  String get promptActionTitle => 'Działanie';
+  String get promptActionTitle => 'Czynność';
 
   @override
   String get promptLifespanOptionForever => 'Zawsze';
@@ -74,30 +76,30 @@ class AppLocalizationsPl extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Niestandardowy wzorzec ścieżki';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Zapisz ścieżkę niestandardową';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Wzór ścieżki musi zaczynać się od /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Dopasowuje dowolny ciąg znaków z wyjątkiem /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Dopasowuje pojedynczy znak';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Dopasowuje rekurencyjnie zero lub więcej katalogów i plików';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Dopasowuje x lub y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Uwalnia znaki specjalne od traktowania ich jako znaki dosłowne';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Tylko żądany katalog';
@@ -161,10 +163,10 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Ten wydawca ma ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'zweryfikowane konto';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +180,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Więcej opcji...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Więcej opcji';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Odwiedź stronę Centrum oprogramowania';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Otwórz w Centrum oprogramowania';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +202,35 @@ class AppLocalizationsPl extends AppLocalizations {
   String get homePromptPermissionsRead => 'Odczyt';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Tylko do odczytu';
 
   @override
   String get homePromptPermissionsWrite => 'Zapis';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Tylko do zapisu';
 
   @override
   String get homePromptPermissionsExecute => 'Wykonywanie';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Tylko do wykonywania';
 
   @override
   String get homePromptErrorUnknownTitle => 'Wystąpił problem';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Czy zezwolić programowi $snapName na używanie kamer?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Czy zezwolić programowi $snapName na używanie mikrofonów?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Czy udzielić programowi $snapName dostępu $permissions do plików?';
   }
 }

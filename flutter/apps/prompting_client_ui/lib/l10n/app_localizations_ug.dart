@@ -10,224 +10,224 @@ class AppLocalizationsUg extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'سىز بۇ ئىجازەتلەرنى خالىغان ۋاقىتتا ‹بىخەتەرلىك مەركىزى› دىن ئۆزگەرتەلەيسىز';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Set access for $snap to:';
+    return '$snap ئىجازىتىنى تەڭشەيدۇ:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Give $snap $permission access to:';
+    return '$snap غا $permission ئىجازىتى بېرىلىدۇ:';
   }
 
   @override
-  String get promptActionOptionAllow => 'Allow';
+  String get promptActionOptionAllow => 'يول قوي';
 
   @override
-  String get promptActionOptionAllowAlways => 'Allow always';
+  String get promptActionOptionAllowAlways => 'ھەمىشە يول قوي';
 
   @override
-  String get promptActionOptionAllowOnce => 'Allow once';
+  String get promptActionOptionAllowOnce => 'بىر قېتىم يول قوي';
 
   @override
-  String get promptActionOptionDeny => 'Deny';
+  String get promptActionOptionDeny => 'رەت قىل';
 
   @override
-  String get promptActionOptionDenyOnce => 'Deny once';
+  String get promptActionOptionDenyOnce => 'بىر قېتىم رەت قىل';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'ھەمىشە رەت قىل';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'تىزىمدىن چىقمىغۇچە رەت قىل';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'تىزىمدىن چىققۇچە يول قوي';
 
   @override
-  String get promptActionTitle => 'Action';
+  String get promptActionTitle => 'مەشغۇلات';
 
   @override
-  String get promptLifespanOptionForever => 'Always';
+  String get promptLifespanOptionForever => 'ھەمىشە';
 
   @override
-  String get promptLifespanOptionSession => 'Until logout';
+  String get promptLifespanOptionSession => 'تىزىمدىن چىققۇچە';
 
   @override
-  String get promptLifespanOptionSingle => 'Once';
+  String get promptLifespanOptionSingle => 'بىر قېتىم';
 
   @override
-  String get promptLifespanTitle => 'Duration';
+  String get promptLifespanTitle => 'مۇددىتى';
 
   @override
-  String get promptSaveAndContinue => 'Save and continue';
+  String get promptSaveAndContinue => 'ساقلاپ داۋاملاشتۇر';
 
   @override
-  String get promptTitle => 'Security notification';
+  String get promptTitle => 'بىخەتەرلىك ئۇقتۇرۇشى';
 
   @override
-  String get homePatternInfo => '<Learn about path patterns>';
+  String get homePatternInfo => '‹يول ئەندىزىسى ھەققىدىكى بىلىم›';
 
   @override
-  String get homePatternTypeCustomPath => 'Custom path pattern';
+  String get homePatternTypeCustomPath => 'ئىختىيارى يول ئەندىزىسى';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'ئىختىيارى يولنى ساقلا';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'يول ئەندىزىسى چوقۇم / بىلەن باشلىنىدۇ';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      '/ دىن باشقا ھەر قانداق ھەرپ تىزىقى ماس كېلىدۇ';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'يەككە ھەرپ ماس كېلىدۇ';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'نۆل ياكى تېخىمۇ كۆپ قىسقۇچ ۋە ھۆججەتنى قايتا-قايتا ماسلاشتۇرىدۇ';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'x ياكى y غا ماس كېلىدۇ';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'ئۇلارغا يېزىق سۈپىتىدە مۇئامىلە قىلىش ئۈچۈن ئالاھىدە ھەرپنىڭ مەنىسى ئۆزگىرىدۇ';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+  String get homePatternTypeRequestedDirectory => 'ئىلتىماس قىلىنغان قىسقۇچلا';
 
   @override
-  String get homePatternTypeRequestedFile => 'The requested file only';
+  String get homePatternTypeRequestedFile => 'ئىلتىماس قىلىنغان ھۆججەتلا';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Everything in the $topLevelDir folder';
+    return '$topLevelDir قىسقۇچتىكى ھەممىسى';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents =>
-      'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents => 'قىسقۇچتىكى ھەممىسى';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+  String get homePatternTypeContainingDirectory => 'قىسقۇچتىكى ھەممىسى';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+  String get homePatternTypeHomeDirectory => 'باش قىسقۇچتىكى ھەممىسى';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'All $fileExtension files';
+    return '$fileExtension ھۆججەتنىڭ ھەممىسى';
   }
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap نىڭ ئېرىشمەكچى بولغىنى $path نىڭ $permissions ئىجازىتى';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap نىڭ ئېرىشمەكچى بولغىنى $foldername قىسقۇچنىڭ $permissions ئىجازىتى.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return '$snap نىڭ ئېرىشمەكچى بولغىنى $foldername قىسقۇچتىكى $filename نىڭ $permissions ئىجازىتى.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap نىڭ ئېرىشمەكچى بولغىنى باش قىسقۇچنىڭ $permissions ئىجازىتى.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap نىڭ ئېرىشمەكچى بولغىنى باش قىسقۇچتىكى $filename نىڭ $permissions ئىجازىتى.';
   }
 
   @override
-  String get homePromptMetaDataTitle => 'About this app';
+  String get homePromptMetaDataTitle => 'بۇ ئەپ ھەققىدە';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Published by $publisher';
+    return 'تارقاتقۇچى $publisher';
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'بۇ تارقاتقۇچى ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'دەلىللەنگەن ھېساب';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
 
   @override
   String homePromptMetaDataLastUpdated(String date) {
-    return 'Last updated on $date';
+    return 'ئاخىرقى قېتىم يېڭىلانغان ۋاقىت $date';
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'More options...';
+  String get homePromptMoreOptionsLabel => 'تېخىمۇ كۆپ تاللانما…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'تېخىمۇ كۆپ تاللانما';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visit App Center page';
+  String get homePromptMetaDataAppCenterLink =>
+      'ئەپ مەركىزى بېتىنى زىيارەت قىلىڭ';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'ئەپ مەركىزىدە ئاچ';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Also give $permission access';
+    return 'يەنە $permission ئىجازىتى بېرىدۇ';
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Permissions';
+  String get homePromptPermissionsTitle => 'ئىجازەت';
 
   @override
-  String get homePromptPermissionsRead => 'Read';
+  String get homePromptPermissionsRead => 'ئوقۇش';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'ئوقۇشقىلا';
 
   @override
-  String get homePromptPermissionsWrite => 'Write';
+  String get homePromptPermissionsWrite => 'يېزىش';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'يېزىشقىلا';
 
   @override
-  String get homePromptPermissionsExecute => 'Execute';
+  String get homePromptPermissionsExecute => 'ئىجرا قىلىش';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'ئىجرا قىلىشقىلا';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'كاشىلا كۆرۈلدى';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return '$snapName نىڭ كامېرايىڭىزنى ئىشلىتىشىگە يول قويامسىز؟';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return '$snapName نىڭ مىكروفونلىرىڭىزنى ئىشلىتىشىگە يول قويامسىز؟';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return '$snapName نىڭ ھۆججەتنى زىيارەت قىلىشىغا $permissions ئىجازەت بېرەمدۇ؟';
   }
 }

@@ -37,13 +37,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get promptActionOptionDenyOnce => '一度だけ拒否';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => '常に拒否';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'ログアウトまで拒否';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'ログアウトまで許可';
 
   @override
   String get promptActionTitle => 'アクション';

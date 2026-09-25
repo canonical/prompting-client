@@ -10,224 +10,228 @@ class AppLocalizationsCa extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'Sempre podeu canviar aquests permisos al <Centre de seguretat>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Set access for $snap to:';
+    return 'Estableix l\'accés per a $snap a:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Give $snap $permission access to:';
+    return 'Atorga a $snap accés de $permission a:';
   }
 
   @override
-  String get promptActionOptionAllow => 'Allow';
+  String get promptActionOptionAllow => 'Permet';
 
   @override
-  String get promptActionOptionAllowAlways => 'Allow always';
+  String get promptActionOptionAllowAlways => 'Permet sempre';
 
   @override
-  String get promptActionOptionAllowOnce => 'Allow once';
+  String get promptActionOptionAllowOnce => 'Permet un cop';
 
   @override
-  String get promptActionOptionDeny => 'Deny';
+  String get promptActionOptionDeny => 'Denega';
 
   @override
-  String get promptActionOptionDenyOnce => 'Deny once';
+  String get promptActionOptionDenyOnce => 'Denega un cop';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Denega sempre';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Denega fins al tancament de la sessió';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Permet fins al tancament de la sessió';
 
   @override
-  String get promptActionTitle => 'Action';
+  String get promptActionTitle => 'Acció';
 
   @override
-  String get promptLifespanOptionForever => 'Always';
+  String get promptLifespanOptionForever => 'Sempre';
 
   @override
-  String get promptLifespanOptionSession => 'Until logout';
+  String get promptLifespanOptionSession => 'Fins que es tanqui la sessió';
 
   @override
-  String get promptLifespanOptionSingle => 'Once';
+  String get promptLifespanOptionSingle => 'Un cop';
 
   @override
-  String get promptLifespanTitle => 'Duration';
+  String get promptLifespanTitle => 'Duració';
 
   @override
-  String get promptSaveAndContinue => 'Save and continue';
+  String get promptSaveAndContinue => 'Desa i continua';
 
   @override
-  String get promptTitle => 'Security notification';
+  String get promptTitle => 'Notificació de seguretat';
 
   @override
-  String get homePatternInfo => '<Learn about path patterns>';
+  String get homePatternInfo => '<Apreneu més sobre els patrons de camins>';
 
   @override
-  String get homePatternTypeCustomPath => 'Custom path pattern';
+  String get homePatternTypeCustomPath => 'Patró personalitzat de camí';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Desa el camí personalitzat';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'El patró del camí ha de començar amb /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Concorda totes les cadenes de caràcters excepte /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Concorda amb un caràcter únic';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Concorda amb zero o més carpetes i fitxers recursivament';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Concorda amb x o y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Tracta els caràcters especials com a literals';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+  String get homePatternTypeRequestedDirectory =>
+      'Sols la carpeta sol·licitada';
 
   @override
-  String get homePatternTypeRequestedFile => 'The requested file only';
+  String get homePatternTypeRequestedFile => 'Sols el fitxer sol·licitat';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Everything in the $topLevelDir folder';
+    return 'Tot a la carpeta $topLevelDir';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents =>
-      'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents => 'Tot a la carpeta';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+  String get homePatternTypeContainingDirectory => 'Tot a la carpeta';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+  String get homePatternTypeHomeDirectory => 'Tota a la carpeta personal';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'All $fileExtension files';
+    return 'Tots els fitxers $fileExtension';
   }
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap vol obtenir accés de $permissions per a $path';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap vol obtenir accés de $permissions per a la carpeta $foldername.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return '$snap vol obtenir accés de $permissions per a $filename a la carpeta $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap vol obtenir accés de $permissions a la vostra carpeta de inici.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap vol obtenir accés de $permissions per a $filename a la vostra carpeta d\'inici.';
   }
 
   @override
-  String get homePromptMetaDataTitle => 'About this app';
+  String get homePromptMetaDataTitle => 'Quant a aquesta aplicació';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Published by $publisher';
+    return 'Publicat per $publisher';
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Aquest editor té un ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'compte verificat';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
 
   @override
   String homePromptMetaDataLastUpdated(String date) {
-    return 'Last updated on $date';
+    return 'Última actualització el $date';
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'More options...';
+  String get homePromptMoreOptionsLabel => 'Més opcions...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Més opcions';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visit App Center page';
+  String get homePromptMetaDataAppCenterLink =>
+      'Visita la pàgina del Centre d\'aplicacions';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Obre al Centre d\'aplicacions';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Also give $permission access';
+    return 'També dona accés de $permission';
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Permissions';
+  String get homePromptPermissionsTitle => 'Permisos';
 
   @override
-  String get homePromptPermissionsRead => 'Read';
+  String get homePromptPermissionsRead => 'Lectura';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Sols lectura';
 
   @override
-  String get homePromptPermissionsWrite => 'Write';
+  String get homePromptPermissionsWrite => 'Escriptura';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Sols escriptura';
 
   @override
-  String get homePromptPermissionsExecute => 'Execute';
+  String get homePromptPermissionsExecute => 'Execució';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Sols execució';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'Alguna cosa ha fallat';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Voleu permetre a $snapName fer servir la càmera?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Voleu permetre a $snapName fer servir els micròfons?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Voleu donar a $snapName permissos de $permissions als fitxers?';
   }
 }

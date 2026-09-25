@@ -10,32 +10,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'You can always change these permissions in the <Security Center>';
+      'Bu izinleri her zaman <Güvenlik Merkezi>\'nden değiştirebilirsiniz';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Set access for $snap to:';
+    return '$snap için erişimi şu şekilde ayarlayın:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Give $snap $permission access to:';
+    return '$snap\'e $permission erişim izni verin:';
   }
 
   @override
-  String get promptActionOptionAllow => 'Allow';
+  String get promptActionOptionAllow => 'İzin ver';
 
   @override
-  String get promptActionOptionAllowAlways => 'Allow always';
+  String get promptActionOptionAllowAlways => 'Her zaman izin ver';
 
   @override
-  String get promptActionOptionAllowOnce => 'Allow once';
+  String get promptActionOptionAllowOnce => 'Bir kez izin ver';
 
   @override
-  String get promptActionOptionDeny => 'Deny';
+  String get promptActionOptionDeny => 'Reddet';
 
   @override
-  String get promptActionOptionDenyOnce => 'Deny once';
+  String get promptActionOptionDenyOnce => 'Bir kez reddet';
 
   @override
   String get promptActionOptionDenyAlways => 'Deny always';
@@ -47,31 +47,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get promptActionOptionAllowUntilLogout => 'Allow until logout';
 
   @override
-  String get promptActionTitle => 'Action';
+  String get promptActionTitle => 'Aksiyon';
 
   @override
-  String get promptLifespanOptionForever => 'Always';
+  String get promptLifespanOptionForever => 'Her zaman';
 
   @override
-  String get promptLifespanOptionSession => 'Until logout';
+  String get promptLifespanOptionSession => 'Çıkış yapana kadar';
 
   @override
-  String get promptLifespanOptionSingle => 'Once';
+  String get promptLifespanOptionSingle => 'Bir kez';
 
   @override
-  String get promptLifespanTitle => 'Duration';
+  String get promptLifespanTitle => 'Süre';
 
   @override
-  String get promptSaveAndContinue => 'Save and continue';
+  String get promptSaveAndContinue => 'Kaydet ve devam et';
 
   @override
-  String get promptTitle => 'Security notification';
+  String get promptTitle => 'Güvenlik bildirimleri';
 
   @override
-  String get homePatternInfo => '<Learn about path patterns>';
+  String get homePatternInfo => '<Yol desenleri hakkında bilgi edinin>';
 
   @override
-  String get homePatternTypeCustomPath => 'Custom path pattern';
+  String get homePatternTypeCustomPath => 'Özel yol deseni';
 
   @override
   String get homeCustomPathSaveButton => 'Save custom path';
@@ -100,65 +100,64 @@ class AppLocalizationsTr extends AppLocalizations {
       'Escapes special characters to treat them as literals';
 
   @override
-  String get homePatternTypeRequestedDirectory => 'The requested folder only';
+  String get homePatternTypeRequestedDirectory => 'Yalnızca istenen klasör';
 
   @override
-  String get homePatternTypeRequestedFile => 'The requested file only';
+  String get homePatternTypeRequestedFile => 'Yalnızca istenen dosya';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Everything in the $topLevelDir folder';
+    return '$topLevelDir klasöründeki her şey';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents =>
-      'Everything in the folder';
+  String get homePatternTypeRequestedDirectoryContents => 'Klasördeki her şey';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Everything in the folder';
+  String get homePatternTypeContainingDirectory => 'Klasördeki her şey';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Everything in the Home folder';
+  String get homePatternTypeHomeDirectory => 'Ana klasördeki her şey';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'All $fileExtension files';
+    return 'Tüm $fileExtension dosyaları';
   }
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap, $path yoluna $permissions erişimi elde etmek istiyor';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap, $foldername klasörüne $permissions erişimi almak istiyor.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return '$snap, $foldername klasöründeki $filename dosyasına $permissions erişimi almak istiyor.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap Ana klasörünüze $permissions erişimini almak istiyor.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap, Ana klasörünüzdeki $filename dosyasına $permissions erişimini almak istiyor.';
   }
 
   @override
-  String get homePromptMetaDataTitle => 'About this app';
+  String get homePromptMetaDataTitle => 'Bu uygulama hakkında';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Published by $publisher';
+    return '$publisher tarafından yayınlandı';
   }
 
   @override
@@ -172,49 +171,50 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String homePromptMetaDataLastUpdated(String date) {
-    return 'Last updated on $date';
+    return 'Son güncelleme tarihi $date';
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'More options...';
+  String get homePromptMoreOptionsLabel => 'Daha fazla seçenek...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Daha fazla seçenek';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visit App Center page';
+  String get homePromptMetaDataAppCenterLink =>
+      'Uygulama Merkezi sayfasını ziyaret edin';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Uygulama Merkezi\'nde aç';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Also give $permission access';
+    return 'Ayrıca $permission erişimini de verin';
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Permissions';
+  String get homePromptPermissionsTitle => 'İzinler';
 
   @override
-  String get homePromptPermissionsRead => 'Read';
+  String get homePromptPermissionsRead => 'Okuma';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Salt okunur';
 
   @override
-  String get homePromptPermissionsWrite => 'Write';
+  String get homePromptPermissionsWrite => 'Yaz';
 
   @override
   String get homePromptPermissionsWriteOnly => 'Write only';
 
   @override
-  String get homePromptPermissionsExecute => 'Execute';
+  String get homePromptPermissionsExecute => 'Çalıştır';
 
   @override
   String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'Bir şeyler ters gitti';
 
   @override
   String cameraPromptBody(String snapName) {

@@ -44,7 +44,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get promptActionOptionDenyUntilLogout => 'Deny until logout';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'اجازه تا خروج';
 
   @override
   String get promptActionTitle => 'کنش';
@@ -126,30 +126,30 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String homePromptDefaultBody(String snap, String permissions, String path) {
-    return '$snap wants to get $permissions access to $path';
+    return '$snap می‌خواهد دسترسی $permissions را به $path بگیرد';
   }
 
   @override
   String homePromptTopLevelDirBody(
       String snap, String permissions, String foldername) {
-    return '$snap wants to get $permissions access to the $foldername folder.';
+    return '$snap می‌خواهد دسترسی $permissions را به شاخهٔ $foldername بگیرد.';
   }
 
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap wants to get $permissions access to $filename in the $foldername folder.';
+    return '$snap می‌خواهد دسترسی $permissions را به $filename در شاخهٔ $foldername بگیرد.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap wants to get $permissions access to your Home folder.';
+    return '$snap می‌خواهد دسترسی $permissions را به شاخهٔ خانگیتان بگیرد.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap wants to get $permissions access to $filename in your Home folder.';
+    return '$snap می‌خواهد دسترسی $permissions را به $filename در شاخهٔ خانگیتان بگیرد.';
   }
 
   @override
@@ -213,16 +213,16 @@ class AppLocalizationsFa extends AppLocalizations {
   String get homePromptPermissionsExecuteOnly => 'Execute only';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Something went wrong';
+  String get homePromptErrorUnknownTitle => 'چیزی اشتباه پیش رفت';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'اجازه به $snapName برای دسترسی به دوربینتان؟';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'اجازه به $snapName برای دسترسی به صدابَرتان؟';
   }
 
   @override

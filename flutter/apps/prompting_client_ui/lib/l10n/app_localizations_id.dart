@@ -14,12 +14,12 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Mengatur akses untuk $snap ke:';
+    return 'Atur akses untuk $snap ke:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Berikan akses $permission $snap ke:';
+    return 'Beri $snap akses $permission ke:';
   }
 
   @override
@@ -38,22 +38,22 @@ class AppLocalizationsId extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Tolak sekali';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Selalu tolak';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'Tolak hingga keluar';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout => 'Izinkan hingga keluar';
 
   @override
-  String get promptActionTitle => 'Aksi';
+  String get promptActionTitle => 'Tindakan';
 
   @override
   String get promptLifespanOptionForever => 'Selalu';
 
   @override
-  String get promptLifespanOptionSession => 'Sampai log keluar';
+  String get promptLifespanOptionSession => 'Hingga keluar';
 
   @override
   String get promptLifespanOptionSingle => 'Sekali';
@@ -65,63 +65,64 @@ class AppLocalizationsId extends AppLocalizations {
   String get promptSaveAndContinue => 'Simpan dan lanjutkan';
 
   @override
-  String get promptTitle => 'Pemberitahuan keamanan';
+  String get promptTitle => 'Notifikasi keamanan';
 
   @override
   String get homePatternInfo => '<Pelajari tentang pola path>';
 
   @override
-  String get homePatternTypeCustomPath => 'Pola path ubahan';
+  String get homePatternTypeCustomPath => 'Pola jalur kustom';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Simpan jalur kustom';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Pola jalur harus dimulai dengan /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Cocok dengan sembarang string karakter kecuali /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Cocok dengan satu karakter';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Cocok dengan nol atau lebih folder dan file secara rekursif';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Cocok dengan x atau y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Meng-escape karakter khusus agar diperlakukan sebagai literal';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Hanya folder yang diminta';
 
   @override
-  String get homePatternTypeRequestedFile => 'Hanya berkas yang diminta';
+  String get homePatternTypeRequestedFile => 'Hanya file yang diminta';
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Semua dalam folder $topLevelDir';
+    return 'Semua yang ada di folder $topLevelDir';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Semua dalam folder';
+  String get homePatternTypeRequestedDirectoryContents =>
+      'Semua yang ada di folder';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Semua dalam folder';
+  String get homePatternTypeContainingDirectory => 'Semua yang ada di folder';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Semua dalam folder Rumah';
+  String get homePatternTypeHomeDirectory => 'Semua yang ada di folder Home';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
-    return 'Semua berkas $fileExtension';
+    return 'Semua file $fileExtension';
   }
 
   @override
@@ -138,18 +139,18 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap ingin mendapatkan akses $permissions ke $filename dalam folder $foldername.';
+    return '$snap ingin mendapatkan akses $permissions ke $filename di folder $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap ingin mendapatkan akses $permissions ke folder Rumah Anda.';
+    return '$snap ingin mendapatkan akses $permissions ke folder Home Anda.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap ingin mendapatkan akses $permissions ke $filename di folder Rumah Anda.';
+    return '$snap ingin mendapatkan akses $permissions ke $filename di folder Home Anda.';
   }
 
   @override
@@ -157,14 +158,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Dipublikasikan oleh $publisher';
+    return 'Diterbitkan oleh $publisher';
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Penerbit ini memiliki ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'akun terverifikasi';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -175,20 +177,20 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'Opsi tambahan...';
+  String get homePromptMoreOptionsLabel => 'Opsi lainnya...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Opsi lainnya';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Kunjungi halaman Pusat App';
+  String get homePromptMetaDataAppCenterLink => 'Kunjungi halaman App Center';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton => 'Buka di App Center';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Berikan juga akses $permission';
+    return 'Juga beri akses $permission';
   }
 
   @override
@@ -198,35 +200,35 @@ class AppLocalizationsId extends AppLocalizations {
   String get homePromptPermissionsRead => 'Baca';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Hanya baca';
 
   @override
   String get homePromptPermissionsWrite => 'Tulis';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Hanya tulis';
 
   @override
   String get homePromptPermissionsExecute => 'Jalankan';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Hanya jalankan';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Ada yang tidak beres';
+  String get homePromptErrorUnknownTitle => 'Terjadi kesalahan';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Izinkan $snapName menggunakan kamera Anda?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Izinkan $snapName menggunakan mikrofon Anda?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Beri $snapName akses $permissions ke file?';
   }
 }

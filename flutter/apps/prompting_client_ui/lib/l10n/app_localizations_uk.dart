@@ -38,13 +38,15 @@ class AppLocalizationsUk extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Відмовити один раз';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Завжди забороняти';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout =>
+      'Заборонити до виходу з системи';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Дозволити до виходу з системи';
 
   @override
   String get promptActionTitle => 'Дія';
@@ -74,30 +76,30 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Користувацький шаблон шляху';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Зберегти користувацький шлях';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Шаблон шляху має починатись з /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'Збігається з будь-яким рядком символів, окрім /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Збігається з одним символом';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Рекурсивно знаходить нуль або більше тек та файлів';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription => 'Збігається з x, або y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Використовується для екранування спеціальних символів для обробки їх як літералів';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Лише запитувана тека';
@@ -161,10 +163,11 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Цей видавець має ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink =>
+      'підтверджений обліковий запис';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +181,15 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'Інші опції...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'Інші опції';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
-      'Відвідати сторінку Центру програмного забезпечення';
+      'Відвідати сторінку Центру застосунків';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Відкрити у Центрі програмного забезпечення';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +203,35 @@ class AppLocalizationsUk extends AppLocalizations {
   String get homePromptPermissionsRead => 'Читання';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Тільки читання';
 
   @override
   String get homePromptPermissionsWrite => 'Запис';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Тільки запис';
 
   @override
   String get homePromptPermissionsExecute => 'Виконання';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Тільки виконання';
 
   @override
   String get homePromptErrorUnknownTitle => 'Щось пішло не за планом';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Дозволити $snapName використовувати вашу камеру?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Дозволити $snapName використовувати ваш мікрофон?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Надати $snapName $permissions доступ до файлів?';
   }
 }

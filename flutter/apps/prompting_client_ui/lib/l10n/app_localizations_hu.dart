@@ -38,13 +38,14 @@ class AppLocalizationsHu extends AppLocalizations {
   String get promptActionOptionDenyOnce => 'Tiltás egyszer';
 
   @override
-  String get promptActionOptionDenyAlways => 'Deny always';
+  String get promptActionOptionDenyAlways => 'Tiltás mindig';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Deny until logout';
+  String get promptActionOptionDenyUntilLogout => 'Tiltás a kijelentkezésig';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Allow until logout';
+  String get promptActionOptionAllowUntilLogout =>
+      'Engedélyezés a kijelentkezésig';
 
   @override
   String get promptActionTitle => 'Művelet';
@@ -74,30 +75,31 @@ class AppLocalizationsHu extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Egyéni útvonalminta';
 
   @override
-  String get homeCustomPathSaveButton => 'Save custom path';
+  String get homeCustomPathSaveButton => 'Egyéni útvonal mentése';
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'The path pattern must start with /';
+      'Az útvonalmintának „/” karakterrel kell kezdődnie';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Matches any string of characters except /';
+      'A / kivételével bármely karakterekből álló karakterláncra illeszkedik';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Matches a single character';
+      'Önálló karakterre illeszkedik';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Matches zero or more folders and files recursively';
+      'Nulla vagy több mappára és fájlra illeszkedik rekurzívan';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription => 'Matches either x or y';
+  String get homeCustomPathWildcardCurlyDescription =>
+      'Vagy x-re, vagy y-ra illeszkedik';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Escapes special characters to treat them as literals';
+      'Elfedi a különleges karaktereket, hogy literálokként kezelje azokat';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Csak a kért mappa';
@@ -161,10 +163,11 @@ class AppLocalizationsHu extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataVerifiedAccountPrefix => 'This publisher has a ';
+  String get homePromptMetaDataVerifiedAccountPrefix =>
+      'Ez a közzétevő rendelkezik ';
 
   @override
-  String get homePromptMetaDataVerifiedAccountLink => 'verified account';
+  String get homePromptMetaDataVerifiedAccountLink => 'ellenőrzött fiókkal';
 
   @override
   String get homePromptMetaDataVerifiedAccountSuffix => '.';
@@ -178,14 +181,15 @@ class AppLocalizationsHu extends AppLocalizations {
   String get homePromptMoreOptionsLabel => 'További beállítások…';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'More options';
+  String get homePromptMoreOptionsTileLabel => 'További beállítások';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
       'Az alkalmazásközpont oldalának meglátogatása';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Open in App Center';
+  String get homePromptMetaDataAppCenterButton =>
+      'Megnyitás az alkalmazásközpontban';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,35 +203,35 @@ class AppLocalizationsHu extends AppLocalizations {
   String get homePromptPermissionsRead => 'Olvasás';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Read only';
+  String get homePromptPermissionsReadOnly => 'Csak olvasás';
 
   @override
   String get homePromptPermissionsWrite => 'Írás';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Write only';
+  String get homePromptPermissionsWriteOnly => 'Csak írás';
 
   @override
   String get homePromptPermissionsExecute => 'Végrehajtás';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Execute only';
+  String get homePromptPermissionsExecuteOnly => 'Csak végrehajtás';
 
   @override
   String get homePromptErrorUnknownTitle => 'Valami tönkre ment';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Allow $snapName to use your cameras?';
+    return 'Engedélyezi a(z) $snapName alkalmazásnak, hogy használja a kameráit?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Allow $snapName to use your microphones?';
+    return 'Engedélyezi a(z) $snapName alkalmazásnak, hogy használja a mikrofonjait?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Give $snapName $permissions access to files?';
+    return 'Ad a(z) $snapName alkalmazásnak $permissions hozzáférést a fájlokhoz?';
   }
 }
