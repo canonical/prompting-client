@@ -1,5 +1,5 @@
 {
-    "homePatternInfo": "<Learn about path patterns>",
+    "homePatternInfo": "<Pelajari tentang pola path>",
     "homePromptSuggestedPermission": "Juga beri akses {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
