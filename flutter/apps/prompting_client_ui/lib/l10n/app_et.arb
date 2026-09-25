@@ -190,7 +190,7 @@
     "homePromptPermissionsReadOnly": "Ainult loetav",
     "homePromptPermissionsWriteOnly": "Ainult kirjutatav",
     "homePromptPermissionsExecuteOnly": "Ainult käivitatav",
-    "homePromptTitleQuestion": "Kas annad „{snapName}“ paketile järgnevad õigused ligipääsuks failidele: „{permissions}“?",
+    "homePromptTitleQuestion": "Kas annad „{snapName}“ paketile „{permissions}“ tüüpi õigused ligipääsuks failidele?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
