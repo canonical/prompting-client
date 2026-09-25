@@ -188,7 +188,7 @@
             }
         }
     },
-    "homePromptTitleQuestion": "授予 {snapName} {permissions} 读取文件权限？",
+    "homePromptTitleQuestion": "授予 {snapName} 对文件的 {permissions} 访问权限？",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
