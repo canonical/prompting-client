@@ -8,7 +8,7 @@
             }
         }
     },
-    "promptAccessTitle": "Permita ao {snap} para acessar:",
+    "promptAccessTitle": "Conceder a {snap} acesso {permission} a:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
