@@ -177,7 +177,7 @@
     "promptActionOptionDenyUntilLogout": "აკრძალვა გასვლამდე",
     "homeCustomPathSaveButton": "მორგებული ბილიკის შენახვა",
     "homeCustomPathMustStartWithSlash": "ბილიკის ნიმუში უნდა იწყებოდეს სიმბოლოთი /",
-    "homeCustomPathWildcardStarDescription": "ემთხვევა ყველა სტრიქონის /-ის გარდა",
+    "homeCustomPathWildcardStarDescription": "ემთხვევა სიმბოლოების ნებისმიერ სტრიქონს, /-ის გარდა",
     "homeCustomPathWildcardQuestionDescription": "ემთხვევა ერთ სიმბოლოს",
     "homeCustomPathWildcardDoubleStarDescription": "ახდენს ნული, ან მეტი საქაღალდისა და ფაილის დამთხვევას რეკურსიულად",
     "homePromptMetaDataVerifiedAccountSuffix": ".",
