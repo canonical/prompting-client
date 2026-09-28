@@ -21,7 +21,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
-      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@f45615b7e809a5dac2c6f24cbca7cafe67df9831
         with:
           checkout: false
       - name: Install dependencies
