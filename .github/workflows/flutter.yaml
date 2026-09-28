@@ -11,7 +11,7 @@ jobs:
   l10n:
     runs-on: ubuntu-26.04
     steps:
-      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@f45615b7e809a5dac2c6f24cbca7cafe67df9831
       - run: melos generate
       - run: melos gen-l10n
       - name: Check for outdated l10n
@@ -30,7 +30,7 @@ jobs:
   test:
     runs-on: ubuntu-26.04
     steps:
-      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@f45615b7e809a5dac2c6f24cbca7cafe67df9831
       - run: sudo apt update && sudo apt install -y lcov
       - run: melos generate
       - run: melos coverage
@@ -41,7 +41,7 @@ jobs:
   prompting-client-ui:
     runs-on: ubuntu-26.04
     steps:
-      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@e1069c189573b3525a60f54c5107ea3264f80805
+      - uses: canonical/desktop-engineering/gh-actions/flutter/setup@f45615b7e809a5dac2c6f24cbca7cafe67df9831
       - run: melos generate
       - name: Install dependencies
         run: sudo apt update && sudo apt install -y clang cmake gsettings-desktop-schemas libglib2.0-dev libgtk-3-dev liblzma-dev ninja-build pkg-config xvfb
