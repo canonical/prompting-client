@@ -26,7 +26,7 @@ jobs:
       pull-requests: write
       issues: write
       actions: write
-    uses: canonical/translations-verifier/.github/workflows/wlreviser-bot.yaml@1f003bd15f94b641cf08e99d1423b418c66e004c # v0.3.0
+    uses: canonical/translations-verifier/.github/workflows/wlreviser-bot.yaml@45364c7d368cef9eb2d218aa08dc7a20fa2f2cdc # v0.3.1
     with:
       allowed-pr-authors: '["weblate"]'
     secrets:
