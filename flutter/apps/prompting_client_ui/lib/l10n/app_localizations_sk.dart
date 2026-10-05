@@ -19,7 +19,7 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Udeliť $snap $permission prístup k:';
+    return 'Udeliť $snap na $permission prístup k:';
   }
 
   @override
