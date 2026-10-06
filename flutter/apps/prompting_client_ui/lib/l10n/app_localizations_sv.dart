@@ -41,11 +41,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get promptActionOptionDenyAlways => 'Neka alltid';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Neka till nästa utloggning';
+  String get promptActionOptionDenyUntilLogout => 'Neka tills du loggar ut';
 
   @override
-  String get promptActionOptionAllowUntilLogout =>
-      'Tillåt fram till utloggning';
+  String get promptActionOptionAllowUntilLogout => 'Tillåt tills du loggar ut';
 
   @override
   String get promptActionTitle => 'Åtgärd';
@@ -54,13 +53,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get promptLifespanOptionForever => 'Alltid';
 
   @override
-  String get promptLifespanOptionSession => 'Tills utloggning';
+  String get promptLifespanOptionSession => 'Tills du loggar ut';
 
   @override
   String get promptLifespanOptionSingle => 'En gång';
 
   @override
-  String get promptLifespanTitle => 'Varaktighet';
+  String get promptLifespanTitle => 'Giltighetstid';
 
   @override
   String get promptSaveAndContinue => 'Spara och fortsätt';
@@ -75,10 +74,11 @@ class AppLocalizationsSv extends AppLocalizations {
   String get homePatternTypeCustomPath => 'Anpassat sökvägsmönster';
 
   @override
-  String get homeCustomPathSaveButton => 'Spara egen sökväg';
+  String get homeCustomPathSaveButton => 'Spara anpassad sökväg';
 
   @override
-  String get homeCustomPathMustStartWithSlash => 'Sökvägen måste inledas med /';
+  String get homeCustomPathMustStartWithSlash =>
+      'Sökvägsmönstret måste börja med /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
@@ -98,7 +98,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Gör undantag för specialtecken och behandlar dem som vanlig text';
+      'Escape-tecken behandlar specialtecken som bokstavliga tecken';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Endast begärd mapp';
@@ -108,17 +108,17 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String homePatternTypeTopLevelDirectory(String topLevelDir) {
-    return 'Allting i $topLevelDir-mappen';
+    return 'Allt i mappen $topLevelDir';
   }
 
   @override
-  String get homePatternTypeRequestedDirectoryContents => 'Allting i mappen';
+  String get homePatternTypeRequestedDirectoryContents => 'Allt i mappen';
 
   @override
-  String get homePatternTypeContainingDirectory => 'Allting i mappen';
+  String get homePatternTypeContainingDirectory => 'Allt i mappen';
 
   @override
-  String get homePatternTypeHomeDirectory => 'Allting i hemkatalogen';
+  String get homePatternTypeHomeDirectory => 'Allt i hemkatalogen';
 
   @override
   String homePatternTypeMatchingFileExtension(String fileExtension) {
@@ -144,13 +144,13 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap vill få $permissions-åtkomst till din hemmapp.';
+    return '$snap vill ha $permissions-åtkomst till din hemkatalog.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap vill få $permissions-åtkomst till $filename i din hemmapp.';
+    return '$snap vill ha $permissions-åtkomst till $filename i din hemkatalog.';
   }
 
   @override
@@ -158,7 +158,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
-    return 'Publicerad av $publisher';
+    return 'Utgiven av $publisher';
   }
 
   @override
@@ -176,16 +176,16 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'Fler alternativ...';
+  String get homePromptMoreOptionsLabel => 'Fler alternativ…';
 
   @override
   String get homePromptMoreOptionsTileLabel => 'Fler alternativ';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Visa Appcentral-sidan';
+  String get homePromptMetaDataAppCenterLink => 'Visa sidan i Appcenter';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Öppna i Appcentralen';
+  String get homePromptMetaDataAppCenterButton => 'Öppna i Appcenter';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -199,22 +199,22 @@ class AppLocalizationsSv extends AppLocalizations {
   String get homePromptPermissionsRead => 'Läs';
 
   @override
-  String get homePromptPermissionsReadOnly => 'Läs endast';
+  String get homePromptPermissionsReadOnly => 'Endast läsning';
 
   @override
   String get homePromptPermissionsWrite => 'Skriv';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Skriv endast';
+  String get homePromptPermissionsWriteOnly => 'Endast skrivning';
 
   @override
-  String get homePromptPermissionsExecute => 'Exekvera';
+  String get homePromptPermissionsExecute => 'Kör';
 
   @override
-  String get homePromptPermissionsExecuteOnly => 'Exekvera endast';
+  String get homePromptPermissionsExecuteOnly => 'Endast körning';
 
   @override
-  String get homePromptErrorUnknownTitle => 'Någonting gick fel';
+  String get homePromptErrorUnknownTitle => 'Något gick fel';
 
   @override
   String cameraPromptBody(String snapName) {
@@ -228,6 +228,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Ge $snapName åtkomstnivå $permissions till filer?';
+    return 'Ge $snapName $permissions-åtkomst till filer?';
   }
 }
