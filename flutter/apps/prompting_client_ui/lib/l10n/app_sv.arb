@@ -25,19 +25,19 @@
     "promptActionOptionDenyOnce": "Neka en gång",
     "promptActionTitle": "Åtgärd",
     "promptLifespanOptionForever": "Alltid",
-    "promptLifespanOptionSession": "Tills utloggning",
+    "promptLifespanOptionSession": "Tills du loggar ut",
     "promptLifespanOptionSingle": "En gång",
-    "promptLifespanTitle": "Varaktighet",
+    "promptLifespanTitle": "Giltighetstid",
     "promptSaveAndContinue": "Spara och fortsätt",
     "promptTitle": "Säkerhetsavisering",
     "homePatternTypeRequestedDirectory": "Endast begärd mapp",
     "homePatternTypeRequestedFile": "Endast begärd fil",
-    "homePatternTypeRequestedDirectoryContents": "Allting i mappen",
-    "homePatternTypeContainingDirectory": "Allting i mappen",
-    "homePatternTypeHomeDirectory": "Allting i hemkatalogen",
+    "homePatternTypeRequestedDirectoryContents": "Allt i mappen",
+    "homePatternTypeContainingDirectory": "Allt i mappen",
+    "homePatternTypeHomeDirectory": "Allt i hemkatalogen",
     "homePatternTypeMatchingFileExtension": "Alla {fileExtension}-filer",
     "homePromptMetaDataTitle": "Om detta program",
-    "homePromptMetaDataPublishedBy": "Publicerad av {publisher}",
+    "homePromptMetaDataPublishedBy": "Utgiven av {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
             "publisher": {
@@ -53,12 +53,12 @@
             }
         }
     },
-    "homePromptMoreOptionsLabel": "Fler alternativ...",
+    "homePromptMoreOptionsLabel": "Fler alternativ…",
     "homePromptPermissionsRead": "Läs",
     "homePromptPermissionsWrite": "Skriv",
     "homePatternTypeCustomPath": "Anpassat sökvägsmönster",
     "homePatternInfo": "<Läs mer om sökvägsmönster>",
-    "homePatternTypeTopLevelDirectory": "Allting i {topLevelDir}-mappen",
+    "homePatternTypeTopLevelDirectory": "Allt i mappen {topLevelDir}",
     "@homePatternTypeTopLevelDirectory": {
         "placeholders": {
             "topLevelDir": {
@@ -80,9 +80,9 @@
             }
         }
     },
-    "homePromptMetaDataAppCenterLink": "Visa Appcentral-sidan",
+    "homePromptMetaDataAppCenterLink": "Visa sidan i Appcenter",
     "homePromptPermissionsTitle": "Behörigheter",
-    "homePromptPermissionsExecute": "Exekvera",
+    "homePromptPermissionsExecute": "Kör",
     "promptActionOptionAllowOnce": "Tillåt en gång",
     "homePromptSuggestedPermission": "Ge också {permission}-åtkomst",
     "@homePromptSuggestedPermission": {
@@ -92,7 +92,7 @@
             }
         }
     },
-    "homePromptErrorUnknownTitle": "Någonting gick fel",
+    "homePromptErrorUnknownTitle": "Något gick fel",
     "homePromptTopLevelDirFileBody": "{snap} vill få {permissions}-åtkomst till {filename} i mappen {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
@@ -110,7 +110,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} vill få {permissions}-åtkomst till din hemmapp.",
+    "homePromptHomeDirBody": "{snap} vill ha {permissions}-åtkomst till din hemkatalog.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -149,7 +149,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} vill få {permissions}-åtkomst till {filename} i din hemmapp.",
+    "homePromptHomeDirFileBody": "{snap} vill ha {permissions}-åtkomst till {filename} i din hemkatalog.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -163,7 +163,7 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Tillåt fram till utloggning",
+    "promptActionOptionAllowUntilLogout": "Tillåt tills du loggar ut",
     "cameraPromptBody": "Tillåt {snapName} att använda dina kameror?",
     "@cameraPromptBody": {
         "placeholders": {
@@ -181,23 +181,23 @@
         }
     },
     "promptActionOptionDenyAlways": "Neka alltid",
-    "promptActionOptionDenyUntilLogout": "Neka till nästa utloggning",
-    "homeCustomPathSaveButton": "Spara egen sökväg",
-    "homeCustomPathMustStartWithSlash": "Sökvägen måste inledas med /",
+    "promptActionOptionDenyUntilLogout": "Neka tills du loggar ut",
+    "homeCustomPathSaveButton": "Spara anpassad sökväg",
+    "homeCustomPathMustStartWithSlash": "Sökvägsmönstret måste börja med /",
     "homeCustomPathWildcardStarDescription": "Matchar alla teckensträngar förutom /",
     "homeCustomPathWildcardQuestionDescription": "Matchar enstaka tecken",
     "homeCustomPathWildcardDoubleStarDescription": "Matchar noll eller flera mappar och filer rekursivt",
     "homeCustomPathWildcardCurlyDescription": "Matchar antingen x eller y",
-    "homeCustomPathWildcardBackslashDescription": "Gör undantag för specialtecken och behandlar dem som vanlig text",
+    "homeCustomPathWildcardBackslashDescription": "Escape-tecken behandlar specialtecken som bokstavliga tecken",
     "homePromptMetaDataVerifiedAccountPrefix": "Utgivaren har ett ",
     "homePromptMetaDataVerifiedAccountLink": "verifierat konto",
     "homePromptMetaDataVerifiedAccountSuffix": ".",
     "homePromptMoreOptionsTileLabel": "Fler alternativ",
-    "homePromptMetaDataAppCenterButton": "Öppna i Appcentralen",
-    "homePromptPermissionsReadOnly": "Läs endast",
-    "homePromptPermissionsWriteOnly": "Skriv endast",
-    "homePromptPermissionsExecuteOnly": "Exekvera endast",
-    "homePromptTitleQuestion": "Ge {snapName} åtkomstnivå {permissions} till filer?",
+    "homePromptMetaDataAppCenterButton": "Öppna i Appcenter",
+    "homePromptPermissionsReadOnly": "Endast läsning",
+    "homePromptPermissionsWriteOnly": "Endast skrivning",
+    "homePromptPermissionsExecuteOnly": "Endast körning",
+    "homePromptTitleQuestion": "Ge {snapName} {permissions}-åtkomst till filer?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
