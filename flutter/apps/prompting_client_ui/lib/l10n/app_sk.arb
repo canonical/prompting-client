@@ -1,5 +1,5 @@
 {
-    "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap}:",
+    "promptAccessMoreOptionsTitle": "Nastaviť prístup pre {snap} na:",
     "@promptAccessMoreOptionsTitle": {
         "placeholders": {
             "snap": {
@@ -8,13 +8,13 @@
         }
     },
     "promptActionOptionAllow": "Povoliť",
-    "promptActionOptionDeny": "Odmietnuť",
-    "promptActionOptionDenyOnce": "Raz odmietnuť",
+    "promptActionOptionDeny": "Zamietnuť",
+    "promptActionOptionDenyOnce": "Zamietnuť raz",
     "promptActionTitle": "Akcia",
     "promptLifespanOptionForever": "Vždy",
     "promptLifespanOptionSession": "Do odhlásenia",
     "promptLifespanOptionSingle": "Raz",
-    "promptLifespanTitle": "Doba trvania",
+    "promptLifespanTitle": "Trvanie",
     "promptSaveAndContinue": "Uložiť a pokračovať",
     "promptTitle": "Bezpečnostné upozornenie",
     "homePatternTypeCustomPath": "Vlastný vzor cesty",
@@ -32,7 +32,7 @@
     "homePatternTypeHomeDirectory": "Všetko v domovskom priečinku",
     "homePatternTypeMatchingFileExtension": "Všetky súbory {fileExtension}",
     "homePromptMetaDataTitle": "O tejto aplikácii",
-    "homePromptMetaDataPublishedBy": "Vydavateľ {publisher}",
+    "homePromptMetaDataPublishedBy": "Vydal {publisher}",
     "@homePromptMetaDataPublishedBy": {
         "placeholders": {
             "publisher": {
@@ -48,14 +48,14 @@
             }
         }
     },
-    "homePromptMetaDataAppCenterLink": "Navštíviť stránku Centra aplikácií",
-    "homePromptPermissionsTitle": "Oprávnenia",
+    "homePromptMetaDataAppCenterLink": "Navštíviť stránku v Centre aplikácií",
+    "homePromptPermissionsTitle": "Povolenia",
     "homePromptPermissionsRead": "Čítanie",
-    "homePromptPermissionsWrite": "Zápis",
+    "homePromptPermissionsWrite": "Zapisovanie",
     "homePromptPermissionsExecute": "Spúšťanie",
-    "securityCenterInfo": "Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
-    "promptActionOptionAllowAlways": "Vždy povoliť",
-    "promptAccessTitle": "Udeliť {snap} na {permission} prístup k:",
+    "securityCenterInfo": "Tieto povolenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>",
+    "promptActionOptionAllowAlways": "Povoliť vždy",
+    "promptAccessTitle": "Udeliť {snap} prístup na {permission} k:",
     "@promptAccessTitle": {
         "placeholders": {
             "snap": {
@@ -66,7 +66,7 @@
             }
         }
     },
-    "homePatternInfo": "<Zistiť viac o vzoroch ciest>",
+    "homePatternInfo": "<Ďalšie informácie o vzoroch ciest>",
     "homePatternTypeRequestedFile": "Iba požadovaný súbor",
     "homePromptBody": "Povoliť {snap} mať na {permissions} prístup k {path}?",
     "@homePromptBody": {
@@ -82,9 +82,9 @@
             }
         }
     },
-    "homePromptMoreOptionsLabel": "Viac možností...",
-    "promptActionOptionAllowOnce": "Raz povoliť",
-    "homePromptSuggestedPermission": "Udeliť prístup aj na {permission}",
+    "homePromptMoreOptionsLabel": "Ďalšie možnosti...",
+    "promptActionOptionAllowOnce": "Povoliť raz",
+    "homePromptSuggestedPermission": "Udeliť aj prístup na {permission}",
     "@homePromptSuggestedPermission": {
         "placeholders": {
             "permission": {
@@ -93,7 +93,7 @@
         }
     },
     "homePromptErrorUnknownTitle": "Niečo sa pokazilo",
-    "homePromptTopLevelDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v priečinku {foldername}.",
+    "homePromptTopLevelDirFileBody": "{snap} chce získať prístup na {permissions} k {filename} v priečinku {foldername}.",
     "@homePromptTopLevelDirFileBody": {
         "placeholders": {
             "snap": {
@@ -110,7 +110,7 @@
             }
         }
     },
-    "homePromptHomeDirBody": "{snap} žiada o prístup na {permissions} k domovskému priečinku.",
+    "homePromptHomeDirBody": "{snap} chce získať prístup na {permissions} k vášmu domovskému priečinku.",
     "@homePromptHomeDirBody": {
         "placeholders": {
             "snap": {
@@ -121,7 +121,7 @@
             }
         }
     },
-    "homePromptTopLevelDirBody": "{snap} žiada o prístup na {permissions} k priečinku {foldername}.",
+    "homePromptTopLevelDirBody": "{snap} chce získať prístup na {permissions} k priečinku {foldername}.",
     "@homePromptTopLevelDirBody": {
         "placeholders": {
             "snap": {
@@ -135,7 +135,7 @@
             }
         }
     },
-    "homePromptHomeDirFileBody": "{snap} žiada o prístup na {permissions} k súboru {filename} v domovskom priečinku.",
+    "homePromptHomeDirFileBody": "{snap} chce získať prístup na {permissions} k {filename} vo vašom domovskom priečinku.",
     "@homePromptHomeDirFileBody": {
         "placeholders": {
             "snap": {
@@ -149,7 +149,7 @@
             }
         }
     },
-    "homePromptDefaultBody": "{snap} žiada o prístup na {permissions} k {path}",
+    "homePromptDefaultBody": "{snap} chce získať prístup na {permissions} k {path}",
     "@homePromptDefaultBody": {
         "placeholders": {
             "snap": {
@@ -164,7 +164,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Povoliť do odhlásenia",
-    "cameraPromptBody": "Povoliť {snapName} prístup ku kamerám?",
+    "cameraPromptBody": "Povoliť aplikácii {snapName} používať vaše kamery?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,7 +172,7 @@
             }
         }
     },
-    "microphonePromptBody": "Povoliť {snapName} prístup k mikrofónom?",
+    "microphonePromptBody": "Povoliť aplikácii {snapName} používať vaše mikrofóny?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -180,24 +180,24 @@
             }
         }
     },
-    "promptActionOptionDenyAlways": "Vždy odmietnuť",
-    "promptActionOptionDenyUntilLogout": "Odmietnuť do odhlásenia",
+    "promptActionOptionDenyAlways": "Zamietnuť vždy",
+    "promptActionOptionDenyUntilLogout": "Zamietnuť do odhlásenia",
     "homeCustomPathSaveButton": "Uložiť vlastnú cestu",
-    "homeCustomPathMustStartWithSlash": "Vzor cesty musí začínať znakom /",
-    "homeCustomPathWildcardStarDescription": "Zodpovedá ľubovoľnému reťazcu znakov okrem /",
-    "homeCustomPathWildcardQuestionDescription": "Zodpovedá jednému znaku",
-    "homeCustomPathWildcardDoubleStarDescription": "Zodpovedá nule alebo viacerým priečinkom a súborom rekurzívne",
-    "homeCustomPathWildcardCurlyDescription": "Zodpovedá buď x alebo y",
-    "homeCustomPathWildcardBackslashDescription": "Zruší špeciálny význam znakov, aby sa považovali za bežný text",
+    "homeCustomPathMustStartWithSlash": "Vzor cesty sa musí začínať znakom /",
+    "homeCustomPathWildcardStarDescription": "Zhoduje sa s akýmkoľvek reťazcom znakov okrem /",
+    "homeCustomPathWildcardQuestionDescription": "Zhoduje sa s jedným znakom",
+    "homeCustomPathWildcardDoubleStarDescription": "Zhoduje sa s nulou alebo viacerými priečinkami a súbormi rekurzívne",
+    "homeCustomPathWildcardCurlyDescription": "Zhoduje sa s x alebo y",
+    "homeCustomPathWildcardBackslashDescription": "Umožňuje interpretovať špeciálne znaky ako obyčajné",
     "homePromptMetaDataVerifiedAccountPrefix": "Tento vydavateľ má ",
     "homePromptMetaDataVerifiedAccountLink": "overený účet",
     "homePromptMetaDataVerifiedAccountSuffix": ".",
-    "homePromptMoreOptionsTileLabel": "Viac možností",
+    "homePromptMoreOptionsTileLabel": "Ďalšie možnosti",
     "homePromptMetaDataAppCenterButton": "Otvoriť v Centre aplikácií",
     "homePromptPermissionsReadOnly": "Iba na čítanie",
-    "homePromptPermissionsWriteOnly": "Iba na zápis",
+    "homePromptPermissionsWriteOnly": "Iba na zapisovanie",
     "homePromptPermissionsExecuteOnly": "Iba na spúšťanie",
-    "homePromptTitleQuestion": "Udeliť {snapName} prístup na {permissions} k súborom?",
+    "homePromptTitleQuestion": "Udeliť aplikácii {snapName} prístup na {permissions} k súborom?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
