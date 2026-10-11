@@ -10,38 +10,38 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get securityCenterInfo =>
-      'Tieto oprávnenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>';
+      'Tieto povolenia môžete kedykoľvek zmeniť v <Centre zabezpečenia>';
 
   @override
   String promptAccessMoreOptionsTitle(String snap) {
-    return 'Nastaviť prístup pre $snap:';
+    return 'Nastaviť prístup pre $snap na:';
   }
 
   @override
   String promptAccessTitle(String snap, String permission) {
-    return 'Udeliť $snap na $permission prístup k:';
+    return 'Udeliť $snap prístup na $permission k:';
   }
 
   @override
   String get promptActionOptionAllow => 'Povoliť';
 
   @override
-  String get promptActionOptionAllowAlways => 'Vždy povoliť';
+  String get promptActionOptionAllowAlways => 'Povoliť vždy';
 
   @override
-  String get promptActionOptionAllowOnce => 'Raz povoliť';
+  String get promptActionOptionAllowOnce => 'Povoliť raz';
 
   @override
-  String get promptActionOptionDeny => 'Odmietnuť';
+  String get promptActionOptionDeny => 'Zamietnuť';
 
   @override
-  String get promptActionOptionDenyOnce => 'Raz odmietnuť';
+  String get promptActionOptionDenyOnce => 'Zamietnuť raz';
 
   @override
-  String get promptActionOptionDenyAlways => 'Vždy odmietnuť';
+  String get promptActionOptionDenyAlways => 'Zamietnuť vždy';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Odmietnuť do odhlásenia';
+  String get promptActionOptionDenyUntilLogout => 'Zamietnuť do odhlásenia';
 
   @override
   String get promptActionOptionAllowUntilLogout => 'Povoliť do odhlásenia';
@@ -59,7 +59,7 @@ class AppLocalizationsSk extends AppLocalizations {
   String get promptLifespanOptionSingle => 'Raz';
 
   @override
-  String get promptLifespanTitle => 'Doba trvania';
+  String get promptLifespanTitle => 'Trvanie';
 
   @override
   String get promptSaveAndContinue => 'Uložiť a pokračovať';
@@ -68,7 +68,7 @@ class AppLocalizationsSk extends AppLocalizations {
   String get promptTitle => 'Bezpečnostné upozornenie';
 
   @override
-  String get homePatternInfo => '<Zistiť viac o vzoroch ciest>';
+  String get homePatternInfo => '<Ďalšie informácie o vzoroch ciest>';
 
   @override
   String get homePatternTypeCustomPath => 'Vlastný vzor cesty';
@@ -78,27 +78,26 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get homeCustomPathMustStartWithSlash =>
-      'Vzor cesty musí začínať znakom /';
+      'Vzor cesty sa musí začínať znakom /';
 
   @override
   String get homeCustomPathWildcardStarDescription =>
-      'Zodpovedá ľubovoľnému reťazcu znakov okrem /';
+      'Zhoduje sa s akýmkoľvek reťazcom znakov okrem /';
 
   @override
   String get homeCustomPathWildcardQuestionDescription =>
-      'Zodpovedá jednému znaku';
+      'Zhoduje sa s jedným znakom';
 
   @override
   String get homeCustomPathWildcardDoubleStarDescription =>
-      'Zodpovedá nule alebo viacerým priečinkom a súborom rekurzívne';
+      'Rekurzívne sa zhoduje s nulou alebo viacerými priečinkami a súbormi';
 
   @override
-  String get homeCustomPathWildcardCurlyDescription =>
-      'Zodpovedá buď x alebo y';
+  String get homeCustomPathWildcardCurlyDescription => 'Zhoduje sa s x alebo y';
 
   @override
   String get homeCustomPathWildcardBackslashDescription =>
-      'Zruší špeciálny význam znakov, aby sa považovali za bežný text';
+      'Umožňuje interpretovať špeciálne znaky ako obyčajné';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Iba požadovaný priečinok';
@@ -139,18 +138,18 @@ class AppLocalizationsSk extends AppLocalizations {
   @override
   String homePromptTopLevelDirFileBody(
       String snap, String permissions, String filename, String foldername) {
-    return '$snap žiada o prístup na $permissions k súboru $filename v priečinku $foldername.';
+    return '$snap žiada o prístup na $permissions k $filename v priečinku $foldername.';
   }
 
   @override
   String homePromptHomeDirBody(String snap, String permissions) {
-    return '$snap žiada o prístup na $permissions k domovskému priečinku.';
+    return '$snap žiada o prístup na $permissions k vášmu domovskému priečinku.';
   }
 
   @override
   String homePromptHomeDirFileBody(
       String snap, String permissions, String filename) {
-    return '$snap žiada o prístup na $permissions k súboru $filename v domovskom priečinku.';
+    return '$snap žiada o prístup na $permissions k $filename vo vašom domovskom priečinku.';
   }
 
   @override
@@ -176,25 +175,25 @@ class AppLocalizationsSk extends AppLocalizations {
   }
 
   @override
-  String get homePromptMoreOptionsLabel => 'Viac možností...';
+  String get homePromptMoreOptionsLabel => 'Ďalšie možnosti...';
 
   @override
-  String get homePromptMoreOptionsTileLabel => 'Viac možností';
+  String get homePromptMoreOptionsTileLabel => 'Ďalšie možnosti';
 
   @override
   String get homePromptMetaDataAppCenterLink =>
-      'Navštíviť stránku Centra aplikácií';
+      'Navštíviť stránku v Centre aplikácií';
 
   @override
   String get homePromptMetaDataAppCenterButton => 'Otvoriť v Centre aplikácií';
 
   @override
   String homePromptSuggestedPermission(String permission) {
-    return 'Udeliť prístup aj na $permission';
+    return 'Udeliť aj prístup na $permission';
   }
 
   @override
-  String get homePromptPermissionsTitle => 'Oprávnenia';
+  String get homePromptPermissionsTitle => 'Povolenia';
 
   @override
   String get homePromptPermissionsRead => 'Čítanie';
@@ -203,10 +202,10 @@ class AppLocalizationsSk extends AppLocalizations {
   String get homePromptPermissionsReadOnly => 'Iba na čítanie';
 
   @override
-  String get homePromptPermissionsWrite => 'Zápis';
+  String get homePromptPermissionsWrite => 'Zapisovanie';
 
   @override
-  String get homePromptPermissionsWriteOnly => 'Iba na zápis';
+  String get homePromptPermissionsWriteOnly => 'Iba na zapisovanie';
 
   @override
   String get homePromptPermissionsExecute => 'Spúšťanie';
@@ -219,16 +218,16 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Povoliť $snapName prístup ku kamerám?';
+    return 'Povoliť aplikácii $snapName používať vaše kamery?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Povoliť $snapName prístup k mikrofónom?';
+    return 'Povoliť aplikácii $snapName používať vaše mikrofóny?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Udeliť $snapName prístup na $permissions k súborom?';
+    return 'Udeliť aplikácii $snapName prístup na $permissions k súborom?';
   }
 }
