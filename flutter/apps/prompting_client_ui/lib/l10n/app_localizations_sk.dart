@@ -218,16 +218,16 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Povoliť aplikácii $snapName používať vaše kamery?';
+    return 'Povoliť $snapName používať vaše kamery?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Povoliť aplikácii $snapName používať vaše mikrofóny?';
+    return 'Povoliť $snapName používať vaše mikrofóny?';
   }
 
   @override
   String homePromptTitleQuestion(String snapName, String permissions) {
-    return 'Udeliť aplikácii $snapName prístup na $permissions k súborom?';
+    return 'Udeliť $snapName prístup na $permissions k súborom?';
   }
 }

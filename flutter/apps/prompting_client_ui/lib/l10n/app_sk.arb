@@ -164,7 +164,7 @@
         }
     },
     "promptActionOptionAllowUntilLogout": "Povoliť do odhlásenia",
-    "cameraPromptBody": "Povoliť aplikácii {snapName} používať vaše kamery?",
+    "cameraPromptBody": "Povoliť {snapName} používať vaše kamery?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -172,7 +172,7 @@
             }
         }
     },
-    "microphonePromptBody": "Povoliť aplikácii {snapName} používať vaše mikrofóny?",
+    "microphonePromptBody": "Povoliť {snapName} používať vaše mikrofóny?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
@@ -197,7 +197,7 @@
     "homePromptPermissionsReadOnly": "Iba na čítanie",
     "homePromptPermissionsWriteOnly": "Iba na zapisovanie",
     "homePromptPermissionsExecuteOnly": "Iba na spúšťanie",
-    "homePromptTitleQuestion": "Udeliť aplikácii {snapName} prístup na {permissions} k súborom?",
+    "homePromptTitleQuestion": "Udeliť {snapName} prístup na {permissions} k súborom?",
     "@homePromptTitleQuestion": {
         "placeholders": {
             "snapName": {
