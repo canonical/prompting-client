@@ -157,7 +157,7 @@
     "homePromptPermissionsWrite": "Escreva",
     "homePromptPermissionsExecute": "Execute",
     "homePromptErrorUnknownTitle": "Algo deu errado",
-    "cameraPromptBody": "Permitir que {snapName} acesse sua câmera?",
+    "cameraPromptBody": "Permitir que {snapName} use sua câmera?",
     "@cameraPromptBody": {
         "placeholders": {
             "snapName": {
@@ -165,10 +165,38 @@
             }
         }
     },
-    "microphonePromptBody": "Permitir que {snapName} acesse seu microfone?",
+    "microphonePromptBody": "Permitir que {snapName} use seu microfone?",
     "@microphonePromptBody": {
         "placeholders": {
             "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "promptActionOptionDenyAlways": "Sempre negar",
+    "promptActionOptionDenyUntilLogout": "Negar até sair",
+    "homeCustomPathSaveButton": "Salvar caminho personalizado",
+    "homeCustomPathMustStartWithSlash": "O padrão do caminho deve começar com /",
+    "homeCustomPathWildcardStarDescription": "Corresponde a qualquer sequência de caracteres, exceto /",
+    "homeCustomPathWildcardQuestionDescription": "Corresponde a um único caractere",
+    "homeCustomPathWildcardDoubleStarDescription": "Corresponde a zero ou mais pastas e arquivos recursivamente",
+    "homeCustomPathWildcardCurlyDescription": "Corresponde a x ou y",
+    "homeCustomPathWildcardBackslashDescription": "Substitui caracteres especiais para tratá-los como literais",
+    "homePromptMetaDataVerifiedAccountPrefix": "Este editor tem um ",
+    "homePromptMetaDataVerifiedAccountLink": "conta verificada",
+    "homePromptMetaDataVerifiedAccountSuffix": ".",
+    "homePromptMoreOptionsTileLabel": "Mais opções",
+    "homePromptMetaDataAppCenterButton": "Abrir no App Center",
+    "homePromptPermissionsReadOnly": "Somente leitura",
+    "homePromptPermissionsWriteOnly": "Somente escrita",
+    "homePromptPermissionsExecuteOnly": "Somente execução",
+    "homePromptTitleQuestion": "Dar a {permissions} de acesso aos arquivos ao {snapName}?",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
                 "type": "String"
             }
         }
