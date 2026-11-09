@@ -23,6 +23,7 @@ apps:
       - camera
       - audio-playback
       - audio-record
+      - gsettings
       - snap-interfaces-requests-control
 
   echo:
