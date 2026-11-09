@@ -46,7 +46,7 @@
     "homePromptPermissionsRead": "legi",
     "promptActionOptionAllow": "Permesi",
     "promptActionOptionDeny": "Malpermesi",
-    "homePromptMetaDataTitle": "Pri ĉi tiu programo",
+    "homePromptMetaDataTitle": "Pri ĉi tiu apo",
     "promptActionOptionAllowAlways": "Permesi ĉiam",
     "promptActionOptionDenyOnce": "Malpermesi unu fojon",
     "promptLifespanOptionSingle": "Unu fojon",
@@ -66,7 +66,7 @@
             }
         }
     },
-    "homePromptMetaDataAppCenterLink": "Viziti paĝon ĉe App Center",
+    "homePromptMetaDataAppCenterLink": "Viziti paĝon ĉe Apocentro",
     "homePatternTypeRequestedDirectoryContents": "Ĉio en la dosierujo",
     "homePatternTypeContainingDirectory": "Ĉio en la dosierujo",
     "homePatternTypeHomeDirectory": "Ĉio en la hejma dosierujo",
@@ -188,7 +188,7 @@
     "homePromptPermissionsReadOnly": "Nur legi",
     "homePromptPermissionsWriteOnly": "Nur skribi",
     "homePromptPermissionsExecuteOnly": "Nur ruli",
-    "homePromptMetaDataAppCenterButton": "Malfermi per Programcentro",
+    "homePromptMetaDataAppCenterButton": "Malfermi per Apocentro",
     "homeCustomPathSaveButton": "Konservi propran dosiervojon",
     "homeCustomPathMustStartWithSlash": "La dosiervojo devas komenciĝi per /",
     "homeCustomPathWildcardStarDescription": "Kongruas kun ajna sinsekvo de skribsignoj krom /",
