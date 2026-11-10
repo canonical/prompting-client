@@ -50,7 +50,7 @@ bounce-snapd: disable-prompting clean-request-rules enable-prompting
 create-or-start-vm:
 	@if ! lxc info $(VM_NAME) 2>/dev/null ; then \
 		echo ":: Creating VM ($(VM_NAME))..."; \
-		lxc launch images:ubuntu/24.04/desktop $(VM_NAME) \
+		lxc launch images:ubuntu/26.04/desktop $(VM_NAME) \
 			--vm \
 			-c limits.cpu=4 \
 			-c limits.memory=4GiB; \
@@ -76,10 +76,10 @@ create-or-start-vm:
 	@lxc exec $(VM_NAME) -- grep '^VERSION=' squashfs-root/usr/lib/snapd/info
 	@lxc exec $(VM_NAME) -- snap pack squashfs-root
 	@lxc exec $(VM_NAME) -- sh -c 'snap install --dangerous snapd_1337.*.snap'
-	@echo ":: Snap version in VM ($(VM_NAME)) should be real version from latest/edge, not 1337 or +ubuntu24.04..."
+	@echo ":: Snap version in VM ($(VM_NAME)) should be real version from latest/edge, not 1337 or +ubuntu26.04..."
 	@lxc exec $(VM_NAME) -- snap version
 	@echo ":: Installing the app center..."
-	@lxc exec $(VM_NAME) -- snap install snap-store --channel=latest/stable/ubuntu-24.04
+	@lxc exec $(VM_NAME) -- snap install snap-store --channel=latest/stable/ubuntu-26.04
 
 .PHONY: enable-debug
 enable-debug:
