@@ -153,7 +153,7 @@ class AppLocalizationsEo extends AppLocalizations {
   }
 
   @override
-  String get homePromptMetaDataTitle => 'Pri ĉi tiu programo';
+  String get homePromptMetaDataTitle => 'Pri ĉi tiu apo';
 
   @override
   String homePromptMetaDataPublishedBy(String publisher) {
@@ -182,10 +182,10 @@ class AppLocalizationsEo extends AppLocalizations {
   String get homePromptMoreOptionsTileLabel => 'Pliaj opcioj';
 
   @override
-  String get homePromptMetaDataAppCenterLink => 'Viziti paĝon ĉe App Center';
+  String get homePromptMetaDataAppCenterLink => 'Viziti paĝon ĉe Apocentro';
 
   @override
-  String get homePromptMetaDataAppCenterButton => 'Malfermi per Programcentro';
+  String get homePromptMetaDataAppCenterButton => 'Malfermi per Apocentro';
 
   @override
   String homePromptSuggestedPermission(String permission) {
