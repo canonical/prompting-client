@@ -41,10 +41,10 @@ class AppLocalizationsEo extends AppLocalizations {
   String get promptActionOptionDenyAlways => 'Malpermesi ĉiam';
 
   @override
-  String get promptActionOptionDenyUntilLogout => 'Malpermesi ĝis adiaŭo';
+  String get promptActionOptionDenyUntilLogout => 'Malpermesi ĝis elsaluto';
 
   @override
-  String get promptActionOptionAllowUntilLogout => 'Permesi ĝis adiaŭo';
+  String get promptActionOptionAllowUntilLogout => 'Permesi ĝis elsaluto';
 
   @override
   String get promptActionTitle => 'Ago';
@@ -53,7 +53,7 @@ class AppLocalizationsEo extends AppLocalizations {
   String get promptLifespanOptionForever => 'Ĉiam';
 
   @override
-  String get promptLifespanOptionSession => 'Ĝis adiaŭo';
+  String get promptLifespanOptionSession => 'Ĝis elsaluto';
 
   @override
   String get promptLifespanOptionSingle => 'Unu fojon';
