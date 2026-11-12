@@ -68,6 +68,12 @@ jobs:
           v4l2-ctl --list-devices
           sudo touch /dev/video9
 
+          # Ubuntu 26.04 caches AppArmor notification responses for 5 seconds.
+          # Disable it so consecutive tests receive a prompt for each access.
+          if [ -e /proc/sys/kernel/apparmor_cache_timeout ]; then
+            sudo sysctl -w kernel.apparmor_cache_timeout=0
+          fi
+
       - name: Check generated files are up to date
         working-directory: ./prompting-client
         run: |

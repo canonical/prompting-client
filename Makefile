@@ -162,7 +162,7 @@ ensure-test-snap:
 		echo ":: Connecting camera interface..." ; \
 		lxc exec $(VM_NAME) -- snap connect $(TEST_SNAP_NAME):camera ; \
 		lxc exec $(VM_NAME) -- snap connect $(TEST_SNAP_NAME):audio-record ; \
-		lxc exec $(VM_NAME) -- apt install -y linux-modules-extra-$$(lxc exec $(VM_NAME) -- uname -r) v4l-utils ; \
+		lxc exec $(VM_NAME) -- apt install -y v4l-utils ; \
 		lxc exec $(VM_NAME) -- modprobe v4l2loopback ; \
 		lxc exec $(VM_NAME) -- modprobe snd-aloop ; \
 		lxc exec $(VM_NAME) -- touch /dev/video9 ; \
@@ -192,6 +192,7 @@ integration-tests:
 	lxc file push integration-tests $(VM_NAME)/home/ubuntu/; \
 	rm integration-tests; \
 	lxc exec $(VM_NAME) -- rm -rf /home/ubuntu/test; \
+	lxc exec $(VM_NAME) -- sh -c 'if [ -e /proc/sys/kernel/apparmor_cache_timeout ]; then sysctl -w kernel.apparmor_cache_timeout=0; fi'; \
 	lxc exec --user=1000 --env HOME=/home/ubuntu $(VM_NAME) /home/ubuntu/integration-tests $(CASES);
 
 .PHONY: clean
