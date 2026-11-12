@@ -16,7 +16,7 @@ env:
 jobs:
   test:
     name: Build and Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
 
@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get -y update
-          sudo apt-get -y install protobuf-compiler dkms linux-modules-extra-$(uname -r) v4l-utils v4l2loopback-dkms
+          sudo apt-get -y install protobuf-compiler dkms v4l-utils v4l2loopback-dkms
 
       - name: Setup virtual devices
         run: |
@@ -67,6 +67,12 @@ jobs:
           sudo chmod 666 /dev/video0
           v4l2-ctl --list-devices
           sudo touch /dev/video9
+
+          # Ubuntu 26.04 caches AppArmor notification responses for 5 seconds.
+          # Disable it so consecutive tests receive a prompt for each access.
+          if [ -e /proc/sys/kernel/apparmor_cache_timeout ]; then
+            sudo sysctl -w kernel.apparmor_cache_timeout=0
+          fi
 
       - name: Check generated files are up to date
         working-directory: ./prompting-client
