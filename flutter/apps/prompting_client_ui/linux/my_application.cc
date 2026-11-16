@@ -112,6 +112,10 @@ static void my_application_activate(GApplication* application) {
   gtk_widget_show(GTK_WIDGET(window));
   gtk_widget_show(GTK_WIDGET(view));
 
+  // Without GTK keyboard focus on the view, key presses never reach Flutter's
+  // text input handling (pasting through the context menu still works).
+  gtk_widget_grab_focus(GTK_WIDGET(view));
+
   gtk_window_set_skip_taskbar_hint(window, TRUE);
   gtk_window_set_skip_pager_hint(window, TRUE);
 }

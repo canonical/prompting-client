@@ -50,6 +50,7 @@ class HomeCustomPathPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormField(
+                    autofocus: true,
                     style: Theme.of(context).textTheme.bodyMedium,
                     initialValue: initialCustomPath,
                     onChanged: notifier.setCustomPath,
