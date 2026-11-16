@@ -267,6 +267,12 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get promptActionOptionDenyOnce => 'Negar uma vez';
 
   @override
+  String get promptActionOptionDenyAlways => 'Sempre negar';
+
+  @override
+  String get promptActionOptionDenyUntilLogout => 'Negar até sair';
+
+  @override
   String get promptActionOptionAllowUntilLogout => 'Permitir até o logout';
 
   @override
@@ -295,6 +301,32 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
 
   @override
   String get homePatternTypeCustomPath => 'Padrão de caminho personalizado';
+
+  @override
+  String get homeCustomPathSaveButton => 'Salvar caminho personalizado';
+
+  @override
+  String get homeCustomPathMustStartWithSlash =>
+      'O padrão do caminho deve começar com /';
+
+  @override
+  String get homeCustomPathWildcardStarDescription =>
+      'Corresponde a qualquer sequência de caracteres, exceto /';
+
+  @override
+  String get homeCustomPathWildcardQuestionDescription =>
+      'Corresponde a um único caractere';
+
+  @override
+  String get homeCustomPathWildcardDoubleStarDescription =>
+      'Corresponde a zero ou mais pastas e arquivos recursivamente';
+
+  @override
+  String get homeCustomPathWildcardCurlyDescription => 'Corresponde a x ou y';
+
+  @override
+  String get homeCustomPathWildcardBackslashDescription =>
+      'Substitui caracteres especiais para tratá-los como literais';
 
   @override
   String get homePatternTypeRequestedDirectory => 'Somente a pasta solicitada';
@@ -358,6 +390,15 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   }
 
   @override
+  String get homePromptMetaDataVerifiedAccountPrefix => 'Este editor tem um ';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountLink => 'conta verificada';
+
+  @override
+  String get homePromptMetaDataVerifiedAccountSuffix => '.';
+
+  @override
   String homePromptMetaDataLastUpdated(String date) {
     return 'Última atualização em $date';
   }
@@ -366,8 +407,14 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get homePromptMoreOptionsLabel => 'Mais opções...';
 
   @override
+  String get homePromptMoreOptionsTileLabel => 'Mais opções';
+
+  @override
   String get homePromptMetaDataAppCenterLink =>
       'Visite a página da Central de Aplicativos';
+
+  @override
+  String get homePromptMetaDataAppCenterButton => 'Abrir no App Center';
 
   @override
   String homePromptSuggestedPermission(String permission) {
@@ -381,21 +428,35 @@ class AppLocalizationsPtBr extends AppLocalizationsPt {
   String get homePromptPermissionsRead => 'Leia';
 
   @override
+  String get homePromptPermissionsReadOnly => 'Somente leitura';
+
+  @override
   String get homePromptPermissionsWrite => 'Escreva';
 
   @override
+  String get homePromptPermissionsWriteOnly => 'Somente escrita';
+
+  @override
   String get homePromptPermissionsExecute => 'Execute';
+
+  @override
+  String get homePromptPermissionsExecuteOnly => 'Somente execução';
 
   @override
   String get homePromptErrorUnknownTitle => 'Algo deu errado';
 
   @override
   String cameraPromptBody(String snapName) {
-    return 'Permitir que $snapName acesse sua câmera?';
+    return 'Permitir que $snapName use sua câmera?';
   }
 
   @override
   String microphonePromptBody(String snapName) {
-    return 'Permitir que $snapName acesse seu microfone?';
+    return 'Permitir que $snapName use seu microfone?';
+  }
+
+  @override
+  String homePromptTitleQuestion(String snapName, String permissions) {
+    return 'Dar a $permissions de acesso aos arquivos ao $snapName?';
   }
 }
