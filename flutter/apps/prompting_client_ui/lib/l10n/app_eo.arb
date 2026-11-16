@@ -1,7 +1,7 @@
 {
     "promptActionTitle": "Ago",
     "promptLifespanOptionForever": "Ĉiam",
-    "promptLifespanOptionSession": "Ĝis adiaŭo",
+    "promptLifespanOptionSession": "Ĝis elsaluto",
     "promptAccessTitle": "Doni al {snap} permeson {permission} la jenon:",
     "@promptAccessTitle": {
         "placeholders": {
@@ -163,7 +163,7 @@
             }
         }
     },
-    "promptActionOptionAllowUntilLogout": "Permesi ĝis adiaŭo",
+    "promptActionOptionAllowUntilLogout": "Permesi ĝis elsaluto",
     "cameraPromptBody": "Ĉu permesi al {snapName} uzi viajn kameraojn?",
     "@cameraPromptBody": {
         "placeholders": {
@@ -181,7 +181,7 @@
         }
     },
     "promptActionOptionDenyAlways": "Malpermesi ĉiam",
-    "promptActionOptionDenyUntilLogout": "Malpermesi ĝis adiaŭo",
+    "promptActionOptionDenyUntilLogout": "Malpermesi ĝis elsaluto",
     "homePromptMetaDataVerifiedAccountSuffix": ".",
     "homePromptMetaDataVerifiedAccountLink": "konfirmitan konton",
     "homePromptMoreOptionsTileLabel": "Pliaj opcioj",
