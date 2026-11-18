@@ -137,5 +137,21 @@
                 "type": "String"
             }
         }
+    },
+    "homePromptMetaDataPublishedBy": "{publisher} によって公開",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptSuggestedPermission": "{permission} アクセス権も与える",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
     }
 }
