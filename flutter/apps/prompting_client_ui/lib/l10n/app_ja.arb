@@ -38,5 +38,24 @@
     "promptActionOptionAllowUntilLogout": "ログアウトまで許可",
     "homePromptPermissionsExecute": "実行",
     "homePromptPermissionsWrite": "書き込み",
-    "homePromptPermissionsRead": "読み込み"
+    "homePromptPermissionsRead": "読み込み",
+    "homePromptMetaDataLastUpdated": "最終更新日: {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} がホームフォルダーに {permissions} アクセス権を求めています。",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    }
 }
