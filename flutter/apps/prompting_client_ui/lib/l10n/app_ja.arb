@@ -102,5 +102,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "homePromptMetaDataAppCenterLink": "アプリセンターのページを開く",
+    "homePromptErrorUnknownTitle": "何か問題が発生しました"
 }
