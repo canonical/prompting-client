@@ -57,5 +57,19 @@
                 "type": "String"
             }
         }
+    },
+    "homePromptTopLevelDirBody": "{snap} が {foldername} フォルダーに {permissions} アクセス権を求めています。",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
     }
 }
