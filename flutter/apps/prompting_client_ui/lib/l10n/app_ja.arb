@@ -71,5 +71,19 @@
                 "type": "String"
             }
         }
+    },
+    "homePromptDefaultBody": "{snap} が {path} に {permissions} アクセス権を求めています",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
     }
 }
