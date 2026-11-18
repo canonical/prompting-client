@@ -104,5 +104,38 @@
         }
     },
     "homePromptMetaDataAppCenterLink": "アプリセンターのページを開く",
-    "homePromptErrorUnknownTitle": "何か問題が発生しました"
+    "homePromptErrorUnknownTitle": "何か問題が発生しました",
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} フォルダー以下すべて",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeHomeDirectory": "ホームフォルダー以下すべて",
+    "homePatternTypeRequestedFile": "要求されたファイルのみ",
+    "homePatternTypeRequestedDirectory": "要求されたフォルダーのみ",
+    "homePatternTypeMatchingFileExtension": "{fileExtension} ファイルすべて",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} がホームフォルダーにある {filename} に {permissions} アクセス権を求めています。",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    }
 }
