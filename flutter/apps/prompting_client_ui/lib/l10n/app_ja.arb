@@ -35,5 +35,8 @@
     "homePromptPermissionsTitle": "パーミッション",
     "promptActionOptionDenyAlways": "常に拒否",
     "promptActionOptionDenyUntilLogout": "ログアウトまで拒否",
-    "promptActionOptionAllowUntilLogout": "ログアウトまで許可"
+    "promptActionOptionAllowUntilLogout": "ログアウトまで許可",
+    "homePromptPermissionsExecute": "実行",
+    "homePromptPermissionsWrite": "書き込み",
+    "homePromptPermissionsRead": "読み込み"
 }
