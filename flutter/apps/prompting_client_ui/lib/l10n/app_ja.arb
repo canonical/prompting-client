@@ -185,7 +185,7 @@
             }
         }
     },
-    "homePromptMetaDataVerifiedAccountSuffix": "があります。",
+    "homePromptMetaDataVerifiedAccountSuffix": "。",
     "homePromptMetaDataVerifiedAccountPrefix": "この発行者には ",
     "homePromptMetaDataVerifiedAccountLink": "認証済みアカウント",
     "homePromptMetaDataAppCenterButton": "アプリセンターで開く",
