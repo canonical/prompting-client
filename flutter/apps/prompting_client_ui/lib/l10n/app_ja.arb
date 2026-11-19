@@ -35,5 +35,159 @@
     "homePromptPermissionsTitle": "パーミッション",
     "promptActionOptionDenyAlways": "常に拒否",
     "promptActionOptionDenyUntilLogout": "ログアウトまで拒否",
-    "promptActionOptionAllowUntilLogout": "ログアウトまで許可"
+    "promptActionOptionAllowUntilLogout": "ログアウトまで許可",
+    "homePromptPermissionsExecute": "実行",
+    "homePromptPermissionsWrite": "書き込み",
+    "homePromptPermissionsRead": "読み取り",
+    "homePromptMetaDataLastUpdated": "最終更新日: {date}",
+    "@homePromptMetaDataLastUpdated": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirBody": "{snap} がホームフォルダーの {permissions} アクセス権を求めています。",
+    "@homePromptHomeDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirBody": "{snap} が {foldername} フォルダーの {permissions} アクセス権を求めています。",
+    "@homePromptTopLevelDirBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptDefaultBody": "{snap} が {path} の {permissions} アクセス権を求めています",
+    "@homePromptDefaultBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptTopLevelDirFileBody": "{snap} が {foldername} フォルダーにある {filename} の {permissions} アクセス権を求めています。",
+    "@homePromptTopLevelDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            },
+            "foldername": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataAppCenterLink": "アプリセンターのページを開く",
+    "homePromptErrorUnknownTitle": "問題が発生しました",
+    "homePatternTypeTopLevelDirectory": "{topLevelDir} フォルダー以下すべて",
+    "@homePatternTypeTopLevelDirectory": {
+        "placeholders": {
+            "topLevelDir": {
+                "type": "String"
+            }
+        }
+    },
+    "homePatternTypeHomeDirectory": "ホームフォルダー以下すべて",
+    "homePatternTypeRequestedFile": "要求されたファイルのみ",
+    "homePatternTypeRequestedDirectory": "要求されたフォルダーのみ",
+    "homePatternTypeMatchingFileExtension": "{fileExtension} ファイルすべて",
+    "@homePatternTypeMatchingFileExtension": {
+        "placeholders": {
+            "fileExtension": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptHomeDirFileBody": "{snap} がホームフォルダーにある {filename} の {permissions} アクセス権を求めています。",
+    "@homePromptHomeDirFileBody": {
+        "placeholders": {
+            "snap": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            },
+            "filename": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataPublishedBy": "{publisher} によって公開",
+    "@homePromptMetaDataPublishedBy": {
+        "placeholders": {
+            "publisher": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptSuggestedPermission": "{permission}アクセス権も与える",
+    "@homePromptSuggestedPermission": {
+        "placeholders": {
+            "permission": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMoreOptionsLabel": "詳細オプション...",
+    "cameraPromptBody": "{snapName} にカメラの使用を許可しますか？",
+    "@cameraPromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "microphonePromptBody": "{snapName} にマイクの使用を許可しますか？",
+    "@microphonePromptBody": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptPermissionsReadOnly": "読み取りのみ",
+    "homePromptPermissionsWriteOnly": "書き込みのみ",
+    "homePromptPermissionsExecuteOnly": "実行のみ",
+    "homePromptTitleQuestion": "{snapName} にファイルの{permissions}を許可しますか？",
+    "@homePromptTitleQuestion": {
+        "placeholders": {
+            "snapName": {
+                "type": "String"
+            },
+            "permissions": {
+                "type": "String"
+            }
+        }
+    },
+    "homePromptMetaDataVerifiedAccountSuffix": "。",
+    "homePromptMetaDataVerifiedAccountPrefix": "この発行者には ",
+    "homePromptMetaDataVerifiedAccountLink": "認証済みアカウント",
+    "homePromptMetaDataAppCenterButton": "アプリセンターで開く",
+    "homePromptMoreOptionsTileLabel": "詳細オプション"
 }
