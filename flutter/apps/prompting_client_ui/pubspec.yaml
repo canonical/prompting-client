@@ -26,7 +26,7 @@ dependencies:
   prompting_client: ^1.0.0
   riverpod_annotation: ^2.3.5
   ubuntu_lints: ^0.4.1
-  ubuntu_localizations: ^0.5.2+1
+  ubuntu_localizations: ^0.6.0
   ubuntu_logger: ^0.2.1
   ubuntu_service: ^0.4.0
   url_launcher: ^6.3.0
